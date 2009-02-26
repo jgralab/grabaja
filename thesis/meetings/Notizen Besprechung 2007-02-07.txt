@@ -1,0 +1,8 @@
+- "Verifikation": GraphViz (TG2DOT), evtl: Code aus Graph wieder erzeugen lassen und vergleichen
+- problematische / lange Kantennamen: abstrakte Kanten-Oberklasse, von der die speziellen abgeleitet werden
+- "EdgeWithPositionInfos" --> "Link" / "SyntaxEdge" / "ASTEdge"
+- TypeParameterAccess --> ...Usage
+- Kommentare: JavaDocs evtl. an zugehörige Elemente verknüpfen, Rest in Kollektion
+- Kommentare: Aufsammeln im Lexer, evtl. benötigte Exceptions von bestehenden Ableiten
+- "abstract EdgeClass EdgeWithPositionInformations": mit "from vertex(0,*) to vertex(0,*)"!!!
+- Kantenbezeichnungen im "Baumkopf" mit den Namen aus dem Buch von Volker

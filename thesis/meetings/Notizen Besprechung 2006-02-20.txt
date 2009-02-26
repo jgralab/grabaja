@@ -1,0 +1,7 @@
+- Kontextinfos über Symboltabelleninfo (Gültigkeitsbereich etc.)
+- public public
+- Test: Eclipse + SDK
+- Unit-Test?
+- Unicode im eigentlichen Source?
+- verschiedene Encodings
+- was nimmt der javac an?

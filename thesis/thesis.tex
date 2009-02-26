@@ -1,0 +1,1019 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings, headsepline, fontsize=12pt, a4paper, twoside, halfparskip, ngerman, abstracton]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[pdfpagelabels, colorlinks=true, linkcolor=black, urlcolor=blue, citecolor=blue]{hyperref}
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von Wörtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+%\usepackage[a4paper,left=4cm,right=2cm,top=3cm,bottom=3cm]{geometry}
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+%\usepackage{geometry}
+%\geometry{lmargin=2cm,rmargin=2cm,tmargin=1cm,bmar gin=1cm,headheight=0ex}
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\usepackage{listings}
+\usepackage{amsmath}
+\lstloadlanguages{Java}
+\lstdefinestyle{java}{
+        language=Java,
+        escapeinside={(*@}{@*)},
+        frameround=tttt,
+        frame=tRBl,
+        numbers=left,
+        stepnumber=1,
+        numberstyle=\tiny,
+        basicstyle=\small\sffamily,
+        commentstyle=\slshape,
+        columns=fullflexible,
+        keepspaces=true,
+        fontadjust=true,
+        morecomment=[l]{--}%,
+%        literate=
+%                {>}{{$>$}}1
+%                {<}{{$<$}}1
+%                {\\}{{$\lambda$}}1
+%                {->}{{$\rightarrow$}}2
+}
+\lstdefinelanguage{TGSchema}{
+	keywords={Schema, EnumDomain, GraphClass, abstract, EdgeClass, VertexClass, from, to},
+	sensitive=true,
+	comment=[l]{//}
+}
+\lstdefinestyle{tgschema}{
+        language=TGSchema,
+        escapeinside={(*@}{@*)},
+        frameround=tttt,
+        frame=tRBl,
+        numbers=left,
+        stepnumber=1,
+        numberstyle=\tiny,
+        basicstyle=\small\sffamily,
+        commentstyle=\slshape,
+        columns=fullflexible,
+        keepspaces=true,
+        fontadjust=true
+}
+\lstset{numbers=none,
+        numberstyle=\tiny,
+        numbersep=5pt,
+        basicstyle=\small,        
+        xleftmargin=0.4cm,
+        breaklines=true,
+        captionpos=b}
+\usepackage{color}
+\usepackage{rotating}
+\newcommand{\thesame}{\color{red}\ttfamily}%
+\newcommand{\red}{\color{red}\ttfamily}%
+\newcommand{\blue}{\color{blue}\ttfamily}%
+\setlength{\parindent}{0pt}
+%\setlength{\parskip}{5pt}
+\usepackage{colortbl}
+\usepackage{hhline}
+\definecolor{grey}{rgb}{0.7, 0.7, 0.7}
+
+\newcommand{\email}[1]{
+  \href{mailto:#1}{\texttt{#1}}
+}
+
+\newcommand{\locdatesigline}[0]{
+  \vspace{2cm}
+  \begin{minipage}[t]{5cm}
+    \rule{5cm}{0.4pt}
+    \centering {Ort, Datum}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{5cm}
+    \rule{5cm}{0.4pt}
+    \centering {Unterschrift}
+  \end{minipage}
+}
+
+\newenvironment{erklaerung}{%
+  \renewcommand*{\abstractname}{Erklärung} \abstract}{%
+  \vspace{20pt}
+  \locdatesigline
+  \endabstract
+}
+
+\hyphenation{Source-code-brow-ser kon-form }
+
+\begin{document}
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+\pagenumbering{off}
+\setcounter{page}{0}
+\begin{titlepage}
+  \parbox[t]{7.5cm}{
+    \begin{flushleft}
+    	\vspace{12pt}
+      \includegraphics[width=6cm]{figures/uni-logo-2c.png}\\
+      Fachbereich 4
+    \end{flushleft}}
+  \parbox[t]{7.5cm}{
+    \begin{flushright}
+      \includegraphics[width=3.2cm]{figures/ist_logo.pdf}\\
+      Institut für Softwaretechnik\\
+    \end{flushright}}\\
+  \vspace{30pt}
+  \begin{center}
+    \Huge
+    \textbf{Java-Faktenextraktor für Gupro}\\
+    \vspace{40pt}
+    \LARGE
+    \textbf{Studienarbeit}\\
+    \vspace{80pt}
+    \normalsize
+    vorgelegt von:\\
+    \vspace{10pt}
+    \textbf{Arne Baldauf\\ \email{abaldauf@uni-koblenz.de}\\
+    \vspace{6pt}
+    Nicolas Vika\\ \email{ultbreit@uni-koblenz.de}}\\
+    \vspace{60pt}
+    betreut von:\\
+    \vspace{10pt}
+    \textbf{Prof. Dr. Jürgen Ebert}, Institut für Softwaretechnik, Fachbereich 4\\
+    \textbf{Dr. Volker Riediger}, Institut für Softwaretechnik, Fachbereich 4\\
+    \vspace{40pt}
+    \textbf{Koblenz, im Januar 2008}
+  \end{center}
+\setcounter{page}{0}
+\end{titlepage}
+\cleardoublepage
+
+\thispagestyle{empty}
+\textcolor{white}{.}
+\newpage
+\begin{erklaerung}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\changefontsizes{12pt}
+\noindent
+Ich versichere, dass ich die Kapitel 1, 6, 7, 8 sowie die Anhänge A, B, D der vorliegenden Arbeit selbständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.\par
+Mit der Einstellung dieser Arbeit in die Bibliothek bin ich einverstanden. Der Veröffentlichung dieser Arbeit im Internet stimme ich zu.\par
+\end{erklaerung}
+\vspace{60pt}
+\begin{erklaerung}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\changefontsizes{12pt}
+\noindent
+Ich versichere, dass ich die Kapitel 2, 3, 4, 5, 9 sowie die Anhänge C, E, F der vorliegenden Arbeit selbständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.\par
+Mit der Einstellung dieser Arbeit in die Bibliothek bin ich einverstanden. Der Veröffentlichung dieser Arbeit im Internet stimme ich zu.\par
+\end{erklaerung}
+\clearpage
+
+\thispagestyle{empty}
+\textcolor{white}{.}
+\newpage
+\begin{abstract}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\changefontsizes{12pt}
+\noindent
+Gupro soll Entwicklern im Rahmen der Softwarewartung bei Verständnis und Analyse von Softwaresystemen behilflich sein. Gupro verwendet dazu TGraphen, welche eine erheblich bessere Analyse ermöglichen als die zugrundeliegenden Quelltexte. Diese TGraphen sind typisierte, attributierte, gerichtete und angeordnete Graphen. Darüberhinaus kann von der verwendeten Programmiersprache beliebig abstrahiert werden. Zur Erzeugung der TGraphen werden programmiersprachenspezifische Faktenextraktoren benötigt.\par
+Im Rahmen der Studienarbeit von Arne Baldauf und Nicolas Vika wird unter der Leitung von Prof. Dr. Jürgen Ebert und Dr. Volker Riediger ein Faktenextraktor für Java-Quelltexte entwickelt. Der Javaextraktor generiert eine TGraph-Repräsentation der Quelltexte eines in Java implementierten Softwareprojekts. Der erzeugte TGraph ist dann durch die Werkzeuge des Gupro-Projekts weiter verarbeitbar.\par
+Der Javaextraktor parst Javaquelltexte bis einschließlich Javaversion 6 und setzt diese in TGraphrepräsentationen um. Dazu wird im Rahmen der Studienarbeit ein Werkzeug gesucht, welches den Parsingvorgang übernimmt. Zusätzlich wird ein Javametamodell und entsprechendes Schema für den TGraph entwickelt. Metamodell und Schema geben Typisierung, Attributierung und Struktur des TGraphen vor.
+\end{abstract}
+\clearpage
+
+%\thispagestyle{empty}
+%\textcolor{white}{.}
+%\newpage
+
+\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+
+\clearpage
+
+%\thispagestyle{empty}
+%\textcolor{white}{.}
+%\newpage
+\pagenumbering{arabic}
+\thispagestyle{empty}
+\setcounter{page}{0}
+\textcolor{white}{.}
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+%\begin{table}
+%	\begin{center}
+%	\begin{tabular}{|l|l|l|l|l|}
+%	  \hline
+%	  Version & Status & Datum & Autor(en) & Erläuterung \\
+%	  \hline \hline
+%		0.1 & WIP & 04.12.2007 & Nicolas Vika & Initiale Version \\ \hline
+%	\end{tabular}
+%	\end{center}
+%\end{table}
+%\clearpage
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\section{Einführung und Motivation}
+Software muss nach ihrer Auslieferung gewartet werden. Das heißt, sie muss korrigiert, modifiziert, weiterentwickelt oder perfektioniert werden. Dieser Prozess kann Jahre oder auch Jahrzehnte über den ursprünglichen Auslieferungstermin hinaus andauern.\par
+Es existieren viele Altsysteme, welche heute noch im Produktiveinsatz sind und weiterhin gewartet werden müssen. Oft jedoch sind die ursprünglichen Entwickler nicht mehr für die Software zuständig. Hinzu kommt nicht selten ein unzureichender Dokumentationsgrad der Software. Diejenige Person, die nun in die Wartung des Systems involviert wird, befindet sich somit meist in einer schwierigen Ausgangssituation.\par
+An dieser Stelle setzen die Gupro-Tools zur Unterstützung von Reengineering und Programmverstehen an. Sie sollen den Wartungsingenieur dabei unterstützen, den Quelltext des Softwaresystems zu erschließen.\par
+Die Gupro-Tools arbeiten dabei auf Graphrepräsentationen des Quelltextes, welche dazu von programmiersprachenspezifischen Extraktoren aus dem Quelltext generiert werden. Bisher existieren nur Extraktoren für ältere Programmiersprachen.\par
+Ziel der vorliegenden Studienarbeit war es, einen Extraktor für Java-Code bis zur aktuellen Version 5\footnote{Im Verlauf der Studienarbeit erschien Java 6, dieses besitzt im Vergleich zur Vorgängerversion keine neuen Sprachkonstrukte, so dass die gesamte Funktionalität des Javaextraktors auch diese Version abdeckt.} zu realisieren. Dessen Entwicklung und Verwendung wird in diesem Dokument beschrieben, wobei der Extraktor im Folgenden auch als Javaextraktor oder Faktenextraktor bezeichnet wird.\par
+Diese Studienarbeit richtet sich an Leser, die mindestens über den Wissensstand eines Informatikstudenten mit abgeschlossenem Vordiplom verfügen.
+
+\subsection{Erklärung der Begrifflichkeiten}
+In diesem Abschnitt werden Begriffe definiert und erläutert, die in dieser Arbeit häufiger Verwendung finden.
+
+%\paragraph{Gupro.}
+%
+\paragraph{TGraph.}
+Jeder Graph besteht aus Knoten und Kanten. Ein TGraph hat zusätzliche Eigenschaften, er ist
+\begin{itemize}
+\item{typisiert: Knoten und Kanten haben einen bestimmten Typ.}
+\item{attributiert: Knoten und Kanten können beliebig viele Attribute besitzen (somit auch keine).}
+\item{gerichtet: Kanten besitzen eine Richtung.}
+\item{angeordnet: die Menge, der mit einem Knoten verbundenen Kanten besitzt eine Ordnung (1., 2., ..., n-te Kante).}
+\end{itemize}
+Desweiteren gilt, dass eine Kante nur zwischen zwei Knoten aufgespannt sein darf. TGraphen können zyklisch sein. Eine formale Definition und weitergehende Beschreibung findet sich auf den Seiten 52-54 in \cite{gupro}.
+
+\paragraph{GReQL.}
+GReQL steht für Gupro Repository Query Language und ist eine Anfragesprache für TGraphen, die in Gupro Verwendung findet.
+Abgefragt werden können:
+\begin{itemize}
+  \item{Inhalte, z. B. Attributwerte von Kanten und Knoten}
+  \item{Strukturen im TGraph}
+  \item{Aggregierte Informationen, z. B. Anzahl von Knoten oder Kanten eines bestimmten Typs}
+  \item{beliebige Kombinationen aus den drei zuvor genannten}
+\end{itemize}
+Für die Formulierung einer Anfrage ist die Kenntnis des Schemas / Metamodells des angeftragten TGraphen notwendig. Details zu GReQL finden sich u. a. auf den Seiten 173ff in \cite{gupro} sowie für die aktuelle Version GReQL 2 in \cite{greql2interpreter} und \cite{greql2}.
+
+\paragraph{JGraLab}
+Das zuvor in C++ implementierte Graphenlabor wurde in Java als JGralab neuimplementiert und ist Teil des Gupro-Projekts. "`Das Graphenlabor bietet eine Klassenbibliothek, um TGraphen als interne Datenstruktur effizient benutzen zu können. Diese API bietet Traversierungs- und Manipulationsmöglichkeiten für TGraphen und ihr Typsystem an"' (vgl.: Seite 5 in \cite{jgralab}). Weitere Details zu JGraLab finden sich ebenfalls in \cite{jgralab}.
+
+\paragraph{Sourcecodebrowser}
+Der Sourcecodebrowser ist eine Komponente der QGupro Benutzeroberfläche. Er zeigt Quelltexte an und hebt Codeabschnitte hervor, die das Ergebnis einer GReQL-Anfrage sind. Für mehr Informationen zum Sourcecodebrowser siehe \cite{sourcecodebrowser}.
+
+\paragraph{Token.}
+Ein Token ist ein atomares Eingabeelement für einen Parser und wird von einem Lexer erzeugt. Es repräsentiert eine erkannte Zeichenfolge in einem Zeichenstrom (bspw. Quelltext). Üblicherweise wird ein Token in einer Lexergrammatik definiert.
+
+\paragraph{Lexer.}
+Ein Lexer ist ein Programm, welches aus einem Zeichenstrom eine Folge von Tokens erzeugt. Der Lexer ist in der Lage bestimmte Zeichen oder Zeichenfolgen zu erkennen. Diese werden als Lexeme bezeichnet. Aus jedem erkannten Lexem erzeugt der Lexer ein Token.\par
+Ein Lexer kann durch eine formale Grammatik beschrieben werden. Aus dieser kann automatisiert ein Lexer erzeugt werden.
+
+\paragraph{Parser.}
+Ein Parser ist ein Programm zur Syntaxanalyse. Der Parser erkennt syntaktische Einheiten in einem Tokenstrom. In der Regel liefert ein Lexer die Tokens. Meist bildet der Parser die Syntax der Eingabedaten in einem abstrakten Syntaxbaum ab.\par
+Auch ein Parser kann durch eine formale Grammatik beschrieben werden. Aus dieser kann wiederum automatisiert ein Parser erzeugt werden.
+
+\paragraph{LL(*)-Parser.}
+Bezeichnung für einen Parsertyp. LL(*)-Parser versuchen die Syntax mit einem Top-down-Ansatz zu erkennen. Der Parser kann zur Entscheidungsfindung beliebig viele Tokens weit vorausschauen, dieser Wert wird als Lookahead bezeichnet. Eine formale Definition und Beschreibung von LL-Parsern findet sich in \cite{compilerbau} auf den Seiten 174ff und 190-191.
+
+\paragraph{Treewalker.}
+Ein Treewalker ist ein Programm, welches einen Baum traversiert. Im Rahmen der Studienarbeit werden aus Javaquelltexten abstrakte Syntaxbäume von einem Parser erzeugt und von einem Treewalker traversiert.\par
+Auch ein Treewalker kann durch eine Grammatik beschrieben werden. Aus dieser kann wiederum automatisiert ein Treewalker erzeugt werden.
+
+\paragraph{Abstrakter Syntaxbaum (AST).}
+Ein AST ist ein Baum, der durch seine Struktur die Syntax eines Textes abbildet. Im Rahmen der Studienarbeit sind dies Javaquelltexte.
+
+\paragraph{Abstrakter Syntaxgraph (ASG).}
+Im Gegensatz zu einem abstrakten Syntaxbaum darf ein ASG zyklisch sein und identische Elemente durch einen einzelnen Knoten oder Blatt repräsentieren.
+
+\paragraph{Quelltextreferenz.}
+Quelltextreferenzen sind Typspezifikationen, Methoden- oder Konstruktoraufrufe, sowie Zugriffe auf Felder, Variablen, Parameter und Enum-Konstanten. Dies sind allesamt Elemente im Quelltext, welche sich auf ein an anderer Stelle deklariertes Element beziehen. Z. B. ist ein Variablenzugriff durch den Variablenamen im Quelltext eine Quelltextreferenz. Der Name referenziert die Variable. Grundlage der Variable ist jedoch ihre konkrete Deklaration an einer anderen Stelle im Quelltext. Es besteht somit eine semantische Beziehung zwischen Benutzung und Deklaration des selben Elements.\par
+\emph{Nicht} gemeint ist die in objektorientierten Programmiersprachen übliche Objektreferenz, die zum Beispiel beim Übergeben von Argumenten verwendet wird.
+\newpage
+
+\section{Anforderungsliste Javaextraktor}
+\label{requirements}
+Zu Beginn der Studienarbeit wurden die Anforderungen an den Javaextraktor aufgestellt. Zum Teil stammen diese unmittelbar aus der Aufgabenstellung, teilweise ergeben sie sich indirekt aus dem Kontext der Verwendung des Javaextraktors und manche sind eine Festlegung einer allgemein bekannten, geeigneten Vorgehensweise.\par
+Die Anforderungen an den Javaextraktor wurden mit Prioritäten versehen. Dabei entsprechen die verwendeten Farben den Prioritäten für die Umsetzung der jeweiligen Anforderung.
+\begin{itemize}
+  \item{\color{red} MUSS \color{black}- Die Anforderung muss auf jeden Fall umgesetzt werden.}
+  \item{\color{magenta} SOLLTE \color{black}- Die Anforderung sollte umgesetzt werden, wenn es möglich ist.}
+  \item{\color{blue}OPTIONAL \color{black} - Die Anforderung ist optional.}
+\end{itemize}
+Ferner ist nach jeder Anforderung eine kurzer Vermerk über den Status ihrer Umsetzung aufgeführt.
+
+\subsection{Funktionale Anforderungen}
+Die funktionalen Anforderungen legen fest, was der Javaextraktor leisten soll.
+
+\begin{enumerate}
+  \item{\color{red} MUSS \color{black}- Der Faktenextraktor soll Java-Quelltexte, nach Möglichkeit bis einschließlich Version 5, zu einem TGraphen umsetzen können.\\ \emph{Erfüllt.}}
+  \item{\color{blue}OPTIONAL \color{black}- Die Schemata sollen, neben einer feinkörnigen Graphenrepräsentation des Codes, auch höhere Abstraktionsniveaus abdecken.\\ \emph{Partiell erfüllt - nur das feingranulare Schema wurde umgesetzt.}}
+  \item{\color{magenta} SOLLTE \color{black}- Der Faktenextraktor soll als eigenständiges Programm lauffähig sein, nach Möglichkeit als Commandline-Utility.\\ \emph{Erfüllt.}}
+  \item{\color{blue}OPTIONAL \color{black}- Für die Arbeit mit TGraphen sollen einige sinnvolle Beispielanfragen in GReQL formuliert werden, welche auf die objektorientierte Ausrichtung von Java abzielen.\\ \emph{Nicht erfüllt.}}
+  \item{\color{red} MUSS \color{black}- Die Positionen der identifizierten Elemente im Quelltext müssen Gupro-konform im TGraph mitgespeichert werden, zwecks Nutzung durch den graphenbasierten Sourcecodebrowser.\\ \emph{Erfüllt.}}
+  \item{\color{magenta} SOLLTE \color{black}- Der Faktenextraktor soll möglichst fehlertolerant sein. D.h. syntaktisch fehlerhafter Java-Code sollte (durch Ignorieren oder Auslassen) nicht zum Fehlschlagen des kompletten Parsingvorgangs führen.\\ \emph{Nicht erfüllt. Die verwendete Javagrammatik ließ dies nicht zu.}}
+  \item{\color{red} MUSS \color{black}- Der Faktenextraktor muss Quelltextreferenzen auflösen können.\\ \emph{Erfüllt.}}
+  \item{\color{blue} OPTIONAL \color{black}- Der Faktenextraktor soll nur Code feingranular im TGraph repräsentieren, welcher als Quellcode vorliegt; von referenziertem Code (welcher nur in .class- oder in .jar-Dateien ohne Quelltext vorliegt) müssen mittels Reflexion lediglich die Signaturen extrahiert werden.\\ \emph{Erfüllt.}}
+\end{enumerate}
+
+\subsection{Nichtfunktionale Anforderungen}
+Die nichtfunktionalen Anforderungen legen die weiteren Eigenschaften des Javaextraktors fest.
+\begin{enumerate}
+  \item[9.]{\color{red} MUSS \color{black}- Der Faktenextraktor soll effizient arbeiten. Konkret bedeutet dies, dass der Extraktor eine - in Abhängigkeit von der Menge des zu analysierenden Quelltextes - vertretbare Laufzeit aufweisen soll.\\ \emph{Erfüllt.}}
+  \item[10.]{\color{blue} OPTIONAL \color{black}- Der Faktenextraktor soll in Java realisiert werden.\\ \emph{Erfüllt.}}
+  \item[11.]{\color{red} MUSS \color{black}- Der Programmierstil aus der Vorlesung "`Programmierung"' soll angewendet werden.\\ \emph{Erfüllt.}}
+  \item[12.]{\color{blue} OPTIONAL \color{black}- Der Quelltext soll mit Unit-Testing überprüft werden.\\ \emph{Nicht erfüllt.}}
+  \item[13.]{\color{red} MUSS \color{black}- Der Quelltext soll Javadoc-kompatibel kommentiert werden.\\ \emph{Erfüllt.}}
+  \item[14.]{\color{red} MUSS \color{black}- Die Architektur soll in UML visualisiert werden.\\ \emph{Erfüllt.}}  
+\end{enumerate}
+Ferner sollte nach bestehenden Tools recherchiert werden, welche für den Javaextraktor verwendet werden können. Folgende Anforderungen ergaben sich dadurch:
+\begin{enumerate}
+  \item[15.]{\color{magenta} SOLLTE \color{black}- Bestehende Werkzeuge sollten den eigenen Entwicklungsaufwand soweit wie möglich reduzieren.\\ \emph{Erfüllt. Es war keine Entwicklung eines eigenen Lexers und Parsers nötig, da diese automatisch  aus einer bereits existierrenden Grammatik erzeugt werden konnten.}}
+  \item[16.]{\color{magenta} SOLLTE \color{black}- Bestehende Werkzeuge sollten sich möglichst noch in der aktiven Weiterentwicklung befinden, so dass evtl. bestehende Fehler korrigiert werden und eine Weiterentwicklung (etwa für neue Java-Versionen) absehbar ist.\\ \emph{Erfüllt. Bei ANTLR ist dies der Fall.}}
+  \item[17.]{\color{red} MUSS \color{black}- Bestehende Werkzeuge sollen hinsichtlich ihrer Tauglichkeit für dieses Projekt bewertet werden.\\ \emph{Erfüllt. Bewertung abgeschlossen.}}
+  \item[18.]{\color{red} MUSS \color{black}- Recherchierte Werkzeuge sollten, selbst im Falle der Unbrauchbarkeit für dieses Projekt, kurz beschrieben und abgehandelt werden.\\ \emph{Erfüllt. Abhandlungen erstellt.\footnote{Für eine detaillierte Ausführung zur Onlinerecherche siehe Anhang \ref{onlinerecherche_komplett} }}}
+\end{enumerate}
+
+\newpage
+\section{Onlinerecherche nach einem Javaparser}
+Zur Extraktion von Fakten aus Javaquelltexten müssen sie geparst werden. Parsingtechniken werden schon lange im Compilerbau verwendet und stehen in einer Vielzahl von bereits existierenden Werkzeugen zur Verfügung. Deshalb wurde zunächst  eine umfangreiche Onlinerecherche vorgenommen. Ziel war es ein bereits existierendes Werkzeug zu finden, welches bei der Erfüllung der Anforderungen aus dem letzten Kapitel von Nutzen sei und auf dessen Basis der Javaextraktor aufgebaut werden konnte.\par
+Dieses Kapitel beschreibt zunächst Kriterien, anhand derer die Funde bewertet wurden und schließt mit einer Aufstellung der Ergebnisse ab. Eine detaillierte Ausführung der Onlinerecherche ist in Anhang \ref{onlinerecherche_komplett} zu finden . 
+
+\subsection{Bewertungskriterien für die gefundenen Werkzeuge}
+Jedes gefundene Werkzeug wurde auf die folgenden Eigenschaften hin untersucht:
+
+\paragraph{Parser in Java.}
+Zur Einbindung in den in Java zu entwickelnden Javaextraktor wäre ein javabasierter Parser ideal. Ferner wäre der Javaextraktor dadurch plattformunabhängig.\par
+Ist ein Werkzeug nicht in Java geschrieben, führt dies jedoch nicht automatisch zum Ausschluss, da keine Festlegung auf eine einzige Programmiersprache besteht.
+
+\paragraph{Grammatik für Java bis Version 5.}
+Damit der Javaextraktor auch aktuelle Softwareprojekte verarbeiten kann, sollte das Parsen von Quelltexten bis Javasprachversion einschließlich Version 5 möglich sein. Neben der Recherche in der Projektdokumentation wurde dies auch  mittels Parsingtests mit Quelltexten, die spezifische Sprachkonstrukte aus Java 5 enthielten, überprüft.\par
+Besteht ein Werkzeug diesen Test nicht, so führte dies noch nicht zum Ausschluss, da dieser Mangel eventuell behoben werden kann.
+
+\paragraph{Verfügbarkeit der Quelltexte.}
+Gerade für die Verwendung im Javaextraktor ist eine Verfügbarkeit der Quelltexte zwingend erforderlich. Auch die Lizenzierung von Quelltexten gegen vertretbare Kosten ist möglich.\par 
+Ist dies nicht der Fall, führt dies zum Ausschluss des Werkzeuges.
+
+\paragraph{Dokumentationsgrad.}
+Umfasst die Dokumentation zumindest ein Benutzerhandbuch, \\welches die Verwendung und ggf. Erzeugung des Werkzeuges erklärt, wird der Dokumentationsgrad als \emph{niedrig} bewertet. Gibt es zusätzlich eine API-Spezifikation, so ist der Dokumentationsgrad \emph{mittel}. Existieren darüberhinaus FAQ(s), Tutorial(s), Wiki(s) oder vergleichbares, gilt der Dokumentationsgrad als \emph{hoch}. Ist desweiteren auch noch Support durch Mailinglisten oder Foren gegeben, dann ist der Dokumentationsgrad als \emph{sehr hoch} bewertet.\par
+Existiert \emph{keine} brauchbare Dokumentation, führt dies zum Ausschluss des Werkzeuges.
+
+\paragraph{Aktivität.}
+Befand sich das Werkzeug in einer ständigen Weiterentwicklung und Verbesserung und existierte eine lebendige Community um dieses Projekt, war dies als positiv zu bewerten - gerade im Hinblick auf eine durchaus zu erwartende spätere Weiterentwicklung des Javaextraktors.\par
+War dies nicht der Fall, führte dies nicht unmittelbar zum Ausschluss des Werkzeuges.
+
+\paragraph{Position und Länge eines Elements im Quelltext abrufbar.}
+Zur weiteren Verwendung der erzeugten Graphen in Gupro müssen Position und Länge von Elementen im Quelltext im Graphen gespeichert werden. Dazu sollte das Werkzeug die Abfrage dieser Werte ermöglichen.\par
+Ist dies nicht der Fall, führt dies nicht unmittelbar zum Ausschluss des Werkzeuges, da diese Funktionalität eventuell nachgerüstet werden kann.
+
+\subsection{Ergebnis der Onlinerecherche}
+Untersucht wurden Parsergeneratoren, Werkzeuge, die Parsergeneratoren benutzen, quelloffene Java-Compiler-Implementationen\footnote{Zum Zeitpunkt der Onlinerecherche war Suns Javacompiler \texttt{javac} noch nicht als Open Source freigegeben. Daher wurde dieser nicht untersucht.} und die Java Development Tools aus Eclipse.\par
+Tabelle \ref{werkzeuge} listet alle untersuchten Werkzeuge und die ermittelten Ergebnisse auf. Bei Werkzeugen, die nicht zum Laufen gebracht werden konnten oder die laut Dokumentation keine Unterstützung von Java 5 bieten, wurden keine Parsingtests durchgeführt. Dies ist entsprechend in der Tabelle vermerkt (-). Erfüllte ein Werkzeug mehr als ein Kriterium nicht, so wurde es ausgeschlossen. Kriterien, die zum Auschluss führten, sind in der Tabelle fett geschrieben. Werkzeuge, die in die nähere Auswahl kamen, stehen in einer grau hinterlegten Zeile.\par
+\begin{table}[htbp]
+	\begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|c|c|}\hline 
+      \textbf{Werkzeug} &
+      \textbf{\rotatebox{90}{Parser in Java}} &
+      \textbf{\rotatebox{90}{Parsing von Java bis Version }} &
+      \textbf{\rotatebox{90}{Parsingtests bestanden}} &
+      \textbf{\rotatebox{90}{Quelltexte frei verfügbar}} &
+      \textbf{\rotatebox{90}{Dokumentation}} &
+      \textbf{\rotatebox{90}{aktives Projekt}} &
+      \textbf{\rotatebox{90}{Position und Länge eines Token abrufbar }}\\
+      \hline \hline
+      \rowcolor{grey} ANTLR & ja & 5 & ja & ja & sehr hoch & ja & ja \\ \hline
+      JReFactory & ja & 5 & - & ja & \textbf{keine} & \textbf{nein} & ja \\ \hline
+      \rowcolor{grey} JavaCC & ja & 5 & nein & ja & hoch & ja & ja \\ \hline
+      CUP & ja & 5 & \textbf{nein} & ja & niedrig & ja & \textbf{nein} \\ \hline
+      \rowcolor{grey} Coco/R & ja & 1.4 & - & ja & mittel & ja & ja \\ \hline
+      Cocktail & ja & 5 & \textbf{nein} & \textbf{nein} & niedrig & ja & ja \\ \hline
+      Jabstract & ja & \textbf{1.1} & - & ja & niedrig & \textbf{nein} & ja \\ \hline
+      \rowcolor{grey} FUJABA & ja & 1.4 & - & ja & sehr hoch & ja & ja \\ \hline
+      \rowcolor{grey} GCJ & nein & 5 & ja & ja & hoch & ja & ? \\ \hline
+      Java Espresso & ja & \textbf{1.0} & - & ja & mittel & \textbf{nein} & ? \\ \hline
+      \rowcolor{grey} JDT & ja & 5 & ja & ja & hoch & ja & ? \\ \hline
+    \end{tabular} 
+    \caption{Übersicht der untersuchten Werkzeuge}
+    \label{werkzeuge}
+	\end{center}
+\end{table}
+Keines der betrachteten Werkzeuge kann alle geforderten Kriterien vollständig erfüllen. In die nähere Auswahl kamen sechs Werkzeuge. GCJ wurde ausgeschlossen, da genügend javabasierte Lösungen zur Auswahl standen. Die Grammatik von JavaCC hätte korrigiert und jene von FUJABA und Coco/R für Java 5 aktualisiert werden müssen. Bei den Java Development Tools schien eine Trennung von Eclipse nur sehr schwer möglich - der Javaextraktor hätte als Eclipse-Plugin realisiert werden müssen.\par
+Aufgrund des geschätzten Anpassungsaufwands im Vergleich zu anderen Werkzeugen fiel die Wahl schließlich auf ANTLR. Bei ANTLR war es lediglich notwendig, die Funktion zur Positionsabfrage zu modifizieren. Hinzu kam, dass von allen untersuchten Werkzeugen das ANTLR-Projekt die mit Abstand aktivste Community vorweisen konnte. Das nächste Kapitel widmet sich der näheren Beschreibung von ANTLR.
+
+\clearpage
+\section{ANTLR}
+Dieses Kapitel behandelt das Werkzeug "`ANother Tool for Language Recognition"', kurz ANTLR. Zunächst erfolgt ein Überblick über das Projekt, gefolgt von einem Abschnitt über die Funktionsweise. Zuletzt werden die Anpassungen, die zur Erfüllung aller gestellten Anforderungen und Integration in den Javaextraktor nötig waren, beschrieben.
+
+\subsection{Überblick}
+\paragraph{Historie.}
+Die Entwicklung von ANTLR begann 1988, ursprünglich als Projekt an der Purdue Universität (West Lafayette, Indiana, USA), damals noch unter den Namen "`YUCC"' bzw. "`PCCTS"'. Das Projekt wurde 1989 Inhalt der Masterarbeit von Terence Parr, welcher seitdem die Schlüsselfigur hinter ANTLR ist.\par
+Die erste öffentlich verfügbare Version erschien 1990 und ist von jeher quelloffen. Das Projekt wurde kontinuierlich weiterentwickelt und Terence Parr beschäftigt sich heute noch, als Professor an der Universität von San Francisco, mit ANTLR. Aktuell ist Version 3. Der Javaextraktor basiert jedoch auf Version 2.7.6, da Version 3 erst während der Implementierung des Javaextraktors fertig gestellt wurde und noch keine zu ANTLR 3 kompatible Grammatik für Java\footnote{Die Syntax der Grammatiken für ANTLR Version 2 und Version 3 unterscheidet sich.} existierte.
+
+\paragraph{Charakterisierung.}
+ANTLR ist ein Framework zur Erstellung von Compilern bzw. deren einzelner Bestandteile, mit besonderem Schwerpunkt auf der Unterstützung von abstrakten Syntaxbäumen (Erzeugung, Traversierung, Konvertierung). ANTLR liegt selbst in verschiedenen Sprachen vor und kann LL(*)-Parser in Java, C++ und C\# erzeugen. Dabei unterstützt ANTLR die automatische Erzeugung von abstrakten Syntaxbäumen. Ein Treewalker zu deren Traversierung kann ebenfalls aus einer separaten (zur eigentlichen Grammatik kompatiblen) Baumgrammatik generiert werden.\par
+Hinzu kommt eine graphische Benutzeroberfläche (ANTLRWorks) zum Entwickeln, Debuggen und Testen von Grammatiken. Zusätzlich existiert eine graphische Oberfläche für die Benutzung der Kommandozeilenwerkzeuge unter Eclipse, ANTLR Studio genannt. Allerdings stammt es von einem Dritten und ist kostenpflichtig.\par
+Für Java 5 und ANTLR v2.7.6 sind drei verschiedene Grammatiken verfügbar. Zusätzlich existieren Grammatiken für eine Vielzahl weiterer Sprachen.
+
+\paragraph{Literatur und Support.}
+Auf der ANTLR Homepage \cite{antlr_homepage} steht eine umfangreiche Dokumentation, bestehend aus einer FAQ, vielen Tutorials, einem Benutzerhandbuch, einem Wiki, einer API-Beschreibung des Frameworks und zusätzlichen Veröffentlichungen von, teils wissenschaftlichen, Arbeiten zum Thema Compilerbau, zur Verfügung. Fragen, die darüber hinausgehen, können in Foren sowie in einer Mailingliste gestellt werden.\par
+Rund um dieses Projekt existiert eine große und aktive Community. Dieser entstammen u. a. die Grammatiken für Java 5.
+
+\subsection{Funktionsweise von ANTLR}
+Der Parsergenerator von ANTLR erzeugt aus einer Grammatik einen Parser. Im Gegensatz zu den meisten anderen Generatoren kann ANTLR jedoch ohne Umwege auch (zum Parser passende) Lexer und Treeparser erzeugen. Es ist dazu nicht nötig, weitere Zusatzprogramme zu Hilfe zu nehmen, wie es beispielsweise bei CUP \cite{cupnew} der Fall ist\footnote{CUP kann keine "`eigenen"' Lexer erzeugen. Es muss zunächst ein passender Lexer geschrieben oder mit einem Scannergenerator wie JLex \cite{jlex} erzeugt werden.}.\par
+Grundsätzlich gilt, dass für Lexer, Parser und Treeparser jeweils eine Grammatik geschrieben werden muss. Dabei kann der Benutzer frei wählen, welche er realisieren will. Braucht er beispielweise nur einen Lexer, so muss er nur die Lexergrammatik schreiben. Da ANTLR dem Paradigma der Objektorientierung folgt, ist es auch möglich, die Grammatiken weiter zu vererben.\par
+Bei allen im Framework enthaltenen Werkzeugen handelt es sich um Kommandozeilenprogramme. Zur Erzeugung der gewünschten Programme müssen die Grammatiken per Kommandozeilenparameter an ANTLR übergeben werden. Die so erzeugten Lexer und Parser sind im Quelltext vorliegende Komponenten und können zur Verwendung in separaten Programmen eingebunden werden. Dabei werden zur Laufzeit weiterhin die Bibliotheken von ANTLR benötigt.\par
+Umfangreicher und detaillierter geht Anhang \ref{antlr_komplett} auf die Funktionsweise von ANTLR ein.
+
+\subsubsection{Javagrammatik für ANTLR}
+Für den Javaextraktor wurde die Javalösung von Michael Studman \cite{grammatik_studman} ausgewählt, da sie Grammatiken für den Lexer, Parser und Treewalker umfasst und die daraus erzeugten Programme in den Parsingtests am besten abschnitten. Zusätzlich kann der erzeugte Parser die Quelltexte des Java Developer Kit Version 1.5\_06, Eclipse und ANTLR Version 2.7.6 fehlerfrei parsen. Mit hoher Sicherheit kann behauptet werden, dass gültiger Javacode\footnote{Kompilierbar durch \texttt{javac}.} zuverlässig erkannt wird.\par
+Grundsätzlich können alle Quelltexte geparst werden, die in ASCII, ANSI (mit verschiedenen Codepages) und Unicode (UTF-7, UTF-8, Unicode, Big Endian) codierten Dateien vorliegen. Nur Quelltexte, die Bezeichner mit Sonderzeichen oder Unicode-Escapesequenzen\footnote{Unicode-Escapesequenzen in Java besitzen das Format \texttt{$\backslash$uxxxx}, wobei \texttt{xxxx} der Hexadezimalcode des Zeichens ist, z.B. $\backslash$u00e4 für "`ä"'.} enthalten, können nicht erfolgreich geparst werden\footnote{Für detaillierte Aufstellung der Ergebnisse der Parsingtests siehe Anhang \ref{onlinerecherche_komplett} und \ref{antlr_tests}.}.\par
+Zum Parsen der Javaquelltexte sollte der erzeugte Parser verwendet werden. Die Erzeugung der TGraphrepräsentation sollte dann durch den Treewalker während der Traversierung der abstrakten Syntaxbäume geschehen.
+
+\subsection{Nötige Anpassungen}
+\label{antlr_modifications}
+Vor der Implementierung des eigentlichen Javaextraktors waren noch Anpassungen notwendig, um die erwünschten Funktionen für Lexer und Parser vollständig zu realisieren. Die folgenden Abschnitte beschreiben diese Anpassungen.
+
+\subsubsection{Anpassung Position des Tokens als Offset}
+\label{antlr_positionmodifications}
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=\textwidth]{figures/offset_in_token.png}
+	  \caption{Klassendiagramm, Auszug aus Package \texttt{javaextractor.adapters}}
+	  \label{offset_in_token}
+  \end{center}
+\end{figure}
+Die Position eines Tokens im Quelltext lässt sich mit der von ANTLR bereitgestellten Funktionalität nicht als Offset abrufen. Lediglich Zeile, Spalte und Länge (über die Länge des Token-Strings) des Tokens sind einsehbar. Um diese Funktionalität nachzurüsten, muss erst die interne Funktionsweise von ANTLR verstanden werden.\par
+Tokens werden in ANTLR durch die Klasse \texttt{ANTLR.CommonToken} implementiert. Diese werden von einem Lexer erzeugt, der wiederum aus einer Grammatik erzeugt wird. In der Regel erben die Lexer von der Klasse \texttt{ANTLR.CharScanner}. Diese steuert die Klasse\\ \texttt{ANTLR.LexerSharedInputState}, welche die aktuelle Position im Eingabestrom kennt und diese in die Tokens schreibt.\par
+Um den Offset nachzurüsten, wurden Adapterklassen implementiert, die von den o. a. Klassen aus ANTLR erben. Die neue Tokenklasse \texttt{CommonTokenAdapter} hat nun zusätzliche Methoden zum Speichern und Abrufen der Position als Offset. Der neue \\\texttt{LexerSharedInputStateAdapter} kann mit den neuen Tokens umgehen. Der neue Lexer \texttt{CharScannerAdapter} kann den neuen \texttt{LexerSharedInputStateAdapter} nutzen und auch mit den neuen Tokens umgehen.  Da dieser aus der Grammatik in \texttt{java.g}\footnote{im Package \texttt{javaextractor}} erzeugt wird, musste diese angepasst werden. Durch Angabe von
+\begin{lstlisting}[style=java]
+class JavaLexer extends Lexer( "javaextractor.adapters.CharScannerAdapter" );
+\end{lstlisting}
+zu Beginn der Lexergrammatik dient \texttt{CharScannerAdapter} nun als Basistyp für den erzeugten Lexer. Damit der Offset richtig berechnet wird, erbt der \texttt{JavaLexerAdapter} vom erzeugten Lexer und überschreibt die Methoden \texttt{newline()} und \texttt{tab()}\footnote{Erhöht den Offset nur um 1, wenn ein Tabulator im Eigabestrom erkannt wird.}. \par
+Um die neue Funktionalität zu nutzen, muss ein \texttt{LexerSharedInputStateAdapter} instanziiert werden und bei der Instanziierung des \texttt{JavaLexerAdapter} im Konstruktor übergeben werden. Der Lexer muss wiederum bei der Instanziierung des Parsers im Konstruktor übergeben und angewiesen werden, die neuen Tokens zu erzeugen. Dies kann auf folgende Weise geschehen:
+\begin{lstlisting}[style=java, label=positions_in_token]
+LexerSharedInputStateAdapter inputState = new LexerSharedInputStateAdapter( fileName );
+JavaLexerAdapter javaLexer = new JavaLexerAdapter( inputState );
+javaLexer.setTokenObjectClass( "javaextractor.adapters.CommonTokenAdapter" );
+JavaRecognizer javaParser = new JavaRecognizer( javaLexer );
+\end{lstlisting}
+Abbildung \ref{offset_in_token} veranschaulicht die Anpassung in einem Klassendiagramm.
+
+\subsubsection{Anpassung Position des Tokens im AST verfügbar}
+Hinzu kommt, dass diese Informationen nicht mehr im erzeugten AST abrufbar sind. Um die Position eines Tokens selbst im AST verfügbar zu machen, waren zusätzlich Maßnahmen nötig. 
+Abstrakte Syntaxbäume werden in ANTLR durch die Klasse \texttt{ANTLR.CommonAST} implementiert. Diese werden durch einen Parser erzeugt. Die Attribute des AST werden durch \texttt{initialize}-Methoden gefüllt. Wenn der Parser ein AST-Element erzeugt, ruft er zusätzlich eine dieser Methoden auf.\par
+Um die Position eines Tokens selbst im AST verfügbar zu machen, wurde wieder eine Adapterklasse implementiert. Die neue Klasse \texttt{CommonASTAdapter} kennt zusätzlich "`ihr"' Token und überschreibt alle \texttt{initialize}-Methoden, damit sie die Referenz auf das Token setzen kann.\par
+Um die neue Funktionalität zu nutzen, muss der Parser angewiesen werden, die neuen AST-Elemente zu erzeugen. Zusätzlich zu o. a. Anweisungen aus Listing \ref{positions_in_token} reicht dazu die Angabe von:
+\begin{lstlisting}[style=java]
+javaParser.setASTNodeClass( "javaextractor.adapters.CommonASTAdapter" );
+\end{lstlisting}
+Abbildung \ref{commonastadapter} veranschaulicht die Anpassung in einem Klassendiagramm.
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=\textwidth, page=1]{figures/commonastadapter.png}
+	  \caption{Klassendiagramm, Auszug aus Package \texttt{javaextractor.adapters}}
+	  \label{commonastadapter}
+  \end{center}
+\end{figure}
+
+ 
+\subsubsection{Anpassungen zum Aufnehmen der Kommentare in den TGraph}
+Mit der ursprünglichen Grammatik wurden während des Parsens alle im Quelltext enthaltenen Kommentare korrekt erkannt, jedoch direkt verworfen\footnote{Da sie für die Funktion des Programms unerheblich sind.}; d. h. Kommentare werden somit nicht im abstrakten Syntaxbaum abgebildet. Da aber auch Kommentare mit in den Graph aufgenommen werden sollten, mussten entsprechende Anpassungen vorgenommen werden. Außerdem sollte zwischen einzeiligen, mehrzeiligen und Javadoc-Kommentaren unterschieden und eine entsprechende Repräsentation im Graphen erzeugt werden. Da nicht immer festgestellt werden kann, welchem Element ein Kommentar im Quelltext zugeordnet ist, sollten alle Kommentare mit dem obersten Repräsentanten einer Quelltextdatei im TGraphen (\texttt{TranslationUnit}) verbunden werden.\par
+Da der Graph beim Durchlaufen des abstrakten Syntaxbaums erzeugt werden soll, wäre eine Abbildung der Kommentare in diesen nötig gewesen. Dazu hätten alle drei Grammatiken in größerem Maße angepasst werden müssen, da Kommentare fast an jeder beliebigen Stelle\footnote{Kommentare sind in Java überall dort möglich, wo ein Leerzeichen stehen darf.} in Javaquelltexten stehen dürfen.
+Deshalb wurde nur die Lexergrammatik modifiziert. Der Lexer erzeugt keine Tokens, die Kommentare repräsentieren. Jedoch werden nun alle Kommentare einer Datei im Lexer gesammelt und stehen nach dem Parsen der Datei als Liste zur Verfügung. Die Kommentare können dann per \texttt{getComments()} abgefragt und in den Graph eingebaut\footnote{Siehe dazu Kapitel \ref{architecture_package_comments}.} werden. Die Grammatiken von Parser und Treewalker blieben unverändert, da diese von dem so geschaffenen Mechanismus nicht tangiert werden.
+
+\subsubsection{Fehlende Quelltextelemente}
+Neben Kommentaren wurden in der ursprünglichen Grammatik auch weitere Elemente aus dem Quelltext nicht in den AST aufgenommen. Diese Elemente werden im Extraktor benötigt, um die Länge von allen Javasprachkonstrukten berechnen zu können\footnote{Siehe dazu Kapitel \ref{extractor_positioninformations}.} (z. B. für den Rumpf einer Klasse). Dabei handelte es sich um Semikola, Klammern und bislang fehlende Schlüsselworte.\par
+Entsprechend wurden die Parser- und Lexergrammatiken erweitert, so dass diese Elemente nun in den AST aufgenommen und vom Treewalker korrekt behandelt werden können.
+
+\newpage
+\section{Metamodell für Java 5}
+Der Javaextraktor erzeugt einen TGraphen. Dieser wird durch ein Metamodell beschrieben. Es wird deshalb eines für den Javaextraktor benötigt. Dieses Kapitel definiert zunächst die Begriffe  Metamodell und Schema und beschreibt anschließend die Anforderungen an das spezifische Metamodell für Java 5. %Die darauf folgenden Abschnitte widmen sich der Entwicklung.
+
+\subsection{Begriffsdefinitionen}
+\paragraph{Metamodell.}
+Ein Modell beschreibt die Menge aller seiner möglichen Instanzen. Ein Metamodell beschreibt, wie ein Modell aussehen kann und somit die Menge aller seiner möglichen Instanzen (welche Modelle sind).\par
+Im Sinne der Studienarbeit ist jeder Graph, der aus einem Quelltext extrahiert wird, ein Modell dieses Quelltextes. Ein Graph besteht aus Knoten und Kanten. Wie diese typisiert, attributiert und (im Falle von Kanten) gerichtet sind, legt das Metamodell fest\footnote{Zusätzlich sind die Elemente geordnet. Dies kann jedoch nicht im Metamodell ausgedrückt werden.}. Das Metamodell wird durch ein UML-Klassendiagramms definiert. Dabei repräsentiert jede Assoziation einen Kantentyp und jede Klasse einen Knotentyp. 
+
+\paragraph{Schema.}
+Das Schema ist die textuelle Beschreibung des Metamodells (in UML). Aus dem Schema können automatisiert Klassen erzeugt werden, welche Knoten- und Kantentypen realisieren. Dabei bekommenen Klassen, die eine Kante implementieren, den Assoziationsnamen zum Klassennamen. Das Schema wird in ein einer \texttt{.TG}-Datei, dem JGraLab-Dateiformat \cite{jgralab}, festgelegt.
+
+\subsection{Anforderungen an das Metamodell}
+Der Guproansatz soll den Entwickler bei der Softwarewartung unterstützen. Das heisst, dass dieser bei der Arbeit mit den Instanzen des Modells (sprich den TGraphen) auch wie ein Softwareentwickler denken können soll. Im Allgemeinen soll für die Softwarewartung sein Verständnis für das System gefördert werden. Dadurch ergeben sich folgende Anforderungen an das Metamodell:
+\begin{enumerate}
+  \item{Das Metamodell soll eine feinkörnige Graphenrepräsentation des Quelltextes ermöglichen. Dabei soll sich das Metamodell nicht zu stark an die Syntax von Java anlehnen, aber auch nur so weit davon abstrahieren, dass es einem Entwickler im Sinne des Guproansatzes förderlich ist.}
+  \item{Das Metamodell soll eine statische Repräsentation des Quelltextes ermöglichen. Das heisst, dass die TGraphen kein Laufzeitverhalten abbilden sollen.}
+  \item{Das Metamodell soll alle Javasprachversionen bis einschließlich 5 abdecken und die Speicherung der Positionen der identifizierten Elemente im Quelltext ermöglichen.\footnote{Diese müssen Guprokonform im TGraph mitgespeichert werden, zwecks Nutzung durch den graphenbasierten Sourcecodebrowser}.}
+%  \item{Ferner soll das Metamodell fehlerrobust sein.}
+\end{enumerate}
+
+\subsection{Metamodell von Hinterwäller}
+Ein Metamodell für Java 1.4 und die dazu passende Grammatik für Java existierten bereits am Institut für Softwaretechnik. Diese waren im Rahmen der Diplomarbeit \cite{DipBoHi} von Bodo Hinterwäller entstanden. Es bestand die Hoffnung, dass dieses Metamodell an die Anforderungen dieser Studienarbeit angepasst werden könnte. Das Metamodell basierte auf den Java Development Tools von Eclipse für Java in der Version 1.4. Es musste daher für Java 5 aktualisiert werden. Diese Anpassung wurde vorgenommen, doch im Zuge dieser Überarbeitung wurde offensichtlich, dass eine Verwendung dieses Modells nicht in Frage kommt.\par
+Zuvor war nach einer umfangreichen Onlinerecherche zu möglichen Javaparsern die Wahl auf den Parsergenerator ANTLR in Version 2.7.6 und einer passenden Grammatik für Java 5 gefallen. Der erzeugte Parser sollte das Parsen der Javaklassen für den Faktenextraktor übernehmen. Aufgrund der Basierung auf den Java Development Tools von Eclipse unterschied sich die Grammatik von Hinterwäller zu sehr von jener für ANTLR. Eine Verwendung des Metamodells von Hinterwäller hätte somit die Entwicklung einer neuen Grammatik für ANTLR, basierend auf dem Metamodell von Hinterwäller, bedingt.\par
+Da in dieser Studienarbeit der Fokus auf der Erstellung des Graphen und nicht so sehr auf dem Parsen der Klassen lag, wurde die Entscheidung gefällt, ein eigenes Metamodell zu entwickeln, welches aus der Javagrammatik für ANTLR hergeleitet werden sollte. Als Vorlage für die Herleitung und das zu erreichende Abstraktionsniveau waren die Ergebnisse von Hinterwäller dennoch sehr hilfreich.\par
+Die Erstellung eines eigenen Modells trug schließlich auch sehr zum Verständnis für die Vorgehensweise bei der Umwandlung vom Quelltext zum Graphen bei.\par
+Im nächsten Abschnitt wird das selbstentwickelte Metamodell beschrieben.
+
+\subsection{Eigenes Metamodell für Java 5}
+Das Metamodell wurde aus der Javagrammatik zu ANTLR hergeleitet. Damit sich das Metamodell nicht zu stark an die Syntax von Java anlehnt, sind inhärente Präzedenzen der Syntax nicht im Metamodell vertreten. Abstrahiert wurde über alle Klammerausdrücke. Diese sind nur implizit durch Strukturen im Metamodell ausgedrückt.\par
+Alle Schlüsselworte aus Java haben ein Pendant als Knoten- oder Kantentyp im Metamodell. Klassen- und Attributsnamen im Modell sind in Anlehnung an Javatermini gewählt. Jeder Knotentyp bezeichnet möglichst genau das Sprachkonstrukt, welches er repräsentiert. Z. B. repräsentiert der Knotentyp \texttt{If} die If-Anweisung.\par
+Die syntaktische Reihenfolge kann im Metamodell nicht explizit festgelegt werden, deshalb ist die Reihenfolge im Klassendiagramm graphisch abgebildet. So kann ein Entwickler die vom Programmieren bekannten Strukturen einfach wiedererkennen.\par
+Für die richtige Reihenfolge der Elemente im Graphen sorgt der Faktenextraktor. Er stellt sicher, dass die syntaktische Reihenfolge bei der Erstellung des Graphen miteinfliesst, da die einzelnen Elemente durchnummeriert werden. Ebenso werden mehrere gleichartige Graphelemente (z.B. mehrere Parameter einer Methodendeklaration) in ihrer Ordnung der syntaktischen Reihenfolge entsprechend.\par
+Das Metamodell besteht aus 89 Knoten- und 160 Kantentypen. Diese hier alle zu beschreiben, würde den Rahmen sprengen. Deshalb wird in den nächsten Abschnitt nur ein Überblick gewährt. Die Entwicklung des Metamodells ist in Anhang \ref{entwicklung_metamodell} detailliert beschrieben.\par
+
+\subsubsection{Grundlegende Knoten- und Kantentypen im Metamodell}
+Damit ein TGraph mit durch die Guprowerkzeugen weiterverarbeitet werden kann, muss er bestimmte Knoten und Kanten enthalten. Das Metamodell legt die Typen dieser Knoten und Kanten fest, welche im folgenden beschrieben werden.\par
+\begin{itemize}
+  \item{\texttt{Program} ist der "`oberste"' Knotentyp des Metamodells. In einem TGraph existiert jeweils nur ein Knoten dieses Typs; er repräsentiert das geparste Softwareprojekt.}
+  \item{\texttt{TranslationUnit}: eine geparste Datei ist als Knoten diesen Typs im TGraph vertreten. Ist durch eine Kante vom Typ \texttt{IsTranslationUnitOf} mit \texttt{Program} verbunden.}
+  \item{\texttt{SourceFile}: repräsentiert den Ort einer geparsten Datei und ist durch eine Kante vom Typ 		
+  			\texttt{IsPrimarySourceFor} mit \texttt{TranslationUnit} verbunden.}
+  \item{\texttt{SourceUsage}: repräsentiert ebenfalls eine geparste Datei und ist durch eine Kante vom Typ \texttt{IsSourceUsageOf} mit \texttt{TranslationUnit} verbunden.}
+  \item{\texttt{ExternalDeclaration}: jeder Knotentyp, der eine Package-, Import- oder Typdefinition repräsentiert, ist von diesem Typ abgeleitet und durch eine Kante vom Typ \texttt{IsExternalDeclarationIn} mit \texttt{SourceUsage} verbunden.}
+\end{itemize}
+Der nächste Abschnitt geht auf Knotentypen ein, die Javasprachkonstrukte repräsentieren.
+
+\subsubsection{Knotentypen}
+Das Metamodell enthält Knotentypen für alle Sprachkonstrukte bis Java Version 5. An dieser Stelle soll nur auf die Hauptgruppen und nicht auf jeden einzelnen der Knotentypen eingegangen werden. Alle im Metamodell definierten Knotentypen basieren auf einer der folgenden Klassen als Basistyp\footnote{Diese sind als abstrakt deklariert und basieren ihrerseits auf dem allgemeinen JGraLab-Knotentyp \texttt{Vertex}.}:
+\begin{itemize}
+  \item{\texttt{Type}: Knotentypen, die von diesem abgeleitet sind, repräsentieren Klassen-, Interface-, Enum- und Annotationsdefinitionen sowie Typparameterdeklarationen.}
+  \item{\texttt{TypeSpecification}: Knotentypen, die von diesem abgeleitet sind, repräsentieren Typspezifikationen durch Klassen, primitive Typen, Arrays und Typargumente.}
+  \item{\texttt{Member}: Knotentypen, die von diesem abgeleitet sind, repräsentieren Feld-, Methoden- und Konstruktordeklarationen.}
+  \item{\texttt{Statement}: Knotentypen, die von diesem abgeleitet sind, repräsentieren Anweisungen, wie \texttt{if}, \texttt{while}, \texttt{try}, \texttt{catch} usw.}
+  \item{\texttt{Expression}: Knotentypen, die von diesem abgeleitet sind, repräsentieren Ausdrücke, wie \texttt{a = b + c}}.
+  \item{\texttt{Annotation}: dieser Knotentyp repräsentiert Annotationen an Package-, Klassen- und Methodendefinitionen.}
+  \item{\texttt{Comment}: Davon abgeleitete Knotentype repräsentieren einzeilige und mehrzeilige Kommentare sowie Javadoc Kommentare.}
+  \item{\texttt{QualifiedName}: repräsentiert qualifizierte Namen im Quelltext, wie \\ \texttt{java.util.Vector}.}
+\end{itemize}
+Die Knotentypen sind in Anhang \ref{metamodell_komplett} zu finden.
+
+\subsubsection{Kantentypen}
+Kantentypen werden im Metamodell durch einfache benannte Assoziationen repräsentiert. Die Leserichtung der Kantennamen ist dabei immer von unten nach oben. Die Kantennamen sind so gewählt, dass durch sie klar ist, welcher Knotentyp an ihrem Ende hängt. Beispielsweise wird durch eine von einem Modifizierer ausgehende Kante \texttt{IsModifierOfClass} ersichtlich, dass diese Kante auf eine Klassendefinition zeigt.\par
+Alle Kantentypen, welche einen direkten Bezug zur Syntax von Quelltextes aufweisen, basieren auf der Basistyp \texttt{AttributedEdge}. Diese Kanten besitzen Attribute zur Speicherung der Positioninformationen, welche sich auf die Entsprechung im Quelltext desjenigen Knotens beziehen, von dem die Kante ausgeht.\par
+Alle Kantentypen, welche einen semantischen Bezug zwischen zwei Knoten abbilden, besitzen diese Attribute nicht und basieren auf dem Kantentyp \texttt{Edge} aus JGraLab. Die Kantentypen sind ebenfalls in Anhang \ref{metamodell_komplett} zu finden.
+
+\newpage
+\section{Entwurf}
+In diesem Kapitel wird die Architektur des Javaextraktors beschrieben. Aufgrund der gebotenen Trennung der Belange ist das Programm in verschiedene Klassen und Packages unterteilt, welche im Folgenden beschrieben sind.
+
+\subsection{Package javaextractor}
+Dieses Package enthält die Hauptkomponenten des Javaextraktors. Dies sind folgende Klassen:
+
+\paragraph{JavaExtractor.}
+Diese Klasse enthält die \texttt{main()}-Methode, die zum Programmaufruf benötigt wird. Sie beinhaltet die Funktionalität zur Auswertung der übergebenen Kommandozeilenargumente und zur Erstellung der Liste der zu verarbeitenden Dateien. Desweiteren instanziiert diese Klasse den verwendeten Logger und den eigentlichen Graphbuilder.
+
+\paragraph{GraphBuilder.}
+Der GraphBuilder sorgt für den Ablauf des eigentlichen Extraktionsprozesses. Die Klasse instanziiert und initialisiert einen leeren TGraphen, eine leere Symboltabelle, den Lexer, Parser und Resolverklassen (zum Auflösen der Quelltextreferenzen). 
+Dann arbeitet die Klasse die Liste der zu parsenden Dateien ab. Zuletzt sorgt sie für die Speicherung des TGraphen in eine Datei.
+
+\paragraph{SymbolTable.}
+Die Symboltabelle dient zur Zwischenspeicherung von Referenzen und Strukturinformationen des erzeugten TGraph. Dies ist für ein Auflösen durch die Resolverklassen nötig. Ebenso beinhaltet diese Klasse die Funktionalität zum Speichern und Abrufen der Graphelemente, welche im Graph einzigartig sein sollen. Für eine nähere Beschreibung dieser Funktionalität siehe Kapitel \ref{extractor_resolving}.
+
+\paragraph{Utilities.}
+Diese Klasse beinhaltet statische Hilfsmethoden, welche in den anderen Klassen Verwendung finden. Diese dienen dem Füllen der Attibute von Kanten mit konkreten Werten sowie der Fehlerbehandlung.
+
+\paragraph{ExtractionMode.}
+Dieser Enum-Typ repräsentiert die Extraktionsmodi \texttt{LAZY}, \texttt{EAGER} und \texttt{COMPLETE}. Für eine nähere Betrachtung siehe Kapitel \ref{extraction_modes}.
+
+\paragraph{JavaLexer.}
+Implementiert den Lexer und wird automatisiert von ANTLR aus der Grammatik in \texttt{java.g} generiert.
+
+\paragraph{JavaRecognizer.}
+Das Javaparsing ist in dieser Klasse realisiert, welche von ANTLR aus der Grammatik in \texttt{java.g} generiert wird. Der Parser erzeugt aus jeder Datei die gültigen Java-Quelltext enthält einen abstrakten Syntaxbaum und nutzt als Lexer\\ \texttt{javaextractor.adapters.JavaLexerAdapter}.
+
+\paragraph{JavaTokenTypes.}
+Diese Schnittstelle legt alle durch den Lexer erzeugten Tokenarten fest und wird auch mittels ANTLR aus der Grammatik generiert.
+
+\paragraph{JavaTreeParser.}
+Diese Klassen wird von ANTLR aus der Treewalker-Grammatik in\\ \texttt{java.tree.g} erzeugt. Dieser Treewalker dient der Traversierung von abstrakten Syntaxbäumen, die vom Parser erzeugt werden. Er beinhaltet - nachdem in der zugrundeliegenden Grammatik alle dazu nötigen semantischen Aktionen eingefügt wurden - die Funktionalität zum Umsetzen der AST-Struktur in den TGraphen sowie dem Füllen der Symboltabelle mit den nötigen Informationen zum späteren Auflösen der Quelltextreferenzen.
+
+\paragraph{JavaTreeParserTokenTypes.}
+Diese Schnittstelle legt alle Arten der im AST verwendeten Elemente fest und wird ebenfalls durch ANTLR aus der Treewalker-Grammatik erzeugt.
+
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=\textwidth]{figures/javaextractor.png}
+	  \caption{Klassendiagramm des Package \texttt{javaextractor}}
+	  \label{classdiagramm_javaextractor}
+  \end{center}
+\end{figure}
+
+
+\subsection{Package javaextractor.adapters}
+\label{architecture_package_adapters}
+Dieses Package enthält all jene Klassen, welche die Anpassungen kapseln, die für die Funktionalität der Positionsabfrage von Sprachelementen aus dem Quelltext notwendig sind. Der Implementierung der Klassen liegt das Adapter-Pattern (siehe \cite{designpatterns} auf den Seiten 139ff) zugrunde.
+
+\paragraph{CommonTokenAdapter.}
+Diese Klasse implementiert ein Token, welches seinen Offset kennt und bietet Methoden, die zum Speichern und Abrufen der Positionsinformationen des Tokens dienen.
+
+\paragraph{LexerSharedInputStateAdapter.}
+Diese Klasse dient dem Lexer zur Verwaltung des Eingabestroms der aktuell geparsten Datei. Es kennt die aktuelle Position im Eingabestrom in Form eines Offsets und kann alle Positionsinformationen in ein Token vom Typ\\ \texttt{CommonTokenAdapter} schreiben.
+
+\paragraph{CharScannerAdapter.}
+Verwendet den \texttt{LexerSharedInputStateAdapter}, um die Token mit Positionsinformationen zu versorgen.
+
+\paragraph{JavaLexerAdapter.}
+Erzeugt Token vom Typ \texttt{CommonTokenAdapter}, welche die benötigten Positionsinformationen tragen.
+
+\paragraph{CommonASTAdapter.}
+Im Gegensatz zu ihrer Oberklasse hält diese Klasse eine Referenz auf ihr zugrundeliegendes Token. Das Token ist ein \texttt{CommonTokenAdapter}, welches seinen Offset kennt. Die Positionsinformationen können mit Methoden dieser Klasse abgerufen werden.
+
+\subsection{Package javaextractor.comments}
+\label{architecture_package_comments}
+Die Klassen dieses Packages repräsentieren Kommentare, die vom Lexer im Quelltext gefunden wurden. Gefundene Kommetare können somit in den TGraph, an Parser und Treewalker vorbei, aufgenommen werden. Der Suffix \texttt{Class} im Namen einer Klasse dient zur Unterscheidung vom Knotentyp im TGraph.
+
+\paragraph{CommentClass.}
+Diese abstrakte Klasse definiert die gemeinsame Funktionalität aller Klassen, die Kommentare repräsentieren. Alle Klassen dieses Packages erben von ihr und implementieren jeweils die Funktionalität zum Erzeugen ihres Pendants im TGraph..
+
+\paragraph{SingleLineCommentClass.}
+Repräsentiert einen einzeiligen Kommentar im Quelltext.
+
+\paragraph{MultiLineCommentClass.}
+Repräsentiert einen mehrzeiligen Kommentar im Quelltext, der kein Javadoc-Kommentar ist.
+
+\paragraph{JavaDocCommentClass.}
+Repräsentiert einen Javadoc-Kommentar im Quelltext.
+
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=\textwidth]{figures/classdiagramm_javaextractor_comments.png}
+	  \caption{Klassendiagramm des Package \texttt{javaextractor.comments}}
+	  \label{classdiagramm_javaextractor.comments}
+  \end{center}
+\end{figure}
+
+\subsection{Package javaextractor.factories}
+Dieses Package enthält Klassen, die Funktionalität zum Erstellen von Teilstrukturen im TGraph aus Elementen des ASTs implementieren. Diese Klassen werden in \texttt{JavaTreeParser} verwendet, so dass der Treewalker selbst kompakt bleibt und dort mehrfach benötigte Funktionen nur einmal implementiert werden müssen. Die Implementierung der Klassen ist an die Patterns Abstract Factory (siehe \cite{designpatterns} auf den Seiten 87ff) und Factory Method (siehe \cite{designpatterns} auf den Seiten 107ff) angelehnt.
+
+\paragraph{SubgraphFactory.}
+Diese abstrakte Klasse stellt die in allen weiteren Factory-Klassen benötigte Funktionalität - zum Halten einer Referenz auf den TGraph und die Symboltabelle - bereit. Alle Klassen dieses Packages erben von ihr.
+
+\paragraph{Konkrete Factories.}
+Folgende Liste führt auf für welche Quellcodeelemente die jeweilige Klasse die entsprechenden Teilstrukturen im TGraph generiert. Die Klassen sorgen auch dafür, dass semantisch identische Knoten nur einmal im TGraph vorkommen, sofern dies zu  Zeitpunkt des Aufbau des TGraphen eindeutig entscheidbar ist.
+\begin{itemize}
+	\item{\texttt{AnnotationFactory}: Annotationen und Annotationsfelder}
+	\item{\texttt{ConstantFactory}: \texttt{null}-, \texttt{boolean}-, \texttt{float}-, \texttt{double}-, \texttt{int}-, \texttt{long}-, \texttt{char}- und \texttt{String}-Literale}
+	\item{\texttt{ExpressionFactory}: Konstruktor- und Methodenaufrufe, Typumwandlungen, Präfix-, Infix- und Postfix-Operator-Ausdrücke sowie Array- und Objekt-Instanziierung}
+	\item{\texttt{FieldFactory}: Deklarationen und Zugriffe auf Felder, Variablen und Enum-Werten}
+	\item{\texttt{IdentifierFactory}: einfache Bezeichner}
+	\item{\texttt{ImportFactory}: Importdefinitionen}
+	\item{\texttt{MemberFactory}: Konstruktor- und Methodendefinitionen sowie Methodendeklarationen}
+	\item{\texttt{ModifierFactory}: Modifizierer}
+	\item{\texttt{PackageFactory}: Packagedefinitionen}
+	\item{\texttt{QualifiedNameFactory}: qualifizierte Bezeichner}
+	\item{\texttt{StatementFactory}: Labels sowie \texttt{If}-, \texttt{For}-, \texttt{While}-, \texttt{Do..While}-, \texttt{Break}-, \texttt{Continue}-, \texttt{Return}-, \texttt{Switch}-, \texttt{Try}-, \texttt{Throw}-, \texttt{Synchronize}- und \texttt{Assert}-Anweisungen}
+	\item{\texttt{TypeDefinitionFactory}: Klassen-, Schnittstellen-, Enum- und Annotationsdefinitionen}
+	\item{\texttt{TypeParameterFactory}: Typparameter und -argumente}
+	\item{\texttt{TypeSpecificationFactory}: Typspezifikationen}
+\end{itemize}
+
+\subsection{Package javaextractor.resolvers}
+Dieses Package enthält Klassen, die dem Auflösen der Quelltextreferenzen dienen.
+
+\paragraph{Resolver}
+Diese Klasse ist abstrakt und beinhaltet die für alle Resolverklassen gemeinsame Funktionalität. Alle weiteren Klassen im Package, mit Ausnahme von \texttt{ResolverUtilities}, erben von ihr.
+
+\paragraph{LocalResolver}
+Kann Quelltextreferenzen auf lokal definierte Elemente auflösen.
+
+\paragraph{TypeSpecificationResolver}
+Löst Typspezifikationen auf, die nicht bereits durch den\\ \texttt{LocalResolver} aufgelöst werden konnten.
+
+\paragraph{FieldResolver}
+Implementiert Methoden zum Auflösen von Zugriffen auf Variablen, Felder und Enum-Konstanten innerhalb des TGraphen.
+
+\paragraph{MethodResolver}
+Stellt Methoden bereit zum Auflösen von Methoden- und Konstruktoraufrufen innerhalb des TGraphen.
+
+\paragraph{ResolverUtilities}
+Beinhaltet statische Hilfsmethoden zur Verwendung durch die Resolver-Klassen.
+
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=\textwidth]{figures/javaextractor_resolvers.png}
+	  \caption{Klassendiagramm des Package \texttt{javaextractor.resolvers}}
+	  \label{classdiagramm_javaextractor.resolvers}
+  \end{center}
+\end{figure}
+
+\subsection{Package javaextractor.schema}
+In diesem Package sind Schnittstellen enthalten, welche von den Knoten- und Kantentypen der erzeugten TGraphen implementiert werden. Alle Quelltexte in diesem Package wurden durch das JGraLab-Werkzeugs \texttt{TgSchema2Java} aus dem Schema (siehe Anhang \ref{schema}) erzeugt. Aufgrund der Menge der Typen soll hier jedoch nur auf generelle Eigenschaften eingegangen werden.\par
+Jede dieser Schnittstellen legt die Eigenschaften eines Knoten- oder Kantentyps fest. Für jeden gleichnamigen Knoten- und Kantentyp aus dem Metamodell existiert eine Schnittstelle. Statt Klassen werden Schnittstellen erzeugt, da im Metamodell  Mehrfachvererbung erlaubt ist und Java dies nur in Schnittstellen erlaubt.
+
+\subsection{Package javaextractor.schema.impl}
+In diesem Package sind Kanten- und Knotenklassen enthalten, die in den TGraphen vorkommen, welche vom Javaextraktor erzeugt werden. Auch diese wurden automatisch von \texttt{TgSchema2Java} aus dem Schema (siehe Anhang \ref{schema}) generiert. Für jeden Knoten- und Kantentyp aus dem Metamodell existiert hier eine gleichnamige Klasse mit dem Suffix "`Impl"', welche ihre Schnittstelle sowie die Schnittstellen ihrer "`Oberklassen"' aus \\ \texttt{javaextractor.schema} implementiert. Jede Kantenklasse implementiert \\\texttt{de.uni\underline{ }koblenz.jgralab.Edge} und jede Knotenklasse \\\texttt{de.uni\underline{ }koblenz.jgralab.Vertex}.\par
+Zusätzlich dazu wurde für jeden Kantentyp eine "`Reversed"'-Klasse generiert. Dabei handelt es sich um die jeweilige Kante in umgekehrter Richtung, was eine effizientere Traversierung der generierten TGraphen ermöglicht.
+
+\newpage
+
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=\textwidth]{figures/activity_diagramm_javaextractor.png}
+	  \caption{Aktivitätsdiagramm Ablauf des Extraktionsprozesses}
+	  \label{extractor_activitydiagram}
+  \end{center}
+\end{figure}
+
+\section{Funktionsweise des Javaextraktors}
+Der Ablauf des Extraktionsprozess ist in mehrere voneinander abgegrenzte Arbeitsschritte aufgeteilt. Einen Überblick verschafft das Aktivitätsdiagramm in Abbildung \ref{extractor_activitydiagram}. Die Arbeitsschritte werden in folgender Reihenfolge ausgeführt:
+
+\begin{enumerate}
+  \item{Die übergebenen Kommandozeilenparameter (eine genaue Beschreibung folgt in Abschnitt \ref{extractor_usage}) werden interpretiert und die entsprechenden Einstellungen gesetzt.}
+  \item{Aus allen Dateien und Verzeichnissen, welche beim Aufruf übergeben wurden, wird eine Liste der enthaltenen \texttt{.java}-Dateien erstellt. Im Falle von Verzeichnissen werden auch alle enthaltenen Unterverzeichnisse rekursiv mit einbezogen. Angegebene, aber nicht existente Elemente werden dabei ignoriert, ebenso alle Dateien, welche nicht auf die Erweiterung \texttt{.java} enden.}
+  \item{Es wird ein leerer, dem verwendeten Schema entsprechender TGraph erzeugt. Darüber hinaus werden einige grundlegende Knoten und Kanten im Graph erzeugt und initialisiert. Zusätzlich wird eine leere Symboltabelle erstellt.}
+  \item{Für jede Quelltextdatei in der Liste werden die folgenden Schritte abgearbeitet:
+	  \begin{itemize}
+	    \item{Der Parser erzeugt einen AST aus der Datei.}
+	    \item{Im TGraph werden die entsprechenden Verwaltungsinformationen für die Datei erzeugt.}
+	    \item{Dem Treewalker wird der AST, der TGraph, die Symboltabelle sowie einige weitere Objektreferenzen übergeben.\par
+			Der Treewalker traversiert den AST und generiert dabei die entsprechenden Elemente im TGraph in einer dem Metamodell entsprechenden Struktur. Ebenso werden weitere Objektreferenzen gesammelt und zur Symboltabelle hinzugefügt.}
+	    \item{Innerhalb der erzeugten Teilstruktur des TGraph werden lokale Typreferenzen und Variablenzugriffe aufgelöst und die entsprechenden Kanten erzeugt. Dabei semantisch identische, mehrfach vorkommende Knoten werden zu einem einzigen Knoten zusammengeführt.}
+	  \end{itemize}}
+  \item{Über die gesamte Struktur des Graphen werden Typreferenzen, Variablenzugriffe und Methodenaufrufe aufgelöst, entsprechende Kanten erzeugt und wiederum semantisch identische, mehrfach vorkommende Knoten verschmolzen.\par
+	Sind Elemente auch dabei nicht auflösbar, so wird, in Abhängigkeit vom eingestellten Modus, mittels der \texttt{Reflection}-Funktionalität von Java eine Auflösung versucht.}
+  \item{Der TGraph wird in einer Datei abgespeichert, dabei wird der übergebene Pfad und Dateiname verwendet. Existiert die Datei bereits, so wird diese überschrieben.}
+\end{enumerate}
+Bei diesem Ablauf ist zu beachten, dass bei einem Programmaufruf für alle dabei analysierten Quelltexte nur ein gemeinsamer Graph erzeugt wird. Eine genaue Beschreibung zu einzelnen Punkten folgt in den nächsten Abschnitten.
+
+\subsection{Erzeugung des TGraphen im Treewalker}
+\label{extractor_treewalker}
+Die Umsetzung der Struktur des vom Parser für jede Quelltextdatei erzeugten AST zum TGraph geschieht im Treewalker. Grundsätzlich wäre es möglich (und hinsichtlich Ausführungsgeschwindigkeit und Speicherverbrauch etwas effizienter) den TGraph bereits während des Parsings mit aufzubauen. Die Grammatik des Treewalkers ist aber erheblich kompakter und lesbarer als die des Parsers. Dies vereinfacht die Implementierung wesentlich. Gerade zur Vermeidung und Suche von Fehlern ist eine kompakte Grammatik von Vorteil. Darüberhinaus bietet die Arbeitsweise des Treewalkers eine einfache Möglichkeit zum Erzeugen der TGraph-Elemente, da die Struktur seiner Regeln derjenigen ähnelt, die der generierte Graph gemäß dem Metamodell besitzen soll.\par
+Zur Erzeugung des TGraphen ist es nicht nötig, den Treewalker selbst anzupassen, sondern es genügt, entsprechenden Code als semantische Aktionen in seine zugrundeliegende Grammatik einzufügen. Ein aus der modifizierten Grammatik erzeugter Treewalker beinhaltet dann die gewünschte Funktionalität.\par
+Zunächst müssen dem Treewalker Referenzen mitgegeben werden, damit dieser die zu erzeugenden Graphelemente an die richtigen Stellen im Graphen verbinden kann. Diese werden mittels Setter-Methoden vom Javaextraktor gesetzt, bevor der AST traversiert wird. Dabei handelt es sich um die folgenden Elemente:
+\begin{itemize}
+  \item{\texttt{programGraph}: Der TGraph, der erweitert werden soll.}
+  \item{\texttt{programVertex}: Der Wurzelknoten des Graphen.}
+  \item{\texttt{sourceUsageVertex}: Der Knoten im Graphen, in dem der Pfad der aktuellen Quelltextdatei gespeichert ist.}
+  \item{\texttt{translationUnitVertex}: Der Knoten im Graphen, der als Wurzelknoten für alle Elemente aus der aktuellen Quelldatei dient.}
+  \item{\texttt{symbolTable}: Die zum TGraph gehörige Symboltabelle.}
+\end{itemize}
+Die eigentliche Generierung einer Teilstruktur des TGraphen im Treewalker entspricht in den meisten Fällen dem folgenden Prinzip:
+\begin{enumerate}
+  \item{Am Beginn einer Regel wird ein Knoten der zur Regel äquivalenten Knotenklasse im TGraph erzeugt.}
+  \item{Mit diesem Knoten wird nach jeder referenzierten Unterregel der von der Unterregel zurückgegebene Knoten durch Erzeugen einer Kante der entsprechenden Kantenklasse verbunden.}
+  \item{Am Ende der Regel wird der in Punkt 1 erzeugte Knoten zurückgegeben.}
+\end{enumerate}
+Beim Erzeugen des Treewalkers aus der Grammatik generiert ANTLR aus jeder Regel eine eigene Methode. Diese besitzen als Rückgabewert immer den Knoten des AST (vom Typ \texttt{AST}; dieser ist in ANTLR definiert), der von der Regel durchlaufen wird. Deswegen wird der erstellte TGraph-Knoten am Ende der Regel in einer globalen Variable \texttt{currentVertex} - vom in JGraLab definierten Typ \texttt{Vertex} - zwischengespeichert.\par
+Eine Ausnahme zum o.a. Prinzip bildet die Listenregel. Dabei handelt es sich um eine Regel, die zwar selbst wiederum mehrere Regeln referenziert, jedoch zu ihr selbst keine Entsprechung als Knoten im TGraphen erzeugt. Zum Beispiel referenziert die Regel einer Methodendeklaration die Regel \texttt{parameters}, welche beliebig oft die Regel \texttt{parameterDeclaration} referenziert. Gemäß dem Schema muss aber direkt eine Kante zwischen jeder Parameterdeklaration und der Methodendeklaration erzeugt werden. In solchen Fällen übergibt die referenzierende Regel den eigenen Knoten (z.B. vom Typ \texttt{MethodDeclaration}) an die Listenregel (ebenfalls über die globale Variable \texttt{currentVertex}) und diese erzeugt die entsprechenden Kanten (z.B. vom Typ \texttt{IsParameterOfMethod}).\par
+Mit der beschriebenen Vorgehensweise funktioniert die komplette Erzeugung der grundlegenden TGraph-Strukturen, da die entsprechende Funktionalität durchgängig in allen Regeln implementiert ist.
+
+\subsection{Sammeln und Berechnen der Positionsinformationen}
+\label{extractor_positioninformations}
+Durch die bereits in Abschnitt \ref{antlr_modifications} beschriebenen Anpassungen ist es möglich, im Treewalker Positionsinformationen zu den einzelnen Elementen des ASTs abzufragen und zu verarbeiten. Somit konnte das Berechnen und Speichern der jeweiligen Attribute in den TGraph implementiert werden. Die implementierte Funktionalität ist in den relevanten Treewalker-Regeln enthalten und ähnelt im Prinzip der Generierung der einzelnen Elemente des TGraphen:
+\begin{enumerate}
+\item{Nach jeder referenzierten Unterregel wird das zurückgegebene Anfangs- und End-AST-Element abgerufen und daraus die Positionsinformationen sowie die Gesamtlänge berechnet. Diese werden in die Kante eingetragen, welche den von der Regel zurückgegebenen Knoten mit anbindet (bei einer Listenregel nicht).}
+\item{Am Ende der Regel wird das eigene Anfangs- und End-AST-Element zurückgegeben. Dabei handelt es sich entweder um das erste / letzte Element aus den Unterregeln oder um eventuell in der Regel direkt vorhandene AST-Elemente.}
+\end{enumerate}
+Für die Ermittlung werden zwei globale Variablen verwendet (\texttt{currentBeginAST} und \texttt{currentEndAST}). Mit Ausnahme der Kanten, unter denen sich keine zusammengesetzte Struktur befindet\footnote{Dies ist nur bei \texttt{Identifier} der Fall.}, findet die beschriebene Funktionalität im Treewalker durchgehend Verwendung.
+
+\subsection{Auflösen der Quelltextreferenzen}
+Nach dem Durchlaufen eines AST ist dessen Struktur im wesentlichen in einen TGraph umgesetzt. Der TGraph soll die Syntax der Quelltexte jedoch in Form eines ASG repräsentieren. Im Gegensatz zum AST sind bestimmte Knoten einzigartig und Schleifen erlaubt. Grundsätzlich soll im Graphen jeder Knoten, der eine Typspezifikation, einen Methoden-/Konstruktoraufruf oder einen Feld-/Variablenzugriff repräsentiert über eine Kante mit dem Knoten verbunden sein, welcher die entsprechende Definition bzw. Deklaration repräsentiert. Das Auflösen von Referenzen umfasst neben dem Ermitteln der spezifizierten Typen, Typparameter, Variablen, Label und Methoden auch eine entsprechende Anpassung des Graphen. 
+
+\subsubsection{Genereller Ablauf des Auflösevorgangs}
+\label{extractor_resolving}
+Zunächst werden während der Ausführung des Treewalkers jene Knoten in der Symboltabelle gesammelt, die für das Auflösen der Referenzen von Bedeutung sind. Dies sind Knoten, die eines der folgenden Elemente im Quelltext repräsentieren:
+\begin{itemize}
+  \item{Typdefinitionen}
+  \item{Typspezifikationen}
+  \item{Parameterdeklarationen}
+  \item{Variablendeklarationen}
+  \item{Variablenzugriffe (dies beinhaltet auch Zugriffe auf Felder, Parameter und Enum-Werte)}
+  \item{Methodendeklarationen und -definitionen}
+  \item{Konstruktordefinitionen}
+  \item{Methodenaufrufe (dies beinhaltet auch Konstruktoraufrufe)}
+\end{itemize}
+Das Auflösen aller Quelltextreferenzen geschieht dann in zwei Schritten. Im ersten Schritt wird nach dem Parsen jeder Datei versucht Referenzen lokal aufzulösen, die in dieser Datei gefunden wurden; d. h. sie werden mit Definitionen abgeglichen, die nur lokal in dieser Datei sichtbar sind (z. B. Definitionen von lokalen Variablen, inneren Klassen usw.).\par
+Quelltextreferenzen, die auf diese Weise nicht aufgelöst werden können, werden im zweiten Schritt erneut behandelt. Nach dem Parsen aller Quelltexte sind alle o. a. Definitionen im Graph vertreten und in der Symboltabelle gespeichert. Diesmal werden die Quelltextreferenzen mit global sichtbaren Definitionen abgeglichen. Sollte das Auflösen dabei ebenfalls nicht möglich sein, wird (abhängig vom Modus des Extraktors) auch eine Auflösung per Introspektion\footnote{In Java über Reflexion.} versucht. Dabei können nur Elemente gefunden werden, die über den \texttt{CLASSPATH} erreichbar sind.
+
+\subsubsection{Anpassung des Graphen während des Auflösevorgangs}
+Beim Auflösen wird eine Quelltextreferenz über eine Kante mit ihrer Definition verbunden. Konkret werden dazu folgende Kanten erzeugt:
+\begin{itemize}
+  \item{\texttt{IsTypeDefinitionOf} von \texttt{Type}- zu \texttt{TypeSpecification}-Knoten.}
+  \item{\texttt{IsInvokedMethod} von \texttt{MethodDeclaration}-, \texttt{MethodDefinition}- bzw.\\
+  \texttt{ConstructorDefinition}- zu \texttt{MethodInvocation}-Knoten.}
+  \item{\texttt{IsDeclarationOfAccessedField} von \texttt{VariableDeclaration}-,\\
+  \texttt{ParameterDeclaration}- bzw. \texttt{EnumConstant}- zu \texttt{FieldAccess}-Knoten.}
+\end{itemize}
+Da es sich dabei um semantische Kanten handelt, sind diese nicht mit Positionsinformationen attributiert.\par
+Beim Auflösen einer Typspezifikation muss ggf. der Name des spezifizierten Typs, der in einem Knoten mitgespeichert wird, angepasst werden. Dies ist der Fall, wenn eine Typspezifikation nicht vollqualifiziert im Quelltext vorliegt. Wird beispielsweise eine Variable \texttt{v} per \texttt{Vector v;} deklariert, so ist die Typspezifikation \texttt{Vector} nicht vollqualifiziert. Im Graphen existiert somit ein Knoten vom Typ \texttt{QualifiedType}, der in seinem Attribut \\\texttt{fullyQualifiedName} den String \texttt{Vector} speichert. Die Auflösung ergibt, dass die Klasse \texttt{java.util.Vector} gemeint ist. Der vollqualifizierte Name \texttt{java.util.Vector} wird dann in den Knoten eingetragen.\par
+Im Graphen sollen Knoten, die eine Variable, einen Typ oder eine Methode repräsentieren, nur einmal vorkommen. In einem Quelltext werden solche Elemente definiert, auf die dann über deren Namen zugegriffen wird. Im Quelltext kann somit der Name mehrfach vorkommen. Im Graphen hingegen soll dessen Repräsentation einzigartig sein. Für jedes Vorkommen im Quelltext soll im Graphen aber eine Kante erzeugt werden. Um dies sicherzustellen wird beim Auflösen einer Referenz überprüft, ob diese bereits zuvor aufgelöst wurde und somit eine korrekte Graphenrepräsentation schon existiert. Ist dies der Fall, wird diese wiederverwendet.\par
+Zum Beispiel wird für jede Verwendung einer Klasse im Quelltext ein Knoten vom Typ \texttt{QualifiedType} erzeugt. Wird diese Typspezifikation zum ersten Mal aufgelöst, so wird dieser Knoten in der Symboltabelle als aufgelöst geführt und kann wiederverwendet werden. Bei der nächsten Auflösung der gleichen Klasse wird dann auch der selbe Knoten aus der Symboltabelle verwendet und der überflüssige Knoten gelöscht. Zuvor werden jedoch alle Kanten des zu löschenden Knotens umgehangen.\par
+Im Falle von Methodenaufrufen und Variablenzugriffen wird sichergestellt, dass die verbundenen Identifier-Knoten einzigartig sind. Die jeweiligen \texttt{MethodInvocation}- und \\ \texttt{FieldAccess}-Knoten bleiben unverändert, da bei jedem Methodenaufruf andere Argumente übergeben werden können oder bei jedem Zugriff auf eine Array-Variable auf ein anderes Element des Arrays\footnote{Es kann auch auf das gesamte Array oder eine der Dimensionen eines mehrdimensionalen Arrays zugegriffen werden.} zugegriffen werden kann.
+
+\subsubsection{Auflösemodi}
+\label{extraction_modes}
+Der Javaextraktor kann wahlweise mit drei verschiedenen Auflösemodi benutzt werden. Sie unterscheiden sich in der Tiefe des Auflösens externer\footnote{nicht in den Quelltexten der geparsten Dateien definiert.} Typen, ihrer Felder und Methoden.\par
+Externe Typen sind daran erkennbar, dass das Attribut \texttt{external} auf \texttt{true} gesetzt ist. Knoten, die Felder, Methoden und Konstruktoren repräsentieren, besitzen dieses Attribut nicht. Für sie gilt der Wert des Attributs des Typdefinitionsknoten an dem sie hängen. Der Knoten der Typdefinition ist dabei über zwei Kanten erreichbar: über \texttt{IsMemberOf} zum \texttt{Block} der Typdefinition und von dort über \texttt{IsBlockOf} zur Typdefinition selbst. 
+
+\paragraph{LAZY.} Dies ist der Standardmodus. In diesem Modus werden Referenzen nur im Rahmen der zu parsenden Quelltexte aufgelöst. Eine Quelltextreferenz kann nur aufgelöst werden, wenn die Klasse, die das referenzierte Element definiert, ebenfalls vom Javaextraktor im selben Arbeitsgang geparst wird; d. h. dass z. B. Typen aus der Java-API nur aufgelöst werden könnten, wenn sie auch vom Javaextraktor geparst werden würden.\par
+Dieser Modus sollte benutzt werden, wenn Referenzen zu externen Klassen bei der Analyse des Softwareprojekts nicht von Interesse sind. Zu beachten ist allerdings auch, dass in diesem Modus auch keinerlei interne Methoden aufgelöst werden können, welche einen Parameter eines externen Typs besitzen (was schon auf einen einfachen \texttt{String} zutrifft).
+
+\paragraph{EAGER.} In diesem Modus werden Referenzen im Rahmen der zu parsenden Quelltexte und dem \texttt{CLASSPATH} aufgelöst. Referenzen, die nicht im LAZY-Modus aufgelöst werden können, werden im EAGER-Modus per Reflection im \texttt{CLASSPATH} gesucht. Definitionen, die über den \texttt{CLASSPATH} erreichbar sind, sind nicht im Graphen repräsentiert (da ihre Klassen nicht geparst wurden). Dies muss somit noch nachgeholt werden. Ist ein Auflösen erfolgreich, so wird ein Knoten zur Repräsentation der Definition erzeugt, um den Knoten, der die Referenz repräsentiert, per entsprechender Kante zu verbinden.\par
+Mit diesem Modus wird ein Graph erzeugt, in dem ersichtlich ist, ob eine Referenz im Rahmen der geparsten Klassen bleibt oder externe Elemente, wie z. B. Java-API berührt. Erkennbar ist dies an den Elementen, die eine Definition im Graphen repräsentieren. Besteht die Repräsentation nur aus einem einzigen Knoten, so konnte die entsprechende Referenz nur per Reflection aufgelöst werden. Besteht die Repräsentation aus mehreren Elementen (z. B. ganze Klassensignatur) so konnte die entsprechende Referenz im Rahmen der geparsten Quelltexte aufgelöst werden. Referenzen, die überhaupt nicht aufgelöst werden konnten, sind im Graphen mit keiner Definition verbunden.\par
+Dieser Modus sollte benutzt werden, wenn Referenzen zu externen Klassen bei der Analyse des Softwareprojekts von Belang sind, jedoch darüberhinaus keine Analyse nötig ist. Außerdem kann festgestellt werden, ob im geparsten Softwareprojekt Klassen fehlen. In diesem Modus können nur solche Felder und Methoden nicht aufgelöst werden, die in einer nicht direkt referenzierten Oberklasse einer direkt im Quelltext referenzierten Klasse definiert sind.
+
+\paragraph{COMPLETE.} In diesem Modus verhält sich der Javaextraktor zunächst wie im Modus \texttt{EAGER}. Es werden jedoch beim Auflösen per Reflection immer komplette Graphrepräsentationen erzeugt. Für jede hinzukommende Referenz wird eine komplette Repräsentation der Klasse im Graphen erzeugt, außer wenn diese bereits vorhanden ist. Zusätzlich müssen die dadurch hinzukommenden Referenzen selbst wieder aufgelöst werden. Da dieser Vorgang rekursiv abläuft und nicht vorhersehbar ist, wie viele Referenzen in den externen Klassen aufgelöst werden müssen, kann dies u. U. sehr lange dauern.\par
+Dieser Modus sollte benutzt werden, wenn externe Klassen bei der Analyse des Softwareprojekts von Interesse sind.
+
+\subsection{Aufwandsbetrachtung}
+Die Dauer des Extraktionsprozesses und die Größe des extrahierten Graphen hängen von der Größe des zu parsenden Softwareprojektes ab. Dazu wurden verschiedene Softwareprojekte geparst und dabei die Anzahl der Quelltextzeilen gezählt sowie die benötigte Ausführungsdauer und die Größe des Graphen festgehalten. Geparst wurden die Quelltexte von ANTLR, JGraLab und Packages des Javaextraktors, die das Schema realisieren \\(\texttt{javaextractor.schema} und nochmals separat \texttt{javaextractor.schema.impl}). Jedes Softwareprojekt wurde in allen drei Modi jeweils zwei Mal geparst und der durchschnittliche Zeitaufwand ermittelt. Tabelle \ref{aufwand_uebersicht} listet die gemessenen Werte für die Extraktionsmodi \texttt{LAZY}, \texttt{EAGER} und \texttt{COMPLETE} auf\footnote{Alle Messungen wurden auf einem AMD Athlon64 3200+ mit 2GB RAM unter Windows XP vorgenommen.}.\par
+An den gemessenen Werten ist zu erkennen, dass der Aufwand generell linear mit der Zahl der Codezeilen ansteigt. Erwartungsgemäß ist die Zeitaufwand im Modus \texttt{COMPLETE} am größten und im Modus \texttt{LAZY} am niedrigsten. Teilweise ist der Zeitaufwand jedoch in \texttt{EAGER} am größten, da in diesem Modus ein und dieselbe Klasse ggf. mehrfach per Introspektion untersucht werden muss. Im Modus \texttt{EAGER} ist jede externe Klassendefinition nach dem Auflösen der Typspezifikationen per Reflexion jeweils nur mit einem Knoten im TGraph vertreten. Für die Auflösung der Methodenaufrufe werden mehr Informationen benötigt, so dass die betroffene Klasse nochmals per Reflexion untersucht wird.\par 
+Kann eine Quelltextreferenz aufgelöst werden, wird im Graph ein Knoten gelöscht und dafür eine Kante erzeugt. So ist im Modus \texttt{LAZY} die Anzahl der Knoten höher und die Anzahl der Kanten niedriger, als in den Modi \texttt{EAGER} und \texttt{COMPLETE}, da weniger Quelltextreferenzen aufgelöst werden können. 
+\begin{sidewaystable}[htbp]
+	\begin{center}
+    \begin{longtable}{|l|r|r|r|r|r|r|r|r|r|r|}\hline
+      \textbf{\rotatebox{270}{Softwareprojekt}} & 
+      \textbf{\rotatebox{270}{Extraktormodus}} & 
+      \textbf{\rotatebox{270}{Anzahl der Klassen}} & 
+      \textbf{\rotatebox{270}{Anzahl der Quelltextzeilen}} & 
+      \textbf{\rotatebox{270}{Dauer Parsing \& Graphaufbau in s }} & 
+      \textbf{\rotatebox{270}{Dauer Resolving in s}} & 
+      \textbf{\rotatebox{270}{Dauer Graph speichern in s}} &
+      \textbf{\rotatebox{270}{Gesamtdauer in s}} & 
+      \textbf{\rotatebox{270}{Anzahl der Knoten im Graph}} & 
+      \textbf{\rotatebox{270}{Anzahl der Kanten im Graph}} \\ \hline \hline
+      antlr & lazy & 216 & 55.725 & 14,77 & 6,62 & 1,16 & 22,55 & 133.557 & 241.298 \\ \hline
+      antlr & eager & 216 & 55.725 & 14,80 & 10,02 & 1,23 & 26,05 & 132.410 & 259.297 \\ \hline
+      antlr & complete & 216 & 55.725 & 14,67 & 11,56 & 1,70 & 27,93 & 178.624 & 383.131 \\ \hline \hline      
+      de.uni\_koblenz.jgralab & lazy & 370 & 68.888 & 13,93 & 3,67 & 1,06 & 18,66 & 116.491 & 190.181 \\ \hline
+      de.uni\_koblenz.jgralab & eager & 370 & 68.888 & 13,42 & 7,96 & 1,13 & 22,51 & 118.616 & 211.990 \\ \hline
+      de.uni\_koblenz.jgralab & complete & 370 & 68.888 & 12,75 & 7,72 & 1,23 & 21,70 & 130.706 & 243.142 \\ \hline \hline
+      javaextractor.schema.impl & lazy & 369 & 141.584 & 65,13 & 21,62 & 4,86 & 91,81 & 663.345 & 807.483 \\ \hline
+      javaextractor.schema.impl & eager & 369 & 141.584 & 65,14 & 393,36 & 4,12 & 463,42 & 483.898 & 861.269 \\ \hline
+      javaextractor.schema.impl & complete & 369 & 141.584 & 65,12 & 358,83 & 4,86 & 428,81 & 489.732 & 872.198 \\ \hline \hline
+      javaextractor.schema & lazy & 626 & 232.947 & 79,27 & 135,34 & 5,07 & 219,68 & 685.715 & 971.397 \\ \hline
+      javaextractor.schema & eager & 626 & 232.947 & 81,24 & 465,43 & 4,67 & 551,34 & 565.984 & 987.669 \\ \hline
+      javaextractor.schema & complete & 626& 232.947 & 84,78 & 436,87 & 4,79 & 526,44 & 576.269 & 1.008.979 \\ \hline
+    \end{longtable} 
+    \caption{Ergebnisse der Messungen in den verschiedenen Extraktormodi}
+    \label{aufwand_uebersicht}
+	\end{center}
+\end{sidewaystable}
+\newpage
+\section{Verwendung des Javaextraktors}
+\subsection{Erzeugung}
+Da der Extraktor teils als Quelltext und teils als ANTLR-Grammatik vorliegt, müssen aus diesen einmalig die entsprechenden Programme erzeugt werden, bevor eine Verwendung stattfinden kann. Folgende Schritte müssen dazu durchgeführt werden:
+
+\begin{enumerate}
+	\item{Im Folgenden wird die Verzeichnisstruktur verwendet, die aus dem SVN-Repository des Gupro-Projektes (siehe \cite{guprosvn}) stammt.\par
+	In ein lokales Arbeitsverzeichnis \texttt{localrepository} werden zunächst die drei Verzeichnisse
+	\begin{itemize}
+	  \item{\texttt{localrepository/jgralab}}
+	  \item{\texttt{localrepository/common}}
+	  \item{\texttt{localrepository/javaextractor}}
+	\end{itemize}
+  aus dem Online-Repository abgelegt (mittels \texttt{svn checkout}). Abbildung \ref{repostructure} zeigt die (auf wesentliche Verzeichnisse reduzierte) Verzeichnisstruktur. Alle weiteren Schritte werden ausgehend vom Verzeichnis \texttt{localrepository/javaextractor/src} durchgeführt.}
+	\item{Danach müssen folgende Verzeichnisse und Dateien in den \texttt{CLASSPATH} aufgenommen werden:
+	\begin{itemize}
+		\item{Das aktuelle Verzeichnis:\\
+		\texttt{"."}}
+		\item{Das Verzeichnis mit den Quellen von JGraLab:\\
+		\texttt{"../../jgralab/src"}}
+		\item{Das von JGraLab teilweise verwendete GetOPT:\\
+		\texttt{"../../common/lib/getopt/java-getopt-1.0.13.jar"}}
+		\item{Das vom Extraktor verwendete ANTLR:\\
+		\texttt{"../../common/lib/antlr/org.antlr\_2.7.6.jar"}}
+	\end{itemize}
+	Am einfachsten geschieht dies durch Setzen einer entsprechenden Umgebungsvariable. Die Alternative mittels Übergabe des Java-Kommandozeilenparameters \texttt{-cp} bei Kompilierung und Ausführung ist auch möglich, hier wird jedoch ersteres angenommen.}
+	\item{Anschließend müssen Lexer, Parser und Treewalker aus ihren Grammatiken durch ANTLR im Verzeichnis \texttt{localrepository/javaextractor/src/javaextractor} erzeugt werden. Die Erzeugung geschieht durch die folgenden zwei Aufrufe:
+\begin{lstlisting}
+java antlr.Tool -o javaextractor javaextractor/java15.g
+java antlr.Tool -o javaextractor javaextractor/java15.tree.g
+\end{lstlisting}}
+	\item{Dann müssen JGraLab und das darin enthaltene Programm \texttt{TGSchema2Java} zur Generierung von Graphklassen aus einem Schema ebenfalls kompiliert werden:
+\begin{lstlisting}
+javac ../../jgralab/src/de/uni_koblenz/jgralab/*.java
+javac ../../jgralab/src/de/uni_koblenz/jgralab/utilities/tgschema2java/*.java
+\end{lstlisting}}
+	\item{Nun können die Graph-, Knoten- und Kantenklassen, die der Javaextraktor benötigt, erzeugt werden. \texttt{TGSchema2Java} generiert die entsprechenden Quelltexte aus den Informationen der Schemadatei (\texttt{java5.tg} im Verzeichnis \\ \texttt{localrepository/javaextractor/src}) und schreibt diese in \\ \texttt{localrepository/javaextractor/src/javaextractor/schema}. Der Aufruf geschieht mit folgendem Kommando:
+\begin{lstlisting}
+java de.uni_koblenz.jgralab.utilities.tgschema2java.TgSchema2Java -f java5.tg -p .
+\end{lstlisting}}
+	\item{Nachdem nun alle benötigten Komponenten erzeugt und Quelltexte kompiliert wurden, wird das eigentliche Extraktorprogramm kompiliert:
+\begin{lstlisting}
+javac javaextractor/*.java
+\end{lstlisting}}
+\end{enumerate}
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=4cm]{figures/repostructure-simplified.png}
+	  \caption{Verzeichnisstruktur (vereinfacht) im verwendeten lokalen Repository.}
+	  \label{repostructure}
+  \end{center}
+\end{figure}
+Nach erfolgreicher Erzeugung kann der Javaextraktor verwendet werden. Dies wird im nächsten Kapitel beschrieben.
+
+\subsection{Aufruf}
+\label{extractor_usage}
+Um den Javaextraktor zu verwenden, müssen die gleichen Verzeichnisse und Dateien im \texttt{CLASSPATH} enthalten sein, wie im vorherigen Kapitel beschrieben. Der Aufruf des Javaextraktors geschieht durch:
+\begin{lstlisting}
+java javaextractor.JavaExtractor
+\end{lstlisting}
+Zusätzlich interpretiert das Programm folgende (durch Leerzeichen getrennte) Kommandozeilenparameter:
+\begin{itemize}
+	\item{\texttt{PFAD} : Übergibt den Pfad einer zu parsenden Datei oder eines Verzeichnisses. Dieser Parameter muss mindestens einmal und kann beliebig oft vorhanden sein.}
+	\item{\texttt{-out DATEINAME} oder \texttt{-o DATEINAME} : Übergibt den Pfad zur Datei, in die der erzeugte TGraph gespeichert wird. Die Datei sollte die Endung \texttt{.tg} besitzen. Dieser Parameter ist optional, standardmäßig wird die Datei \texttt{extractedgraph.tg} im aktuellen Verzeichnis verwendet.}
+	\item{\texttt{-name PROGRAMMNAME} oder \texttt{-n PROGRAMMNAME} : Übergibt den Namen, welcher im erzeugten TGraph als Programmname gesetzt wird. Dieser Parameter ist optional.}
+	\item{\texttt{-log DATEINAME} oder \texttt{-l DATEINAME} : Übergibt den Pfad zur Datei, in die das Log geschrieben wird. Dieser Parameter ist optional, standardmäßig wird die Datei \texttt{javaextractor.log} im aktuellen Verzeichnis verwendet.}
+	\item{\texttt{-eager} oder \texttt{-e} : Führt den Extraktor im \texttt{EAGER}-Modus aus. Dieser Parameter ist optional, Standard ist der \texttt{LAZY}-Modus.}
+	\item{\texttt{-complete} oder \texttt{-c} : Führt den Extraktor im \texttt{COMPLETE}-Modus aus. Dieser Parameter ist optional, Standard ist der \texttt{LAZY}-Modus.}
+\end{itemize}
+Zu beachten ist außerdem, dass beim Parsen einer größeren Menge Quelltext der Heap überlaufen kann. Dies lässt sich verhindern, indem Java über den Kommandozeilenparameter \texttt{-Xmx} ein höherer Maximalwert für den Heap zugewiesen wird.\par
+Ein konkreter Aufruf des Extraktors mit einer maximalen Heapgröße von 768MB und unter Verwendung aller o.g. Kommandozeilenparameter sieht wie folgt aus:
+\begin{lstlisting}
+java -Xmx768M javaextractor.JavaExtractor -out testgraph.tg -name Testprogramm -log testextract.log -eager ../testit/test1.java ../testit/test2.java ../testit2
+\end{lstlisting}
+
+\newpage
+
+\section{Abschließende Betrachtung}
+Dieses Kapitel widment sich einer abschließenden Betrachtung der Entwicklung des Javaextraktors. Zunächst werden die umgesetzten Anforderungen bewertet und abschließend mögliche Weiterentwicklungen aufgezeigt.
+
+\subsection{Umgesetzte Anforderungen}
+Die meisten Anforderungen konnten umgesetzt werden. Von den MUSS-Anforderungen konnten alle umgesetzt werden.\par
+Nur eine  Anforderung (Nr. 6) der SOLLTE-Anforderungen konnte nicht realisiert werden, da die Javagrammatik von Michael Studman nur syntaktisch korrekten Code zuließ. Die Erfüllung der Anfoderung wäre zu aufwendig gewesen, da eine neue Grammatik hätte entwickelt werden müssen.\par
+Zwei optionale Anforderungen (Nr. 4 und 12) wurden nicht umgesetzt. Eine Beschäftigung mit der Anfragesprache für TGraphen GReQL \cite{greql2} und das Vornehmen von Unit-Tests konnten nicht mehr im zeitlichen Rahmen der Studienarbeit stattfinden.
+
+\subsection{Ausblick}
+Im Rahmen dieser Studienarbeit wurde ein Faktenextraktor für Java-Quelltexte entwickelt. Der Javaextraktor generiert eine TGraph-Repräsentation der Quelltexte eines in Java implementierten Softwareprojekts. Dieser TGraph ist dann durch die Werkzeuge des Gupro-Projekts weiter verarbeitbar.\par
+Der Javaextraktor kann Javaquelltexte bis einschließlich Javaversion 6 verarbeiten. Dazu wurde ein Werkzeug gefunden, welches den Parsingvorgang übernimmt, so dass diese Funktion nicht selbst implementiert werden musste. Zusätzlich wurde ein Javametamodell und entsprechendes Schema für den TGraph entwickelt. Die Knoten- und Kantentypen des Metamodells konnten automatisiert mit JGraLab aus dem Schema erzeugt werden.\par
+In der aktuellen Version bringt der Javextraktor Metamodell und Schema zur feingranularen Abbildung der Syntax mit. Wünschenswert sind weitere Metamodelle und Schemata, die weiter von der Syntax abstrahieren. Denkbar sind Modell und Schemata für TGraphen, die z. B. ausschließlich Vererbungshierarchien oder Benutzungsbeziehungen von Klassen darstellen. Hier könnten Projekte zur Weiterentwicklungen ansetzen, da jeweils ein entsprechender Treewalker implementiert werden müsste.\par
+Insgesamt kann die Entwicklung des Javaextraktors als positiv betrachtet werden, da dieser nicht nur die
+zwingend geforderten Mindesteigenschaften besitzt, sondern darüberhinaus auch eine Reihe weiterer optionaler Anforderungen erfüllt.
+\newpage
+
+\begin{appendix}
+
+\section{Metamodell der Graphklassen}
+\label{metamodell_komplett}
+\input{thesis_metamodelldiagramm}
+
+\newpage
+\section{Schema der Graphklassen}
+\label{schema}
+\input{thesis_schema}
+
+\newpage
+\section{Dokumentation der Onlinerecherche}
+\label{onlinerecherche_komplett}
+\input{thesis_onlinerecherche}
+
+\newpage
+\section{Erweiterte Tests des ANTLR-generierten Parsers}
+\label{antlr_tests}
+\input{thesis_tests}
+
+\newpage
+\section{Detaillierte Funktionsweise von ANTLR}
+\label{antlr_komplett}
+\input{thesis_antlr}
+
+\newpage
+\section{Entwicklung eines neuen Metamodells}
+\label{entwicklung_metamodell}
+\input{thesis_metamodell}
+
+\newpage
+\end{appendix}
+
+\newpage
+\begin{thebibliography}{L}
+  \bibitem[1]{compilerbau} Aho, Alfred V.; Ullman, Jeffrey D. (1977):\\\emph{Principles of Compiler Design}\\Dritte Auflage; Reading, Massachusetts: Addison-Wesley, 1979. ISBN 0-201-00022-9
+  \bibitem[2]{sourcecodebrowser} Bildhauer, Daniel (2006):\\\emph{QGuPro Sourcecodebrowser mit Unterstützung von Folding, Syntaxhighlighting und graphbasierter Navigation}.\\ Zugl.: Koblenz, Univ., Studienarbeit, 2006
+  \bibitem[3]{greql2interpreter} Bildhauer, Daniel (2006):\\\emph{Ein Interpreter für GReQL 2: Entwurf und prototypische Implementation}.\\Zugl.: Koblenz, Univ., Dipl., 2006
+  \bibitem[4]{AddTut} Bornstein, Dan (2001):\\\emph{ANTLR Adder Tutorial: Extent Tracking, Tokens with Values, and Error Reporting (Version 1.3)}\\\url{http://www.milk.com/kodebase/antlr-tutorial/}\\Abruf: 01/2008
+  \bibitem[5]{HoJaLaSpec3} Bracha, Gilad (2005):\\\emph{The Java Language Specification, Third Ed.}\\Sun Microsystems, 2005.\\\url{http://java.sun.com/docs/books/jls/third_edition/html/j3TOC.html}\\Abruf: 01/2008
+  \bibitem[6]{gupro} Ebert, Jürgen; Gimnich, Rainer; Stasch, Hans H.; Winter, Andreas (1998):\\\emph{Gupro: Generische Umgebung zum Programmverstehen}.\\ Koblenz: Fölbach, 1998. ISBN 3-923532-59-8
+  \bibitem[7]{designpatterns} Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John (1995):\\\emph{Design Patterns: Objects of Reusable Object-Oriented Software}.\\Sechste Auflage; Reading, Massachusetts: Addison-Wesley, 1996. ISBN 0-201-63361-2
+  \bibitem[8]{HoJaLaSpec1} Gosling, James; Joy, Bill; Steele, Guy (1996):\\\emph{The Java Language Specification, First Ed.}\\Sun Microsystems, 1996.\\\url{http://java.sun.com/docs/books/jls/first_edition/html/index.html}\\Abruf: 01/2008
+  \bibitem[9]{HoJaLaSpec2} Gosling, James; Joy, Bill; Steele, Guy; Bracha, Gilad (2000):\\\emph{The Java Language Specification, Second Ed.}\\Sun Microsystems, 2000.\\\url{http://java.sun.com/docs/books/jls/second_edition/html/j.title.doc.html}\\Abruf: 01/2008
+  \bibitem[10]{DipBoHi} Hinterwäller, Bodo (2005):\\\emph{Metamodell basierte Spezifikation von Refactorings}.\\Zugl.: Koblenz, Univ., Dipl., 2005
+  \bibitem[11]{jgralab} Kahle, Steffen (2006):\\\emph{JGraLab: Konzeption, Entwurf und Implementierung einer Java-Klassenbibliothek für TGraphen}.\\Zugl.: Koblenz, Univ., Dipl., 2006
+  \bibitem[12]{greql2} Marchewka, Katrin (2006):\\\emph{Entwurf und Definition der Graphanfragesprache GReQL 2}.\\Zugl.: Koblenz, Univ., Dipl., 2006
+  \bibitem[13]{antlr_homepage} Parr, Terrence: \\\emph{ANTLR Website}. \\\url{http://www.antlr.org/}\\Abruf: 01/2008
+  \bibitem[14]{IntroANTLR} Parr, Terrence:\\\emph{An Introduction To ANTLR}. \\\url{http://www.cs.usfca.edu/~parrt/course/652/lectures/antlr.html}\\Abruf: 09/2006
+  \bibitem[15]{DocuANTLR} Parr, Terrence (2005): \\\emph{ANTLR Reference Manual}. \\\url{http://www.antlr.org/doc/index.html}\\Abruf: 09/2006
+  \bibitem[16]{antlrdocoptions} Parr, Terrence: \\\emph{ANTLR Reference Manual: Grammar Options}. \\\url{http://www.antlr.org/doc/options.html}\\Abruf: 09/2006
+  \bibitem[17]{antlrdocmetalang} Parr, Terrence: \\\emph{ANTLR Reference Manual: Meta Language}. \\\url{http://www.antlr.org/doc/metalang.html\#_bb2}\\Abruf: 09/2006
+  \bibitem[18]{grammatik_studman} Studman, Michael: \\\emph{Java 5 Grammar for ANTLR}. \\\url{http://www.antlr.org/grammar/1090713067533/index.html}\\Abruf: 01/2008
+  \bibitem[19]{guprosvn} \emph{Gupro: Re-Group Projekt SVN Repository} \\\url{https://svn.uni-koblenz.de/gup/re-group/trunk/project/}\\Abruf: 09/2006
+  
+  \bibitem[21]{jlex} \emph{Homepage von JLex}. \\\url{http://www.cs.princeton.edu/~appel/modern/java/JLex/}\\Abruf: 01/2008
+  \bibitem[22]{javaccgram1} \emph{Grammatiken für JavaCC}. \\\url{http://javacc.dev.java.net/}\\Abruf: 01/2008
+  \bibitem[23]{javaccgram2} \emph{Grammatiken für JavaCC}. \\\url{http://www.cobase.cs.ucla.edu/pub/javacc/}\\Abruf: 06/2006
+  \bibitem[24]{cupold} \emph{CUP bis 1999}. \\\url{http://www.cs.princeton.edu/~appel/modern/java/CUP/}\\Abruf: 01/2008
+  \bibitem[25]{cupnew} \emph{CUP ab 1999}. \\\url{http://www2.cs.tum.edu/projects/cup/}\\Abruf: 01/2008
+  \bibitem[26]{cocorhomepage} \emph{Homepage von CoCo/R}. \\\url{http://www.ssw.uni-linz.ac.at/Research/Projects/Coco/}\\Abruf: 01/2008
+  \bibitem[27]{cocolabhomepage} \emph{Homepage von CoCoLab}. \\\url{http://www.cocolab.org/}\\Abruf: 01/2008
+  \bibitem[28]{jabstracthomepage} \emph{Homepage von JAbstract}. \\\url{http://www.doc.gold.ac.uk/~mas01sd/jabstract/}\\Abruf: 01/2008
+  \bibitem[29]{jrefactoryhomepage} \emph{Homepage von JReFactory}. \\\url{http://jrefactory.sourceforge.net/}\\Abruf: 01/2008
+  \bibitem[30]{fujabahomepage} \emph{Homepage von FUJABA}. \\\url{http://www.fujaba.de/}\\Abruf: 01/2008
+  \bibitem[31]{jtbhomepage} \emph{JTB: Java Tree Builder}. \\\url{http://compilers.cs.ucla.edu/jtb/}\\Abruf: 01/2008
+  \bibitem[32]{gcjhomepage} \emph{Homepage von GCJ: GNU Compiler for Java}. \\\url{http://gcc.gnu.org/java/}\\Abruf: 01/2008
+  \bibitem[33]{jespressohomepage} \emph{Homepage von Java Espresso}. \\\url{http://www.church-project.org/Espresso/JavaEspresso.html}\\Abruf: 01/2008
+  \bibitem[34]{eclipsehomepage} \emph{Homepage von Eclipse}. \\\url{http://www.eclipse.org/}\\Abruf: 01/2008
+  \bibitem[35]{jdthomepage} \emph{JDT: Java Developer Tools for Eclipse}. \\\url{http://www.eclipse.org/jdt/core/index.php}\\Abruf: 01/2008
+  
+\end{thebibliography}
+
+\end{document}

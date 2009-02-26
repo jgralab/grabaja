@@ -1,0 +1,198 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Arbeitsprotokoll}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|p{4,5cm}|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		1.0 & WIP & 21.12.2005 & Nicolas Vika & Initiale Version\\ \hline
+		1.1 & WIP & 06.01.2006 & Arne Baldauf & Ergänzungen\\ \hline
+		1.2 & WIP & 17.01.2006 & Arne Baldauf & Ergänzungen\\ \hline
+		1.3 & WIP & 19.01.2006 & Arne Baldauf & Ergänzungen, Korrekturen\\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\begin{longtable}{|l|l|p{8cm}|l|}
+  \hline
+  Datum & Beginn - Ende & Tätigkeit(en) & Person(en) \\
+  \hline \hline
+  21.11.2005 & 17:00 - 18:00 & Treffen mit Prof. Ebert und Dr. Riediger. & Arne, Nicolas \\
+  \hline \hline
+  24.11.2005 & 16:00 - 18:00 & Erstellung der Aufgabenstellung. & Arne, Nicolas \\
+  \hline
+  28.11.2005 & 15:00 - 15:30 & Treffen mit Prof. Ebert und Dr. Riediger. & Arne, Nicolas \\
+  \hline \hline
+  12.12.2005 & 14:00 - 18:00 & Einarbeitung / Lektüre in die Funktionsweise von Gupro & Arne\\
+  \hline
+  13.12.2005 & 14:30 - 18:00 & Einarbeitung / Lektüre in die Funktionsweise von Gupro & Arne\\
+  \hline
+  & 15:00 - 19:00 & Suchen von Java Lexer und Parser(generatoren) im Internet. & Nicolas \\
+  \hline
+  14.12.2005 & 16:00 - 19:00 & Lektüre der Diplomarbeit von Hinterwäller & Arne\\
+  \hline
+  15.12.2005 & 15:30 - 20:00 & Suchen von Java-Grammatiken für Parsergeneratoren und Ausprobieren der Suchergebnisse & Nicolas \\
+  \hline
+  16.12.2005 & 10:00 - 13:00 & Neuaufsetzen des Java- und Eclipse-Systems zum Ausprobieren des AST Viewer PlugIns für Eclipse & Nicolas \\
+  \hline
+  & 18:00 - 20:00 & Einarbeitung / Lektüre in die Funktionsweise von Gupro & Arne\\
+  \hline
+  19.12.2005 & 16:00 - 18:00 & Erstellung der Anforderungsliste & Arne, Nicolas \\
+  \hline
+  21.12.2005 & 10:30 - 11:30 & Erstellung des Glossars und Arbeitsprotokolls und Nachtragen der bereits ausgeführten Tätigkeiten. & Nicolas \\ 
+  \hline
+  & 13:30 - 14:30 & Treffen mit Prof. Ebert und Dr. Riediger & Arne, Nicolas \\
+  \hline  \hline
+  22.12.2005 & 10:00 - 10:30 & Verfassen der Ergebnisse der Besprechung (ergebnisse 2005-12-21.tex) & Nicolas \\
+  \hline
+  02.01.2006 & 14:00 - 17:00 & Einarbeitung in LaTeX & Arne\\
+  \hline
+  & 17:00 - 18:00 & Einarbeitung in Eclipse & Arne\\
+  \hline
+  & 15:15 - 15:30 & Erstellung der Verzeichnisstruktur auf SVN-Server & Nicolas \\
+  \hline  
+  05.01.2006 & 14:00 - 14:30 & Überführung der Aufgabenstellung in LaTeX & Nicolas \\
+  \hline
+  06.01.2006 & 16:00 - 16:45 & Überarbeitung der Ergebnisse der Besprechung (ergebnisse 2005-12-21.tex) & Arne\\
+  \hline
+  & 16:45 - 18:00 & Überführung der Anforderungsliste in LaTeX \& Überarbeitung & Arne, Nicolas\\
+  \hline
+  09.01.2006 & 15:00 - 15:30 & Einarbeitung in SVN & Arne\\
+  \hline
+  & 15:30 - 17:00 & Online-Recherche nach Parsern / Parsergeneratoren & Arne\\
+  \hline
+  12.01.2006 & 12:00 - 15:00 & Erstellung der ersten Version des Zeitplans, Sammeln von Informationen über Fujaba Tool Suite RE & Nicolas \\
+  \hline
+  13.01.2006 & 18:00 - 20:30 & grobe Evaluierung von Fujaba, kontaktieren der Entwickler (Mailinglist) & Arne, Nicolas\\
+  \hline
+  16.01.2006 & 14:00 - 18:00 & Sammeln von Informationen über Coco/R, Accent, CoCoLab, JavaCUP, JRefactory, Stratego, Jay, ANTLR & Arne, Nicolas\\
+  \hline
+  17.01.2006 & 15:00 - 19:00 & Sammeln von Informationen über Coco/R, Accent, CoCoLab, JavaCUP, JRefactory, Stratego, Jay, ANTLR & Arne, Nicolas\\
+  \hline
+  & 19:00 - 22:00 & Zusammenfassung der bisher gesammelten Informationen & Arne, Nicolas\\
+  \hline
+  19.01.2006 & 16:00 - 17:00 & Treffen mit Prof. Ebert und Dr. Riediger & Arne, Nicolas\\
+  \hline \hline
+  & 17:15 - 18:45 & Verfassen der Ergebnisse der Besprechung (ergebnisse 2006-01-19.tex) & Arne\\
+  \hline
+  & 18:45 - 19:00 & Korrektur, Vervollständigung der Anforderungsliste & Arne\\
+  \hline
+  
+  ??? & ??? & ??? & Arne, Nicolas\\
+  \hline
+  
+  06.02.2006 & 14:00 - 15:00 & Treffen mit Prof. Ebert und Dr. Riediger & Arne, Nicolas\\
+  \hline \hline
+  & 15:30 - 16:30 & Zusammenfassung der Ergebnisse des Treffens & Arne, Nicolas\\
+  \hline
+  & 16:30 - 18:00 & Planung der neuen Struktur der Onlinerecherche & Arne, Nicolas\\
+  \hline
+  07.02.2006 & 14:00 - 20:30 & Restrukturierung, Überarbeitung der Onlinerecherche & Arne, Nicolas\\
+  \hline
+  09.02.2006 & 14:30 - 18:00 & Restrukturierung, Überarbeitung der Onlinerecherche & Arne, Nicolas\\
+  \hline
+  10.02.2006 & 16:00 - 19:00 & Erstellung, Überarbeitung der Testverfahren & Arne, Nicolas\\
+  \hline
+  11.02.2006 & 14:30 - 17:00 & Recherche, Überarbeitung Eclipse & Arne\\
+  \hline
+  & 14:30 - 17:00 & ??? & Nicolas\\
+  \hline
+  12.02.2006 & 16:30 - 21:00 & Überarbeitung, Korrektur der Onlinerecherche & Arne, Nicolas\\
+  \hline
+  13.02.2006 & 13:00 - 14:00 & Treffen mit Dr. Riediger & Arne, Nicolas\\
+  \hline \hline
+  14.02.2006 & 15:00 - 17.30 & Korrekturen, Überarbeitung Kapitel Eclipse & Arne\\
+  \hline
+  & 15:00 - 17:30 & ??? & Nicolas\\
+  \hline
+  15.02.2006 & 14:00 - 20.30 & Recherche, Parsingtests, Überarbeitung ANTLR & Arne\\
+  \hline
+  & 14:00 - 20:30 & ??? & Nicolas\\
+  \hline
+  16.02.2006 & 12:30 - 15.30 & Recherche, Parsingtests, Überarbeitung ANTLR & Arne\\
+  \hline
+  & 15:30 - 18.00 & Programmierung Präprozessor für Wisniewski-Grammatik & Arne\\
+  \hline
+  & 12:30 - 18:00 & ??? & Nicolas\\
+  \hline
+  17.02.2006 & 16:30 - 20.30 & Recherche, Parsingtests, Überarbeitung ANTLR & Arne\\
+  \hline
+  & 16:30 - 20:30 & ??? & Nicolas\\
+  \hline
+  18.02.2006 & 14:30 - 18.00 & Recherche, Vervollständigung Kapitel ANTLR & Arne\\
+  \hline
+  & 14:30 - 18.00 & ??? & Nicolas\\
+  \hline
+  & 18:00 - 22.30 & Erstellung des Fazit der Onlinerecherche & Arne, Nicolas\\
+  \hline
+  19.02.2006 & 15.30 - 19.00 & Korrekturlesen der Onlinerecherche & Arne\\
+  \hline
+  & 19.00 - 21.00 & Korrekturen an der Onlinerecherche & Arne, Nicolas\\
+  \hline
+  20.02.2006 & 13:00 - 14:00 & Treffen mit Prof. Ebert und Dr. Riediger & Arne, Nicolas\\
+  \hline \hline
+  01.03.2006 & 15:00 - 19:30 & Onlinerecherche vervollständigt, Arbeitsprotokoll aktualisiert, Ergebnisse der letzten Besprechung zusammengefasst & Arne\\
+  \hline
+  & 15:00 - 19:30 & ??? & Nicolas\\
+  \hline
+  02.03.2006 & ??:?? - 18:15 & ??? & Nicolas\\
+  \hline
+  03.03.2006 & 18:00 - 22:15 & Parsingtests und Benchmarks durchgeführt, LogParser programmiert & Arne\\
+  \hline
+  & ??:?? - 22:15 & ??? & Nicolas\\
+  \hline
+  04.03.2006 & 14:30 - 18:30 & Parsingtests und Benchmarks durchgeführt, LogParser vervollständigt & Arne\\
+  \hline
+  & 14:30 - 18:00 & ??? & Nicolas\\
+  \hline
+  
+  \caption{Arbeitsprotokoll}
+\end{longtable}
+\end{document}

@@ -1,0 +1,782 @@
+\subsection{Grundlagen}
+Dieser Abschnitt beschreibt die grundlegende Funktionsweise von ANTLR, den strukturellen Aufbau der Grammatiken und die Elemente der ANTLR-Metasprache , sowie die Umsetzung dieser in Javaquelltext.
+
+\subsubsection{Funktionsweise von ANTLR}
+ANTLR ist ein Parsergeneratoren - es erzeugt aus einer Grammatik einen Parser. Im Gegensatz zu den meisten anderen Generatoren kann ANTLR jedoch ohne Umwege auch (zum Parser passende) Lexer und Treeparser erzeugen. Es ist dazu nicht nötig, weitere Zusatzprogramme zu Hilfe zu nehmen, wie es beispielsweise bei CUP der Fall ist\footnote{CUP kann keine "`eigenen"' Lexer erzeugen. Es muss zunächst ein passender Lexer geschrieben oder mit einem Scannergenerator wie JLex erzeugt werden.}.\par
+Grundsätztlich gilt, dass für Lexer, Parser und Treeparser jeweils eine Grammatik geschrieben werden muss. Dabei kann der Benutzer frei wählen, welche er realisieren will. Braucht er beispielweise nur einen Lexer, so muss er nur die Lexergrammatik schreiben. Da ANTLR dem Paradigma der Objektorientierung folgt, ist es auch möglich die Grammatiken weiter zu vererben.\par
+Zur Erzeugung der gewünschten Programme werden die Grammatiken dann per Kommandozeilenparameter an ANTLR übergeben.
+Den Zusammenhang der Grammatikdateien und die Funktionsweise der erzeugten Programme stellt Abbildung \ref{antlrfunctionfigure} grob dar. Der Aufbau dieser Grammatiken wird im nächsten Abschnitt konkretisiert.
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[width=15cm]{figures/antlr_aufbau.pdf}
+	  \caption{Funktionsweise von ANTLR}
+	  \label{antlrfunctionfigure}
+  \end{center}
+\end{figure}
+
+\subsubsection{Aufbau der Grammatiken}
+Alle drei Grammatikarten (für Lexer, Parser und Treeparser) sind auf die selbe Weise aufgebaut und werden in der ANTLR-Metasprache geschrieben. Ziel ist es, möglichst lesbare und somit verständliche Grammatiken zu erhalten. Dabei können die verschiedenen Grammatiken wahlweise in einer gemeinsamen Datei, jeweils in einer eigenen oder in einer Kombination davon stehen.\par
+Die Grammatiken beginnen mit einer optionalen Präambel, es folgt verpflichtend die Definition der Parserklasse, optional Header, Optionen, Tokendefinitionen und eigene Methoden. Daran schließt sich, wieder verpflichtend, die Definition der Regeln an.
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics{figures/antlr_grammatik.pdf}
+	  \caption{Aufbau einer Grammatik}
+	  \label{antlr_grammatik}
+  \end{center}
+\end{figure}
+
+\paragraph{Präambel.}
+Der Inhalt aller Zeilen vor der Definition der Parserklasse nennt sich die Präambel. Diese wird unverändert vor den Quelltext der erzeugten Klasse kopiert (also noch vor die Definition der Klasse). Dies dient z. B. dem Einfügen von Kommentaren, Importklauseln für zusätzlich benötigte Klassen oder einer Packagedeklaration in Java.
+
+\paragraph{Definition der Parserklasse.}
+Diese ähnelt dem Aussehen einer Klassendefinition (mit Ableitung einer Oberlasse) in Java und legt fest, ob es sich dabei um eine Grammatik für einen Lexer, Parser oder Treeparser handelt (Beispiel siehe Listing \ref{mylexer}). Tatsächlich führt standardmässig, in Java, die Angabe von \texttt{Lexer} zur Ableitung der Klasse \texttt{antlr.CharScanner}, \texttt{Parser} zur Ableitung von \texttt{antlr.LLkParser} und \texttt{TreeParser} zur Ableitung von \texttt{antlr.TreeParser}. Wird eine andere Klasse benötigt, so kann diese, in Klammern und Anführungszeichen nach der Definition, angegeben werden (Beispiel siehe Listing \ref{otherlexer}). Diese muss selbst allerdings eine Subklasse der jeweiligen oben angeführten Klassen sein.
+{
+\lstset{numbers=none,
+        emph={Lexer},
+        emphstyle=\underbar,
+        caption=Definition und somit Beginn einer Lexergrammatik,
+        label=mylexer}
+\begin{lstlisting}
+class MyLexer extends Lexer;
+\end{lstlisting}
+}
+{
+\lstset{keywordstyle=\underbar,
+        numbers=none,
+        emph={Lexer},
+        emphstyle=\underbar,
+        caption=Benutzung eines anderen Lexers,
+        label=otherlexer}
+\begin{lstlisting}
+class OtherLexer extends Lexer("antlr.debug.DebuggingCharScanner");
+\end{lstlisting}
+}
+Alle nun folgenden Abschnitte, mit Ausnahme des Abschnittes der Regeln, werden in geschweiften Klammern eingefasst.
+
+\paragraph{Header.}
+Im Header kann eigener Quelltext definiert werden, der in die zu erzeugenden Klassen aufgenommen werden soll (unmittelbar nach der Klassendefinition). Dieser spielt meist nur für C++ basierte Parser eine Rolle, da in dieser Sprache Elemente erst deklariert werden müssen, bevor diese referenziert werden dürfen (wie in Listing \ref{header}).
+{
+\lstset{numbers=none,
+        emph={options},
+        emphstyle=\underbar,
+        caption=Mögliche Verwendung für einen Header,
+        label=header}
+\begin{lstlisting}
+{
+  String * message;  // ein Zeiger auf einen String
+}
+\end{lstlisting}
+}
+
+\paragraph{Optionen.}
+In den Optionen werden abschnittsspezifische Einstellungen vorgenommen. Abschnittsspezifisch, da Optionen von Datei-, über Grammatik-, bis zu Regel- und Tokenebene hinab, gesetzt werden können. In den von uns benutzten Grammatiken wurden Optionen allerdings nur auf Grammatik- und Regelebene gesetzt. Ein kurzes Beispiel ist in den Listings \ref{lexeroptions} und \ref{parseroptions} zu sehen. Eine komplette Aufstellung aller Optionen befindet sich auf der Hompepage von ANTLR unter \cite{antlrdocoptions}.
+{
+\lstset{numbers=none,
+        emph={options},
+        emphstyle=\underbar,
+        caption=Optionsabschnitt einer Lexergrammatik,
+        label=lexeroptions}
+
+\begin{lstlisting}
+options{
+  exportVocab=MyVocabulary; // Name des Tokenvokabulars
+}
+\end{lstlisting}
+}
+
+{
+\lstset{numbers=none,
+        emph={options},
+        emphstyle=\underbar,
+        caption=Optionsabschnitt einer Parsergrammatik,
+        label=parseroptions}
+\begin{lstlisting}
+options{
+  k = 2; // Größe des Lookaheads
+  buildAST = true; // Parser soll AST erzeugen
+  importVocab = MyVocabulary; // Zu benutzendes Vokabular an Tokens
+}
+\end{lstlisting}
+}
+
+\paragraph{Tokendefinitionen.}
+Die Tokendefinitionen dienen für ggf. nötige Anpassungen der Tokens an die Grammatik. I. d. R. werden die Tokens im Lexer erzeugt und deshalb auch in dessen Grammatik definiert. Diese Tokens stehen dann zur Verwendung in weiteren Grammatiken zur Verfügung, wenn die Option \texttt{exportVocab} gesetzt wurde, wie in Listing \ref{lexeroptions} gezeigt. Mit der Option \texttt{importVocab} (siehe Listing \ref{parseroptions}) wird das Vokabular in einer anderen Grammatik nutzbar gemacht.\par
+Für den Fall, dass beispielsweise im Vokabular benötigte Tokens fehlen, oder diese anderen Werten zugeordnet werden sollen, können die Tokens in den Tokendefinitionen angepasst werden.\par
+Dies kann nicht nur bei der Verebung von Grammatiken vorkommen, sondern auch bei einfacher Verwendung des Vokabulars. Da im Treeparser nur AST-Elemente angesprochen werden können, die auf einem Token basieren, werden oft "`imaginäre"' Tokens definiert, um beispielsweise abstraktere Strukturen ansprechen zu können.
+{
+\lstset{numbers=none,
+        emph={tokens},
+        emphstyle=\underbar,
+        caption=Tokendefinitionen}
+
+\begin{lstlisting}
+tokens{
+  EXPR;  // ein kompletter Ausdruck
+  DECL;  // eine Deklaration
+}
+\end{lstlisting}
+}
+\paragraph{Eigene Methoden.}
+Die eigenen Methoden müssen in der Zielsprache geschrieben sein, da diese unverändert in den Quelltext der erzeugten Klasse (nach dem Inhalt aus dem Header) kopiert werden. Diese können dann beispielsweise in den semantischen Aktionen von Grammatikregeln zum Einsatz kommen.
+
+\paragraph{Regeldefinitionen.}
+Grundsätzlich wird, wie auch die Präambel, dieser letzte Teil nicht in geschweiften Klammern eingefasst. Es handelt sich dabei  i. d. R. um den umfangreichsten Abschnitt. Deshalb wird den Regeldefinitionen ein eigener Abschnitt gewidmet.
+
+\subsubsection{ANTLR-Metasprache}
+Alle Regeln werden in einer EBNF-ähnlichen Notation definiert. Zu den Elementen der EBNF kommen ergänzende Operatoren und neue Elemente für Sichtbarkeit, Exceptions, semantische Aktionen, Eingabe- \& Ausgabeparameter sowie syntaktische \& semantische Prädikate hinzu. Diese Menge von Elementen bildet die ANTLR-Metasprache (näheres siehe \cite{antlrdocmetalang}). Das in den folgenden Paragraphen jeweils beschriebene Element ist, im dazugehörigen Beispiel, farblich hervorgehoben - Schlüsselworte sind unterstrichen.
+
+\paragraph{Operatoren.}
+Grundsätzlich sind alle syntaktischen Elemente der EBNF vertreten. Im Gegensatz zur "`richtigen"' EBNF werden in der ANTLR-Metasprache eckige und geschweifte Klammern jedoch für andere Zwecke verwendet. Deshalb werden diese durch andere Konstrukte ersetzt und ergänzt. Tabelle \ref{antlr_operatoren} listet diese auf.\par
+\begin{table}[htbp]
+	\begin{center}
+	\begin{tabular}{|l|l|l|}
+	  \hline
+	  \textbf{In ANTLR} & \textbf{Semantik} & \textbf{In EBNF} \\
+	  \hline \hline
+		\texttt{( ... )*} & 0 bis $\infty$ & \texttt{\{ ... \}} \\ \hline
+		\texttt{( ... )?} & Option: 0 oder 1 & \texttt{[ ... ]} \\ \hline
+		\texttt{( ... )+} & 1 bis $\infty$ & \texttt{Symbol \{ Symbol \}} \\ \hline
+		$\tilde{ }$ & Element-/Set-Komplement & \texttt{-} \\ \hline
+		\texttt{..} & Bereichsoperator (von bis) &  \\ \hline\hline
+		\texttt{.} & Wildcard & \\ \hline\hline
+		\texttt{\^{ }} & AST-Wurzeloperator &  \\ \hline
+		\texttt{!} & AST-Ausschlussoperator &  \\ \hline\hline
+		\texttt{\{ ... \}?} & Semantisches Prädikat & \\ \hline
+		\texttt{\{ ... \}=>} & Syntaktisches Prädikat & \\ \hline
+	\end{tabular}
+	\caption{Operatoren der ANTLR-Metasprache}
+	\label{antlr_operatoren}
+	\end{center}
+\end{table}
+Zu den ersten vier Operatoren existieren in der EBNF unmittelbare Pendants. Der Bereichsoperator (...) ist jedoch nur durch eine verkettete Veroderung in EBNF realisierbar. Er dient der Bequemlichkeit des Grammatikschreibers - es genügt zum Beispiel \texttt{'a' .. 'z'} anzugeben, statt alle Zeichen des Alphabets einzeln aufzuführen.\par
+Der Wildcard-Operator (.) stammt von den regulären Ausdrücken und "`matcht"' jedes Zeichen.\par
+Die AST-Operatoren dienen zum Steuern der Erzeugung eines AST und werden in Abschnitt \ref{regeln_in_der_parsergrammatik} detailiert erläutert. Die Prädikate werden in bereits in Paragraphen dieses Abschnitts näher behandelt.
+
+\paragraph{Aufbau einer Regel.}
+Die Regeln der Grammatik bestehen aus einer linken und rechten Seite. Die Seiten werden durch einen Doppelpunkt (:) getrennt (im Gegensatz zu "`::="' in EBNF). Die Regel endet dann immer mit einem Semikolon (;).\par
+Auf der linken Seite steht der Regelname - optional können neben der Sichtbarkeit der Regel auch Eingabe- und Ausgabeparameter, sowie eine semantische Aktionen (welche vor der Regel ausgeführt wird) festgelegt werden. Auf der rechten Seite stehen die Produktionen, welche mit Optionen, semantischen und syntaktischen Prädikaten, sowie weiteren semantischen Aktionen erweitert werden können. Ein Beispiel für eine einfache Regel zeigt Listing \ref{regel_aufbau}.
+{
+\lstset{numbers=none,
+        caption=Regel im Parser die eine Syntax definiert,
+        label=regel_aufbau}
+\begin{lstlisting}
+type : classOrInterfaceType | builtInType ;
+\end{lstlisting}
+}
+
+\paragraph{Sichtbarkeit einer Regel.}
+Für jede Regel kann die Sichtbarkeit per Modifizierer festgelegt werden. Da jede Regel in eine Methode umgesetzt wird, kann somit, bereits in der Grammatik, auf die spätere Sichtbarkeit Einfluss genommen werden. Es genügt dazu dem Regelnamen einen Sichtbarkeitsmodifizierer voranzustellen. Erlaubt sind \texttt{private}, \texttt{protected} und \texttt{public}.
+{
+\lstset{numbers=none, 
+        caption=Regel mit Sichtbarkeitsmodifizierer, 
+        label=regel_sichtbarkeit,
+        escapechar=X}
+\begin{lstlisting}
+X\red privateX type : classOrInterfaceType | builtInType ;
+\end{lstlisting}
+}
+
+\paragraph{Exceptions.}
+Auch das Auslösen von Exceptions kann bereits in der Grammatik gesteuert werden. Durch Anhängen des Schlüsselwortes \texttt{throws}, mit der auszulösenden Exception, an den Regelnamen, wird dies festgelegt. Auf den ersten Blick macht diese Funktionalität scheinbar keinen Sinn. Zwar wird die angegebene Exception bei der Deklaration der Methode mit aufgeführt, doch wird die Exception niemals ausgelöst. Diese muss in einer semantischen Aktion manuell ausgelöst werden.
+{
+\lstset{numbers=none,
+        caption=Eine Regel die eine Exception auslösen kann, 
+        label=regel_exception,
+        escapechar=X}
+\begin{lstlisting}
+a X\red throws MyExceptionX  : A ;
+\end{lstlisting}
+}
+Ferner können in einer Regel mehrere Exceptionhandler definiert werden. @TODO beschreiben/oder geht das schon zu weit?
+
+\paragraph{Optionen.}
+Wie bereits o. a. sind Optionen, bis hinab auf Regel- und Symbolebene, möglich. Um Optionen für eine Regel festzulegen, reicht, es dem Regelnamen das Schlüsselwort \texttt{options}, mit den gewünschten Optionen in geschweiften Klammern, anzuhängen. Soll eine Option nur für ein Symbol gelten, so muss vor diesem das Schlüsselwort \texttt{options}, mit den gewünschten Optionen in geschweiften Klammern und einem nachgestellten Doppelpunkt, stehen. Ferner müssen Optionsteil und Symbol in einem Klammerpaar eingefasst sein.
+{
+\lstset{numbers=none,
+        emph={options},
+        emphstyle=\underbar,
+        caption=Option für die Regel type, 
+        label=option_regel,
+        escapechar=B}
+\begin{lstlisting}
+type B\red options \{defaultErrorHandler = false;\}B : classOrInterfaceType
+                                            | builtInType ;
+\end{lstlisting}
+}
+{
+\lstset{numbers=none, 
+        emph={options, greedy},
+        emphstyle=\underbar,
+        caption=Option für das Symbol WS (Whitespace), 
+        label=option_symbol,
+        escapechar=E}
+\begin{lstlisting}
+ID : ('a'..'z')+ (E\red options \{greedy = true;\}:E WS)? ;
+\end{lstlisting}
+}
+\paragraph{Semantische Aktionen.}
+Bei einer semantischen Aktion handelt es sich um ein Quelltextfragment in der Zielsprache. Es muss in geschweiften Klammern eingefasst werden und wird (unverändert) in das zu erzeugende Programm kopiert. Somit wird es zu dem Zeitpunkt ausgeführt, an dem der erzeugte Parser (intern) die Stelle erreicht, an der analog in der Grammatik die semantische Aktion definiert wurde.
+Erlaubt sind diese Aktionen auf der linken Seite unmittelbar vor dem Doppelpunkt (diese wird somit immer ausgeführt), auf der rechten Seite an beliebiger Stelle (die Ausführung hängt von der Produktion ab). In den semantischen Aktionen ist das Wort \texttt{return} nicht erlaubt, da es schon von ANTLR als Schlüsselwort für ein Rückgabeargument belegt ist. Will man dennoch in Java und C++ Methoden mit \texttt{return} nutzen, so müssen diese im Abschnitt für eigene Methoden der Grammatik, formuliert werden.\par
+In Listing \ref{semanticactions} wird der Wert der Variable \texttt{i}, durch die vier semantischen Aktionen, am Ende der Regel, entweder 1 oder -1 betragen.
+{
+\lstset{numbers=none,
+        caption=Regel mit semantischen Aktionen,
+        label=semanticactions,
+        escapechar=E}
+\begin{lstlisting}
+type E\red\{int i = 0;\}E : {i++;} classOrInterfaceType E\red \{i++;\}E
+                  | builtInType E\red \{i--;\}E S ;
+\end{lstlisting}
+}
+Sollte in der semantischen Aktion auf ein Symbol der Regel zugegriffen werden, so sind dazu spezielle Operatoren nötig. Dadurch wird die semantische Aktion nicht mehr unverändert in den Zielquelltext kopiert, sondern erfährt zuvor einige Ersetzungen. Dazu siehe aber weiter unten.
+
+\paragraph{Semantische Prädikate.}
+Ein Prädikat beschreibt eine Bedingung, die zur Laufzeit erfüllt sein muss, damit der Parsingvorgang fortgesetzt werden kann. Diese Bedingung muss dann \texttt{true} oder \texttt{false} sein. Im semantischen Prädikat wird die Bedingung in der Zielsprache formuliert. Diese steht in den Grammatiken zwischen geschweiften Klammern mit einem angehängten Fragezeichen (\texttt{\{ ... \}?}). Dabei sollte die Bedingung immer nach der Semantik eines Symbols fragen, wie beispielsweise in Listing \ref{validating_semantic_predicate}. Dort wird nach Abarbeitung der Regel überprüft, ob der Text des Tokens \texttt{ID} ein Typname ist.
+{
+\lstset{numbers=none,
+        caption=Regel mit validierenden semantischen Prädikat,
+        label=validating_semantic_predicate,
+        escapechar=E}
+
+\begin{lstlisting}
+decl : "var" ID ":" t:ID E\red \{isTypeName(t.getText())\}?E ;    
+\end{lstlisting}
+}
+Bei o. a. Beispiel handelt es sich um ein validierendes semantisches Prädikat. Es muss einer Produktion immer nachgestellt werden und (wie Assertions) eine Exception auslösen, sollte die Bedingung nicht erfüllt sein. In diesem Beispiel muss dies in der Methode \texttt{isTypeName} implementiert sein.\par
+Semantische Prädikate können auch zum eindeutig machen von mehrdeutigen Grammatiken verwendet werden. Die beschriebene Syntax  in Listing \ref{disambiguated_semantic_predicate} wäre unter LL(k) mit k < 2 nichtdeterminiert, da beide Produktionen mit dem Token \texttt{ID} beginnen. Die erste repräsentiert eine Deklaration wie \texttt{int i} und die zweite eine Zuweisung wie \texttt{i = 5}. Mit dem vorangestellten semantischen Prädikat kann jedoch unterschieden werden, welcher Fall zutrifft. Basiert das Token \texttt{ID} auf einem Typnamen, dann ist die Bedingung erfüllt und die erste Produktion wird angewand. Basiert es nicht auf einem Typnamen, so handelt es sich um eine Zuweisung und die zweite Produktion findet Verwendung. Durch den Aufruf der Methode \texttt{LT(1)} wird das nächste Token abgerufen (also ein Lookahead von 1).
+{
+\lstset{numbers=none,
+        caption=Regel mit semantischem Prädikat,
+        label=disambiguated_semantic_predicate,
+        escapechar=E}
+
+\begin{lstlisting}
+stat : E\red \{isTypeName(LT(1))\}?E ID ID ";"         // Deklaration
+     |                      ID "=" expr ";" ; // Zuweisung
+\end{lstlisting}
+}
+
+\paragraph{Syntaktische Prädikate.}
+Beim syntaktischen Prädikat formuliert die Bedingung eine zu erkennende Syntax. Zum Festlegen dieser wird ein "`daraus folgt"' (\texttt{\{ ...\}=>}) verwendet. In Listing \ref{syntactic_predicate} formuliert die Bedingung, dass ein Symbol \texttt{list} von einem Gleich (=) gefolgt werden muss, damit diese erfüllt ist. Analog zum validierenden semantischen Prädikat wird dann die erste Produktion gewählt, sonst die zweite.
+{
+\lstset{numbers=none,
+        caption=Regel mit semantischem Prädikat,
+        label=syntactic_predicate,
+        escapechar=X}
+\begin{lstlisting}
+stat:   X\red ( list "'="' )=>X list "=" list
+    |   list ;
+\end{lstlisting}
+}
+
+\paragraph{Ein- \& Ausgabeargumente.}
+Jede Regel kann mit Elementen für die Ein- und Ausgabe von Werten erweitert werden. Diese machen i. d. R. nur Sinn, wenn die übergebenen Werte denn benutzt werden. Möglich ist dies als Argument in einer Regelreferenz, oder durch Verwendung in einer semantischen Aktion.\par
+Durch Anhängen des Typs mit einem Variablennamen in eckigen Klammern an den Regelnamen, kann einer Regel ein Eingabewert übergeben werden. Damit eine Regel einen Wert zurückgibt reicht es, dem Regelnamen das Schlüsselwort \texttt{returns}, sowie in eckigen Klammern den Ausgabetyp mit Variablennamen, anzuhängen. Im Beispiel aus Listing \ref{io_arguments} wird der Eingabewert, per semantischer Aktion, nur an das Ausgabeargument weitergegeben.
+{
+\lstset{numbers=none,
+        caption=Regel mit Ein- und Ausgabe,
+        emph={returns},
+        label=io_arguments,
+        escapechar=X,
+        emphstyle=\underbar}
+\begin{lstlisting}
+typeX\red [String in]X returns X\blue [String out]X : classOrInterfaceType 
+                                     | builtInType { out = in } ;
+\end{lstlisting}
+}
+
+\paragraph{Zugriff auf Symbole.}
+Alle Symbole in der Grammatik werden zur Laufzeit durch Objekte repräsentiert. Um auf diese während der Laufzeit, in einer semantischen Aktion, zuzugreifen, stellt ANTLR ebenfalls Sprachelemente zur Verfügung.\par
+Soll auf ein Objekt zugegriffen werden, muss das entsprechende Symbol mit einem Label markiert werden. Ein Label ist ein, dem Symbol vorangestellter Identifier mit Doppelpunkt (:). In Listing \ref{zugriff_parser} wird der Text eines Objekts, welches das Symbol \texttt{builtInType} repräsentiert, ausgegeben. Auf diese Weise kann dies nur in Parser und Treeparser geschehen.
+{
+\lstset{numbers=none,
+        caption=Ausgabe des Text eines Symbols über ein Label,
+        label=zugriff_parser,
+        escapechar=X}
+\begin{lstlisting}
+type : classOrInterfaceType
+     | X\red x:XbuiltInType {System.out.println( X\red xX.getText() )} ;
+\end{lstlisting}
+}
+Soll in einer Aktion auf den Rückgabewert einer Regelreferenz zugegriffen werden (sofern diese einen liefert), muss das Symbol einem Identifier nur per Gleich (=) zugewiesen werden.\par
+Im Lexer kann nur auf das zu erzeugende Token zugegriffen werden, da jede Regel nur eine Tokendefinition zulässt. Dazu wird kein Label benötigt, sondern es reicht ein Dollarzeichen (\$) zu Anfang der semantischen Aktion, für den Zugriff. In Listing \ref{zugriff_lexer} wird dadurch der Typ des Tokens \texttt{WS} (Whitespace) auf \texttt{SKIP} gesetzt, damit der Parser dieses später fallen lässt und zum nächsten übergeht.
+{
+\lstset{numbers=none,
+        caption=Setzen des Typs eines Tokens auf SKIP,
+        label=zugriff_lexer,
+        escapechar=X}
+\begin{lstlisting}
+WS    : ( ' ' | '\r' '\n' | '\n' | '\t' ) {X\red \$XsetType(Token.SKIP);} ;
+\end{lstlisting}
+}
+Im folgenden Abschnitt wird auf Besonderheiten der Regeln der Lexergrammatik näher eingegangen.
+
+\subsubsection{Regeln in der Lexergrammatik}
+Die Regeln des Lexers definieren lediglich die Tokens. Diese stehen auf der linken Seite und die zu erkennenden Terminale auf der rechten Seite der Regeln. Strings müssen zwischen Anführungszeichen stehen und werden vom Lexer als Zeichensequenz interpretiert (Bsp. aus "'for"' wird 'f' 'o' 'r').\par
+Auch in der Lexergrammatik können semantische Aktionen definiert werden. Zwar ist dort jede Ausprägung von Javaquelltexten erlaubt, jedoch ist darüber i. d. R. nur die Steuerung des Lexers (wie etwa Behandlung von erst zur Laufzeit erkennbaren Sonderfällen) sinnvoll. Ferner dürfen Lexerregeln keine benutzerdefinierten Exceptions auslösen\footnote{Für Parser und Treeparser gilt dies nicht.}.
+{
+\lstset{numbers=none,
+        caption=Definition von Tokens,
+        label=lexer_token_definition}
+\begin{lstlisting}
+QUESTION : '?' ;
+LPAREN   : '(' ;
+RPAREN   : ')' ;
+LBRACK   : '[' ;
+RBRACK   : ']' ;
+FOR      : "for" ;
+\end{lstlisting}
+}
+
+\subsubsection{Regeln in der Parsergrammatik}
+\label{regeln_in_der_parsergrammatik}
+In der Parsergrammatik wird in den Regeln die Syntax der zu akzeptierenden Ausdrücke angegeben. Dabei sollten dieselben Tokens wie in der Lexergrammatik benutzt werden.\par
+In der Parsergrammatik sind die Vorkommen der Tokens als Tokenreferenz zu betrachten, d.h. eine Tokenreferenz veranlasst den Lexer die Zeichenfolge, welche das Token symbolisiert, zu erkennen. Die Tokenreferenzen dürfen nur auf der rechten Seite der Regeln verwendet werden und müssen mit einem Großbuchstaben beginnen. Auf der linken Seite stehen die Symbolbezeichner (in ANTLR auch Regelnamen genannt). Kommt ein Symbolbezeichner auf der rechten Seite vor, dann gilt dieser als Regelreferenz (aber nur innerhalb der Parsergrammatik). Symbolbezeichner und -referenzen beginnen mit einem Kleinbuchstaben. Der Symbolbezeichner der ersten Regel ist auch automatisch das Startsymbol\footnote{Der  Parsingvorgang beginnt mit dem Aufruf der Parsermethode, welche den gleichen Namen wie das Startsymbol trägt.}.\par
+Wird in der Parsergrammatik ein String benutzt, für welchen im Lexer kein Token mit entsprechendem Bezeichner erzeugt wird, so erstellt ANTLR automatisch ein Token für den String, welches mit \texttt{LITERAL\_} beginnt (Bsp: \texttt{enum} in der Parsergrammatik wird dem Token \texttt{LITERAL\_enum} zugeordnet).\par
+Im Gegensatz zur Lexergrammatik können Regeln der Parsergrammatik benutzerdefinierte Exceptions auslösen. Ferner kann der Parser dazu veranlasst werden einen AST aufzubauen.
+
+\paragraph{Erzeugung des AST.}
+Um den Parser anzuweisen, einen AST aufzubauen muss im Optionsteil seiner Grammatik die Einstellung \texttt{buildAST=true} gesetzt werden.  Grundsätzlich werden Regelnamen (linke Seite) zu Vaterknoten der Terminale, Token- und Regelreferenzen der rechten Seite. Dabei wird die Reihenfolge von links nach rechts übernommen.\par
+Ferner kann auch eine Tokenreferenz, auf der rechten Seite der Regel, zu einem Vaterknoten befördert werden. Durch Ergänzung dieser mit einem Accent Circonflexe (\^{ }) wird der Parser angewiesen alle Elemente zur rechten der Tokenreferenz als Kindknoten anzuhängen. Als Vaterknoten des Vaterknotens fungiert der aus dem Regelnamen resultierende AST-Knoten. Ein Ausrufezeichen (!) hingegen weist den Parser an, keinen entsprechenden AST-Knoten zu erzeugen und dieses Element somit auch nicht mit in den Baum aufzunehmen. Listing \ref{parser_ast_aufbau} verdeutlicht dies anhand von Beispielregeln. Der resultierende AST ist in Abbildung \ref{antlr_parser_ast} dargestellt.
+{
+\lstset{numbers=none,
+        caption=Steuern des AST-Aufbaus in der Parsergrammatik,
+        label=parser_ast_aufbau,
+        escapechar=X}
+\begin{lstlisting}
+a : b c    ; // Xa wird Vaterknoten von b \& cX
+b : B!     ; // Xb wird ein Blatt (keine Kindknoten)X
+c : d^ e f ; // Xc bekommt Kindknoten d, der Vaterknoten von e \& f wirdX
+\end{lstlisting}
+}
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[height=7cm]{figures/antlr_parser_ast.pdf}
+	  \caption{Resultierender AST der aus \emph{Listing \ref{parser_ast_aufbau}} resultiert.}
+	  \label{antlr_parser_ast}
+  \end{center}
+\end{figure}
+
+\subsubsection{Regeln in der Treeparsergrammatik}
+Neben der Erzeugung von Lexern und Parsern bietet ANTLR auch die Erzeugung von Treeparsern (auch Treewalker genannt) an. Grundsätzlich gilt hier das gleiche wie für die Parsergrammatik, allerdings traversiert der Treeparser einen AST anstelle eines Tokenstreams.\par
+Eine Besonderheit der Treeparsergrammtik ist die Raute (\#). Eine Raute veranlasst einen Abstieg im Baum. Die Regel in Listing \ref{raute} "`matcht"' nur einen Knoten \texttt{PLUS}, dessen ersten zwei Kinderknoten vom Typ \texttt{INT} sind. Dabei muss der Vaterknoten immer über eine Tokenreferenz identifiziert werden - d. h. dieser muss ursprünglich ein Token im Parser zugrundeliegen. Beim schreiben der Treeparsergrammatik muss deshalb bedacht werden mit welchen Strukturen der AST im Parser aufgebaut wurde.
+{
+\lstset{caption=Regel die einen Subbaum "`matcht"',
+        numbers=none,
+        label=raute}
+\begin{lstlisting}
+expr : #( PLUS INT INT ) ;
+\end{lstlisting}
+}
+
+\begin{figure}[htbp]
+  \begin{center}
+	  \includegraphics[height=3cm]{figures/antlr_plus_ast.pdf}
+	  \caption{Beispiel-AST der von der Regel aus \emph{Listing \ref{raute}} erwartet wird.}
+	  \label{antlrplusast}
+  \end{center}
+\end{figure}
+
+\subsubsection{Umsetzung der Grammatik in Javaquelltext}
+Nicht nur die Grammatiken sollen gut lesbar sein, sondern auch die erzeugten Parser sollen für einen Entwickler möglichst nachvollziehbar sein. Deshalb wurde ANTLR dahingehend optimiert Quelltexte zu erzeugen, die auch ein Entwickler schreiben würde, wenn er einen Parser von Hand programmieren müsste. Schaut man in die erzeugten Lexer- / Parserquelltexte hinein, kann man leicht nachvollziehen, wie ANTLR die Regeln der Grammatik in Quelltext (hier in Java), umsetzt.\par
+Zu jedem beschriebenen Element folgt ein Beispiel. Auf der linken Seite steht die Grammatik und auf der rechten der daraus erzeugte Quelltext. Das jeweils thematisierte Element ist auf beiden Seiten farblich hervorgehoben.
+
+\paragraph{Operatoren.}
+
+\paragraph{Regeln.}
+Jede Regel wird zu einer Methode, die \texttt{final} und standardmäßig \texttt{public} ist. Dabei dient der Regelname als Methodenbezeichner. Eine Regelreferenz wird zum Aufruf einer Methode und eine Tokenreferenz weist den Lexer mit \texttt{match(Token)} an, dieses zu erkennen. Dazu kommen noch Exceptions, die aber erst im nächsten Abschnitt behandelt werden.\par
+Der Übersichtlichkeit halber, werden in den Quelltexten der folgenden Paragraphen die Modifizierer weggelassen. Der Leser sollte aber immer im Hinterkopf behalten, dass diese immer von ANTLR erzeugt werden.
+{
+\begin{figure}[htbp]
+\begin{minipage}[t]{7cm}
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        escapechar=B}
+\begin{lstlisting}
+B\red aB : B\blue AB ;
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\lstset{escapechar=B}
+\begin{lstlisting}
+public final void B\red aB(){
+  match(B\blue AB);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{Umsetzung einer einfachen Regel}
+\label{umsetzung_regel}
+\end{figure}
+}
+
+\paragraph{Exceptions.}
+Grundsätzlich gibt ANTLR jeder Methode, die aus einer Regel entstammt, mehrere Exceptions mit. Im Lexer sind dies:
+\begin{itemize}
+ \item{\texttt{RecognitionException}}
+ \item{\texttt{CharStreamException}}
+ \item{\texttt{TokenStreamException}}
+\end{itemize}
+Im Parser sind dies:
+\begin{itemize}
+  \item{\texttt{RecognitionException}}
+  \item{\texttt{TokenStreamException}}
+\end{itemize}
+Es kann jedoch sein, dass in dieser Methode keinerlei Exceptions ausgelöst werden. In diesem Fall sind o. a. Exceptions in der Methodendeklaration noch aufgeführt, es existiert im Methodenrumpf aber kein throw-Statement. In Abbildung \ref{umsetzung_exception} ist dies der Fall, \texttt{MyException} muss in einer semantischen Aktion manuell ausgelöst werden.\par
+Der Übersichtlichkeit halber, werden in den Quelltexten der folgenden Paragraphen die \texttt{throws}-Klauseln weggelassen. Der Leser sollte aber immer im Hinterkopf behalten, dass diese trotzdem immer von ANTLR erzeugt wird.
+{
+\begin{figure}[htbp]
+\begin{minipage}[t]{7cm}
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        escapechar=B}
+\begin{lstlisting}
+a throws B\red MyExceptionB : A ;
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\lstset{escapechar=B}
+\begin{lstlisting}
+void a()
+throws RecognitionException,
+       TokenStreamException,
+       B\red MyExceptionB
+{
+  match(A);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{Umsetzung einer Regel die eine Exception auslösen kann}
+\label{umsetzung_exception}
+\end{figure}
+}
+\paragraph{Sichtbarkeit einer Regel.}
+Der Sichtbarkeitsmodifizierer wird unverändert als solcher in den Quelltext übernommen. Ist in der Grammatik keiner angegeben, wird standardmässig \texttt{public} verwendet.\par
+{
+\begin{figure}[htbp]
+\begin{minipage}[t]{7cm}
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        escapechar=B}
+\begin{lstlisting}
+B\red privateB a : A ;
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\lstset{escapechar=B}
+\begin{lstlisting}
+B\red privateB final a()
+{
+  match(A);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{Umsetzung einer Regel mit Sichtbarkeitsmodifizierer}
+\label{umsetzung_sichtbarkeit}
+\end{figure}
+}
+\paragraph{Semantische Aktion.}
+Diese wird unverändert in den Quelltext des Zielprogramms kopiert und muss deshalb auch in der Zielsprache formuliert werden.
+{
+\begin{figure}[htbp]
+\begin{minipage}[t]{7cm}
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        escapechar=E,
+        label=umsetzung_semantic_action}
+\begin{lstlisting}
+{E\thesame int i; i++; int j=i;E}
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\lstset{escapechar=E}
+\begin{lstlisting}
+E\red
+int i; 
+i++;
+int j=i;E
+\end{lstlisting}
+\end{minipage}
+\caption{Umsetzung einer semantischen Aktion}
+\end{figure}
+}
+\paragraph{Semantisches Prädikat.}
+Die Bedingung in einem semantischen Prädikat wird als Bedingung in eine \texttt{if}-Klausel kopiert. Auch hier muss diese Bedingung deshalb in der Zielsprache formuliert werden. In Abbildung \ref{umsetzung_semantic_predicate} ist die Bedingung mit \texttt{LA(1)==ID} kurzschlussverundet. Befindet sich bei einem Lookahead von 1 kein Token \texttt{ID}, so tritt keine der beiden Produktionen ein, sondern ein Fehlerfall.
+{
+\begin{figure}[htbp]
+\begin{minipage}[t]{7cm}
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        escapechar=X}
+\begin{lstlisting}
+stat : {X\red isTypeName(LT(1))X}?
+       ID ID ";"
+     | ID "=" expr ";"
+     ;    
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{9cm}
+\lstset{escapechar=X}
+\begin{lstlisting}
+if(LA(1)==ID && X\red isTypeName(LT(1))X){
+   // ID ID ";"
+}
+else if(LA(1)==ID){
+   // ID "=" expr ";"
+}
+else{
+   // Fehler
+}
+\end{lstlisting}
+\end{minipage}
+\caption{Umsetzung eines semantischen Prädikats}
+\label{umsetzung_semantic_predicate}
+\end{figure}
+}
+
+\paragraph{Eingabe- \& Ausgabeargumente.}
+Die Eingabeargumente einer Regel werden zu den Eingabeargumenten der daraus erzeugten Methode. Das Ausgabeargument wird zum Rückgabeargument der Methode. Da eine Methode nur ein Argument zum Rückgabezeitpunkt ausgeben kann, ist auch nur ein Ausgabeargument erlaubt. In Abbildung \ref{umsetzung_io} wird in der Regel \texttt{mexpr} der Eingabewert dem Ausgabeargument, per semantischer Aktion, zugewiesen.
+{
+\begin{figure}[htbp]
+\begin{minipage}[t]{9cm}
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        escapechar=E}
+\begin{lstlisting}
+mexprE\red [int x]E returns E\blue[int value=0]E
+  : ... {value = x;}
+  ;
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\lstset{escapechar=E}
+\begin{lstlisting}
+public E\blue intE mexprE\red (int x)E{
+  E\blue int value=0E;
+  ...
+  value = x;
+  returnE\blue valueE;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{Umsetzung von Ein- \& Ausgabeargumenten}
+\label{umsetzung_io}
+\end{figure}
+}
+
+\subsection{Ein Beispieltaschenrechner}
+In diesem Abschnitt sollen einige der zuvor kennengelernten Sprachelemente in einem Beispiel veranschaulicht werden. Dazu soll ein Taschenrechner für arithmetische Ausdrücke, welche nur Addition, Subtraktion, Multiplikation, Klammern und die natürlichen Zahlen verwenden, entwickelt werden. Dabei sollen alle drei Grammatikarten - Lexer, Parser und Treeparser zum Einsatz kommen.\par
+Aus Grund der Übersichtlichkeit Tokens und Tokenreferenzen in allen Grammatiken komplett großgeschrieben, zusätzlich werden Schlüsselworte unterstrichen.
+
+\subsubsection{Lexergrammatik}
+Zunächst wird der Lexer definiert. Für alle zu erkennenden Symbole müssen die jeweils zu erzeugenden Token definiert werden. Neben den o. a. Elementen sollen auch Leerzeichen, Tabulatoren und Zeilenumbrüche verarbeitet werden können. Die Lexergrammatik in Listing \ref{calcexamplelexergram} soll dies leisten.
+{
+\lstset{xleftmargin=0.4cm,
+        caption=Lexergrammatik für Taschenrechner aus \emph{calculator.g}, 
+        captionpos=b, 
+        label=calcexamplelexergram}
+\begin{lstlisting}
+class ExprLexer extends Lexer;
+
+options {
+    k=2; // Lookahead für Zeilenumbrüche
+    charVocabulary='\u0000'..'\u007F'; // ASCII
+}
+
+LPAREN: '(' ;
+RPAREN: ')' ;
+PLUS  : '+' ;
+MINUS : '-' ;
+STAR  : '*' ;
+INT   : ('0'..'9')+ ;
+WS    : ( ' '
+        | '\r' '\n'
+        | '\n'
+        | '\t'
+        )
+        {$setType(Token.SKIP);}
+      ;
+\end{lstlisting}
+}
+Nach der letzten Produktion steht eine semantische Aktion. Diese stellt den Typ des Tokens \texttt{WS} auf \texttt{SKIP}, damit der Parser dieses später fallen lässt und zum nächsten übergeht.\par
+
+\subsubsection{Parsergrammatik}
+In der Parsergrammatik wird die Syntax der zu akzeptierenden arithmetischen Ausdrücke festgelegt. Es müssen dazu dieselben Tokens wie in der Lexergrammatik benutzt werden.  %In \emph{Listing \ref{calcexampleparsergram}}
+{
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        caption=Parsergrammatik für Taschenrechner aus \emph{calculator.g},
+        captionpos=b,
+        label=calcexampleparsergram}
+\begin{lstlisting}
+class ExprParser extends Parser;
+
+expr:   mexpr ((PLUS|MINUS) mexpr)*
+    ;      
+
+mexpr      
+    :   atom (STAR atom)*
+    ;    
+
+atom:   INT 
+    |   LPAREN expr RPAREN 
+    ;
+\end{lstlisting}
+}
+Mit Lexer- und Parsergrammatik ist es bereits möglich arithmetische Ausdrücke zu akzeptieren. In diesem Sinne wird im nächsten Abschnitt die Erzeugung und Benutzung von Lexer und Parser besprochen. Auf die Auswertung der Ausdrücke wird anschließend eingegangen.
+
+\subsubsection{Erzeugung \& Benutzung}
+Soll der Parser erzeugt werden, muss ANTLR mit den Dateinamen der Grammatiken als Parameter aufgerufen werden. Da beide Grammatiken zusammen in einer Datei stehen können, wird diese in eine Datei \texttt{calculator.g} gespeichert. Um Lexer und Parser zu erzeugen reicht ein Aufruf von:\par
+ \texttt{java antlr.Tool calculator.g}\par
+Zuvor muss jedoch die Datei \texttt{antlr.jar} in die \texttt{CLASSPATH}-Umgebungsvariable aufgenommen werden. ANTLR erstellt dann die Dateien  \texttt{ExprLexer.java} (enthält den Lexer), \texttt{ExprParser.java} (enthält den Parser) und \texttt{ExprParserTokenTypes.java} (enthält die gemeinsamen Tokens von Lexer und Parser).\par
+Wie man sieht, werden die Dateien und die teils darin enthaltenen Klassen, wie in den Grammatiken benannt. Um nun den Parser benutzen zu können, wird eine weitere Klasse benötigt, welche die Möglichkeit bereitstellt, arithmetische Ausdrücke einzugeben. Diese müssen dem Lexer bei dessen Instanziierung als Konstruktorparameter übergeben werden, ebenso wie dem Parserkonstruktor anschließend der Lexer als Konstruktorparameter übergeben wird. Der eigentliche Parsingvorgang beginnt mit dem Aufruf der Parsermethode, welche den gleichen Namen wie das Startsymbol trägt. In unserem Taschenrechner-Beispiel sieht diese Klasse nun wie in Listing \ref{calcexamplemain} aus.
+{
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        caption=Klasse die dem Benutzer Lexer und Parser zur Verfügung stellt,
+        captionpos=b,
+        label=calcexamplemain}
+\begin{lstlisting}
+import antlr.*;
+public class Main {
+  public static void main(String[] args) throws Exception {
+    //Hier werden die Ausdruecke per Konsole eingegeben
+    ExprLexer lexer = new ExprLexer(System.in);
+    ExprParser parser = new ExprParser(lexer);
+    parser.expr();
+  }
+}
+\end{lstlisting}
+}
+Nach dem Kompilieren (mit \texttt{javac *.java}) und dem Aufruf (mit \texttt{java Main}; wobei das ANTLR-Paket noch mit im \texttt{CLASSPATH} aufgeführt sein muß), können über die Tastatur arithmetische Ausdrücke eingegeben werden, die dann auf ihre Korrektheit geprüft werden. Ausdrücke wie \texttt{3+(4*5)} werden akzeptiert, \texttt{3++} hingegen nicht. Eine Auswertung des Ausdrucks erfolgt bisher nicht, dazu jedoch mehr im nächsten Abschnitt.
+
+\subsubsection{Auswertung im Parser}
+Die Auswertung der arithmetischen Ausdrücke erfolgt über semantische Aktionen. Dies kann bereits im Parser geschehen - dazu muss dessen Grammatik wie im Listing \ref{calcexampleparsergramextended} aufgeführt, erweitert werden.
+{
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        caption=Auswertung des Ausdrucks mit semantische Aktionen in der Parsergrammatik,
+        captionpos=b,
+        label=calcexampleparsergramextended}
+
+\begin{lstlisting}
+class ExprParser extends Parser;
+
+expr returns [int value=0]
+{int x;}
+    :   value=mexpr
+        ( PLUS x=mexpr  {value += x;}
+        | MINUS x=mexpr {value -= x;} 
+        )*
+    ;
+
+mexpr returns [int value=0]
+{int x;}
+    :   value=atom ( STAR x=atom {value *= x;} )*
+    ;
+
+atom returns [int value=0]
+    :   i:INT {value=Integer.parseInt(i.getText());}
+    |   LPAREN value=expr RPAREN
+    ;
+\end{lstlisting}
+}
+Die erste Regel gibt das Ergebnis einer Addition oder Subtrakion zurück. Dazu wird die linke Seite der Regel um das Ausgabeargument \texttt{returns[int value=0]} und die semantische Aktion \texttt{\{int x;\}} erweitert. Diese deklariert eine lokale Variable, die dazu dient die rechten Operanden der jeweiligen arithmetischen Operation, mit \texttt{x=mexpr}, aufzunehmen. Die linken Operanden werden im Ausgabeargument \texttt{value} aufgenommen.\par
+Die Auswertung erfolgt schließlich über die semantischen Aktionen \texttt{\{value += x;\}}, wenn eine Addition erkannt und \texttt{ \{value -= x;\}}, wenn eine Subtraktion erkannt wird.\par
+Um das Ergebnis auszugeben, muss die Klasse \texttt{Main} noch um die in Listing \ref{calcexamplemainextended} aufgeführten Zeilen ergänzt werden.
+{
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        caption=Angepasste Main-Klasse für Auswertung mittels semantischer Aktionen,
+        captionpos=b,
+        label=calcexamplemainextended}
+\begin{lstlisting}
+int x = parser.expr(); //statt nur parser.expr();
+System.out.println(x);
+\end{lstlisting}
+}
+Die Eingabe von \texttt{3+(4*5)} führt dann zur Ausgabe des Ergebnisses von 23.\par
+Wie oben bereits angeführt, können auch in der Lexergrammatik semantische Aktionen definiert werden. Zwar ist dort jede Ausprägung von Javaquelltexten erlaubt, jedoch ist darüber (im Allgemeinen) nur die Steuerung des Lexers (wie etwa Behandlung von erst zur Laufzeit erkennbaren Sonderfällen) sinnvoll.
+
+\subsubsection{Treeparser-Grammatik}
+Neben der Erzeugung von Lexern und Parsern bietet ANTLR auch die Erzeugung von Treeparsern (auch als Treewalker bezeichnet) an. Grundsätzlich gilt hier das gleiche wie für die Parsergrammatik, allerdings traversiert der Treeparser einen AST anstelle eines Tokenstreams den der Lexer zurückgibt.\par
+Die Auswertung eines arithmetischen Ausdrucks kann auch über eine Treeparser-Grammatik erfolgen.\par
+Bevor der Treeparser zum Einsatz kommen kann, muss jedoch im Optionsteil der Parsergrammatik die Option \texttt{buildAST=true} gesetzt werden, um den Parser anzuweisen, auch einen AST aufzubauen. Ferner müssen die Tokens in allen Regeln der Grammatik ergänzt werden, damit der Parser auch weiss, welche Elemente in den AST aufgenommen werden sollen. Die neue Parsergrammatik für den Beispieltaschenrechner sieht dann wie in Listing \ref{calcexampleparsergramnew} aus.
+{
+\lstset{xleftmargin=0.4cm,
+        caption=Angepasste Parsergrammatik zur Erzeugung eines AST,
+        captionpos=b,
+        label=calcexampleparsergramnew}
+
+\begin{lstlisting}
+class ExprParser extends Parser;
+
+options {
+        buildAST=true;
+}
+
+expr:   mexpr ((PLUS^|MINUS^) mexpr)*
+    ;
+
+mexpr
+    :   atom (STAR^ atom)*
+    ;
+
+atom:   INT
+    |   LPAREN! expr RPAREN!
+    ;
+\end{lstlisting}
+}
+Ein Accent Circonflexe (\^{ }) hinter einer Tokenreferenz weist den Parser an, einen entsprechenden AST-Knoten und alle weiteren Elemente der Regel als dessen Kinderknoten in den Baum aufzunehmen (von links nach rechts). Also einen Subbaum mit dem aus der Tokenreferenz resultierenden AST-Knoten als Wurzelknoten. Ein Ausrufezeichen (!) hingegen weist den Parser an, keinen entsprechenden AST-Knoten zu erzeugen und auch nicht in den Baum aufzunehmen.\par
+Alle anderen Elemente, d.h. Regelnamen (linke Seite), werden dann automatisch, auch als AST-Knoten, in den Baum aufgenommen. Dabei werden für die Symbole auf der rechten Seite (auch von links nach rechts) entsprechende Kinderknoten angehangen. Die Struktur eines AST für ein einfaches Beispiel ist in Abbildung \ref{calcexampleastfigure} ersichtlich.\par
+
+\begin{figure}
+\begin{center}
+	\includegraphics[height=4cm]{figures/antlr_beispiel_ast.pdf}
+  \caption{AST (vereinfacht) für den Ausdruck \texttt{3+(4*5)}}
+  \label{calcexampleastfigure}
+\end{center}
+\end{figure}
+
+Die Treeparser-Grammatik, welche die arithmetischen Ausdrücke auswertet, beginnt mit einem Optionsteil, der den Treeparser anweist die  Tokens des o.a. Lexer und Parser zu übernehmen.\par
+Die Treeparser-Grammatike für das Taschenrechnerbeispiel wird in Listing \ref{calcexampletreeparsergram} dargestellt.
+{
+\lstset{xleftmargin=0.4cm,
+        caption=Auswertung des Ausdrucks mit semantische Aktionen in der Treeparser-Grammatik,
+        captionpos=b,
+        label=calcexampletreeparsergram}
+
+\begin{lstlisting}
+class ExprTreeParser extends TreeParser;
+
+options {
+    importVocab=ExprParser;
+}
+
+expr returns [int r=0]
+{ int a,b; }
+    :   #(PLUS  a=expr b=expr)  {r = a+b;}
+    |   #(MINUS a=expr b=expr)  {r = a-b;}   
+    |   #(STAR  a=expr b=expr)  {r = a*b;}
+    |   i:INT {r = (int)Integer.parseInt(i.getText());}
+    ;
+\end{lstlisting}
+}
+Eine Besonderheit der Treeparsergrammtik ist die Raute (\#). Eine Raute veranlasst einen oder mehrere Abstiege im Baum. Die Regel \texttt{\#(PLUS expr expr)} "`matched"' nur einen Knoten \texttt{PLUS}, der zwei Kinderknoten \texttt{expr} besitzt. Dabei muss der Vaterknoten immer über eine Tokenreferenz identifiziert werden (d. h. dem muss ursprünglich ein Token zugrundeliegen).
+Auch hier erfolgt die Auswertung in semantischen Aktionen. Es fällt sofort auf, dass hier nur eine Regel zur Auswertung nötig ist und eine Betrachtung der Präzedenzen entfällt, da diese durch die Struktur des Baumes abgebildet werden.\par
+Die Erzeugung des Treeparsers geschieht analog zur Erzeugung des Lexers und Parsers. ANTLR erzeugt die Klassen \texttt{ExprTreeParser.java} und \texttt{ExprTreeParserTokenTypes.java}. Benutzt werden kann der Treeparser in o.a. Main-Klasse, allerdings muss diese mit den Zeilen aus Listing \ref{calcexamplemainextended2} ergänzt werden.
+{
+\lstset{xleftmargin=0.4cm,
+        language=Java,
+        caption=Anwenden des Treeparsers auf den AST, captionpos=b, 
+        label=calcexamplemainextended2}
+
+\begin{lstlisting}
+//davor muss der Parser die Eingabe verarbeitet haben
+AST t = parser.getAST();
+System.out.println(t.toStringTree());
+ExprTreeParser treeParser = new ExprTreeParser();
+int x = treeParser.expr(t);
+System.out.println(x);
+\end{lstlisting}
+}
+Auch hier führt die Eingabe von \texttt{3+(4*5)} zum Ergebnis von \texttt{23}.

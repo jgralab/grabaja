@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.ibm.com/xtools/1.5.0/Notation" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmlns:umlnotation="http://www.ibm.com/xtools/1.5.0/Umlnotation" xmi:id="_J5KNUKWuEdu5-MwvVIPvWA" name="Example6" appliedProfile="_J5KNVKWuEdu5-MwvVIPvWA _J5KNV6WuEdu5-MwvVIPvWA _J5KNWqWuEdu5-MwvVIPvWA _J5KNXaWuEdu5-MwvVIPvWA _J5KNYKWuEdu5-MwvVIPvWA">
+  <eAnnotations xmi:id="_J5KNUaWuEdu5-MwvVIPvWA" source="uml2.diagrams" references="_J5KNUqWuEdu5-MwvVIPvWA">
+    <contents xmi:type="notation:Diagram" xmi:id="_J5KNUqWuEdu5-MwvVIPvWA" type="Freeform" name="Main">
+      <children xmi:id="_KTYrMKWuEdu5-MwvVIPvWA" targetEdges="_KTYrXaWuEdu5-MwvVIPvWA _KTicMKWuEdu5-MwvVIPvWA _KTicVaWuEdu5-MwvVIPvWA">
+        <children xmi:id="_KTYrMaWuEdu5-MwvVIPvWA" type="ImageCompartment">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+          <layoutConstraint xmi:type="notation:Size" xmi:id="_KTYrMqWuEdu5-MwvVIPvWA" width="1320" height="1320"/>
+        </children>
+        <children xmi:id="_KTYrM6WuEdu5-MwvVIPvWA" type="Stereotype">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+        </children>
+        <children xmi:id="_KTYrNKWuEdu5-MwvVIPvWA" type="Name">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+        </children>
+        <children xmi:id="_KTYrNaWuEdu5-MwvVIPvWA" type="AttributeCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrNqWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+        </children>
+        <children xmi:id="_KTYrN6WuEdu5-MwvVIPvWA" type="OperationCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrOKWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+        </children>
+        <children xmi:id="_KTYrOaWuEdu5-MwvVIPvWA" visible="false" type="SignalCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrOqWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+        </children>
+        <children xmi:id="_KTYrO6WuEdu5-MwvVIPvWA" visible="false" type="StructureCompartment">
+          <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_KTYrPKWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_KTYrPaWuEdu5-MwvVIPvWA" showStereotype="Label"/>
+        <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_8aAjIPsgEdqXLKjOcGyAnA?Blank%20Model/TypeParameterDeclaration"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KTYrPqWuEdu5-MwvVIPvWA" x="3498" y="1272"/>
+      </children>
+      <children xmi:id="_KTYrP6WuEdu5-MwvVIPvWA" sourceEdges="_KTYrXaWuEdu5-MwvVIPvWA">
+        <children xmi:id="_KTYrQKWuEdu5-MwvVIPvWA" type="ImageCompartment">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+          <layoutConstraint xmi:type="notation:Size" xmi:id="_KTYrQaWuEdu5-MwvVIPvWA" width="1320" height="1320"/>
+        </children>
+        <children xmi:id="_KTYrQqWuEdu5-MwvVIPvWA" type="Stereotype">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+        </children>
+        <children xmi:id="_KTYrQ6WuEdu5-MwvVIPvWA" type="Name">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+        </children>
+        <children xmi:id="_KTYrRKWuEdu5-MwvVIPvWA" type="AttributeCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrRaWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+        </children>
+        <children xmi:id="_KTYrRqWuEdu5-MwvVIPvWA" type="OperationCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrR6WuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+        </children>
+        <children xmi:id="_KTYrSKWuEdu5-MwvVIPvWA" visible="false" type="SignalCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrSaWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+        </children>
+        <children xmi:id="_KTYrSqWuEdu5-MwvVIPvWA" visible="false" type="StructureCompartment">
+          <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_KTYrS6WuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_KTYrTKWuEdu5-MwvVIPvWA" showStereotype="Label"/>
+        <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_1Hy64OOUEdqNfeVtf3G8mQ?Blank%20Model/Identifier"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KTYrTaWuEdu5-MwvVIPvWA" x="1908" y="6042"/>
+      </children>
+      <children xmi:id="_KTYrTqWuEdu5-MwvVIPvWA" sourceEdges="_KTicMKWuEdu5-MwvVIPvWA _KTicVaWuEdu5-MwvVIPvWA">
+        <children xmi:id="_KTYrT6WuEdu5-MwvVIPvWA" type="ImageCompartment">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+          <layoutConstraint xmi:type="notation:Size" xmi:id="_KTYrUKWuEdu5-MwvVIPvWA" width="1320" height="1320"/>
+        </children>
+        <children xmi:id="_KTYrUaWuEdu5-MwvVIPvWA" type="Stereotype">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+        </children>
+        <children xmi:id="_KTYrUqWuEdu5-MwvVIPvWA" type="Name">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+        </children>
+        <children xmi:id="_KTYrU6WuEdu5-MwvVIPvWA" type="AttributeCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrVKWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+        </children>
+        <children xmi:id="_KTYrVaWuEdu5-MwvVIPvWA" type="OperationCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrVqWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+        </children>
+        <children xmi:id="_KTYrV6WuEdu5-MwvVIPvWA" visible="false" type="SignalCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrWKWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+        </children>
+        <children xmi:id="_KTYrWaWuEdu5-MwvVIPvWA" visible="false" type="StructureCompartment">
+          <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_KTYrWqWuEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_KTYrW6WuEdu5-MwvVIPvWA" showStereotype="Label"/>
+        <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_QYPMIPshEdqXLKjOcGyAnA?Blank%20Model/TypeSpecification"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KTYrXKWuEdu5-MwvVIPvWA" x="6996" y="6042"/>
+      </children>
+      <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_J5KNU6WuEdu5-MwvVIPvWA"/>
+      <edges xmi:id="_KTYrXaWuEdu5-MwvVIPvWA" source="_KTYrP6WuEdu5-MwvVIPvWA" target="_KTYrMKWuEdu5-MwvVIPvWA">
+        <children xmi:id="_KTYrXqWuEdu5-MwvVIPvWA" type="NameLabel">
+          <children xmi:id="_KTYrX6WuEdu5-MwvVIPvWA" type="Stereotype">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_GAldsCYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf"/>
+          </children>
+          <children xmi:id="_KTYrYKWuEdu5-MwvVIPvWA" type="Name">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_GAldsCYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf"/>
+          </children>
+          <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_GAldsCYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KTYrYaWuEdu5-MwvVIPvWA" x="-1942" y="-2277"/>
+        </children>
+        <children xmi:id="_KTYrYqWuEdu5-MwvVIPvWA" type="ToMultiplicityLabel">
+          <children xmi:id="_KTYrY6WuEdu5-MwvVIPvWA" type="ToMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYrZKWuEdu5-MwvVIPvWA" y="397"/>
+        </children>
+        <children xmi:id="_KTYrZaWuEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <children xmi:id="_KTYrZqWuEdu5-MwvVIPvWA" type="ToRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYrZ6WuEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_KTYraKWuEdu5-MwvVIPvWA" type="FromMultiplicityLabel">
+          <children xmi:id="_KTYraaWuEdu5-MwvVIPvWA" type="FromMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYraqWuEdu5-MwvVIPvWA" y="397"/>
+        </children>
+        <children xmi:id="_KTYra6WuEdu5-MwvVIPvWA" visible="false" type="FromRoleLabel">
+          <children xmi:id="_KTYrbKWuEdu5-MwvVIPvWA" type="FromRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYrbaWuEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_KTYrbqWuEdu5-MwvVIPvWA" type="ToQualifierLabel">
+          <children xmi:id="_KTYrb6WuEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrcKWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYrcaWuEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_KTYrcqWuEdu5-MwvVIPvWA" type="FromQualifierLabel">
+          <children xmi:id="_KTYrc6WuEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrdKWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYrdaWuEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_KTYrdqWuEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <eAnnotations xmi:id="_KTYrd6WuEdu5-MwvVIPvWA" source="ToConstraintLabel"/>
+          <children xmi:id="_KTYreKWuEdu5-MwvVIPvWA" visible="false" type="ToConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYreaWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsiYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYreqWuEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <children xmi:id="_KTYre6WuEdu5-MwvVIPvWA" type="FromRoleLabel">
+          <eAnnotations xmi:id="_KTYrfKWuEdu5-MwvVIPvWA" source="FromConstraintLabel"/>
+          <children xmi:id="_KTYrfaWuEdu5-MwvVIPvWA" visible="false" type="FromConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTYrfqWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_GAldsSYUEdu9_tVmPO3TsA?Blank%20Model/Identifier/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTYrf6WuEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_KTYrgKWuEdu5-MwvVIPvWA" showStereotype="Text"/>
+        <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_GAldsCYUEdu9_tVmPO3TsA?Blank%20Model/isTypeParameterNameOf"/>
+        <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KTYrgaWuEdu5-MwvVIPvWA" points="[14, -26, -130, 133]$[74, -136, -70, 23]"/>
+      </edges>
+      <edges xmi:id="_KTicMKWuEdu5-MwvVIPvWA" source="_KTYrTqWuEdu5-MwvVIPvWA" target="_KTYrMKWuEdu5-MwvVIPvWA">
+        <children xmi:id="_KTicMaWuEdu5-MwvVIPvWA" type="NameLabel">
+          <children xmi:id="_KTicMqWuEdu5-MwvVIPvWA" type="Stereotype">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_M908oCYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf"/>
+          </children>
+          <children xmi:id="_KTicM6WuEdu5-MwvVIPvWA" type="Name">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_M908oCYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf"/>
+          </children>
+          <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_M908oCYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KTicNKWuEdu5-MwvVIPvWA" x="1029" y="-548"/>
+        </children>
+        <children xmi:id="_KTicNaWuEdu5-MwvVIPvWA" type="ToMultiplicityLabel">
+          <children xmi:id="_KTicNqWuEdu5-MwvVIPvWA" type="ToMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicN6WuEdu5-MwvVIPvWA" x="641" y="-260"/>
+        </children>
+        <children xmi:id="_KTicOKWuEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <children xmi:id="_KTicOaWuEdu5-MwvVIPvWA" type="ToRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicOqWuEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_KTicO6WuEdu5-MwvVIPvWA" type="FromMultiplicityLabel">
+          <children xmi:id="_KTicPKWuEdu5-MwvVIPvWA" type="FromMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicPaWuEdu5-MwvVIPvWA" y="397"/>
+        </children>
+        <children xmi:id="_KTicPqWuEdu5-MwvVIPvWA" visible="false" type="FromRoleLabel">
+          <children xmi:id="_KTicP6WuEdu5-MwvVIPvWA" type="FromRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicQKWuEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_KTicQaWuEdu5-MwvVIPvWA" type="ToQualifierLabel">
+          <children xmi:id="_KTicQqWuEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTicQ6WuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicRKWuEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_KTicRaWuEdu5-MwvVIPvWA" type="FromQualifierLabel">
+          <children xmi:id="_KTicRqWuEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTicR6WuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicSKWuEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_KTicSaWuEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <eAnnotations xmi:id="_KTicSqWuEdu5-MwvVIPvWA" source="ToConstraintLabel"/>
+          <children xmi:id="_KTicS6WuEdu5-MwvVIPvWA" visible="false" type="ToConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTicTKWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oiYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicTaWuEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <children xmi:id="_KTicTqWuEdu5-MwvVIPvWA" type="FromRoleLabel">
+          <eAnnotations xmi:id="_KTicT6WuEdu5-MwvVIPvWA" source="FromConstraintLabel"/>
+          <children xmi:id="_KTicUKWuEdu5-MwvVIPvWA" visible="false" type="FromConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTicUaWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_M908oSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicUqWuEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_KTicU6WuEdu5-MwvVIPvWA" showStereotype="Text"/>
+        <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_M908oCYUEdu9_tVmPO3TsA?Blank%20Model/isLowerBoundOf"/>
+        <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KTicVKWuEdu5-MwvVIPvWA" points="[-529, -609, 1296, 3518]$[-1852, -2064, -27, 2063]$[-1852, -3492, -27, 635]"/>
+      </edges>
+      <edges xmi:id="_KTicVaWuEdu5-MwvVIPvWA" source="_KTYrTqWuEdu5-MwvVIPvWA" target="_KTYrMKWuEdu5-MwvVIPvWA">
+        <children xmi:id="_KTicVqWuEdu5-MwvVIPvWA" type="NameLabel">
+          <children xmi:id="_KTicV6WuEdu5-MwvVIPvWA" type="Stereotype">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_T1HkkCYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf"/>
+          </children>
+          <children xmi:id="_KTicWKWuEdu5-MwvVIPvWA" type="Name">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_T1HkkCYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf"/>
+          </children>
+          <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_T1HkkCYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KTicWaWuEdu5-MwvVIPvWA" x="224" y="-1022"/>
+        </children>
+        <children xmi:id="_KTicWqWuEdu5-MwvVIPvWA" type="ToMultiplicityLabel">
+          <children xmi:id="_KTicW6WuEdu5-MwvVIPvWA" type="ToMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicXKWuEdu5-MwvVIPvWA" y="397"/>
+        </children>
+        <children xmi:id="_KTicXaWuEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <children xmi:id="_KTicXqWuEdu5-MwvVIPvWA" type="ToRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicX6WuEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_KTicYKWuEdu5-MwvVIPvWA" type="FromMultiplicityLabel">
+          <children xmi:id="_KTicYaWuEdu5-MwvVIPvWA" type="FromMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicYqWuEdu5-MwvVIPvWA" x="-408" y="391"/>
+        </children>
+        <children xmi:id="_KTicY6WuEdu5-MwvVIPvWA" visible="false" type="FromRoleLabel">
+          <children xmi:id="_KTicZKWuEdu5-MwvVIPvWA" type="FromRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicZaWuEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_KTicZqWuEdu5-MwvVIPvWA" type="ToQualifierLabel">
+          <children xmi:id="_KTicZ6WuEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTicaKWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicaaWuEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_KTicaqWuEdu5-MwvVIPvWA" type="FromQualifierLabel">
+          <children xmi:id="_KTica6WuEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTicbKWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicbaWuEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_KTicbqWuEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <eAnnotations xmi:id="_KTicb6WuEdu5-MwvVIPvWA" source="ToConstraintLabel"/>
+          <children xmi:id="_KTiccKWuEdu5-MwvVIPvWA" visible="false" type="ToConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTiccaWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkiYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTiccqWuEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <children xmi:id="_KTicc6WuEdu5-MwvVIPvWA" type="FromRoleLabel">
+          <eAnnotations xmi:id="_KTicdKWuEdu5-MwvVIPvWA" source="FromConstraintLabel"/>
+          <children xmi:id="_KTicdaWuEdu5-MwvVIPvWA" visible="false" type="FromConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_KTicdqWuEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_T1HkkSYUEdu9_tVmPO3TsA?Blank%20Model/TypeSpecification/typeparameterdeclaration2"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_KTicd6WuEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_KTiceKWuEdu5-MwvVIPvWA" showStereotype="Text"/>
+        <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_T1HkkCYUEdu9_tVmPO3TsA?Blank%20Model/isUpperBoundOf"/>
+        <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KTiceaWuEdu5-MwvVIPvWA" points="[239, -582, 2064, 3545]$[847, -2222, 2672, 1905]$[-952, -3492, 873, 635]"/>
+      </edges>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_J5KNVKWuEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_J5KNVaWuEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_J5KNVqWuEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_PROFILES/Basic.profile.uml2#_6mFRgK86Edih9-GG5afQ0g"/>
+    <importedProfile href="pathmap://UML2_PROFILES/Basic.profile.uml2#_6mFRgK86Edih9-GG5afQ0g"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_J5KNV6WuEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_J5KNWKWuEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_J5KNWaWuEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_PROFILES/Intermediate.profile.uml2#_Cz7csK87Edih9-GG5afQ0g"/>
+    <importedProfile href="pathmap://UML2_PROFILES/Intermediate.profile.uml2#_Cz7csK87Edih9-GG5afQ0g"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_J5KNWqWuEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_J5KNW6WuEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_J5KNXKWuEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_PROFILES/Complete.profile.uml2#_M7pTkK87Edih9-GG5afQ0g"/>
+    <importedProfile href="pathmap://UML2_PROFILES/Complete.profile.uml2#_M7pTkK87Edih9-GG5afQ0g"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_J5KNXaWuEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_J5KNXqWuEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_J5KNX6WuEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default"/>
+    <importedProfile href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_J5KNYKWuEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_J5KNYaWuEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_J5KNYqWuEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment"/>
+    <importedProfile href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment"/>
+  </packageImport>
+  <packageImport xmi:id="_J5KNY6WuEdu5-MwvVIPvWA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_EfRZoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+</uml:Model>

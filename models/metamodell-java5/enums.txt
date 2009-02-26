@@ -1,0 +1,7 @@
+enum Type: Boolean, Float, Double, Integer, Long, Char, String
+
+enum InfixOperator: =, ==, +, -, *, /, &, &&, |, ||, %, !=, ^, +=, -=, *=, /=, >, >=, <, <=, %=, <<=, >>=, >>>=, &=, |=, ^=, ?, :, <<, >>, >>>
+
+enum PrefixOperator: +, -, !, ~, ++, --
+
+enum PostfixOperator: ++, --

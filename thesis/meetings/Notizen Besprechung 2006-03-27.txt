@@ -1,0 +1,5 @@
+- UML-Struktur muß in der fertigen Version auch in druckbarer Form vorliegen
+- Vereinheitlichung in unserem Sinne (von allen übernommenen Ressourcen, z.B. Hinterwäller)
+- nächste Aufgabe: Graph erstellen
+
+- was macht man mit imports (ähnlich includes)?

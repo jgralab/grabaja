@@ -1,0 +1,19 @@
+- Konzentration auf: Wer liest das Dok / Fremder Leser des Dokus
+- eigener Style für Grammatikregeln (statt Listing)?
+- Antlr-Dokument: Mehr Struktur, durchgängig auf's Beispiel beziehen, Bsp. zu Anfang
+- statt \emph: Anderer Font für Bezeichner
+- Größe der Zeilenbeschriftungen in Listings kleiner
+- antlr.tex - 2.6: Beispiel durchgängig (das aus 2.5) + Input / Output
+- antlr.tex - 3.1: Alternative für offset (Aufsammeln der Informationen zweiter Durchlauf durch den Quelltext)
+- Alternativen vorher nennen
+- antlr.tex - 3: Klassendiagramm + Aktivitätsdiagramm (getrennt)
+- Beispiel für MetaAnnotation
+
+- Regeln: Grammatik --> UML sind "Heuristiken"... ;-)
+- eine # --> ein Abstieg (im AST)
+
+- Bei Längenberechnung: Längeninterpretation von Escapesequenzen im Token.Text? ("\r" --> 1 oder 2)?
+- Innere Knoten: Tokenref oder nicht, Offset/Länge abfragbar?
+- zu welchem Zeitpunkt werden die sem. Aktionen ausgeführt (bsp.: Ausführung von Kleenee-*)?
+
+- Tex / Listings: Thorsten Gipp fragen!

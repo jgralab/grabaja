@@ -1,0 +1,9 @@
+- QualifiedType von QualifiedName ableiten, nicht umgekehrt
+- "a.b.c.D myObj;": nur das letzte Element als QT, vorderes als QN
+- Klassendiagramm bzgl. ANTLR-Adapter
+- Plan: was ist noch zu tun / bis wann?
+
+- Iterables evtl. vererbt
+- getNext...(): Methode ist nicht im Knoten, sondern in der zurückgegebenen Kante von getFirst...() vorhanden
+- einmalig gemergetes Package in mehreren Dateien verlinkt stellt kein Problem dar
+- TypeInfo: Referenz auf die Knoten halten um globales Merging einfacher zu halten

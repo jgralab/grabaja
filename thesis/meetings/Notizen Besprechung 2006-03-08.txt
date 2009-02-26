@@ -1,0 +1,12 @@
+- Tabellarische Übersicht über die verschiedenen Encodings
+- Abbildung mit möglichen Token-Methoden hinzufügen
+- Aufbau über die Abschnitte der Grammatik-Dateien
+
+- Codeschnipsel als Abb. durchnummerieren und im Text ref.
+- Listings: Zeilennummern einschalten
+
+- hinzufügen: ANTLR muß im Classpath sein (auch zur Laufzeit!)
+- falsche Positionen: Mailinglist?
+- "expr = expr + expr" möglich?
+- "getOffset" im StreamReader?
+- Hinterwäller: Grammatik + Schema?

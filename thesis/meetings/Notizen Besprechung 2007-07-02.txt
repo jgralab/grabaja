@@ -1,0 +1,16 @@
+- Text überarbeiten (Extraktor) --> mehr Technik, weniger Verwendung
+- Überschriften deutlicher
+- Verwendung, Erzeugung in den Anhang + ANTLR-Version etc. + Fehlermöglichkeiten etc.
+- extra Classpath für zusätzliche Bibliotheken (die des zu analysierenden Programmes) möglich? Per Reflection explizit ansprechbar?
+- Ablauf: + UML-Aktivitätsdiagramm - Daten / Objekte
+- Klassendiagramm
+- Erzeugung: nur einmalig...
+- Verzeichnisstruktur bei der Erzeugung: Abbildung
+- Verwendung: in Englisch für das Handbuch
+- Metamodell: Packages nur im Diagramm, nicht im Schema
+- Listings: Typewriter-Schriften
+- Text auf Inkonsistenzen prüfen
+- fullyQualifiedName
+- "während des Parsens"
+- Schätzung der Knoten / Kanten über Dateigröße o.ä.
+- TemporaryEdge als Oberklasse für Kanten, die nicht im finalen Graph vorkommen (temporär während der Grapherzeugung)

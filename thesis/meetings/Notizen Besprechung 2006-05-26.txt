@@ -1,0 +1,9 @@
+- expression-Hierarchie in die Breite aufbrechen, ohne die Hierarchie
+- argList -> /*nothing*/
+- Rollen verwenden: z.B. CompoundStatement isConstructorOf ClassField
+- Expression-Bezeichner / -teile ähnlich wie in C (OperatorExpression)
+- KEINE anonymen Kantennamen
+- Java-Doku: dort verwendete Begriffe verwenden (möglichst) für Rollen o.ä. (dort stehen die Konzepte von Java)
+- Lexer: Kommentare einsammeln und in eine Collection stecken (falls überhaupt verwenden)
+- Ziel: KEIN Syntax-Complete-Parsing
+- AST- / OffSet-Highlighter

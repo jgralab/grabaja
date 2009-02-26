@@ -1,0 +1,22 @@
+1. Installation
+ - funktioniert wie vom Hersteller angegeben
+ - Windows: CocoSources entpacken und build.bat starten
+ - Linux: in build.bat reinschauen
+ - oder direkt jar herunterladen
+
+2. Erzeugung des Parsers aus Javagrammatik
+ - Herunterladen Scanner.frame, Parser.frame, Java.ATG und JavaParser.java (zum Testen)
+ - Grammatik nur bis Java 1.4
+ - Erzeugen gelingt wie in Handbuch beschrieben
+ - java -jar Coco.jar Java.ATG -package Java
+ - Kompilieren wird nicht näher beschrieben
+ - in JavaParser.java noch package Java; ergänzen, dann alle Klassen in ein Unterverzeichnis Names
+   Java verschieben
+ - javac Java\*.java
+
+3.  Testen des Javaparsers
+ - Leider nicht dokumentiert. Geht aber auf folgende Weise:
+ - java -cp . Java.JavaParser <inputfile>
+
+5. Einbinden in eigenes Projekt
+ - Da keine Komponenten zur Laufzeit benötigt werden, ist dies sehr einfach.

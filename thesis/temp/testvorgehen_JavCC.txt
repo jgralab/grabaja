@@ -1,0 +1,94 @@
+1. Installation
+ - Entfällt, da JAR-Paket
+
+2. Erzeugung eines Parser aus Beispielgrammatik
+ - Wie in Dokumentation angegeben
+ - Am besten erst noch bin-Verzeichnis von JavaCC in PATH-Umgebungsvariable aufnehmen.
+ - Kein Setzen von CLASSPATH nötig
+ - Bsp: Java-Grammatiken
+   - javacc Java1.1.jj
+   - javac *.java
+
+3. Testen des erzeugten Beispielparsers
+ - Hier Grammtik für Java 1.1
+ - Fast wie in Dokumentation angegeben (setzen von CLASSPATH aber vorher nötig)
+ - Es wird keine Laufzeitumgebung benötigt
+ - java -cp . JavaParser <inputfile>
+
+4. Erzeugung des Parsers aus Java-Grammatik
+ - Bei den Examples dabei: Java 5 (vom 24.02.2004)
+ - Laut Doku ant benutzen, habe ich aber nicht, also alles von Hand.
+ - javacc Java1.5.jj
+ - javac *.java
+
+5. Testen des erzeugten Javaparser
+ - Fast wie in Doku beschrieben (setzen des CLASSPATH aber nötig)
+ - java -cp . Main <inputfile>
+
+ - Angeblich Fehler in Test15.java, die javac nicht erkennt
+   - Zeile 55, Spalte 13: Encountered '<': new <String> K<Integer>("xh"); // prototype 2.2 chokes on this.
+   - stimmt aber nicht, da 13 mitten im Wort String
+
+ - Erkennt Fehler in Test15.java nicht, die javac aber erkennt (ab Zeile 29)
+
+ 	if (m instanceof C<Integer>)
+	    a=a;
+	for (boolean n = m instanceof C<Integer>,
+		 o = a<b,
+		 p = cc3 instanceof C<B[]>;
+	     cc3 instanceof C<B[]>;
+	     n = m instanceof C<Integer>,
+		 o = a<b,
+		 p = cc3 instanceof C<B[]>)
+	    b=b;
+	for (;m instanceof C<Integer>;)
+	    a=a;
+
+  Fehlermeldung von javac:
+
+Test15.java:29: illegal generic type for instanceof
+        if (m instanceof C<Integer>)
+                          ^
+Test15.java:31: illegal generic type for instanceof
+        for (boolean n = m instanceof C<Integer>,
+                                       ^
+Test15.java:33: illegal generic type for instanceof
+                 p = cc3 instanceof C<B[]>;
+                                     ^
+Test15.java:34: illegal generic type for instanceof
+             cc3 instanceof C<B[]>;
+                             ^
+Test15.java:35: illegal generic type for instanceof
+             n = m instanceof C<Integer>,
+                               ^
+Test15.java:37: illegal generic type for instanceof
+                 p = cc3 instanceof C<B[]>)
+                                     ^
+Test15.java:39: illegal generic type for instanceof
+        for (;m instanceof C<Integer>;)
+                            ^
+
+ - Angeblich Fehler in TestJSR201.java, die javac nicht erkennt:
+   - Zeile 10, Spalte 23: Encountered ':' for (int ia[] : iaa) { //iaa is two-dimesional array 
+
+ - Erkennt Fehler in TestJSR201.java nicht, die javac aber erkennt (Zeile 17):
+
+	for each (int ia[] in iaa)
+
+   Fehlermeldung von javac:
+
+TestJSR201.java:17: '(' expected
+        for each (int ia[] in iaa)
+            ^
+
+ - Findet folgende Fehler in Errors.java
+   - mehr als eine extend
+ - Erkennt folgende Fehler in Errors.java aber nicht
+   - falsche imports
+   - kein Typechecking
+   - public private
+ - Restlichen Klassen wurden fehlerfrei geparst
+ - Gibt nur Fehlerposition zurück und Fehlergrund
+
+5. Einbinden in eigenes Projekt
+ - In Eclipse einfach.

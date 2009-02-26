@@ -1,0 +1,73 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von Wörtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Ergebnisse des Treffens vom 06. Dezember 2007}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+%\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+%\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+%\begin{table}
+%	\begin{center}
+%	\begin{tabular}{|l|l|l|l|l|}
+%	  \hline
+%	  Version & Status & Datum & Autor(en) & Erläuterung \\
+%	  \hline \hline
+%		1.0 & WIP & 01.06.2007 & Arne Baldauf & initiale Version \\ \hline
+%	\end{tabular}
+%	\end{center}
+%\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\begin{itemize}
+	\item{Das Hauptdokument zur Studienarbeit soll fortgesetzt sowie folgende Änderungen daran vorgenommen werden:}
+	\begin{itemize}
+		\item{In der Einleitung soll darauf eingegangen werden, was es mit GUPRO / JGraLab auf sich hat.}
+		\item{Bei den Anforderungen / Zielsetzungen sollen nur drei anstatt vier Prioritäten verwendet werden.}
+	\end{itemize}
+	\item{Die Aufwandsabschätzung soll erst nach Abschluss der Programmierarbeiten durchgeführt werden.}
+	\item{Kanten auf per Reflection gewonnene Graphelemente sollen anhand ihrer Attribute eindeutig als solche identifizierbar sein (z.B. Länge, Positionen mit Wert -1).}
+	\item{Der Resolver kann nach Möglichkeit als Singleton oder vergleichbar geeignetes Pattern realisiert werden.}
+	\item{Bis zum nächsten Treffen soll die Programmierung insoweit abgeschlossen sein, dass der Javaextractor "`feature-complete"' ist.}
+  \item{Das nächste Treffen findet am 19. Dezember 2007 um 14:30 s.t. in B108 statt.}
+  %\item{Einreichung der Dokumente bis 18. Dezember 2007 (morgens).}
+  \end{itemize}
+\end{document}

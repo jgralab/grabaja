@@ -1,0 +1,92 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRäAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Ergebnisse der Besprechung vom 21.12.2005}
+\author{Nicolas Vika \url{ultbreit@uni-koblenz.de}\\Arne Baldauf \url{abaldauf@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+%\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		1.0 & WIP & 22.12.2005 & Nicolas Vika & Initiale Version\\ \hline
+		1.1 & WIP & 06.01.2006 & Arne Baldauf & Abnahme \& Ergänzung\\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\begin{itemize}
+  \item{Der Faktenextraktor als PlugIn für Eclipse sollte der letzte Ausweg sein. Besser ist ein Kommandozeilenwerkzeug, welches autark arbeitet.}
+  \item{Deshalb mehr Recherche im Bereich der Parser nötig. Wichtig ist ein Werkzeug was einer "`verlässlichen"' Quelle entstammt. D. h., dass es weiterhin gepflegt wird (im Hinblick auf neue Java Versionen - damit wir das in Zukunft nicht selbst machen müssen) und, dass es auch wirklich hält, was es verspricht. Tips:}
+  \begin{itemize}
+    \item{fujaba}
+    \item{Suns Java Compiler oder den gcc "`anzapfen"'}
+    \item{DMM, Dargstuhl, Lethbridge}
+    \item{AST-Viewer (siehe Hinterwäller-Dipl.-Arbeit)}
+    \item{JRefactory}
+    \item{JavaCC}
+  \end{itemize}
+  \item{Der Parser muss nicht unbedingt die aktuellste Java-Version unterstützen, es sollte aber nach Möglichkeit absehbar sein, dass dies in der Zukunft implementiert werden wird}
+  \item{Wichtig ist genau zu wissen, was der Parser zurückgibt, um den nächsten Schritt im Graphenaufbau zu kennen.}
+  \item{Per Reflection an die Signaturen der class-Dateien herausziehen. Muss nicht unbedingt "`per Hand"' geschehen, vielleicht existieren dafür schon Werkzeuge.}
+  \item{Es reicht nur syntaktisch korrekte Programme verarbeiten zu können, eine gewisse Fehlertoleranz der Parser wäre aber wünschenswert, da kein "`reales"' System ohne Fehler ist.}
+  \item{Es reicht, wenn nur vorhandene (eigene) Java-Sourcen feingranular auf einen Graphen abgebildet werden. Ausgeschlossen davon sind externe (nicht eigene) Klassen, wie das JDK.}
+  \item{Die Besonderheiten von Java beachten, da diese eventuell beim Parsen und der späteren Anfrageverarbeitung zum Tragen kommen (könnten). Beispiele:}
+  \begin{itemize}
+    \item{nested/inner classes (als Datei mit \$ davor)}
+    \item{modifier protected (kann bei "`komischer"' Vererbung zu ungewollten Sichtbarkeiten führen)}
+    \item{anonymous classes}
+  \end{itemize}
+  \item{Die Systemgröße bedingt das Schema. Je größer das System, desto grober sollte das angewandte Schema für den Graphen sein, da sonst die Verarbeitungszeit zu hoch sein könnte.}
+  \item{Mehr Dokumentation der Arbeiten. Auch Ergebnisse der Internetsuche, im Hinblick auf schriftlichen Teil der Studienarbeit (Bsp. warum taugt Werkzeug XYZ nicht).}
+  \item{Überarbeitung der Anforderungsliste nötig.}
+  \item{Ergebnisse der Besprechungen zukünftig dokumentieren.}
+  \item{Mehr Kommunikation zu Betreuern nötig, offene Fragen ruhig direkt per E-Mail stellen.}
+  \item{Nächstes Treffen am Donnerstag, dem 19.01.2006 um 16:00 Uhr in MB 108.}
+  \item{Einreichen der Dokumente für das nächste Treffen bis 17.01.2006 (Abends).}
+\end{itemize}
+
+\end{document}

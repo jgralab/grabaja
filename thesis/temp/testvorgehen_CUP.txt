@@ -1,0 +1,51 @@
+1. Installation
+ - Windows: 
+   - Erzeugen des Parsergenerators funktioniert wie vom Hersteller angegeben.
+   - Mit: javac java_cup/*.java java_cup/runtime/*.java
+ - Linux: 
+   - Erzeugen des Parsergenerators funktioniert wie vom Hersteller angegeben nicht.
+   - Ursache: mitgeliefertes Shellskript schlägt fehl.
+   - Andere Möglichkeit: wie unter Windows.
+
+2. Erzeugung einer Beispielgrammatik
+ - Wie in Benutzerhandbuch angegeben
+
+3. Testen des erzeugten Beispielparsers
+ - Ist nicht dokumentiert
+ - Kompilierung gelang mit: 
+   - java java_cup.Main java_cup\simple_calc\parser.cup
+   - cd java_cup\simple_calc
+   - javac Main.java
+   - java java_cup.simple_calc.Main
+ - Da nicht dokumentiert ist uns nicht komplett klar, wie dieser parser zu benutzen ist.
+ - Durch Ausprobieren haben wir herausgefunden, dass dieser genau einen arithmetischen Ausdruck
+   parsen kann. Nach der Eingabe des nächsten bricht der Parser mit einer Fehlermeldung ab.
+   Stimmt auch nicht ganz!!!
+ - Aufgefallen ist uns, dass CUP keinen Scanner generiert. Dieser lag schon vor. Scanner müssen mit Scannergeneratorne erstellt werden (JLex bsplw)
+
+4. Erzeugung & Testen der Javagrammatik
+ - Da kein Scanner erzeugt wird, wird dieser mitgeliefert (von Lex).
+ - Kommt laut README mit Unicode EscapeSequenzen klar.
+ - Erzeugung nicht explizit dokumentiert - mit Angaben im Benutzerhandbuch bekommt man es nach etwas probieren hin.
+ - Im Oberverzeichnis der Javagrammatiken (vorher in CLASSPATH aufnehmen):
+   - java java_cup.Main -parser Grm10 -symbols Sym Parse\java10.cup
+   - java java_cup.Main -parser Grm11 -symbols Sym Parse\java11.cup
+   - java java_cup.Main -parser Grm12 -symbols Sym Parse\java12.cup
+   - java java_cup.Main -parser Grm14 -symbols Sym Parse\java14.cup
+   - java java_cup.Main -parser Grm15 -symbols Sym Parse\java15.cup
+   - Grm10.java bis Grm15.java und Sym.java nach Parse verschieben
+   - Im Package Lex in allen Klassen die Sym benutzen noch import Parse.Sym; ergänzen.
+   - Im package Main in Main.java noch import Parse.*; ergänzen.
+   - javac Main\Main.java
+   - java Main.Main tests\Eric15.java
+ - Test:
+   - von CUP mitgebrachte -> fehlerlos
+   - eigene: 
+    - keine Typüberprüfung
+    - Widersprüchliche modifierkombinationen möglich: private public int i;
+    - Gibt nur ersten gefundenen Syntaxfehler mit Position und Fehlernummer zurück
+
+5. Einbinden in eigenes Projekt
+ - Muss so gemacht werden und funtioniert soweit
+ - Nur mit externem Lexer möglich.
+ - java_cup.runtime in jar packen und zum Projekt hinzuimportieren

@@ -1,0 +1,6 @@
+- QualifiedName-Import / PackageName: Package als FullQualifiedName behandeln
+- Integer-Werte: Wenn, dann als long speichern, String wird ebenfalls noch benötigt (falls z.B. in Hex-Schreibweise)
+- Merging: Wenn möglich, Verweis auf die Deklaration / entspr. Element im QualifiedType
+- Identifikation der Identifier pro NameSpace
+- noch diese Woche: Metamodell unterteilt in Packages für Volker
+- Statements unter [Infix... Expressions] durch Expressions ersetzen

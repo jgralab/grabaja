@@ -1,0 +1,3 @@
+- RAW Types mit Symboltabelle überprüfen, geht nicht im Parser
+- ANTLR-Grammatik lässt in switch mehrere defaults zu (es kann aber nur einen geben)!
+- ANTLR-Grammatik: bei newExpression semantic checks nötig damit keine ungüpltigen ArrayInitializer auftreten.

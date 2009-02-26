@@ -1,0 +1,45 @@
+1. Installation:
+ - funktioniert wie von Hersteller angegeben -> sehr gut
+ - funktioniert nicht wie angegeben -> sehr schlecht 
+ - funktioniert nicht wie angegeben, aber geht auf anderem Wege -> ausreichend
+ - funktioniert garnicht -> AUSSCHLUSS
+   (Weg dokumentieren)
+
+2. Erzeugung einer Beispielgrammatik (wenn mitgeliefert)
+ - funktioniert wie von Hersteller angegeben -> sehr gut
+ - funktioniert nicht wie angegeben -> sehr schlecht 
+ - funktioniert nicht wie angegeben, aber geht auf anderem Wege -> ausreichend
+   (Weg dokumentieren)
+
+3. Testen des erzeugten Parsers (wenn 2. gelang)
+ - funktioniert wie von Hersteller angegeben -> sehr gut
+ - funktioniert nicht wie angegeben -> sehr schlecht 
+ - funktioniert nicht wie angegeben, aber geht auf anderem Wege -> ausreichend
+   (Weg dokumentieren)
+ - erkennt fehlerhafte/richtige Eingaben -> sehr gut
+ - erkennt fehlerhafte/richtige Eingaben nicht -> sehr schlecht
+
+4. Erzeugung der Javagrammatik (wenn existent)
+ - funktioniert wie von Hersteller angegeben -> sehr gut
+ - funktioniert nicht wie angegeben -> sehr schlecht 
+ - funktioniert nicht wie angegeben, aber geht auf anderem Wege -> ausreichend
+ - funktioniert garnicht -> AUSSCHLUSS
+   (Weg dokumentieren)
+
+5. Testen des erzeugten Java-Parser (wenn 4. gelang)
+ - funktioniert wie von Hersteller angegeben -> sehr gut
+ - funktioniert nicht wie angegeben -> sehr schlecht 
+ - funktioniert nicht wie angegeben, aber geht auf anderem Wege -> ausreichend
+   (Weg dokumentieren)
+ - funktioniert garnicht -> AUSSCHLUSS
+ - erkennt fehlerhafte/richtige Eingaben -> sehr gut
+ - erkennt fehlerhafte/richtige Eingaben nicht -> sehr schlecht
+
+6. Einbinden in eigenes Projekt
+ - funktioniert wie von Hersteller angegeben -> sehr gut
+ - funktioniert nicht wie angegeben -> sehr schlecht 
+ - funktioniert nicht wie angegeben, aber geht auf anderem Wege -> ausreichend
+   (Weg dokumentieren)
+ - funktioniert garnicht -> AUSSCHLUSS
+ - funktioniert in Eclipse -> sehr gut
+   (Weg dokumentieren)

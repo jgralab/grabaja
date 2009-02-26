@@ -1,0 +1,81 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Ergebnisse des Treffens vom 19. Januar 2006}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+%\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		1.0 & WIP & 19.01.2006 & Arne Baldauf & initiale Version \\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\begin{itemize}
+  \item{Das Dokument zur Online-Recherche soll überarbeitet werden, insbesondere soll eine gemeinsame Bewertungsgrundlage der Tools ersichtlich werden, Ausschlusskriterien sollen explizit aufgeführt werden}
+  \item{Das Werkzeug ANTLR soll im genaueren untersucht werden:}
+  \begin{itemize}
+  	\item{Werden Kommentare mit in den AST aufgenommen, oder zeigt lediglich die graph. Ausgabekomponente diese nicht an?}
+  	\item{Sind Positionsangaben der jeweiligen Elemente mit im AST gespeichert?}
+  	\item{Welche Ursachen bedingen im AST vorhandene leere "`extends"'- oder "`implements"'-Elemente?}
+  	\item{Wie reagiert der Parser auf Besonderheiten (wie etwa fehlende Carriage Returns am Dokumentenende, Kommentare mitten in Statements, unterschiedliche Zeilenumbrüche innerhalb einer Datei, Blanks am Zeilenende(hinter Semikolon), Tabulatoren, etc.), welche die typischen Kandidaten für fehlerhafte Positionsangaben sind (nur falls auch wirklich Positionsangaben in der internen Darstellung vorhanden sind)?}
+  	\item{Probeweises parsen eines JDK-Packages (evtl. auch JDK komplett?) hinsichtlich Stabilität und Geschwindigkeit}
+  	\item{Untersuchung der Dokumentation hinsichtlich einer API o.ä.}
+  	\item{Untersuchung der Dokumentation hinsichtlich der Funktionalitäten der Grammatiken (da der Parser LL-basiert arbeitet, die Grammatiken aber in EBNF vorliegen}
+  	\item{Abschließend: Festlegung der notwendigen Schritte und Abschätzung des Aufwands dafür}
+  	\end{itemize}
+  \item{Untersuchung des Modells, welches unter Eclipse liegt (EMF - Eclipse Modeling Framework), auf Funktionsweise und Integrierbarkeit in unsere Aufgabenstellung, da dieses definitiv die Kontextinformationen und Positionsangaben beinhaltet, die Semantik erkennt und Referenzen auflösen kann}
+  \item{Untersuchung einer quelloffenen Referenzimplementation eines Java-Compilers, z.B. des GCJ, hinsichtlich dessen interner Repräsentation des AST}
+  \item{Kontakt mit Lethbridge aufnehmen, ob bei seiner Lösung ein Parser verwendet wird}
+  \item{Untersuchung von JavaCUP auf dessen interne Repräsentation / Vorhandensein eines AST}
+  \item{Überarbeitung der Anforderungsliste an einigen kleineren Stellen}
+  \item{Nächstes Treffen findet am 06. Februar 2006 um 14 Uhr in MB108 statt.}
+  \item{Einreichung der Dokumente bis 02. Februar 2006 (abends)}
+  \end{itemize}
+\end{document}

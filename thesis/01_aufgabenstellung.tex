@@ -1,0 +1,80 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Aufgabenstellung}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{23. November 2005}
+\maketitle
+\newpage
+
+%\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|p{4,5cm}|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		1.0 & fertig & 23.11.2005 & Arne Baldauf, Nicolas Vika & Initiale Version\\ \hline
+		1.1 & fertig & 05.01.2005 & Nicolas Vika & Fehler berichtigt, in LaTeX überführt\\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+Ziel der Studienarbeit ist es einen Java-Faktenextraktor für Gupro zu erstellen (der die Sprachelemente bis Java 5 verarbeiten kann).\\
+
+Dazu sollen sich die Studierenden selbständig in das Thema GUPRO einarbeiten und einen Lösungsansatz entwickeln, der, soweit möglich, bereits existierende Lösungen einbezieht (z. B. das Eclipse Java Schema, Parser etc.).\\
+
+Die Implementierungssprache steht zur freien Wahl, sollte aber mit der Integration bereits existierender Lösungen harmonieren.
+Alle Quelltexte sollen nach den bekannten Prinzipien aus der Vorlesung „Programmierung“ erstellt werden.\\
+
+Neben dem eigentlichen Faktenextraktor sollen auch mehrere Java-Schemata erstellt werden, die der Extraktor zur Berechnung des Graphen alternativ verwendet. Die Schemata sollen, neben einer feinkörnigen Graphenrepräsentation des Codes, auch höhere Abstraktionsniveaus abdecken.\\
+
+Der Graph soll ein TGraph sein (ein Zwischenschritt über GXL ist erlaubt, wenn dies den Aufwand der Studienarbeit sinnvoll reduziert).\\
+
+Für die Arbeit mit dem Graphen sollen auch einige sinnvolle GreQL-Anfragen formuliert werden, die insbesondere auf die objektorientierte Ausrichtung von Java abzielen.\\
+
+Der Extraktor soll effizient arbeiten. Zur Überprüfung werden (als Benchmark) Graphen aus Teilen des Java-SDKs extrahiert.\\
+
+Das Gesamtarbeitspensum soll gleichmäßig auf beide Teilnehmer verteilt sein. Dazu sollen alle Arbeitsschritte von den Studierenden dokumentiert werden,  so dass ersichtlich ist, wer welche Arbeiten vorgenommen hat.\\
+
+Zwecks Kontrolle, Absprache und Rückmeldung soll regelmässig, alle zwei bis drei Wochen, ein Treffen der Teilnehmer mit den Betreuern stattfinden.\\
+
+\end{document}

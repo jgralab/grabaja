@@ -1,0 +1,285 @@
+\subsection{Beschreibung}
+Um festzustellen, ob der mit ANTLR erzeugte Parser bis hierhin noch nicht aufgedeckte Schwachstellen oder Fehler besitzt, war es nun notwendig, weitere Tests durchzuführen. Ebenso war es notwendig, den Parser auf seine Verarbeitungsgeschwindigkeit hin zu prüfen.\par
+Alle im folgenden genannten Ergebnisse beziehen sich auf den Parser, welcher aus der ANTLR-Grammatik für Java 1.5 von Michael Studman erzeugt wurden.Die beiden anderen Grammatiken (Stahl, Wisniewski) sind aufgrund der bereits im Test der verschiedenen Tools gefundenen Fehler ausgeschieden.\par
+Um die Analyse dieser erweiterten Tests zu erleichtern, war es zunächst nötig, das verwendete Testprogramm zu modifizieren. Da die Konsole, sowohl unter Windows als auch unter Linux, aufgrund der begrenzten maximalen Zahl der Ausgaben und der beschränkten Breite nicht gerade ideal bei der Analyse größerer Codemengen ist, wurden jegliche Ausgaben in eine Textdatei geschrieben anstatt auf die Konsole. Desweiteren wurde die Verarbeitungszeit gemessen und ebenfalls in der Ausgabedatei gespeichert. Der zugehörige Code findet sich in Listing \ref{logparser.java}.
+
+\subsection{Breitentests}
+Da es unmöglich ist, alle in Java möglichen Kombinationen von Sprachkonstrukten mit einem vertretbaren Aufwand in einzelnen Testfällen durchzuspielen, und wir auch nichts in der Art einer "`Testsuite"' für Java-Parser oder -Compiler finden konnten, haben wir einige größere, quelloffen verfügbare, Projekte parsen lassen.
+
+\subsubsection{JDK}
+Die Quelltexte des Java Developer Kits (Version 1.5.0\_06) waren die Wahl für den ersten Test. Die insgesamt 6.555 Dateien ergeben ein Datenvolumen von knapp 63 MB. Das Parsing verlief vollständig fehlerfrei, alle Dateien wurden ohne Probleme akzeptiert.
+
+\subsubsection{Eclipse}
+Zum zweiten Test haben wir die Quelltexte des Eclipse SDK (Version 3.1.2) verwendet, welche knapp 90 MB groß sind und sich auf 12.304 Dateien verteilen. Der Test verlief hier fast völlig fehlerfrei, lediglich 4 Dateien konnten nicht geparst werden. Allerdings konnten eben diese 4 in der vorliegenden Form auch nicht direkt mit javac kompiliert werden. Der Grund hierfür liegt in den enthaltenen Quelltexten, welche Code enthälten, der Konstrukte wie in Listing \ref{ant-code-eclipse} enthält.\par
+\begin{lstlisting}[caption=Ein Beispiel für ant-spezifischen Code in den Eclipse-SDK-Quelltexten, label=ant-code-eclipse, captionpos=b, style=java]
+%Options in the template
+%hasDefault
+
+%if hasDefault
+    [...]
+%else
+    [...]
+%endif
+\end{lstlisting}
+Dies ist allerdings kein gültiger Javacode. Da die Erzeugung von Eclipse mittels ant (einer Art make-Tool) geschieht, wird dieser Code jedoch vor der eigentlich Kompilierung nochmals modifiziert. Somit sind die vier aufgetretenen Fehler kein Indiz für ein Versagen oder eine Unvollständigkeit des Parsers, sondern durchaus berechtigt.
+
+\subsubsection{ANTLR}
+Im Vergleich mit dem JDK und Eclipse sind die Quelltexte von ANLR mit 307 Dateien und etwa 2 MB eher klein. Das Parsing verläuft hier bis auf eine Datei fehlerfrei. Diese Datei befindet sich jedoch lediglich unter den mitgelieferten Beispielen von ANTLR und kann auch mit javac nicht kompiliert werden, so dass auch hier der Grund für das Versagen schlicht und einfach falscher Code ist und nicht der Parser.
+
+\subsubsection{Fazit}
+Beim Parsen von existierenden Anwendungen konnten alle Quelltexte fehlerfrei geparst werden, die auch in der vorliegenden Form mit dem Java Compiler erzeugt werden konnten, so dass wir diese Tests als vollständig bestanden bewerten.
+
+\subsection{Test mit Textinternationalisierungsoptionen}
+Da es bei den ersten Tests aller Tools bereits auffällig oft an den Quelltexten mit Unicode bzw. nicht-ASCII-Text zu Fehlern kam, haben wir auch hier weitergehende Tests durchgeführt.
+
+\subsubsection{Unicode-Bezeichner}
+Beim ersten Test mit Unicode hatten wir lediglich auf die Fälle getestet, in denen Unicode bzw. Unicode-Escapesequenzen in den zugewiesenen Werten von \texttt{String}- und \texttt{char}-Variablen vorhanden waren. Da Java 5 solche Zeichen aber auch an anderen Stellen, wie Bezeichnern von Variablen und Klassen, zulässt, haben wir weitere Tests durchgeführt. Dabei haben wir Klassen- und Variablenbezeichner sowohl mit Sonderzeichen (siehe Listing \ref{testunicode}) als auch den gleichen Code nochmals mit den entsprechenden Unicode-Escapesequenzen (siehe Listing \ref{testescseq}) durchgeführt.\par
+Beide Dateien ließen sich mit javac kompilieren, der Parser scheitert jedoch in beiden Fällen beim ersten Bezeichner. Die verwendeten Quelltexte befinden sich auch hier im Abschnitt \ref{test_sourcecodes}.
+
+\subsubsection{Textencoding}
+Bei diesen Tests haben wir einen einfachen Quellcode, welcher sich fehlerfrei parsen ließ, in verschiedenen Textformaten abgespeichert. Dabei kamen neben dem normalen ASCII auch die verschiedenen Unicode-Varianten (Unicode, Big Endian, UTF-8, UTF-7) und ANSI-Varianten mit verschiedenen Codepages (31 an der Zahl) zum Einsatz.\par
+Zunächst haben wir die Formate aussortiert, die auch javac nicht verarbeiten konnte. Dabei fielen alle Unicode-Varianten und die ASCII-Varianten mit den Codepages 37, 500, 875 und 1026 heraus. Alle übrig gebliebenen akzeptierte der Parser anstandslos. Ein testweises Parsen der 8 von javac nicht akzeptierten Formate schlug in allen Fällen ebenfalls fehl. Tabelle \ref{tested-textencodings} zeigt eine Übersicht über alle getesteten Formate.
+
+\begin{longtable}{|l|l|l|l|l|}
+    \hline
+    \textbf{\rotatebox{90}{Encoding}} & \textbf{\rotatebox{90}{Codepage}} & \textbf{\rotatebox{90}{Beschreibung}} & \textbf{\rotatebox{90}{ANTLR}} & \textbf{\rotatebox{90}{javac}}\\ \hline
+    \hline
+    ANSI & 37 & IBM EBCDIC (US-Kanada) & nein & nein \\ \hline
+    ANSI & 437 & OEM USA & ja & ja \\ \hline
+    ANSI & 500 & IBM EBCDIC (International) & nein & nein \\ \hline
+    ANSI & 737 & Griechisch (DOS) & ja & ja \\ \hline
+    ANSI & 775 & Baltisch (DOS) & ja & ja \\ \hline
+    ANSI & 850 & Westeuropäisch (DOS) & ja & ja \\ \hline
+    ANSI & 852 & Osteuropäisch (DOS) & ja & ja \\ \hline
+    ANSI & 855 & OEM kyrillisch & ja & ja \\ \hline
+    ANSI & 857 & Türkisch (DOS) & ja & ja \\ \hline
+    ANSI & 860 & Portugiesisch (DOS) & ja & ja \\ \hline
+    ANSI & 861 & Isländisch (DOS) & ja & ja \\ \hline
+    ANSI & 863 & Französisch, Kanada (DOS) & ja & ja \\ \hline
+    ANSI & 865 & Nordisch (DOS) & ja & ja \\ \hline
+    ANSI & 866 & Kyrillisch (DOS) & ja & ja \\ \hline
+    ANSI & 869 & Griechisch, modern (DOS) & ja & ja \\ \hline
+    ANSI & 874 & Thai (Windows) & ja & ja \\ \hline
+    ANSI & 875 & IBM EBCDIC (Griechisch, modern) & nein & nein \\ \hline
+    ANSI & 932 & Japanisch (Shift-JIS) & ja & ja \\ \hline
+    ANSI & 936 & Chinesisch - VR (GB2312) & ja & ja \\ \hline
+    ANSI & 949 & Koreanisch & ja & ja \\ \hline
+    ANSI & 950 & Chinesisch (Traditionell) (Big5) & ja & ja \\ \hline
+    ANSI & 1026 & IBM EBCDIC (Türkisch, Latin-5) & nein & nein \\ \hline
+    ANSI & 1250 & Mitteleuropäisch (Windows) & ja & ja \\ \hline
+    ANSI & 1251 & Kyrillisch (Windows) & ja & ja \\ \hline
+    ANSI & 1252 & Westeuropäisch (Windows) & ja & ja \\ \hline
+    ANSI & 1253 & Griechisch (Windows) & ja & ja \\ \hline
+    ANSI & 1254 & Türkisch (Windows) & ja & ja \\ \hline
+    ANSI & 1255 & Hebräisch (Windows) & ja & ja \\ \hline
+    ANSI & 1256 & Arabisch (Windows) & ja & ja \\ \hline
+    ANSI & 1257 & Baltisch (Windows) & ja & ja \\ \hline
+    ANSI & 1258 & Vietnamesisch (Windows) & ja & ja \\ \hline
+    US-ASCII & - & - & ja & ja \\ \hline
+    Unicode (UTF-7) & - & - & nein & nein \\ \hline
+    Unicode (UTF-8) & - & - & nein & nein \\ \hline
+    Unicode & - & - & nein & nein \\ \hline
+    Unicode (Big Endian) & - & - & nein & nein \\ \hline
+    \caption{Übersicht aller getesteten Textencodings}
+    \label{tested-textencodings}
+\end{longtable}
+
+
+\subsubsection{Fazit}
+Bei den möglichen Encoding-Verfahren für Quelltext akzeptiert der Parser alles, was auch vom Java Compiler verarbeitet werden kann. Allerdings schlägt das Parsing bei der Verwendung von Sonderzeichen und Unicode-Escapesequenzen in Klassen-, Variablen-, Methodenbezeichnern etc. komplett fehl, so dass die Grammatik in dieser Hinsicht eventuell noch überarbeitet werden müsste. 
+
+\subsection{Benchmarks}
+An dieser Stelle haben wir die Verarbeitungsgeschwindigkeit des Parsers untersucht, indem wir die Zeiten für das Parsing der kompletten Quelltexte des JDK bzw. von Eclipse gemessen haben (nähere Informationen über deren Umfang finden sich weiter oben im Abschnitt der Breitentests).\par
+Mit einer Verarbeitungsdauer von 1:06 Minuten für das JDK und 1:58 Minuten für Eclipse (auf einem System mit 3,2GHz Intel P4) kann man durchaus von einer sehr schnellen Verarbeitung sprechen, so dass ein von ANTLR erzeugter Parser als ausreichend schnelle Grundlage für den Faktenextraktor betrachtet werden kann.
+
+\subsection{Quelltexte}
+\label{test_sourcecodes}
+\begin{lstlisting}[caption=LogParser.java, label=logparser.java, captionpos=b, style=java]
+import java.io.*;
+import antlr.collections.AST;
+import antlr.collections.impl.*;
+import antlr.debug.misc.*;
+import antlr.*;
+import java.awt.event.*;
+import java.util.*;
+
+class LogParser {
+
+ static boolean showTree = false;
+
+ static StringBuilder resultOutPut = new StringBuilder();
+
+    public static void main(String[] args) {
+  // Use a try/catch block for parser exceptions
+  try {
+   // if we have at least one command-line argument
+   if (args.length > 0 ) {
+    // get start time
+    Date startdate = new Date();
+    outputappend("Startzeit: " + startdate.toString());
+    System.err.println("Parsing...");
+
+    // for each directory/file specified on the command line
+    for(int i=0; i< args.length;i++) {
+     if ( args[i].equals("-showtree") ) {
+      showTree = true;
+     }
+     else {
+      outputappend(" " + args[i] + ":"); 
+      doFile(new File(args[i]) , args[i]); // parse it
+     }
+    }
+    // get end time & calculate difference
+    Date enddate = new Date();
+    outputappend("Endzeit: " + enddate.toString());
+    long timerequired = enddate.getTime() - startdate.getTime();
+    outputappend("Zeit benötigt: " + 
+      Long.toString(timerequired / 3600000) + ":" + 
+      Long.toString((timerequired \% 3600000) / 60000) + ":" + 
+      Long.toString((timerequired \% 60000) / 1000) + "," + 
+      Long.toString(timerequired \% 1000) + 
+      " (=" + Long.toString(timerequired) + "ms)");
+    FileOutputStream mystream = 
+      new FileOutputStream("ParserLog.txt");
+    mystream.write (resultOutPut.toString().getBytes() , 0 , 
+      resultOutPut.length());
+    mystream.close();
+   }
+   else
+    System.err.println("Usage: java Main [-showtree] "+
+                                   "<directory or file name>");
+  }
+  catch(Exception e) {
+   System.err.println("exception: "+e);
+   e.printStackTrace(System.err);   // so we can get stack trace
+  }
+ }
+
+
+ private static void outputappend (String toAppend) {
+  resultOutPut.append(toAppend + "\n");
+ }
+
+
+ private static String stackTraceToString(Exception e) {
+  String myresult = "";
+  StackTraceElement trace[] = e.getStackTrace();
+  for (int i = 0; i < trace.length; i++) {
+   myresult += "@ " + trace[i].toString() + "\n";
+  }
+  return myresult;
+ }
+
+
+ // This method decides what action to take based on
+ //   the type of file we are looking at
+ public static void doFile(File f , String basepath)
+         throws Exception {
+  // If this is a directory, walk each file/dir within
+  if (f.isDirectory()) {
+   String files[] = f.list();
+   for(int i=0; i < files.length; i++)
+    doFile(new File(f, files[i]) , basepath);
+  }
+
+  // otherwise, if this is a java file, parse it!
+  else if ((f.getName().length()>5) &&
+     f.getName().substring(f.getName().length()-5).equals(".java")) {
+   outputappend("    ." + 
+     f.getAbsolutePath().substring(basepath.length()) );
+   System.err.print(".");
+   // parseFile(f.getName(), new FileInputStream(f));
+   parseFile(f.getName(), 
+     new BufferedReader(new FileReader(f)));
+  }
+ }
+
+ // Here's where we do the real work...
+ public static void parseFile(String f, Reader r)
+         throws Exception {
+  try {
+   // Create a scanner that reads from the
+   //   input stream passed to us
+   JavaLexer lexer = new JavaLexer(r);
+   lexer.setFilename(f);
+
+   // Create a parser that reads from the scanner
+   JavaRecognizer parser = new JavaRecognizer(lexer);
+   parser.setFilename(f);
+
+   // start parsing at the compilationUnit rule
+   parser.compilationUnit();
+   
+   // do something with the tree
+   doTreeAction(f, parser.getAST(), parser.getTokenNames());
+  }
+  catch (Exception e) {
+   outputappend("parser exception: "+e);
+   outputappend("message: " + e.toString());
+   outputappend(stackTraceToString(e));
+   System.err.print("!");
+   // e.printStackTrace();   // so we can get stack trace  
+  }
+ }
+ 
+ public static void doTreeAction(String f, AST t, 
+   String[] tokenNames) {
+  if ( t==null ) return;
+  if ( showTree ) {
+   ((CommonAST)t).setVerboseStringConversion(true, tokenNames);
+   ASTFactory factory = new ASTFactory();
+   AST r = factory.create(0,"AST ROOT");
+   r.setFirstChild(t);
+   final ASTFrame frame = new ASTFrame("Java AST", r);
+   frame.setVisible(true);
+   frame.addWindowListener(
+    new WindowAdapter() {
+      public void windowClosing (WindowEvent e) {
+        frame.setVisible(false); // hide the Frame
+        frame.dispose();
+        System.exit(0);
+      }
+     }
+    );
+   // System.out.println(t.toStringList());
+  }
+  JavaTreeParser tparse = new JavaTreeParser();
+  try {
+   tparse.compilationUnit(t);
+  }
+  catch (RecognitionException e) {
+   outputappend(e.getMessage());
+   outputappend(stackTraceToString(e));
+   System.err.print("!");
+   // e.printStackTrace();%
+  }
+
+ }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=TestUnicodeClassAndVariableNames.java, label=testunicode, captionpos=b, style=java]
+/**
+ * Diese Klasse enthält Unicode-Sonderzeichen.
+ */
+class EscapeSäquänz   // "EscapeSäquänz" ;-)
+{
+    char c = '\u0009';   // this literal is valid.
+    // "Änderungsmaßstab" ;-)
+    String Änderungsmaßstab = "gar keiner";
+    int français = 69;   // "français" ;-)
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=TestUnicodeEscapeSequenceClassAndVariableNames.java, label=testescseq, captionpos=b, style=java]
+/**
+ * Diese Klasse enthält Unicode-Escapesequenzen.
+ */
+class EscapeS\u00e4qu\u00e4nz   // "EscapeSäquänz" ;-)
+{
+    char c = '\u0009';   // this literal is valid.
+    // "Änderungsmaßstab" ;-)
+    String \u00c4nderungsma\u00dfstab = "gar keiner";
+    int fran\u00e7ais = 69;   // "français" ;-)
+}
+\end{lstlisting}

@@ -1,0 +1,83 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von Wörtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Ergebnisse des Treffens vom 21. Mai 2007}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+%\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+%\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+%\begin{table}
+%	\begin{center}
+%	\begin{tabular}{|l|l|l|l|l|}
+%	  \hline
+%	  Version & Status & Datum & Autor(en) & Erläuterung \\
+%	  \hline \hline
+%		1.0 & WIP & 01.06.2007 & Arne Baldauf & initiale Version \\ \hline
+%	\end{tabular}
+%	\end{center}
+%\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\begin{itemize}
+	\item{Bei der Implementation des Typechecking sollen folgende Dinge berücksichtigt werden:}
+	\begin{itemize}
+		\item{Bei der Auswertung von "`import"'-Klauseln sollen die Package- / Paketnamen als voll qualifizierter Name (fullqualifiedname) behandelt werden.}
+		\item{Identifier sollen pro Namespace erkannt / unterschieden werden.}
+		\item{Evtl. schon vorbereitend für das Merging: Falls möglich, soll bei Typangaben die Kante direkt auf die entspr. Deklaration zeigen. Im Fall eines QualifiedType auch für die entspr. Oberklassen / Packages.}
+	\end{itemize}
+	\item{Bei der Konvertierung des von ANTLR generierten AST in einen TGraphen sollen folgende Dinge geändert werden:}
+	\begin{itemize}
+		\item{Bei konstanten Werten einfacher Typen im Quelltext (Ganz- und Fließkommazahlenwerte, char-Werte, boolean-Werte) soll neben dem numerischen / logischen Werte auch noch der zugehörige String gespeichert werden (da insbesondere numerische Werte in verschiedenen Schreibweisen dargestellt werden können).}
+		\item{Konstante Ganzzahlwerte sollen immer als long gespeichert werden (da eine Unterscheidung zwischen den unterschiedlichen Typen oft nicht einfach so möglich ist).}
+	\end{itemize}
+	\item{Das Metamodell soll bis 25.05.2007 wie folgt überarbeitet werden:}
+	\begin{itemize}
+		\item{Unterteilung des Modells in sinnvolle Packages.}
+		\item{Verschieben der entspr. Klassen in die einzelnen Packages.}
+		\item{Unterteilung des Modelldiagrammes in die für die Packages entspr. Teilelemente.}
+		\item{Erstellung eines Übersichtsdiagrammes, welches die Beziehungen der einzelnen Pakete darstellt.}
+		\item{Nach Abschluss dieser Arbeiten sollen möglichst keine Änderungen am Metamodell mehr vorgenommen werden.}
+	\end{itemize}
+  \item{Das nächste Treffen findet am 11. Juni 2007 um 16:00s.t. in B108 statt.}
+  \item{Einreichung der Dokumente bis 08. Juni 2007 (abends).}
+  \end{itemize}
+\end{document}

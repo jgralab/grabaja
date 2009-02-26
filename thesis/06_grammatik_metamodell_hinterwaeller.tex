@@ -1,0 +1,1102 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\usepackage{listings}
+\lstset{numbers=left, 
+        numberstyle=\tiny, 
+        stepnumber=1, 
+        numbersep=5pt, 
+        language=Java, 
+        basicstyle=\small, 
+        breaklines=true, 
+        showstringspaces=false,
+        keywordstyle=\bfseries\underbar,
+        xleftmargin=0.4cm}
+\usepackage{color}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Java 5 Grammatik und Metamodell}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		1.0 & WIP & 24.03.2006 & Nicolas Vika & Initiale Version\\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\section{Einleitung}
+Dieses Dokument beschreibt die Erstellung und Struktur des feingranularen Java 5 Datenmodells für einen TGraphen und ist in drei Teile unterteilt.\\
+In diesem ersten Teil beschreiben wir Struktur und Absicht dieses Dokuments, im zweiten die Anpassung einer bereits vorhandenen Java-Grammatik und im dritten die Erstellung des daraus resultierenden Metamodell.\\
+Im Anhang befinden sich neben der kompletten ursprünglichen auch die neue Grammatik. Das Metaschema liegt in einer separaten Datei bei.
+
+\newpage
+
+\section{Anpassen der Java-Grammatik}
+Da wir bereits über ein feingranulares Javamodell und einer dazugehörigen Grammatik (vollständig im Anhang im \textit{Listing \ref{javagramold}}) aus der Diplomarbeit von Bodo Hinterwäller verfügen, waren wir nicht gezwungen ein komplett neues Datenmodell für Java 5 zu erstellen. Dazu haben wir erst die Grammatik an die neuen Java 5 Features\footnote{\url{http://java.sun.com/developer/technicalArticles/releases/j2se15langfeat/}} angepasst (vollständig im Anhang im \textit{Listing \ref{javagramnew}}).\\
+Zunächst mussten wir aber feststellen, welche Anpassungen wirklich nötig waren.
+
+\subsection{Feststellen der Anpassungen}
+Bei genauerem Studium der Grammatik und des Metamodells haben wir festgestellt, dass bereits ein Teil der neuen Java 5 Features abgedeckt wird.\\
+Keine Anpassung nötig, da bereits eingebaut, waren für:
+\begin{itemize}
+  \item{Enum}
+  \item{For each}
+\end{itemize}
+Nur zum Teil eingebaut und deshalb nur kleinere Anpassungen waren nötig für:
+\begin{itemize}
+  \item{Annotations}  
+  \item{Generics}  
+\end{itemize}
+Überhaupt nicht abgedeckt und deshalb hinzugefügt werden mussten:
+\begin{itemize}
+  \item{Static imports}
+  \item{Variable Arguments}
+\end{itemize}
+Nicht berücksichtigt werden mussten:
+\begin{itemize}
+  \item{Autoboxing}
+  \item{Unboxing}
+\end{itemize} 
+Im Vergleich zu einer völligen Neuentwicklung waren nur vergleichsweise wenige Anpassungen der Grammatik und des Metamodells nötig. Im folgenden Teil wird erläutert, wie diese im Detail aussehen.
+
+\subsection{Vornehmen der Anpassungen}
+In diesem Abschnitt wird jedes anzupassende Java 5 Feature kurz beschrieben, dann dazu ein Beispiel genannt und anschließend aus der alten die neue Regel hergeleitet.
+\subsubsection{Annotations}
+\paragraph{Beschreibung.}
+Annotations beschreiben den Quelltext. Es handelt sich dabei um Metadaten, die in den Quelltext eingebunden werden können.Im Gegensatz zu einfachen Kommentaren kann zur Laufzeit auf Annotationen zugegriffen und diese ausgewertet werden\footnote{siehe: \url{http://de.wikipedia.org/wiki/Annotation_(Java)}}.
+\begin{lstlisting}[caption=Beispiel für eine Annotation, label=beispielannotation, captionpos=b, language=Java]
+public class MyClass extends Object{
+  
+  @Override
+  public String toString(){
+    //do something
+  }
+}
+\end{lstlisting}
+Im Beispielcode in \textit{Listing \ref{beispielannotation}} gibt die Annotation \texttt{@Override} an, dass die nächste Methode eine Methode der Oberklasse überschreibt.
+
+\paragraph{Anpassung.} 
+Annotationen sind bereits größtenteils in der Grammatik von Bodo Hinterwäller berücksichtigt. Es fehlen nur die Meta-Annotationen, die Annotationen annotieren.
+Angepasst musste deshalb nur die im \textit{Listing \ref{annotationdeclold}} aufgeführte Regel:
+\begin{lstlisting}[caption=Die bestehende Annotationsdeklaration, label=annotationdeclold, captionpos=b]
+AnnotationTypeDeclaration ::= [ Javadoc ] 
+                              { ExtendedModifier } 
+                              '@' 'interface' Identifier
+                              '{' { 
+                              AnnotationTypeBodyDeclaration 
+                              | ';' } '}'
+\end{lstlisting}
+Vor jeder Deklaration eines Annotationstyp können Annotationen stehen, die diese weiter beschreiben. Es genügt der Regel das neue Symbol \texttt{MetaAnnotation} vorwegzustellen und diesem eine entsprechende Regel zuzuweisen, wie in \textit{Listing \ref{annotationdeclnew}} dargestellt.
+\lstset{emph={MetaAnnotation}, }
+\begin{lstlisting}[caption=Die neue Annotationsdeklaration, label=annotationdeclnew, captionpos=b, emphstyle=\color{red}]
+AnnotationTypeDeclaration ::= { MetaAnnotation }
+                              [ Javadoc ] 
+                              { ExtendedModifier } 
+                              '@' 'interface' Identifier
+                              '{' { 
+                              AnnotationTypeBodyDeclaration 
+                              | ';' } '}'
+MetaAnnotation ::= Annotation 
+\end{lstlisting}
+
+\subsubsection{Generics}
+\paragraph{Beschreibung.} 
+Mit Generics lassen sich Klassen und Methoden mit Typen parametrisieren. Damit werden der Sprache einige ähnliche Möglichkeiten eröffnet, die sich vergleichbar bei den Templates in C++ bieten. Beispielsweise ist es nun möglich für die Benutzung von Containern festzulegen, von welchem Typ die enthaltenen Elemente sind.
+\begin{lstlisting}[caption=Beispiel für ein Generic, label=beispielgeneric, captionpos=b, language=Java]
+Vector<String> stringVector;
+\end{lstlisting}
+Die Deklaration in \textit{Listing \ref{beispielgeneric}} legt fest, dass der Vector \texttt{stringVector} nur Elemente vom Typ \texttt{String} enthält.
+
+\paragraph{Anpassung.}
+Auch Generics sind größtenteils von der Grammatik abgedeckt. Es existiert jedoch ein Sonderfall bei deren Benutzung, der nicht bedacht wurde:\\
+
+
+\lstinline{List<String> list = new ArrayList<String>()}\\
+
+
+Bei der Instanziierung einer Klasse soll es auch möglich sein, ein Generic-Konstrukt auf der rechten Seite zu verwenden. Dazu muss die Regel aus \textit{Listing \ref{classinstdeclold}} geändert werden.
+\begin{lstlisting}[caption=Die bestehende Klasseninstanziierungsdeklaration, label=classinstdeclold, captionpos=b]
+ClassInstanceCreation ::= [ Expression ] 
+                          'new' Name '(' 
+                          [ Expression { ',' Expression } ] 
+                          ')' [ AnonymousClassDeclaration ]
+\end{lstlisting}
+Statt des Symbols \texttt{Name} ist das Symbol \texttt{Type} nötig. Daraus ergibt sich die neue Regel aus \textit{Listing \ref{classinstdeclnew}}.
+\begin{lstlisting}[caption=Die neue Klasseninstanziierungsdeklaration, label=classinstdeclnew, captionpos=b]
+ClassInstanceCreation ::= [ Expression ] 
+                          'new' Type '(' 
+                          [ Expression { ',' Expression } ] 
+                          ')' [ AnonymousClassDeclaration ]
+\end{lstlisting}
+
+  
+\subsubsection{Static imports}
+\paragraph{Beschreibung.} Statische Imports unterscheiden sich nur wenig von den herkömmlichen Imports. Die Syntax unterscheidet sich nur durch den hinzugefügten \texttt{static} Modifier. Dadurch verkürzt sich, beim Benutzen der importierten Klassen die Schreibweise beim Aufruf ihrer Methoden. Das Beispiel in \textit{Listing \ref{beispielstaticimport}} verdeutlicht dies.
+
+\begin{lstlisting}[label=beispielstaticimport, caption=Beispiel für einen statischen Import, captionpos=b, language=Java]
+import static java.lang.System.out;
+  
+public class HelloWorld{
+  
+  public static void main(){
+    out.print("Hello World"); // statt System.out.print()
+  }
+}
+\end{lstlisting}
+
+\paragraph{Anpassung.} In diesem Fall ist der Aufwand nur minimal. Die Regel der Grammatik muss nur um das Symbol "`static"' erweitert werden. Aus der alten Regel:\\
+
+
+\lstinline{ImportDeclaration ::= 'import' Name [ '.*' ] ';'}\\
+
+
+wird somit die neue erweiterte Regel:\\
+
+
+\lstinline{ImportDeclaration ::= 'import' ['static'] Name [ '.*' ] ';'}\\
+
+
+Die Benutzung der statisch importierten Klassen ist bereits durch die Regeln der Grammatik abgedeckt, die die Syntax eines Methodenaufrufs beschreiben.
+
+\subsubsection{Variable Arguments}
+\paragraph{Beschreibung.} Die variable Anzahl der Argumente für Methoden (oft auch varargs genannt) soll die Möglichkeit eröffnen Methoden zu schreiben, bei denen zum Zeitpunkt der Erstellung noch nicht klar ist, wie viele Argumente überhaupt benötigt werden. Sinnvoll ist dies beispielsweise bei der Max-Funktion, die den größten Wert der angegebenen Argumente zurückgibt. Es kann nötig sein, dass der größte Wert aus mehr als nur zwei Argumenten benötigt wird. Um eine solche Max-Funktion zu implementieren musste bislang eine Collection als Argument übergeben werden. Durch die variablen Argumente soll der Programmieraufwand für eine solche Situation reduziert werden. \textit{Listing \ref{beispielvarargs}} verdeutlicht dies mit einem Beispiel.
+
+\begin{lstlisting}[label=beispielvarargs, caption=Beispiel für eine Methode mit variablen Argumenten, captionpos=b]
+//Definition der Methode
+void someMethod(Object ... args) {
+  ...
+}
+
+// Aufruf der Methode
+someMethod(arg1", arg2", arg3");
+\end{lstlisting}
+
+\paragraph{Anpassung.} Auch in diesem Fall ist der Anpassungsaufwand sehr gering, da variable Argumente nur als letztes Argument einer Methode stehen dürfen.\\
+\lstset{breaklines=false}
+\begin{lstlisting}[caption=Die bestehende Methodendeklarationsdeklaration, label=methoddeclold, captionpos=b]
+MethodDeclaration ::= [ Javadoc ] 
+                      { Modifier } 
+                      ( Type | 'void' ) 
+                      Identifier 
+                      '(' 
+                      [ 
+                        SingleVariableDeclaration 
+                        { ',' SingleVariableDeclaration } 
+                      ] 
+                      ')' 
+                      [ 'throws' TypeName { ',' TypeName } ] 
+                      ( Block | ';' )
+\end{lstlisting}
+
+In die alte Regel aus \textit{Listing \ref{methoddeclold}} wird das neue Symbol \texttt{VarArgsDeclaration} eingeführt und dafür eine weitere Regel definiert, wie in \textit{Listing \ref{methoddeclnew}} geschehen.\\
+\begin{lstlisting}[caption=Die neue Methodendeklarationsdeklaration, label=methoddeclnew, captionpos=b]
+MethodDeclaration ::= [ Javadoc ] 
+                      { Modifier } 
+                      ( Type | 'void' ) 
+                      Identifier
+                      '(' 
+                      [ 
+                        SingleVariableDeclaration 
+                        { ',' SingleVariableDeclaration } 
+                        [ ',' VarArgsDeclaration ] 
+                      ] 
+                      | 
+                      [ VarArgsDeclaration ] 
+                      ')'
+                      [ 'throws' TypeName { ',' TypeName } ] 
+                      ( Block | ';' )
+
+VarArgsDeclaration := Type '...' Identifier
+\end{lstlisting}
+
+Die Benutzung dieses Sprachkonstruktes findet in einem Methodenaufruf statt (siehe \textit{Listing \ref{beispielvarargs}}). Dieser ist bereits durch die Grammatik abgedeckt und muss nicht weiter angepasst werden.
+\newpage
+
+\section{Erstellung des Metamodells}
+
+
+
+Von der Grammatik zum Modell waren es nur wenige Schritte. Aus der Vorlage von Bodo Hinterwäller war das Vorgehen, zum großen Teil, herleitbar. Um aus der Grammatik eine Repräsentation des Modells als UML-Klassendiagramm zu erstellen, galt es zu allererst folgende Heuristiken zu befolgen:
+\begin{itemize}
+  \item{Klassen:}
+  \begin{itemize}
+    \item{Alle Nichtterminalsymbole werden zu Klassen.}
+    \item{Alle Terminalsymbole werden weggelassen.}
+    \item{Alle Klassen, die von Symbolen auf der linken Seite der Regel abstammen, werden mit \texttt{abstract} markiert.
+          Ausgenommen Regeln mit einer 1-zu-1-Relation, wie:\\
+          \texttt{Typevariable ::= Identifier}.}
+  \end{itemize}
+  \item{Assoziationen:}
+  \begin{itemize}
+    \item{Alle Veroderungen werden zu Vererbungsbeziehungen. Wobei die Basisklasse auf dem Symbol der linken Seite der Regel 
+          fußt.}
+    \item{Alle Verkettungen werden zu Aggregationsbeziehungen. Wobei die aggregierende Klasse auf dem Symbol der linken Seite 
+          der Regel fußt.}
+  \end{itemize}
+  \item{Multiplizitäten:}
+  \begin{itemize}
+    \item{Alle \{ Symbol \} werden zu 0..* und alle [ Symbol ] werden zu 0..1.}
+    \item{Alle Symbole ohne o. g. Klammerungen führen zu einer Multiplizität von genau 1.}
+    \item{Sind aufgrund komplizierter Grammatikausdrücke mehrere Multiplizitäten möglich, gelten die kleinste untere und die 
+          größte obere Grenze.}
+    \item{Dabei werden die Multiplizitäten am Ende der Assoziation notiert, welche in der Klasse mündet, die vom Symbol 
+          abstammt.}
+  \end{itemize}
+  \item{Rollen}
+  \begin{itemize}
+    \item{Alle Klassen die von einem Symbol der rechten Regelseite abstammen sind mit einer Rolle zu annotieren.}
+    \item{Alle Schlüsselworte werden zu Rollen für die Klassen vor deren Ursprungssymbol sie stehen.}
+    \item{Alle Klassen die am Ende einer Vererbungsbeziehung stehen übernehmen keine Rolle.}
+    \item{Auch die restlichen Klassen müssen mit sinnvollen Rollen\footnote{Diese stehen noch zur Diskussion.} bedacht werden.}
+  \end{itemize}
+\end{itemize}
+Als Beispiel soll ein Teil der Annotationen dienen. Die Regeln aus Listing \ref{RegAnno} sollen in ein Klassendiagramm überführt werden.
+\begin{lstlisting}[caption=EBNF-Regeln zur Annotation, captionpos=b, label=RegAnno]
+Annotation ::= MarkerAnnotation | 
+               NormalAnnotation | 
+               SingleMemberAnnotation
+
+MarkerAnnotation ::= '@' TypeName
+\end{lstlisting}
+Die Nichtterminale werden zu Klassen. Dabei dient \texttt{Annotation} als Basisklasse für \texttt{MarkerAnnotation}, \texttt{NormalAnnotation} und \texttt{SingleMemberAnnotation}.\\
+Die Klasse \texttt{MarkerAnnotation} aggregiert \texttt{TypeName} und das Terminalsymbol "`@"' wird weggelassen.\\
+Die Multiplizitäten spielen nur bei der Aggregation eine Rolle - in diesem Fall aggregiert genau eine \texttt{MarkerAnnotation} genau einen \texttt{TypeName}.\\
+Die Rolle der Klasse \texttt{TypeName} lässt sich nicht unmittelbar aus der Grammatik herauslesen - in diesem Falle übernimmt die Klasse die Rolle des \texttt{identifier}.\\
+Das resultierende Klassendiagramm wird in Abbildung \ref{AbbAnno} dargestellt.\\
+
+Für unsere Zwecke (bzgl. der Anpassungen an Java 5) reichten die hergeleiteten Regeln völlig aus. Allerdings sind uns nach einem genaueren Vergleich der Grammtik mit dem UML-Klassendiagramm und den Angaben des ASTView-PlugIns für Eclipse einige vermeintliche Inkonsistenzen aufgefallen. Vermeintlich, weil in einigen Fällen die Grammatik und in einigen Fällen das Klassendiagramm näher an der AST-Darstellung von Eclipse ist.\\
+Zum Beispiel im Falle des \texttt{SimpleType} sehen die Regeln wie in Listing \ref{RegSimpleType} aus. Das Klassendiagramm in Abbildung \ref{AbbSimpleType} führt aber als von \texttt{SimpleType} aggregierte Klasse \texttt{Name}, mit der Rolle \texttt{name}, auf. Laut Grammatik sollte \texttt{SimpleType} aber \texttt{TypeName} aggregieren.\\
+
+\begin{lstlisting}[caption=EBNF-Regeln zu SimpleType, captionpos=b, label=RegSimpleType]
+Type ::= ArrayType | ParameterizedType | PrimitiveType | 
+         QualifiedType | SimpleType
+
+SimpleType ::= TypeName
+
+TypeName ::= [ Identifier '.' ] Identifier
+
+Identifier ::= IdentifierName
+
+IdentifierName ::= Letter { Letter | Digit }
+\end{lstlisting}
+Ein Blick in das ASTView-PlugIn offenbart uns die Quelle dieses Unterschiedes. Dort kommt in einer \texttt{FieldDeclaration} auch ein \texttt{TYPE} vor, der über einen \texttt{SimpleType}, \texttt{NAME}, und \texttt{SimpleName} schließlich zu einem \texttt{IDENTIFIER}.\\
+Fragwürdig ist es auch warum viele Klassen Rollen mir ihrem eigenen Namen übernehmen.\\
+
+Hier ist sicherlich noch einiges an Diskussion, wenn nicht sogar eine Überarbeitung, nötig.
+
+\begin{figure}
+ \begin{center}
+  \includegraphics{figures/metamodell-beispielausschnitt.eps}
+  \caption{Aus Listing \ref{RegAnno} resultierendes Klassendiagramm}
+  \label{AbbAnno}
+ \end{center}
+\end{figure}
+
+\begin{figure}
+ \begin{center}
+  \includegraphics{figures/metamodell-beispielausschnitt-type.eps}
+  \caption{Das Klassendiagramm für \emph{Type / SimpleType}}
+  \label{AbbSimpleType}
+ \end{center}
+\end{figure}
+
+\newpage
+
+\begin{appendix}
+
+\section{Java-Grammatiken und Metamodell}
+\lstset{numbers=left}
+\begin{lstlisting}[caption=Java-Grammatik aus \cite{DipBoHi}, label=javagramold, captionpos=b]
+CompilationUnit ::= [ PackageDeclaration ] 
+                    { ImportDeclaration } 
+                    { TypeDeclaration | ';' }
+
+AbstractTypeDeclaration ::= TypeDeclaration | 
+                            EnumDeclaration | 
+                            AnnotationTypeDeclaration
+                            
+Annotation ::= MarkerAnnotation | 
+               NormalAnnotation | 
+               SingleMemberAnnotation
+               
+AnnotationTypeBodyDeclaration ::= AnnotationTypeMemberDeclaration | 
+                                  FieldDeclaration |
+                                  TypeDeclaration | 
+                                  EnumDeclaration |
+                                  AnnotationTypeDeclaration
+                                  
+AnnotationTypeDeclaration ::= [ Javadoc ] { ExtendedModifier } 
+                              '@' 'interface' Identifier
+                              '{' { AnnotationTypeBodyDeclaration | 
+                              ';' } '}'
+
+AnnotationTypeMemberDeclaration ::= [ Javadoc ] 
+                                    { ExtendedModifier }
+                                    Type Identifier '(' ')' 
+                                    [ 'default' Expression ] ';'
+
+AnonymousClassDeclaration ::= '{' ClassBodyDeclaration '}'
+
+ArrayAccess ::= Expression [ Expression ]
+
+ArrayCreation ::= 'new' PrimitiveType '[' Expression ']' 
+                  { '[' Expression ']' } 
+                  { '[' ']' } | 'new' 
+                  TypeName '[' Expression ']' { '[' Expression ']' } 
+                  { '[' ']' } | 'new' 
+                  PrimitiveType '[' ']' { '[' ']' } 
+                  ArrayInitializer | 'new' 
+                  TypeName '[' ']' { '[' ']' } ArrayInitializer
+
+ArrayInitializer ::= '{' [ Expression { ',' Expression} ] '}'
+
+ArrayType ::= Type '[' ']'
+
+AssertStatement ::= 'assert' Expression [ ':' Expression ] ';'
+
+Assignment ::= Expression AssignmentOperator Expression
+
+AssignmentOperator ::=  '=' | '+=' | '-=' | '*=' | 
+                       '/=' | '&=' | '|=' | '^=' | 
+                       '%=' | '<<=' | '>>=' | '>>>='
+
+Block ::= '{' { Statement } '}'
+
+BodyDeclaration ::= AbstractTypeDeclaration | 
+                    AnnotationTypeMemberDeclaration |
+                    EnumConstantDeclaration | 
+                    FieldDeclaration | 
+                    Initializer |
+                    MethodDeclaration | 
+                    ConstructorDeclaration
+
+BooleanLiteral ::= 'true' | 'false'
+
+BreakStatement ::= 'break' [ Identifier ] ';'
+
+CastExpression ::= '(' Type ')' Expression
+
+CatchClause ::= 'catch' '(' FormalParameter ')' Block
+
+CharacterLiteral ::= <character literal nodes>
+
+ClassBodyDeclaration ::= BodyDeclaration
+
+ClassDeclaration ::= [ Javadoc ] { Modifier } 'class' 
+                     Identifier [ 'extends' Type]
+                     [ 'implements Type' { ',' Type } ]
+                     '{' { ClassBodyDeclaration | ';' } '}'
+
+ClassInstanceCreation ::= [ Expression . ] 'new' Name 
+                          '(' [ Expression { ',' Expression } ] ')'
+                          [ AnonymousClassDeclaration ]
+
+ClassName ::= [ Identifier '.' ] Identifier
+
+Comment ::= BlockComment | Javadoc | LineComment
+
+ConditionalExpression ::= Expression '?' Expression ':' Expression
+
+ConstructorDeclaration ::= [ Javadoc ] { Modifier } Identifier
+                           '(' [ FormalParameter 
+                           { ',' FormalParameter } ] ')'
+                           ['throws' TypeName { ',' TypeName } ] 
+                           Block
+
+ConstructorInvocation ::= 'this' '(' [ Expression 
+                          { ',' Expression } ] ')' ';'
+
+ContinueStatement ::= 'continue' [ Identifier ] ';'
+
+Digit ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+DocElement ::= TextElement | Name | MethodRef | 
+               MemberRef | '{' TagElement '}'
+
+DoStatement ::= 'do' Statement 'while' '(' Expression ')' ';'
+
+EmptyStatement ::= ';'
+
+BlockComment ::= <block comment AST node type>
+
+EnhancedForStatement ::= 'for' '(' FormalParameter 
+                         ':' Expression ')' Statement
+
+EnumConstantDeclaration ::= [ Javadoc ] { ExtendedModifier } 
+                            Identifier [ '(' [ Expression 
+                            { ',' Expression } ] ')' ]
+                            [ '{' { ClassBodyDeclaration | ';' 
+                            } '}' ]
+
+EnumDeclaration ::= [ Javadoc ] { ExtendedModifier } 'enum' 
+                    Identifier [ 'implements' Type { ',' Type } ]
+                    '{' [ EnumConstantDeclaration 
+                    { ',' EnumConstantDeclaration } ]
+                    [ ';' { ClassBodyDeclaration | ';' } ] '}'
+
+Expression ::= Annotation | ArrayAccess | ArrayCreation | 
+               ArrayInitializer | Assignment | BooleanLiteral | 
+               CastExpression | CharacterLiteral | 
+               ClassInstanceCreation | ConditionalExpression | 
+               FieldAccess | InfixExpression | 
+               InstanceofExpression | MethodInvocation | Name | 
+               NullLiteral | NumberLiteral | ParenthesizedExpression | 
+               PostfixExpression | PrefixExpression | StringLiteral |
+               SuperFieldAccess | SuperMethodInvocation | 
+               ThisExpression | TypeLiteral | 
+               VariableDeclarationExpression
+
+ExpressionStatement ::= StatementExpression ';'
+
+ExtendedModifier ::= Modifier | Annotation
+
+FieldAccess ::= Expression '.' Identifier
+
+FieldDeclaration ::= [Javadoc] { ExtendedModifier } Type 
+                     VariableDeclarationFragment
+                     { ',' VariableDeclarationFragment } ';'
+
+ForInit ::= '(' VariableDeclarationExpression ')' 
+            { Expression {',' Expression } }
+
+FormalParameter ::= ['final'] Type VariableDeclarationFragment
+
+ForStatement ::= 'for' '(' [ ForInit ] ';' [ Expression ] ';' 
+                 [ ForUpdate ] ')' Statement
+
+ForUpdate ::= Expression { ',' Expression }
+
+Identifier ::= IdentifierName
+
+IdentifierName ::= Letter { Letter | Digit }
+
+IfStatement ::= 'if' '(' Expression ')' Statement [ 'else' Statement]
+
+ImportDeclaration ::= 'import' Name [ '.*' ] ';'
+
+InfixExpression ::= Expression InfixOperator Expression 
+                    { InfixOperator Expression }
+
+InfixOperator ::= '*' | '/' | '%' | '+' | '-' | '<<' | '>>' | 
+                  '>>>' | '<' | '>' | '<=' | '>=' | '==' |'!=' | 
+                  '^' | '&' | '|' | '&&' | '||'
+
+Initializer ::= [ 'static' ] Block
+
+InstanceofExpression ::= Expression 'instanceof' Type
+
+InterfaceBodyDeclaration ::= BodyDeclaration
+
+InterfaceDeclaration ::= [ Javadoc ] { Modifier } 'interface' 
+                         Identifier [ 'extends' Type 
+                         { ',' Type } ]
+                         { '{' InterfaceBodyDeclaration | ';' '}' }
+
+Javadoc ::= '/**' { TagElement } '*/'
+
+LabeledStatement ::= Identifier ':' Statement
+
+Letter ::= <a unicode-letter>
+
+LineComment ::= <end-of-line comment AST node type>
+
+MarkerAnnotation ::= '@' TypeName
+
+MemberRef ::= [ Name ] '#' Identifier
+
+MemberValuePair ::= SimpleName '=' Expression
+
+MethodDeclaration ::= [ Javadoc ] { Modifier } ( Type | 'void' ) 
+                      Identifier '(' [ SingleVariableDeclaration 
+                      { ',' SingleVariableDeclaration } ] ')'
+                      [ 'throws' TypeName { ',' TypeName } ] 
+                      ( Block | ';' )
+
+MethodInvocation ::= [ Expression '.' ] Identifier '(' 
+                     [ Expression { ',' Expression } ] ')'
+
+MethodRef ::= [ Name ] '#' Identifier '(' [ MethodRefParameter | 
+              { ',' MethodRefParameter } ] ')'
+
+MethodRefParameter ::= Type [ Identifier ]
+
+Modifier ::= 'public' | 'protected' | 'private' | 'static' | 
+             'abstract' | 'final' | 'native' | 'synchronized' | 
+             'transient' | 'volatile' | 'strictfp'
+
+Name ::= SimpleName | QualifiedName
+
+NormalAnnotation ::= '@' TypeName '(' [ MemberValuePair 
+                     { ',' MemberValuePair } ] ')'
+
+NullLiteral ::= <null literal node>
+
+NumberLiteral ::= <number literal node>
+
+PackageDeclaration ::= 'package' Name ';'
+
+ParameterizedType ::= Type '<' Type { ',' Type } '>'
+
+ParenthesizedExpression ::= '(' Expression ')'
+
+PostfixExpression ::= Expression PostfixOperator
+
+PostfixOperator ::= '++' | '--'
+
+PrefixExpression ::= PrefixOperator Expression
+
+PrefixOperator ::= '++' | '--' | '+' | '-' | '~' | '!'
+
+PrimitiveType ::= 'byte' | 'short' | 'char' | 'int' | 'long' | 
+                  'float' | 'double' | 'boolean' | 'void'
+
+QualifiedName ::= Name '.' SimpleName
+
+QualifiedType ::= Type '.' SimpleName
+
+ReturnStatement ::= 'return' [ Expression ] ';'
+
+SingleMemberAnnotation ::= '@' TypeName '(' Expression ')'
+
+SimpleName ::= Identifier
+
+SimpleType ::= TypeName
+
+SingleVariableDeclaration ::= { Modifier } Type Identifier 
+                              { '[' ']' } [ '=' Expression ]
+
+Statement ::= AssertStatement | Block | BreakStatement | 
+              ConstructorInvocation | ContinueStatement | 
+              DoStatement | EmptyStatement | EnhancedForStatement |
+              ExpressionStatement | ForStatement | IfStatement | 
+              LabeledStatement | ReturnStatement | 
+              SuperConstructorInvocation | SwitchCase | 
+              SwitchStatement | SynchronizedStatement | 
+              ThrowStatement | TryStatement | 
+              TypeDeclarationStatement | 
+              VariableDeclarationStatement | WhileStatement
+
+StatementExpression ::= Expression
+
+StringLiteral ::= <string literal node>
+
+SuperConstructorInvocation ::= [ Expression '.' ] 'super' '(' 
+                               [ Expression { ',' Expression } ] ')' 
+                               ';'
+
+SuperFieldAccess ::= [ ClassName '.' ] 'super' '.' Identifier
+
+SuperMethodInvocation ::= [ ClassName '.' ] 'super' '.' Identifier
+                          '(' [ Expression { ',' Expression } ] ')'
+
+SwitchCase ::= 'case' Expression ':' | 'default' ':'
+
+SwitchStatement ::= 'switch' '(' Expression ')' '{' 
+                    { SwitchCase | Statement } '}'
+
+SynchronizedStatement ::= 'synchronized' '(' Expression ')' Block
+
+TagElement ::= [ '@' Identifier ] { DocElement }
+
+TextElement ::= <sequence of characters not including a 
+                 close comment delimiter '*/'>
+
+ThisExpression ::= [ ClassName '.' ] 'this'
+
+ThrowStatement ::= 'throw' Expression ';'
+
+TryStatement ::= 'try' Block { CatchClause } [ 'finally' Block ]
+
+Type ::= ArrayType | ParameterizedType | PrimitiveType | 
+         QualifiedType | SimpleType
+
+TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration
+
+TypeDeclarationStatement ::= TypeDeclaration
+
+TypeLiteral ::= ( Type | 'void' ) '.class'
+
+TypeName ::= [ Identifier '.' ] Identifier
+
+TypeParameter ::= TypeVariable [ 'extends' Type { '&' Type } ]
+
+TypeVariable ::= Identifier
+
+VariableDeclaration ::= SingleVariableDeclaration | 
+                        VariableDeclarationFragment
+
+VariableDeclarationExpression ::= { Modifier } Type 
+                                  VariableDeclarationFragment
+                                  { ',' VariableDeclarationFragment }
+
+VariableDeclarationFragment ::= SimpleName { '[' ']' } 
+                                [ '=' Expression ]
+
+VariableDeclarationStatement ::= { Modifier } Type 
+                                 VariableDeclarationFragment
+                                 { ',' VariableDeclarationFragment } 
+                                 ';'
+
+WhileStatement ::= 'while' '(' Expression ')' Statement
+\end{lstlisting}
+
+
+Die "`neuen"' Regeln stehen in den Zeilen 19, 26, 85, 171, 205 und 221.
+
+%\begin{moreverb}[caption=Unsere neue Java 5 Grammatik, label=javagramnew, captionpos=b]
+\begin{lstlisting}[caption=Unsere neue Java 5 Grammatik, label=javagramnew, captionpos=b]
+CompilationUnit ::= [ PackageDeclaration ] 
+                    { ImportDeclaration } 
+                    { TypeDeclaration | ';' }
+
+AbstractTypeDeclaration ::= TypeDeclaration | 
+                            EnumDeclaration | 
+                            AnnotationTypeDeclaration
+                            
+Annotation ::= MarkerAnnotation | 
+               NormalAnnotation | 
+               SingleMemberAnnotation
+               
+AnnotationTypeBodyDeclaration ::= AnnotationTypeMemberDeclaration | 
+                                  FieldDeclaration |
+                                  TypeDeclaration | 
+                                  EnumDeclaration |
+                                  AnnotationTypeDeclaration
+                                  
+AnnotationTypeDeclaration ::= { MetaAnnotation }
+                              [ Javadoc ] 
+                              { ExtendedModifier } 
+                              '@' 'interface' Identifier
+                              '{' { 
+                              AnnotationTypeBodyDeclaration 
+                              | ';' } '}'
+MetaAnnotation ::= Annotation
+
+AnnotationTypeMemberDeclaration ::= [ Javadoc ] 
+                                    { ExtendedModifier }
+                                    Type Identifier '(' ')' 
+                                    [ 'default' Expression ] ';'
+
+AnonymousClassDeclaration ::= '{' ClassBodyDeclaration '}'
+
+ArrayAccess ::= Expression [ Expression ]
+
+ArrayCreation ::= 'new' PrimitiveType '[' Expression ']' 
+                  { '[' Expression ']' } 
+                  { '[' ']' } | 'new' 
+                  TypeName '[' Expression ']' { '[' Expression ']' } 
+                  { '[' ']' } | 'new' 
+                  PrimitiveType '[' ']' { '[' ']' } 
+                  ArrayInitializer | 'new' 
+                  TypeName '[' ']' { '[' ']' } ArrayInitializer
+
+ArrayInitializer ::= '{' [ Expression { ',' Expression} ] '}'
+
+ArrayType ::= Type '[' ']'
+
+AssertStatement ::= 'assert' Expression [ ':' Expression ] ';'
+
+Assignment ::= Expression AssignmentOperator Expression
+
+AssignmentOperator ::=  '=' | '+=' | '-=' | '*=' | 
+                       '/=' | '&=' | '|=' | '^=' | 
+                       '%=' | '<<=' | '>>=' | '>>>='
+
+Block ::= '{' { Statement } '}'
+
+BodyDeclaration ::= AbstractTypeDeclaration | 
+                    AnnotationTypeMemberDeclaration |
+                    EnumConstantDeclaration | 
+                    FieldDeclaration | 
+                    Initializer |
+                    MethodDeclaration | 
+                    ConstructorDeclaration
+
+BooleanLiteral ::= 'true' | 'false'
+
+BreakStatement ::= 'break' [ Identifier ] ';'
+
+CastExpression ::= '(' Type ')' Expression
+
+CatchClause ::= 'catch' '(' FormalParameter ')' Block
+
+CharacterLiteral ::= <character literal nodes>
+
+ClassBodyDeclaration ::= BodyDeclaration
+
+ClassDeclaration ::= [ Javadoc ] { Modifier } 'class' 
+                     Identifier [ 'extends' Type]
+                     [ 'implements Type' { ',' Type } ]
+                     '{' { ClassBodyDeclaration | ';' } '}'
+
+ClassInstanceCreation ::= [ Expression ] 
+                          'new' Type '(' 
+                          [ Expression { ',' Expression } ] 
+                          ')' [ AnonymousClassDeclaration ]
+                          
+ClassName ::= [ Identifier '.' ] Identifier
+
+Comment ::= BlockComment | Javadoc | LineComment
+
+ConditionalExpression ::= Expression '?' Expression ':' Expression
+
+ConstructorDeclaration ::= [ Javadoc ] { Modifier } Identifier
+                           '(' [ FormalParameter 
+                           { ',' FormalParameter } ] ')'
+                           ['throws' TypeName { ',' TypeName } ] 
+                           Block
+
+ConstructorInvocation ::= 'this' '(' [ Expression 
+                          { ',' Expression } ] ')' ';'
+
+ContinueStatement ::= 'continue' [ Identifier ] ';'
+
+Digit ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+DocElement ::= TextElement | Name | MethodRef | 
+               MemberRef | '{' TagElement '}'
+
+DoStatement ::= 'do' Statement 'while' '(' Expression ')' ';'
+
+EmptyStatement ::= ';'
+
+BlockComment ::= <block comment AST node type>
+
+EnhancedForStatement ::= 'for' '(' FormalParameter 
+                         ':' Expression ')' Statement
+
+EnumConstantDeclaration ::= [ Javadoc ] { ExtendedModifier } 
+                            Identifier [ '(' [ Expression 
+                            { ',' Expression } ] ')' ]
+                            [ '{' { ClassBodyDeclaration | ';' 
+                            } '}' ]
+
+EnumDeclaration ::= [ Javadoc ] { ExtendedModifier } 'enum' 
+                    Identifier [ 'implements' Type { ',' Type } ]
+                    '{' [ EnumConstantDeclaration 
+                    { ',' EnumConstantDeclaration } ]
+                    [ ';' { ClassBodyDeclaration | ';' } ] '}'
+
+Expression ::= Annotation | ArrayAccess | ArrayCreation | 
+               ArrayInitializer | Assignment | BooleanLiteral | 
+               CastExpression | CharacterLiteral | 
+               ClassInstanceCreation | ConditionalExpression | 
+               FieldAccess | InfixExpression | 
+               InstanceofExpression | MethodInvocation | Name | 
+               NullLiteral | NumberLiteral | ParenthesizedExpression | 
+               PostfixExpression | PrefixExpression | StringLiteral |
+               SuperFieldAccess | SuperMethodInvocation | 
+               ThisExpression | TypeLiteral | 
+               VariableDeclarationExpression
+
+ExpressionStatement ::= StatementExpression ';'
+
+ExtendedModifier ::= Modifier | Annotation
+
+FieldAccess ::= Expression '.' Identifier
+
+FieldDeclaration ::= [Javadoc] { ExtendedModifier } Type 
+                     VariableDeclarationFragment
+                     { ',' VariableDeclarationFragment } ';'
+
+ForInit ::= '(' VariableDeclarationExpression ')' 
+            { Expression {',' Expression } }
+
+FormalParameter ::= ['final'] Type VariableDeclarationFragment
+
+ForStatement ::= 'for' '(' [ ForInit ] ';' [ Expression ] ';' 
+                 [ ForUpdate ] ')' Statement
+
+ForUpdate ::= Expression { ',' Expression }
+
+Identifier ::= IdentifierName
+
+IdentifierName ::= Letter { Letter | Digit }
+
+IfStatement ::= 'if' '(' Expression ')' Statement [ 'else' Statement]
+
+ImportDeclaration ::= 'import' ['static'] Name [ '.*' ] ';'
+
+InfixExpression ::= Expression InfixOperator Expression 
+                    { InfixOperator Expression }
+
+InfixOperator ::= '*' | '/' | '%' | '+' | '-' | '<<' | '>>' | 
+                  '>>>' | '<' | '>' | '<=' | '>=' | '==' |'!=' | 
+                  '^' | '&' | '|' | '&&' | '||'
+
+Initializer ::= [ 'static' ] Block
+
+InstanceofExpression ::= Expression 'instanceof' Type
+
+InterfaceBodyDeclaration ::= BodyDeclaration
+
+InterfaceDeclaration ::= [ Javadoc ] { Modifier } 'interface' 
+                         Identifier [ 'extends' Type 
+                         { ',' Type } ]
+                         { '{' InterfaceBodyDeclaration | ';' '}' }
+
+Javadoc ::= '/**' { TagElement } '*/'
+
+LabeledStatement ::= Identifier ':' Statement
+
+Letter ::= <a unicode-letter>
+
+LineComment ::= <end-of-line comment AST node type>
+
+MarkerAnnotation ::= '@' TypeName
+
+MemberRef ::= [ Name ] '#' Identifier
+
+MemberValuePair ::= SimpleName '=' Expression
+
+MethodDeclaration ::= [ Javadoc ] 
+                      { Modifier } 
+                      ( Type | 'void' ) 
+                      Identifier
+                      '(' 
+                      [ 
+                        SingleVariableDeclaration 
+                        { ',' SingleVariableDeclaration } 
+                        [ ',' VarArgsDeclaration ] 
+                      ] 
+                      | 
+                      [ VarArgsDeclaration ] 
+                      ')'
+                      [ 'throws' TypeName { ',' TypeName } ] 
+                      ( Block | ';' )
+
+VarArgsDeclaration := Type '...' Identifier
+
+MethodInvocation ::= [ Expression '.' ] Identifier '(' 
+                     [ Expression { ',' Expression } ] ')'
+
+MethodRef ::= [ Name ] '#' Identifier '(' [ MethodRefParameter | 
+              { ',' MethodRefParameter } ] ')'
+
+MethodRefParameter ::= Type [ Identifier ]
+
+Modifier ::= 'public' | 'protected' | 'private' | 'static' | 
+             'abstract' | 'final' | 'native' | 'synchronized' | 
+             'transient' | 'volatile' | 'strictfp'
+
+Name ::= SimpleName | QualifiedName
+
+NormalAnnotation ::= '@' TypeName '(' [ MemberValuePair 
+                     { ',' MemberValuePair } ] ')'
+
+NullLiteral ::= <null literal node>
+
+NumberLiteral ::= <number literal node>
+
+PackageDeclaration ::= 'package' Name ';'
+
+ParameterizedType ::= Type '<' Type { ',' Type } '>'
+
+ParenthesizedExpression ::= '(' Expression ')'
+
+PostfixExpression ::= Expression PostfixOperator
+
+PostfixOperator ::= '++' | '--'
+
+PrefixExpression ::= PrefixOperator Expression
+
+PrefixOperator ::= '++' | '--' | '+' | '-' | '~' | '!'
+
+PrimitiveType ::= 'byte' | 'short' | 'char' | 'int' | 'long' | 
+                  'float' | 'double' | 'boolean' | 'void'
+
+QualifiedName ::= Name '.' SimpleName
+
+QualifiedType ::= Type '.' SimpleName
+
+ReturnStatement ::= 'return' [ Expression ] ';'
+
+SingleMemberAnnotation ::= '@' TypeName '(' Expression ')'
+
+SimpleName ::= Identifier
+
+SimpleType ::= TypeName
+
+SingleVariableDeclaration ::= { Modifier } Type Identifier 
+                              { '[' ']' } [ '=' Expression ]
+
+Statement ::= AssertStatement | Block | BreakStatement | 
+              ConstructorInvocation | ContinueStatement | 
+              DoStatement | EmptyStatement | EnhancedForStatement |
+              ExpressionStatement | ForStatement | IfStatement | 
+              LabeledStatement | ReturnStatement | 
+              SuperConstructorInvocation | SwitchCase | 
+              SwitchStatement | SynchronizedStatement | 
+              ThrowStatement | TryStatement | 
+              TypeDeclarationStatement | 
+              VariableDeclarationStatement | WhileStatement
+
+StatementExpression ::= Expression
+
+StringLiteral ::= <string literal node>
+
+SuperConstructorInvocation ::= [ Expression '.' ] 'super' '(' 
+                               [ Expression { ',' Expression } ] ')' 
+                               ';'
+
+SuperFieldAccess ::= [ ClassName '.' ] 'super' '.' Identifier
+
+SuperMethodInvocation ::= [ ClassName '.' ] 'super' '.' Identifier
+                          '(' [ Expression { ',' Expression } ] ')'
+
+SwitchCase ::= 'case' Expression ':' | 'default' ':'
+
+SwitchStatement ::= 'switch' '(' Expression ')' '{' 
+                    { SwitchCase | Statement } '}'
+
+SynchronizedStatement ::= 'synchronized' '(' Expression ')' Block
+
+TagElement ::= [ '@' Identifier ] { DocElement }
+
+TextElement ::= <sequence of characters not including a 
+                 close comment delimiter '*/'>
+
+ThisExpression ::= [ ClassName '.' ] 'this'
+
+ThrowStatement ::= 'throw' Expression ';'
+
+TryStatement ::= 'try' Block { CatchClause } [ 'finally' Block ]
+
+Type ::= ArrayType | ParameterizedType | PrimitiveType | 
+         QualifiedType | SimpleType
+
+TypeDeclaration ::= ClassDeclaration | InterfaceDeclaration
+
+TypeDeclarationStatement ::= TypeDeclaration
+
+TypeLiteral ::= ( Type | 'void' ) '.class'
+
+TypeName ::= [ Identifier '.' ] Identifier
+
+TypeParameter ::= TypeVariable [ 'extends' Type { '&' Type } ]
+
+TypeVariable ::= Identifier
+
+VariableDeclaration ::= SingleVariableDeclaration | 
+                        VariableDeclarationFragment
+
+VariableDeclarationExpression ::= { Modifier } Type 
+                                  VariableDeclarationFragment
+                                  { ',' VariableDeclarationFragment }
+
+VariableDeclarationFragment ::= SimpleName { '[' ']' } 
+                                [ '=' Expression ]
+
+VariableDeclarationStatement ::= { Modifier } Type 
+                                 VariableDeclarationFragment
+                                 { ',' VariableDeclarationFragment } 
+                                 ';'
+
+WhileStatement ::= 'while' '(' Expression ')' Statement
+\end{lstlisting}
+%\end{moreverb}
+
+\clearpage
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[angle=90, height=19.8cm]{figures/Java_5_UML_Diagramm_zerlegt_1.eps}
+    \caption{Teil 1 des Metamodells}
+    \label{metamodellteil1}
+  \end{center}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=15cm]{figures/Java_5_UML_Diagramm_zerlegt_2.eps}
+    \caption{Teil 2 des Metamodells}
+    \label{metamodellteil2}
+  \end{center}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[angle=90, height=19.8cm]{figures/Java_5_UML_Diagramm_zerlegt_3.eps}
+    \caption{Teil 3 des Metamodells}
+    \label{metamodellteil3}    
+  \end{center}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[angle=90, height=19.8cm]{figures/Java_5_UML_Diagramm_zerlegt_4.eps}
+    \caption{Teil 4 des Metamodells}
+    \label{metamodellteil4}
+  \end{center}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[angle=90, height=19.8cm]{figures/Java_5_UML_Diagramm_zerlegt_5.eps}
+    \caption{Teil 5 des Metamodells}
+    \label{metamodellteil5}
+  \end{center}
+\end{figure}
+
+\clearpage
+
+\begin{thebibliography}{breitestes Label}
+  \bibitem[Hinterwäller05]{DipBoHi} \emph{Diplomarbeit Metamodell basierte Spezifikation von Refactorings}, Bodo Hinterwäller, Universität Koblenz, 2005
+\end{thebibliography}
+
+\end{appendix}
+
+\end{document}

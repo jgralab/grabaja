@@ -1,0 +1,22 @@
+- alle Bewertungen gleich kategorisiert
+- Ausschlußkriterien nachvollziehbar (5-Zeiler angeben, Abschluß)
+- Antlr - Positionsinfos im AST (korrekte)?
+- Antlr LL trotz EBNF-Grammatiken?
+- Positionsangaben-Probleme: Tabs, Blank am Zeilenende, fehler CR, etc.
+- Anforderungen: Classfile-Referenzen auflösbar? Signaturen herausziehen?
+- Anforderungen: Im Graph nur _Feingranular_, was als Sourcecode vorhanden ist; ByteCode nicht dekompilieren, aber als Referenzknoten)
+- Anforderungen: Quelltext-Referenzen müssen aufgelöst werden
+- Antlr: Rolle Grammatik / TreeGrammatik?
+- Antlr - Semantiklinks manuell auflösen (scoping, visibility)
+- Modell unter Eclipse (JMF? EMF?) anzapfen (letzer Ausweg?)
+- Aufwand abschätzen (alle Lösungen)!
+- Referenzimplementation vom JavaCompiler anzapfen / GCJ?
+Nächstes mal:
+- Gleiche Bewertung aller untersuchten Lösungen
+- JDK mal austesten beim Durchlauf
+- nächstes Treffen: 06.1.2006, 14:00
+- Lethbridge anmailen?
+
+
+- Tip für Positionsangaben / Kommentare (falls selbst zu erstellen): Parallel Graph / Sourcen scannen
+- DMM als Zielmodell für nicht-feingranulare Graphenrepräsentation (später!)

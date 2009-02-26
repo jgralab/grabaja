@@ -1,0 +1,8 @@
+- Einleitungstext (z.B. Unterscheidungskriterien Parsergeneratoren etc.)
+- Gleicher Aufbau bei der Beschreibung der einzelnen Tools
+- Beschreibung / Bewertung nicht vermischen (!!!) in Text UND Tabellen
+- Aufzählungen gleichförmig (sprachlich UND inhaltlich)
+- ANTLR-Architektur
+- NICHT "Das stand da so"!!!
+- Zwischenstand: 13.02. 13Uhr
+- Besprechung: 20.02. 13Uhr

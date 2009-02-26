@@ -1,0 +1,482 @@
+	E-Mail Korrespondenz während der Onlinerecherche
+------------------------------------------------
+
+Antwort an: ultbreit@uni-koblenz.de
+An: s.danicic@gold.ac.uk
+Betreff: Is Jabstract still maintained?
+Datum: Mon, 16 Jan 2006 23:47:16 +0100
+Von: "Nicolas Vika" <ultbreit@uni-koblenz.de>
+
+Hallo Mr. Danicic,
+I am a student of the University of Koblenz, Germany involved in the Institute for Computer Science, work group professor 
+Jürgen Ebert.
+We are currently building a software reenginering tool called GUPRO, which makes use of TGraphs and GXL. Based on schemas 
+the software's code is transformed into a graph, which can be can be queried with GreQL (a graph query language). Our 
+work group developed schemas for many legacy programming language and we experienced, that to support a language to it's 
+full extent, we needed to write a special extractor for each language and schema.
+Because the extraction process includes the parsing of the code, we mostly try to use parser generators, so we only need 
+to write a correct grammar. Now we want to support object oriented languages - c++ and java. So we searched the internet 
+to find someone who already wrote a grammar to parse java (which at best outputs an AST - makes the transformation to a 
+TGraph much easier).
+I found your site (http://www.doc.gold.ac.uk/~mas01sd/jabstract/) and it would be very helpful if you could tell me if 
+your group still maintains Jabstract or even plans to update it to a higher Java language version.
+ 
+Yours sincerely,
+ 
+Nicolas Vika
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Datum: Tue, 17 Jan 2006 13:04:19 +0000 (GMT)
+Von: Sebastian Danicic <mas01sd@gold.ac.uk>
+An: Nicolas Vika <ultbreit@uni-koblenz.de>
+Cc: karltk@ii.uib.no
+Betreff: Re: Is Jabstract still maintained?
+
+Hello Nicolas,
+ 
+I was recently at a Dagstuhl seminar where I met a guy called Karl Trygve Kalleberg who has developed a system called Stratego. 
+I think this system could be very useful for your needs.
+ 
+http://www.program-transformation.org/Stratego/WebHome.
+ 
+If you still prefer JAbstract after seeing Stratego (which I doubt will be the case!) then I will tell you more about it.
+ 
+Let me know whether Stratego is useful.
+ 
+best wishes,
+ 
+Sebastian
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+Von: Arne Baldauf [abaldauf@uni-koblenz.de]
+Gesendet: Montag, 16. Januar 2006 16:57
+An: 'fujaba-developers@uni-paderborn.de'
+Betreff: Several technical questions
+
+Hello,
+
+Me and a fellow student are currently doing research for a study project [approximately: an extractor (for java code) for a software architecture analyzer (gupro) which is internally working on TGraphs (a concept introduced mainly by our professor, Jürgen Ebert)]. For that reason, we would like to know some things about several fujaba modules...
+
+- I recognized in an earlier posting (within the archive) that Java 1.5 support was planned for the Java source extractor. Is this already done or is this still a work in progress?
+
+- Is it possible to get the source code of the plugins, eventually for use within our project (which is currently only a possibility as we are mainly doing research on existing solutions which could eventually be used)?
+
+- Is the JavaAST model used within fujaba (I noticed some of the definitions within the sources) already a UML-specific depiction or is it still a general one?
+
+
+Regards, Arne
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Von: Christian Schneider [christian.schneider@uni-kassel.de]
+Gesendet: Dienstag, 17. Januar 2006 11:03
+An: Arne Baldauf
+Cc: fujaba-developers@uni-paderborn.de
+Betreff: Re: [Fujaba-Developers] Several technical questions
+
+Hello Arne,
+
+> - I recognized in an earlier posting (within the archive) that Java 
+> 1.5 support was planned for the Java source extractor. Is this already 
+> done or is this still a work in progress?
+As far as I know this is still future work.
+
+> - Is it possible to get the source code of the plugins, eventually for 
+> use within our project (which is currently only a possibility as we 
+> are mainly doing research on existing solutions which could eventually be used)?
+Yes, obtaining the source of most plugins is possible. Some of them have the source in the released jar. Others can be found on the Paderborn and Kassel GForge servers (enter the plugin name in the search box).
+https://dsd-serv.uni-paderborn.de/
+https://gforge.cs.uni-kassel.de/
+If you can't find the source for a specific plugin (maybe use a web search engine, too) or its cvs on the server is not public, ask on this list again.
+
+> - Is the JavaAST model used within fujaba (I noticed some of the 
+> definitions within the sources) already a UML-specific depiction or is 
+> it still a general one?
+The reverse engineering plugins make use of the JavaAST. At least it should be of general use, but if you find UML-specific things that probably even hinder your use of the package let us know.
+
+Best regards,
+Christian
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Von: Arne Baldauf [abaldauf@uni-koblenz.de]
+Gesendet: Dienstag, 14. Februar 2006 14:31
+An: 'fujaba-developers@uni-paderborn.de'
+Betreff: AW: [Fujaba-Developers] Several technical questions
+
+Hello,
+
+   > Yes, obtaining the source of most plugins is possible. 
+   > Some of them have the source in the released jar. Others 
+   > can be found on the Paderborn and Kassel GForge servers 
+   > (enter the plugin name in the search box).
+   > https://dsd-serv.uni-paderborn.de/
+   > https://gforge.cs.uni-kassel.de/
+   > If you can't find the source for a specific plugin (maybe 
+   > use a web search engine, too) or its cvs on the server is 
+   > not public, ask on this list again.
+
+Well, a brief search for the sources of the JavaAST plugin returned nothing, and the released jar only contains class files. So I would like to get access (read-only is sufficient) to one of the according cvs servers.
+
+Kind regards, Arne
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Von: Christian Schneider [christian.schneider@uni-kassel.de]
+Gesendet: Dienstag, 14. Februar 2006 14:44
+An: Arne Baldauf
+Cc: fujaba-developers@uni-paderborn.de
+Betreff: Re: [Fujaba-Developers] Several technical questions
+
+Hi,
+
+JavaAST is in the repository of the Fujaba Reverse Engineering tools:
+https://dsd-serv.uni-paderborn.de/projects/retoolsuite/
+But it seems only developers have access to the CVS.
+Lothar <lowende@uni-paderborn.de> is the one in charge - most probably 
+he will answer to this mail, too, and tell us why the heck access to 
+that one is resticted ;) . . .
+
+/Christian
+
+Arne Baldauf wrote:
+
+> Hello,
+
+> Well, a brief search for the sources of the JavaAST plugin returned nothing, and the released jar only contains class files. So I
+> would like to get access (read-only is sufficient) to one of the according cvs servers.
+> 
+> Kind regards, Arne
+> 
+> 
+> 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Von: Lothar Wendehals [lowende@uni-paderborn.de]
+Gesendet: Dienstag, 14. Februar 2006 15:26
+An: Arne Baldauf; fujaba-developers@uni-paderborn.de
+Betreff: Re: AW: [Fujaba-Developers] Several technical questions
+
+Hello Arne,
+
+the access to the Fujaba Reverse Engineering Toolsuite is restricted 
+because it is current research.
+The JavaAST is a model for the representation of Java method bodies in 
+an Abstract Syntax Tree and is dependent on our Fujaba UML meta model.
+What is your intended purpose of the JavaAST?
+
+Kind regards,
+Lothar Wendehals
+
+
+Arne Baldauf schrieb:
+> Hello,
+>
+>    > Yes, obtaining the source of most plugins is possible. 
+>    > Some of them have the source in the released jar. Others 
+>    > can be found on the Paderborn and Kassel GForge servers 
+>    > (enter the plugin name in the search box).
+>    > https://dsd-serv.uni-paderborn.de/
+>    > https://gforge.cs.uni-kassel.de/
+>    > If you can't find the source for a specific plugin (maybe 
+>    > use a web search engine, too) or its cvs on the server is 
+>    > not public, ask on this list again.
+>
+> Well, a brief search for the sources of the JavaAST plugin returned nothing, and the released jar only contains class files. So I
+> would like to get access (read-only is sufficient) to one of the according cvs servers.
+>
+> Kind regards, Arne
+>
+>
+>   
+
+
+-- 
+Lothar Wendehals              Phone: (+49 5251) 60-3311
+University of Paderborn       Fax:   (+49 5251) 60-3530
+Software Engineering Group    Office: E3.354
+Warburger Str. 100
+33098 Paderborn               E-Mail:   lowende@uni-paderborn.de
+Germany                       Homepage: wwwcs.upb.de/cs/wendehals
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Von: Arne Baldauf [abaldauf@uni-koblenz.de]
+Gesendet: Dienstag, 14. Februar 2006 21:55
+An: 'Lothar Wendehals'; 'fujaba-developers@uni-paderborn.de'
+Betreff: AW: [Fujaba-Developers] Several technical questions
+
+Hello,
+
+   > the access to the Fujaba Reverse Engineering Toolsuite is restricted 
+   > because it is current research.
+   > The JavaAST is a model for the representation of Java method bodies in 
+   > an Abstract Syntax Tree and is dependent on our Fujaba UML meta model.
+   > What is your intended purpose of the JavaAST?
+
+Me and a fellow student are currently looking for existing solutions which can parse java code and build up an AST. We are currently investigating if there is a suitable software which our own extractor could eventually be based upon. Our objective is to parse java code and build up a TGraph (briefly said). So we would like to know which information can be gained with the parser that you use and what is stored within the AST and what is not.
+
+Kind regards, Arne
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Von: Lothar Wendehals [lowende@uni-paderborn.de]
+Gesendet: Dienstag, 21. Februar 2006 18:18
+An: Arne Baldauf
+Betreff: Re: AW: [Fujaba-Developers] Several technical questions
+
+Hallo Arne,
+
+wir nutzen einen Parser, der durch den JavaCC generiert wurde. Der 
+dadurch entstandene AST wird dann in unser Fujaba Metamodell übersetzt. 
+Dieses Metamodell besteht zum einen aus einem UML-Metamodell, das alles 
+bis auf Methodenrümpfe enthält, und dem JavaAST, der nur die 
+Methodenrümpfe abbildet. Der JavaAST ist also kein vollständiges Modell 
+für Java Source Code. Des Weiteren ist er auf der Ebene von Ausdrücken 
+stark vereinfacht, da wir für unser Reengineering diese Informationen 
+nicht benötigen. Ich bin mir daher nicht sicher, ob der JavaAST euren 
+Anforderungen genügt.
+
+MfG,
+Lothar
+
+Arne Baldauf schrieb:
+> Hello,
+>
+>    > the access to the Fujaba Reverse Engineering Toolsuite is restricted 
+>    > because it is current research.
+>    > The JavaAST is a model for the representation of Java method bodies in 
+>    > an Abstract Syntax Tree and is dependent on our Fujaba UML meta model.
+>    > What is your intended purpose of the JavaAST?
+>
+> Me and a fellow student are currently looking for existing solutions which can parse java code and build up an AST. We are currently
+> investigating if there is a suitable software which our own extractor could eventually be based upon. Our objective is to parse java
+> code and build up a TGraph (briefly said). So we would like to know which information can be gained with the parser that you use and
+> what is stored within the AST and what is not.
+>
+> Kind regards, Arne
+>
+>   
+
+
+-- 
+Lothar Wendehals              Phone: (+49 5251) 60-3311
+University of Paderborn       Fax:   (+49 5251) 60-3530
+Software Engineering Group    Office: E3.354
+Warburger Str. 100
+33098 Paderborn               E-Mail:   lowende@uni-paderborn.de
+Germany                       Homepage: wwwcs.upb.de/cs/wendehals
+
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+Von: Arne Baldauf [abaldauf@uni-koblenz.de]
+Gesendet: Donnerstag, 2. Februar 2006 17:35
+An: 'tcl@site.uottawa.ca'
+Betreff: Java Parser for DMM?
+
+Dear Mr. Lethbridge,
+
+We are currently working on study project (at the university of Koblenz, Germany) in the context of the gupro tool (see: www.gupro.de) invented by our professor Ebert (by the way: We should send you his regards).
+
+We would like to know if there is a parser for java code for DMM. If there is one: Which is it, and is it available to the public (as we would eventually be interested in the way the parser works or represents the syntax tree internally)?
+
+Kind regards,
+Arne Baldauf & Nicolas Vika
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Datum: Fri, 03 Feb 2006 00:29:27 +0100
+An: petter@cs.tum.edu
+Betreff: Fragen zur CUP Java Grammatik
+Antwort an: ultbreit@uni-koblenz.de
+Von: "Nicolas Vika" <ultbreit@uni-koblenz.de>
+
+Sehr geehrter Herr Petter,
+ 
+die AG von Prof. Ebert der Universität Koblenz des Instituts für Softwaretechnik beschäftigt sich mit dem 
+Forschungsgebiet des Software-Re-engineering. Dabei geht es u. a. um die Transformation von Quelltexten zu Graphen 
+(näheres siehe: www.gupro.de).
+In diesem Kontext haben ein Komilitone und ich die Aufgabe bekommen, Parser und Parsergeneratoren für Java zu evaluieren, 
+die die erste Phase der Transformation der Quelltexte abdecken. Bei unserer Onlinerecherche ist uns auch CUP aufgefallen 
+und wir haben mit der Java-Grammatik den Java-Parser erzeugt (und natürlich ausprobiert).
+Für die zweite Phase der Transformation der Quelltexte ist es wichtig zu wissen, welche Repräsentation oder Ergebnis der 
+Parser zurückgibt. Nach dem Ausprobieren hatten wir den Eindruck, dass dieser nur die Syntax überprüft und die Anzahl der 
+Fehler zurückgibt. Leider schweigt sich die Dokumentation über weitere Aspekte aus. Deshalb würden wir gerne wissen, ob 
+der Parser nicht doch eine interne Repräsentation des Quelltextes erzeugt (für unsere Zwecke wäre ein AST die beste 
+Lösung) und ob man an diese auch von außen herankommt? Ist denn auch eine neue Java-Grammatik für Java 5 geplant?
+ 
+Vielen Dank im Voraus für die Beantwortung unserer Fragen!
+ 
+Nicolas Vika
+
+Datum: Fri, 03 Feb 2006 11:20:29 +0100
+Von: Michael Petter <petter@in.tum.de>
+An: ultbreit@uni-koblenz.de
+Betreff: Re: Fragen zur CUP Java Grammatik
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+ 
+Hallo,
+> Sehr geehrter Herr Petter,
+>  
+> die AG von Prof. Ebert der Universität Koblenz des Instituts für
+> Softwaretechnik beschäftigt sich mit dem Forschungsgebiet des
+> Software-Re-engineering. Dabei geht es u. a. um die Transformation
+> von Quelltexten zu Graphen (näheres siehe: www.gupro.de).
+> In diesem Kontext haben ein Komilitone und ich die Aufgabe bekommen,
+> Parser und Parsergeneratoren für Java zu evaluieren, die die erste
+> Phase der Transformation der Quelltexte abdecken. Bei unserer
+> Onlinerecherche ist uns auch CUP aufgefallen und wir haben mit der
+> Java-Grammatik den Java-Parser erzeugt (und natürlich ausprobiert).
+Habt Ihr die CUP-11 oder CUP-10 Version verwendet?
+> Für die zweite Phase der Transformation der Quelltexte ist es
+> wichtig zu wissen, welche Repräsentation oder Ergebnis der Parser
+> zurückgibt.
+Das ist völlig dem Benutzer überlassen - Defaultmässig generiert CUP
+gar nichts - es bietet aber dem Benutzer an, Datenstrukturen über die
+Typisierung der Terminale und Nichtterminale zusammenzubauen, so zum
+Beispiel auch einen AST. Das Vorgehen sieht also so aus, dass man sich
+Gedanken um die AST Klassen macht, die man haben möchte, und deren
+Generierung dann als Aktionscode in die einzelnen Produktionen einbaut.
+> Nach dem Ausprobieren hatten wir den Eindruck, dass dieser nur die
+> Syntax überprüft und die Anzahl der Fehler zurückgibt. Leider
+> schweigt sich die Dokumentation über weitere Aspekte aus.
+Nicht wirklich. Das zweite Beispiel im Manual verdeutlicht recht
+schön, wie durch den Parser Objekte erzeugt und durchgereicht werden
+können.
+> Deshalb würden wir gerne wissen, ob der Parser nicht doch eine
+> interne Repräsentation des Quelltextes erzeugt (für unsere Zwecke
+> wäre ein AST die beste Lösung) und ob man an diese auch von außen
+> herankommt? Ist denn auch eine neue Java-Grammatik für Java 5 geplant?
+Die vorliegende Grammatik ist meines Wissens nach eine Java 1.5 Grammatik.
+> Vielen Dank im Voraus für die Beantwortung unserer Fragen!
+>  
+> Nicolas Vika
+Viele Grüße,
+ 
+Michael Petter
+ 
+ 
+- --
+                                                   ._______. ._________.
+                                     Michael Petter|_. ._. | | ._. ._. |
+                    Technische Universitaet München  | | | | | | | | | |
+                            Institut für Informatik  | | | |_| | | | | |
+ Lehrstuhl für Sprachen und Beschreibungsstrukturen  |_| |_____| |_| |_|
+ Lehrstuhl I/2  Boltzmannstrasse 3  85748 Garching http://www2.in.tum.de
+ Telefon: 089 / 289 18150  Fax: 089 / 289 18161  Email: petter@in.tum.de
+ 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.0 (GNU/Linux)
+ 
+iD8DBQFD4y5th/Busn13K50RAgMmAJ4slkVkrtoQevlvItPtrjE7ZGhDjwCgk3F7
+eG8qRKjDuc52yEznIHITOzQ=
+=mqfR
+-----END PGP SIGNATURE-----
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Datum: Sat, 18 Feb 2006 12:11:53 +0100
+An: info@cocolab.com
+Betreff: Kosten für Cocktail Toolbox
+Antwort an: ultbreit@uni-koblenz.de
+Von: "Nicolas Vika" <ultbreit@uni-koblenz.de>
+
+Sehr geehrter Herr Dr. Grosch,
+ 
+im Rahmen einer Studienarbeit an der Universität Koblenz-Landau (Abt. Koblenz, Institut für Softwaretechnik), müssen wir 
+diverse Javaparser evaluieren. Dabei sind wir auch auf die Cocktail Toolbox gestoßen. Auf der Homepage wird sehr genau 
+auf die Verwendungsmöglichkeiten usw. eingegangen. Allerdings waren wir nicht in der Lage den Preis für eine Lizenz der 
+Cocktail Toolbox auf der Homepage zu finden. Könnten Sie uns diesen bitte mitteilen!
+ 
+Mit freundlichen Grüßen
+ 
+Nicolas Vika & Arne Baldauf
+
+Datum: Mon, 20 Feb 2006 09:50:59 +0100
+Von: Josef Grosch <grosch@cocolab.de>
+An: Nicolas Vika <ultbreit@uni-koblenz.de>
+Betreff: Re: Kosten für Cocktail Toolbox
+
+Sehr geehrter Herr Vika,
+ 
+On Sat, Feb 18, 2006 at 12:11:53PM +0100, Nicolas Vika wrote:
+> im Rahmen einer Studienarbeit an der Universität Koblenz-Landau (Abt. 
+> Koblenz, Institut für Softwaretechnik), müssen wir diverse Javaparser 
+> evaluieren. Dabei sind wir auch auf die Cocktail Toolbox gestoßen. Auf der 
+> Homepage wird sehr genau auf die Verwendungsmöglichkeiten usw. eingegangen. 
+> Allerdings waren wir nicht in der Lage den Preis für eine Lizenz der 
+> Cocktail Toolbox auf der Homepage zu finden. Könnten Sie uns diesen bitte 
+> mitteilen!
+ 
+The Cocktail Toolbox is distributed under a license agreement.
+There are the following types of licenses:
+ 
+- Site License
+ 
+This license allows the use of Cocktail on any supported platform
+and by any number of users within one site.
+Cocktail and its output can be used for any purpose,
+including commercial applications.
+It is available for Unix, Linux, and Windows platforms.
+ 
+- Single User License
+ 
+This license allows the use of Cocktail on one platform by one user.
+Cocktail and its output can be used for any purpose,
+including commercial applications.
+It is available for Linux and Microsoft Windows 9x, ME, NT, 2000, XP platforms
+via Electronic Software Distribution (ESD).
+For license control a system named WIBU-KEY is used (www.wibu.com).
+The license key is a USB device called WIBU-BOX/U. A computer with an
+USB port is needed for running this distribution of Cocktail.
+ 
+- Research License
+ 
+This license allows the use of Cocktail and of its output only for
+non-commercial usage such as education and research.
+It is available for Unix, Linux, and Windows platforms.
+ 
+- Demo License
+ 
+This is a trial version for 60 days. It is available for Linux and
+Windows platforms by downloading from our web server.
+ 
+Prices
+ 
+- Site License                  12500 Euro
+- Single User License            3000 Euro
+- Research License               1500 Euro
+- Demo License                   free
+ 
+- Maintenance                    2500 Euro per year
+- Training course                4000 Euro plus travel expenses
+ 
+The training course about "Compiler Construction with the Cocktail Toolbox"
+comprises three days of training. It is for an arbitrary number of participants.
+ 
+ 
+Mit freundlichen Grüßen
+ 
+Dr. Josef Grosch
+ 
+CoCoLab - Datenverarbeitung
+Höhenweg 6
+77855 Achern
+ 
+Phone   : +49-7841-669144
+Fax     : +49-7841-669145
+Email   : grosch@cocolab.com
+Internet: www.cocolab.com

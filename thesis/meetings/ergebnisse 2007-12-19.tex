@@ -1,0 +1,82 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von Wörtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Ergebnisse des Treffens vom 19. Dezember 2007}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+%\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+%\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+%\begin{table}
+%	\begin{center}
+%	\begin{tabular}{|l|l|l|l|l|}
+%	  \hline
+%	  Version & Status & Datum & Autor(en) & Erläuterung \\
+%	  \hline \hline
+%		1.0 & WIP & 01.06.2007 & Arne Baldauf & initiale Version \\ \hline
+%	\end{tabular}
+%	\end{center}
+%\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\begin{itemize}
+	\item{Folgende Änderungen sollen am Extraktor vorgenommen werden:}
+	\begin{itemize}
+		\item{Statt Vector-Typen sollen ArrayList-Typen zum Einsatz kommen.}
+		\item{Ausdrücke wie \texttt{a.this} sollen aufgelöst werden (dies ist z.B. bei Zugriffen auf eine Instanz der Oberklasse möglich).}
+		\item{Die semantischen Kanten, welche beim Resolving erzeugt werden, sollen keine Attribute für Positionsinformationen besitzen:}
+		\begin{itemize}
+			\item{\texttt{IsTypeDefinitionOf}}
+			\item{\texttt{IsDeclarationOfAccessedField}}
+			\item{\texttt{IsDeclarationOfInvocatedMethod}}
+		\end{itemize}
+		\item{Identifier-Knoten sollen der Konsistenz wegen auch in Teilen des Graphs bestehen, welche mittels Reflection generiert wurden.}
+		\item{Werden mittels Reflection neue Packages erkannt, so soll auch die zu den Packages gehörigen Struktur erzeugt werden.}
+		\item{Im Modus \texttt{COMPLETE} sollen auch alle Methoden und Felder per Reflection generiert werden.}
+		\item{Felder und Methoden von Array-Typen müssen nicht aufgelöst werden (wie etwa \texttt{a.length} oder \texttt{a.concat()}).}
+		\item{Mehrfach dem Extraktor übergebene Dateien sollen nur einmalig geparst werden.}
+		\item{Sind unter den übergebenen Dateien / Verzeichnissen keinerlei geeignete Dateien, so soll auch kein Graph erzeugt werden.}
+		\item{Nur aus Kommentaren bestehende Klassen sollen nicht mehr zu einem Hängen des Extraktors führen.}
+	\end{itemize}
+  \item{Das nächste Treffen findet am 10. Januar 2008 um 11:00 s.t. in B108 statt.}
+  \item{Einreichung der Dokumente bis 09. Januar 2008 (morgens).}
+  \end{itemize}
+\end{document}

@@ -1,0 +1,10 @@
+- kurze Beschreibung für Dinge, die nicht beim Leser vorausgesetzt werden können (z.B. Schemabeschr.sprache)
+- mehr Hervorhebungen
+- Ablauf: Parameterverarbeitung
+- Konsistenz in Beschreibung und Abbildungen (Bezeichner etc.)
+- Kontrollfluss / Datenfluss trennen (siehe Notizen)
+- eigenes Highlighting von Schlüsselworten für Schema-Sprache
+- Schemateil: Beschreibung zur Ableitung von Kantentypen (kurz)
+
+- Imports: Unterscheidung std-Import - *-Import (Type- / Package-Import)
+- Abschätzung Knoten- / Kantenzahl: weglassen

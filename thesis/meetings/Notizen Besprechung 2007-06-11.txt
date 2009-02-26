@@ -1,0 +1,14 @@
+x- else: nicht mit zu den Positionsinformationen.
+x- Offset / Line / Column stimmen.
+x- Annotations mit zu den Positionsinformationen hinzu.
+- Hashmap über Strings (FullqualifiedNames von Packages / Imports etc.) für TypeChecking
+- Gedanken über Geschwindigkeit erst dann machen, wenn es wirklich langsam wird.
+x- Überlegen, ob immer auf den Identifier oder direkt auf das Element gezeigt werden soll (evtl. auch: Identifier direkt und nur als Attribut)
+x- Rümpfe von Methoden / Konstruktoren als Block behandeln (da diese keine Compounds (=Statements) sind)
+- Umwandlung / Weiterverarbeitung des Metamodells mit EnterpriseArchitect (statt Rational Software Modeler)
+- Übernehmen von letzten Änderungen am Metamodell durch Volker Riediger
+
+---
+später hinzugekommene Gedanken:
+x- Rümpfe von try, catch und finally auch Blocks statt Compound
+x- falsche Länge bei IsStatementOfBody (bei Declaration, MethodInvocation), IsMethodContainerOf, IsFieldContainerOf

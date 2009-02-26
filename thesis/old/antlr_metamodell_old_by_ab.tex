@@ -1,0 +1,1010 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+%\usepackage{geometry}
+%\geometry{lmargin=2cm,rmargin=2cm,tmargin=1cm,bmar gin=1cm,headheight=0ex}
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\usepackage{listings}
+\lstset{numbers=left,
+        numberstyle=\tiny,
+        stepnumber=1,
+        numbersep=5pt,
+        basicstyle=\small,        
+        xleftmargin=0.4cm,
+        breaklines=true,
+        captionpos=b}
+\usepackage{color}
+\newcommand{\thesame}{\color{red}\ttfamily}%
+\newcommand{\red}{\color{red}\ttfamily}%
+\newcommand{\blue}{\color{blue}\ttfamily}%
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Metamodell}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		0.5 & WIP & 30.05.2006 & Nicolas Vika & Initiale Version \\ \hline
+		0.9 & WIP & 10.01.2007 & Nicolas Vika & Erweiterung \\ \hline
+		1.0 & WIP & 16.01.2007 & Arne Baldauf & Abnahme \\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\section{Einführung}
+Inhalt unserer Studienarbeit ist es einen Javaextraktor für GUPRO zu entwickeln, der Javaquelltexte in TGraphen umsetzt. Dabei dienen Metamodelle als Grundlage für die mögliche Struktur der TGraphen für die jeweilige Sprache. Dieses Dokument erläutert die Entstehung unseres Metamodells für Java.\\
+Als erstes gehen wir kurz auf Definition und Anforderungen für das Metamodell ein und beschreiben anschließend unseren Versuch, ein bereits vorhandenes Modell anzupassen. Danach gehen wir detailliert auf die Entwicklung unseres eigenen Modells ein. Zum Schluß haben wir noch die dafür zugrundeliegende Grammatik im Anhang beigefügt.
+
+\newpage
+\section{Definition und Anforderungen}
+\paragraph{Definition.}
+Ein Metamodell beschreibt ein Modell. Ein Modell ist somit eine Instanz eines Metamodells. Ein TGraph kann auch ein Modell eines Quelltextes sein und wird als Instanz eines Metamodells verstanden. Ein Metamodell beschreibt somit die Menge aller seiner möglichen TGraph-Instanzen.
+
+\paragraph{Anforderungen.}
+An das Metamodell sind folgende Anforderungen gestellt. Es soll:
+\begin{itemize}
+  \item{eine feinkörnige Graphenrepräsentation des Codes ermöglichen.}
+  \item{alle Java-Sprachversionen bis einschließlich Version 5 abdecken.}  
+  \item{die Speicherung der Positionen der identifizierten Elemente im Quelltext ermöglichen.\footnote{Diese müssen Gupro-konform im TGraph mitgespeichert werden, zwecks Nutzung durch den graphenbasierten Quelltextbrowser}} 
+  \item{fehlerrobust sein.}
+\end{itemize}
+Zwar soll das Java-Metamodell feingranular sein, sich jedoch nicht zu stark an die Syntax dieser Sprache anlehnen. Es soll nur soweit davon abstrahiert werden, dass es einem Entwickler bei der Softwarewartung förderlich ist\footnote{Dieser soll, bei der Arbeit mit den TGraphen, auch weiter wie ein Softwareentwicklerdenken können.}.
+
+\newpage
+\section{Metamodell von Bodo Hinterwäller}
+Ein Metamodell und die dazu passende Grammatik für Java existierten bereits am Institut für Softwaretechnik. Diese waren im Rahmen einer Diplomarbeit \cite{DipBoHi} entstanden. Es bestand die Hoffnung, dass dieses Metamodell an unsere Bedürfnisse angepasst werden könnte. Zunächst mussten wir es jedoch für die neue Javaversion aktualisieren (siehe dazu \emph{metamodell\_und\_grammtik.pdf}). Dies gelang uns, doch im Zuge dieser Überarbeitung stießen wir auf Inkonsistenzen. So war das Modell nicht nur inkonsistent zu der Javagrammatik für ANTLR v2.6, welches für den Parsingvorgang zum Einsatz kam, sondern auch zu der Grammatik von Hinterwäller selbst. So deckten sich einige Strukturen und Namen in Modell und Grammatik nicht und einige schienen nicht korrekt zu sein.\\
+Da Designentscheidungen von Hinterwäller nicht dokumentiert und somit nicht nachvollziebar waren, fiel eine Verifikation und Verbesserung erstmal aus. Seine Erkenntnisse hatte Hinterwäller aus den Java Development Tools für Eclipse gezogen. So versuchten wir diese, mit dem ASTViewer der Java Development Tools, nachzuvollziehen. Dabei fiel uns auf, dass Hinterwällers Modell auch inkonsistent zu den Daten in Eclipse war. Eine Überarbeitung schien uns daher zu aufwendig, so dass wir uns dafür entschieden ein eigenes Metamodell zu entwickeln, da dann das Verständnis, die Möglichkeit der Verifikation und schließlich die Konsistenz eher gegeben sind. 
+
+\newpage
+\section{Entwicklung eines eigenen Metamodells}
+Als Grundlage des Metamodells dient die Java 5 Grammatik für ANTLR v2.6. Aus der Vorlage von Bodo Hinterwäller konnten wir zumindest allgemeine Vorgehensweisen, um ein Metamodell aus einer Grammatik zu gewinnen, herleiten. Die Entwicklung des Modells erforderte die Beachtung vieler Details. Es fand eine immerwährende Überprüfung der Ergebnisse statt und häufig war eine Korrektur oder sogar die Verwerfung von Ergebnissen und somit eine Neuentwicklung nötig. Deshalb beschreiben wir nur unsere generelle Vorgehensweise, da die Erwähung jeden Details den Rahmen dieses Dokumentes sprengen würde.\\ 
+Das folgende Kapitel beschreibt die Heuristiken, welche, bei der ersten Fassung unseres Metamodells, Verwendung fanden.
+
+\subsection{Heuristiken für den Entwurf}
+\label{heuristiken}
+Das Metamodell wird durch ein Klassendiagramm (in UML 2.0) beschrieben. Die vorgestellten Heuristiken beschreiben deshalb die Umsetzung der Elemente der Grammatik in Klassen, Assoziationen und Multiplizitäten. Listing \ref{beispielgrammatik} und Abbildung \ref{metamodelexample3} verdeutlichen die Heuristiken an einem Beispiel.
+\begin{itemize}
+  \item{Klassen:}
+  \begin{itemize}
+    \item{Alle Nichtterminalsymbole werden zu Klassen.}
+    \item{Alle Terminalsymbole werden weggelassen, sofern diese nicht von semantischer Relevanz sind.}
+%    \item{Alle Klassen, die von Symbolen auf der linken Seite der Regel abstammen, werden mit \texttt{abstract} markiert.
+ %         Ausgenommen Regeln mit einer 1-zu-1-Relation, wie:\\
+  %        \texttt{Typevariable : Identifier ;}}
+  \end{itemize}
+  \item{Assoziationen:}
+  \begin{itemize}
+    \item{Alle Veroderungen werden zu Generalisierungen. Wobei die Basisklasse auf dem Symbol der linken Seite der Regel 
+          fußt.}
+    \item{Alle Verkettungen werden zu Aggregationsbeziehungen. Wobei die aggregierende Klasse auf dem Symbol der linken Seite 
+          der Regel fußt.}
+  \end{itemize}
+  \item{Multiplizitäten:}
+  \begin{itemize}
+    \item{Alle \texttt{\( Symbol \)*} werden zu 0..* und alle \texttt{[ Symbol ]} werden zu 0..1.}
+    \item{Alle Symbole ohne o. g. Klammerungen führen zu einer Multiplizität von genau 1.}
+    \item{Sind aufgrund komplizierter Grammatikausdrücke mehrere Multiplizitäten möglich, gelten die kleinste untere und die 
+          größte obere Grenze.}
+    \item{Dabei werden die Multiplizitäten am Ende der Assoziation notiert, welche in der Klasse mündet, die vom Symbol 
+          abstammt.}
+  \end{itemize}
+  \item{Rollen}
+  \begin{itemize}
+    \item{Aggregierte Klassen die von einem Symbol der rechten Regelseite abstammen, sind mit einer Rolle, relativ zur aggregierenden Klasse  zu annotieren. }
+    \item{Alle Schlüsselworte werden zu Rollen für die Klassen vor deren Ursprungssymbol sie stehen.}
+    \item{Alle Klassen, die am unteren am Ende einer Generalisierung stehen, übernehmen keine Rolle.}
+    \item{Auch die restlichen Klassen müssen mit Rollen bedacht werden.}
+  \end{itemize}
+\end{itemize}
+
+\lstset{caption=Beispielgrammatik,
+        label=beispielgrammatik}
+\begin{lstlisting}
+a ::= b | c ;
+b ::= "foo" ;
+c ::= d e { "," e } ;
+\end{lstlisting}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=5cm]{antlr_metamodell_example3.pdf}
+	  \caption{Das aus der Grammatik in Listing \ref{beispielgrammatik} erzeugte Modelldiagramm.}
+	  \label{metamodelexample3}
+  \end{center}
+\end{figure}
+
+
+\subsection{Entwurf des Metamodells}
+Da die Entwicklung des Metamodells nicht an einem Tag geschah, sondern viele kleine Schritte benötigte, haben wir eine Versionierung eingeführt. Jede u. a. Version des Metamodells entspricht einem Ausdruck, der Grundlage für ein Zwischentreffen mit den Betreuern dieser Arbeit war.
+
+\paragraph{V1}
+Nachdem wir möglichst konsequent die o. a. Heuristiken angewandt hatten, erhielten wir die erste Fassung des Metamodells.
+Zwar waren die meisten Regeln und Symbole in Generalisierungs- und Aggregationsstrukturen des Metamodells als Klassen vertreten, die Multiplizitäten in den meisten Fällen zutreffend, jedoch:
+\begin{itemize}
+  \item{war die Strukur des Models unübersichtlich und kompliziert.}
+  \item{viele Klassennamen nicht aussagekräftig (z. B. \texttt{AnnotationDefinitionPart2}).}
+  \item{waren die Rollen in den wenigsten Fällen aussagekräftig, denn ein Großteil der Klassen trug den eigenen Namen als Rollenbezeichner.}
+\end{itemize}
+Weil die Präzedenzen der Javasyntax im Metamodell noch vertreten waren, führte dies nicht zu einfachen und verständlichen, sondern zu komplizierten (verästelten) und unübersichtlichen Strukturen. Besonders bei Berücksichtigung der Operatorpräzedenzen war dies der Fall. Insgesamt war das Modell ausgedruckt neun A4-Seiten groß.\\
+Generell lehnte sich das Metamodell noch zu stark an die Syntax von Java an. Deshalb war eine Überarbeitung erforderlich, die im folgenden Abschnitt beschrieben wird.
+
+\subsection{Überarbeitung des Entwurfs}
+Während der Umsetzung der Grammatik in das Modell, konnten wir fünf Haupt-Basistypen identifizieren. Dies waren:
+\begin{itemize}
+  \item{\texttt{TypeDefinitionInternal} - Definition des Typs}
+  \item{\texttt{Type} - Festlegung des Typen}
+  \item{\texttt{ClassField} - Klassenattribute}
+  \item{\texttt{Expression} - Ausdrücke}
+  \item{\texttt{Statement} - Anweisungen}
+  \item{\texttt{Annotation} - Anmerkungen}
+\end{itemize}
+Von diesen Klassen waren die meisten anderen abgeleitet. 
+
+\paragraph{V2.}
+Deshalb haben wir uns in der ersten Überarbeitung darauf konzentriert die, im vorherigen Abschnitt angeführten, Schwächen des Modells erst einmal nur an zwei Haupt-Basistypen (bzw. der darunter befindlichen Strukturen) zu verbessern. Dies nahmen wir an \texttt{Statements} und \texttt{Expressions} vor, durch:
+\begin{itemize}
+  \item{Abstraktion von der Syntax und den inhärenten Präzedenzen.}
+  \item{Suche von aussagekräftigen Rollenbezeichnern.}
+\end{itemize}
+Durch diese exemplarische Überarbeitung konnten wir bereits eine erhebliche Vereinfachung des Modells erreichen. Flache Generalisierungshierarchien sorgten für ein übersichtlicheres Modell. Die Rollen waren beschreibender und die Größe des Diagramms schrumpfte auf sechs Seiten.
+
+\paragraph{V3.}
+Im nächsten Schritt haben wir die o. a. Verfahren probeweise auf die weiteren Haupt-Basistypen angewendet. Überarbeitet haben wir:
+\begin{itemize}
+  \item{exemplarisch \texttt{ClassDefinition} (da Subtyp von \texttt{TypeDefinitionInternal}).}
+  \item{exemplarisch \texttt{ConstructorDeclaration} (da Subtyp von \texttt{ClassField}).}
+  \item{den kompletten Basistypen \texttt{Type}.}
+\end{itemize}
+Auch nach diesem Schritt erhielten wir Strukturen und Bezeichnungen, die das Modell verständlicher machten. Der Haupt-Basistyp \texttt{Type} musste regelrecht zusammengesucht werden, da seine Teile über das ganze Modell verstreut lagen. Hier wählten wir eine Strukturierung in Anlehnung an \texttt{Type} aus dem Metamodell von Hinterwäller.
+
+Im Zuge dieser Überarbeitung verbesserten wir noch einige Aspekte, die uns aufgefallen waren. Folgendes nahmen wir vor:
+\begin{itemize}
+  \item{Ersetzung von unnötigen Klassen.}
+  \item{Einführung von benötigten Attributen.}
+  \item{Vereinheitlichung aller Klassen- und Attributsnamen.}
+  \item{Einführung von neuen Klassen (z. B \texttt{EmptyStatement}, da diese in Grammatik nicht vorhanden war).}
+\end{itemize}
+Damit hatten wir etwa die Hälfte des Metamodells überarbeitet und nun war klar, dass eine generelle Verbesserung des Modells, strukturell wie auch bezeichnend, durch die konsequente Anwendung der benutzten Verfahren erreicht werden würde.\\
+Der nächste Abschnitt beschreibt die Heuristiken, die wir aus der ersten Überarbeitung gewinnen konnten. 
+
+\subsection{Weitere Heuristiken}
+\label{weitere_heuristiken}
+Folgende Heuristiken ergänzen jene aus Kapitel \ref{heuristiken} und erhöhen, angewendet, erheblich die Qualität unseres Metamodells:
+\begin{itemize}
+  \item{strukturell vereinfachend:}
+  \begin{itemize}
+    \item{Verwerfung der Präzedenzen durch Aufbrechen der Strukturen und Gruppierung aller Subklassen einer Klasse in flachen Generalisierungen. Abbildung \ref{metamodelexample1a} und \ref{metamodelexample1b} verdeutlichen den Unterschied.}
+    \item{Verkürzung der Wege im Diagramm durch Verwerfung von Klassen, die Sammlungen repräsentieren. Ersetzung dieser mit entsprechenden Kardinalitäten an den vorher, in den Sammlungen, zusammengefassten Klassen. Abbildung\ref{metamodelexample4a} und \ref{metamodelexample4b} zeigen dies an einer Teilstruktur.}
+  \end{itemize}
+  \item{treffender bezeichnend:}
+  \begin{itemize}
+    \item{Vergabe von aussagekräftigen Bezeichnern in Anlehnung an die allgemeinen Javaprogrammiertermini und die, in der Vorlesung "`Programmierung"', gelehrten Regeln. Abbildung \ref{metamodelexample5} stellt dies beispielhaft für die "`do..while"'-Anweisung dar.}
+  \end{itemize}
+\end{itemize}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=15cm]{antlr_metamodell_example1a.pdf}
+	  \caption{Modell der Postfixexpression unmittelbar nach der Erstellung aus der Grammatik}
+	  \label{metamodelexample1a}
+  \end{center}
+\end{figure}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=3cm]{antlr_metamodell_example1b.pdf}
+	  \caption{Abstrahiertes Modell der Postfixexpression im Metamodell nach der Überarbeitung}
+	  \label{metamodelexample1b}
+  \end{center}
+\end{figure}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=4cm]{antlr_metamodell_example4a.pdf}
+	  \caption{Ursprüngliches Modell für Iteratorkonstrukte der normalen "`for"'-Schleife}
+	  \label{metamodelexample4a}
+  \end{center}
+\end{figure}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=4cm]{antlr_metamodell_example4b.pdf}
+	  \caption{Modell für Iteratorkonstrukte der normalen "`for"'-Schleife nach dem Entfernen unnötiger Listentypen}
+	  \label{metamodelexample4b}
+  \end{center}
+\end{figure}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=5cm]{antlr_metamodell_example5.pdf}
+	  \caption{Modell für "`do..while"'-Anweisungen nach der Vergabe von aussagekräftigen Bezeichnern für die Kanten}
+	  \label{metamodelexample5}
+  \end{center}
+\end{figure}
+
+\subsection{Zweite Überarbeitung}
+\paragraph{V4.}
+Im nächsten Schritt wurden die übrigen Subklassen der Haupt-Basisklassen \texttt{TypeDefinition} und \texttt{ClassField}, unter konsequenter Anwendung o. a. Heuristiken, überarbeitet.
+
+Im gesamten Metamodell mussten wir alle Aggregationen durch einfache Assoziationen, mit Adjektiven als Kantennamen, ersetzen, da dies für die spätere Bearbeitung der resultierenden TGraphen nötig ist. Die Heuristiken aus Kapitel \ref{heuristiken} welche die Rollen betreffen, waren somit überflüssig. Dabei konnten wir unser Modell noch weiter vereinfachen, da durch die Assoziationen einige Klassen unnötig wurden. Abbildung \ref{metamodelexample7a} und \ref{metamodelexample7b} zeigen dieses Vorgehen an der Repräsentation der "`implements"'-Klausel für Klassen.
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=4.5cm]{antlr_metamodell_example7a.pdf}
+	  \caption{Explizite "`implements"'-Klausel im Modell für Klassen bei der Verwendung von Aggregationen}
+	  \label{metamodelexample7a}
+  \end{center}
+\end{figure}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=3.5cm]{antlr_metamodell_example7b.pdf}
+	  \caption{Implizite Darstellung der "`implements"'-Klausel im Modell für Klassen bei der Verwendung von Assoziationen}
+	  \label{metamodelexample7b}
+  \end{center}
+\end{figure}
+
+Ferner haben wir die Basisklassen \texttt{Type} zu \texttt{TypeSpecification} und dafür \texttt{TypeDefinitionInternal} zu \texttt{Type} umbenannt, da diese Bezeichnungen wesentlich treffender sind.
+
+\paragraph{V5.}
+Anschließend wurde die Haupt-Basisklasse \texttt{Annotation} und ihre Subklassen überarbeitet. Somit waren an allen Klassen die Heuristiken aus Kapitel \ref{weitere_heuristiken} einmal angewendet.
+Die Haupt-Basisklasse \texttt{ClassField} wurde zu \texttt{Member} und ihre Subklasse \texttt{VariableDefinition} zu \texttt{Field} umbenannt. Somit ist eine spätere Unterscheidung von Klassenattributen und lokalen Variablen möglich.\\
+Zusätzlich wurden in das Metamodell die Klassen integriert, die das Navigieren der TGraphen mit GUPro ermöglichen (\texttt{Program}, \texttt{TranslationUnit} usw.). Alle Basisklassen im Modell konnten nun identifiziert und somit als abstrakt definiert werden.  
+
+\subsection{Verifikation des Metamodells}
+Wie bereits o. a. war eine immerwährende Überprüfung der Ergebnisse nötig. Anfangs waren es erst komplizierte Strukturen im Modell, die es zu überprüfen galt. Diese waren meist korrekt, da sie sich noch sehr stark an die Grammatik anlehnten. Später, im Zuge der Vereinfachung des Modells, galt es zu überprüfen ob die einfachen Strukturen, denn mindestens die selben syntaktischen Konstruktionen aus Java abbildeten, wie ihre komplizierten Pendants.\\
+Deshalb haben wir zu jedem Subgraphen im Metamodell alle erlaubten syntaktischen Konstruktionen aus Java aufgeschrieben und geprüft ob diese abgedeckt werden. Um diese Überprüfung einfacher vornehmen zu können, haben wir die Elemente im Klassendiagramm so gruppiert, dass sie sich, wie der Quelltext, von Links nach Rechts, lesen lassen. Listing \ref{verifikation} und Abbildung \ref{metamodelexample6} verdeutlichen dies an einem Beispiel.\\
+
+\lstset{caption=Beispiele für die drei erlaubten syntaktischen Konstruktionen (rotmarkiert) einer \texttt{TypeParameterDeclaration},
+        label=verifikation,
+        language=Java,
+        escapechar=X}
+\begin{lstlisting}
+MyClass X\red< T >X { ... }
+MyClass X\red< T extends String >X { ... }
+MyClass X\red< T super YourClass >X{ ... }
+\end{lstlisting}
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=6cm]{antlr_metamodell_example6.pdf}
+	  \caption{Das Modell der TypeParameterDeclaration ermöglicht die Repräsentation aller erlaubten, in Listing \ref{verifikation} aufgeführten Sprachkonstrukte}
+	  \label{metamodelexample6}
+  \end{center}
+\end{figure}
+
+\subsection{Designentscheidungen}
+\paragraph{Vereinheitlichung.}
+Ziel der Designentscheidungen war es, neben der weiteren Vereinfachung des Modells, auch eine Vereinheitlichung der Strukturen zu erreichen, die das Verständnis beim Arbeiten mit den TGraph-Instanzen fördern soll. Vereinheitlichungen nahmen wir vor mit:
+\begin{itemize}
+  \item{Aufhebung der Unterscheidung der Rümpfe von \texttt{Class}, \texttt{Interface}, \texttt{Enumeration} und \texttt{Annotation}.
+  So war eine Zusammenfassung der möglichen Inhalte eines \texttt{Block} möglich und das Metamodell wurde erheblich kompakter.}
+  \item{Nichtunterscheidung des Destruktors, da dieser nur eine speziell benannte Methode ist und einfach über seinen Namen \emph{finalize} identifiziert werden kann.}
+  \item{Einführung von \texttt{QualifiedName} analog zu bereits bestehendem \texttt{QualifiedType}
+  So können diese bei z. B. GreQL-Anfragen auch auf die gleiche Weise behandelt werden.\footnote{Zwar ist \texttt{QualifiedName} von \texttt{QualifiedType} abgeleitet, jedoch darf es nicht als Typ Verwendung finden.}.}
+\end{itemize}
+Eindeutig unterschieden haben wir dagegen Deklarationen und Definitionen von Fields, lokalen Variablen und Methoden, da in Java nicht generell Deklaration und Definition streng voneinander getrennt werden (wie dies z.B. in C++ der Fall ist).
+
+\paragraph{Sematik.}
+In das Metamodell sind auch Designentscheidungen eingeflossen, die nicht direkt das Modell, sondern den JavaExtraktor an sich betreffen, da  sie nicht vollständig, durch die Semantik des Metamodells, abgedeckt werden. Dazu zählen:
+\begin{itemize}
+  \item{Behandlung des "`super"' eines Aufrufs einer Supermethode (z. B. \texttt{super.toString()}), als \texttt{Identifier}, der über eine Kante \texttt{isIdentifierOf} mit der Superklasse verbunden ist.}
+  \item{"`Höherbewertung"' des \texttt{Package} als \texttt{TranslationUnit}, da in Java ein Programm ein Package sein sollte, welches wiederum aus Packages bestehen kann.}  
+\end{itemize}
+
+\paragraph{Attribute.}
+Durch Attribute konnten, unter anderem, viele unnötigen Klassen eingespart werden, die aus syntaktische Einschränkungen der Grammatik stammten. Folgende Attribute haben wir eingeführt:
+\begin{itemize}
+  \item{String-Attribute ordnen den Klassen ihre Bezeichner zu:}
+  \begin{itemize}
+    \item{\emph{name} in \texttt{Identifier}.}
+    \item{\emph{name} in Subklassen von \texttt{Type} (z. B. \texttt{ClassDefinition}).}
+  \end{itemize}  
+  \item{Integer-Attribute ordnen den Klassen ihren Ursprung, aus Java in einer Enumeration, zu:}
+  \begin{itemize}
+    \item{\emph{type} in \texttt{Modifier}.}
+    \item{\emph{type} in \texttt{BuiltInType}.}
+    \item{\emph{prefixOperator} in \texttt{PrefixExpression}, analog für \texttt{InfixExpression} und \texttt{PostfixExpression}.}
+  \end{itemize}
+  \item{Boolean-Attribute ersetzen Generalisierungen:}
+  \begin{itemize}
+    \item{\emph{isSuperMethod} und \emph{isConstructorMethod} in \texttt{MethodInvocation}.}
+  \end{itemize}
+\end{itemize}
+Die \texttt{StringConstantExpression} besitzt ein Attribut \emph{value} vom Typ String, der den Wert dieses Ausdrucks enthält. Analog verhält es sich bei den konstanten Ausdrücken für die Typen Boolean, Integer, Long, Float, Double und Character.\\
+
+Generell sind viele syntaktische Einschränkungen der Urpsprungsgrammatik in unserem Metamodell nicht mehr vertreten. Durch die Vereinfachung des Modells kam es zur Aufweichung der Einschränkungen. Es erlaubt mehr syntaktische Konstruktionen als die Grammtik - mitunter sogar falsche. Diese Falschen zu identifizieren ist jedoch Aufgabe des Parsers.
+%SimpleArgument entfernt, da nur für Grammatik nötig.
+%WildCardArgument: int List<? extends Number>; mit upper und lowerBound versehen. ist das in grammatik?
+%Darauf eingehen, warum keine semantikgetriebenen Designentscheidungen getroffen wurden.
+        
+\subsection{Aktuelle Fassung des Metamodells}
+Da eine Darstellung des kompletten Metamodells in diesem Dokument nicht möglich ist, haben wir es in einer separaten Datei beigelegt (siehe metamodell\_v5.pdf). Bis auf, die noch ausstehende Einführung der Klasse \texttt{Comment}, entspricht es (hoffentlich) der endgültigen Fassung.
+%Später zerstückelte Grafik des endgültigen Modells, Ansicht auch mit Identifier als zentrales Element
+
+\begin{thebibliography}{breitestes Label}
+  \bibitem[Hinterwäller05]{DipBoHi} \emph{Diplomarbeit Metamodell basierte Spezifikation von Refactorings}, Bodo Hinterwäller, Universität Koblenz, 2005
+\end{thebibliography}
+
+\newpage
+\begin{appendix}
+\section{Javagrammatik aus ANTLR}
+Folgenden Grammatik stammt in der aktuellen Version von Michael Studmann und ist für Java 5 ausgelegt. Um diese lesbarer zu machen, haben wir sie von Kommentaren, semantischen Aktionen usw. bereinigt und in eine EBNF-konforme Syntax überführt. Ferner wurden in allen Regeln die Tokenreferenzen durch das ursprüngliche Terminalsymbol ersetzt. Diese Grammatik stellt somit eine Verschmelzung von Lexer- und Parsergrammatik dar.
+\lstset{numbers=left,
+        numberstyle=\tiny,
+        stepnumber=1,
+        numbersep=5pt,
+        basicstyle=\small,        
+        xleftmargin=0.4cm,
+        breaklines=true,
+        label=java5_grammar}
+\begin{lstlisting}
+compilationUnit
+	::=	[ packageDefinition ]
+		{ importDefinition }
+		{ typeDefinition }
+		EOF
+	;
+
+packageDefinition
+	::=	annotations "package" identifier ";"
+	;
+
+importDefinition
+	::=	"import" [ "static" ] identifierStar ";"
+	;
+
+typeDefinition
+	::=	modifiers
+		typeDefinitionInternal
+	|	";"
+	;
+
+typeDefinitionInternal
+	::=	classDefinition
+	|	interfaceDefinition
+	|	enumDefinition
+	|	annotationDefinition
+	;
+
+declaration
+	::=	modifiers typeSpec variableDefinitions
+	;
+
+typeSpec
+	::=	classTypeSpec | builtInTypeSpec
+	;
+
+classTypeSpec
+	::=	classOrInterfaceType
+		{ "[" "]" }
+	;
+
+classOrInterfaceType
+	::=	IDENT [typeArguments]
+		{ "." IDENT [typeArguments] }
+	;
+
+typeArgumentSpec
+	::=	classTypeSpec | builtInTypeArraySpec
+	;
+
+typeArgument
+	::=	typeArgumentSpec | wildcardType
+	;
+
+wildcardType
+	::=	"?" [typeArgumentBounds]
+	;
+
+typeArguments
+	::=	"<"
+		typeArgument
+		{ "," typeArgument }
+		[ typeArgumentsOrParametersEnd ]
+	;
+
+typeArgumentsOrParametersEnd
+	::=	">"
+	|	">>"
+	|	">>>"
+	;
+
+typeArgumentBounds
+	::=	( "extends" | "super" ) classOrInterfaceType
+	;
+
+builtInTypeArraySpec
+	::=	builtInType "[" "]" { "[" "]" }
+	;
+
+builtInTypeSpec
+	::=	builtInType { "[" "]" }
+	;
+
+type
+	::=	classOrInterfaceType | builtInType
+	;
+
+builtInType
+	::=	"void"
+	|	"boolean"
+	|	"byte"
+	|	"char"
+	|	"short"
+	|	"int"
+	|	"float"
+	|	"long"
+	|	"double"
+	;
+
+identifier
+	::=	IDENT { "." IDENT }
+	;
+
+identifierStar
+	::=	IDENT
+		{ "." IDENT }
+		[ "." "*" ]
+	;
+
+modifiers
+	::=	{ modifier | annotation }
+	;
+
+modifier
+	::=	"private"
+	|	"public"
+	|	"protected"
+	|	"static"
+	|	"transient"
+	|	"final"
+	|	"abstract"
+	|	"native"
+	|	"threadsafe"
+	|	"synchronized"
+	|	"volatile"
+	|	"strictfp"
+	;
+
+annotation
+	::=	"@" identifier [ "(" [ annotationArguments ] ")" ]
+	;
+
+annotations
+	::=   {annotation}
+	;
+
+annotationArguments
+	::=	annotationMemberValueInitializer | anntotationMemberValuePairs
+	;
+
+anntotationMemberValuePairs
+	::=	annotationMemberValuePair { "," annotationMemberValuePair }
+	;
+
+annotationMemberValuePair
+	::=	IDENT "=" annotationMemberValueInitializer
+	;
+
+annotationMemberValueInitializer
+	::=
+		conditionalExpression | annotation | annotationMemberArrayInitializer
+	;
+
+annotationMemberArrayInitializer
+	::=	"{"
+		[ annotationMemberArrayValueInitializer
+		  { "," annotationMemberArrayValueInitializer }
+		  [ "," ]
+		]
+		"}"
+	;
+
+annotationMemberArrayValueInitializer
+	::=	conditionalExpression
+	|	annotation
+	;
+
+superClassClause
+	::=	[ "extends" classOrInterfaceType ]
+	;
+
+classDefinition
+	::=	"class" IDENT
+		[ typeParameters ]
+		superClassClause
+		implementsClause
+		classBlock
+	;
+
+interfaceDefinition
+	::=	"interface" IDENT
+		[ typeParameters ]
+		interfaceExtends
+		interfaceBlock
+	;
+
+enumDefinition
+	::=	"enum" IDENT
+		implementsClause
+		enumBlock
+	;
+
+annotationDefinition
+	::=	"@" "interface" IDENT
+		annotationBlock
+	;
+
+typeParameters
+	::=
+		"<"
+		typeParameter { "," typeParameter }
+		[ typeArgumentsOrParametersEnd ]
+	;
+
+typeParameter
+	::=
+		IDENT [ typeParameterBounds ]
+	;
+
+typeParameterBounds
+	::=
+		"extends" classOrInterfaceType
+		{ "&" classOrInterfaceType }
+	;
+
+classBlock
+	::=	"{"
+			{ classField | ";" }
+		"}"
+	;
+
+interfaceBlock
+	::=	"{"
+			{ interfaceField | ";" }
+		"}"
+	;
+	
+annotationBlock
+	::=	"{"
+			{ annotationField | ";" }
+		"}"
+	;
+
+enumBlock
+	::=	"{"
+			[ enumConstant { "," enumConstant } [ "," ] ]
+			[ ";" { classField | ";" } ]
+		"}"
+	;
+
+annotationField
+	::=	modifiers
+		(	typeDefinitionInternal
+		|	typeSpec
+			(	IDENT
+				"(" ")"
+				declaratorBrackets
+				[ "default" annotationMemberValueInitializer ]
+				";"
+			|	variableDefinitions ";"
+			)
+		)
+	;
+
+enumConstant
+	::=	annotations
+		IDENT
+		[ "(" argList ")" ]
+		[ enumConstantBlock ]
+	;
+
+enumConstantBlock
+	::=	"{" { enumConstantField | ";" } "}"
+	;
+
+enumConstantField
+	::=	modifiers
+		(	typeDefinitionInternal
+		|	[ typeParameters ] typeSpec
+			(	IDENT
+				"(" parameterDeclarationList ")"
+				declaratorBrackets
+				[ throwsClause ]
+				( compoundStatement | ";" )
+			|	variableDefinitions ";"
+			)
+		)
+	|	compoundStatement
+	;
+
+interfaceExtends
+	::=	[ "extends" classOrInterfaceType { "," classOrInterfaceType } ]
+	;
+
+implementsClause
+	::=	[ "implements" classOrInterfaceType { "," classOrInterfaceType } ]
+	;
+
+classField
+	::=	modifiers
+		(	typeDefinitionInternal
+		|	(typeParameters]
+			(
+				ctorHead constructorBody
+			|	typeSpec
+				(	IDENT
+					"(" parameterDeclarationList ")"
+					declaratorBrackets
+					[ throwsClause ]
+				|	variableDefinitions ";"
+				)
+			)
+		)
+	|	[ "static" ] compoundStatement
+	;
+
+interfaceField
+	::=	modifiers
+		(	typeDefinitionInternal
+		|	[ typeParameters ]
+			typeSpec
+			(	IDENT
+				"(" parameterDeclarationList ")"
+				declaratorBrackets
+				[ throwsClause ]
+				";"
+			|	variableDefinitions ";"
+			)
+		)
+	;
+
+constructorBody
+	::=	"{" [ explicitConstructorInvocation ] {statement} "}"
+	;
+
+explicitConstructorInvocation
+	::=	[ typeArguments ]
+		(	"this" "(" argList ")" ";"
+		|	"super" "(" argList ")" ";"
+		)
+	;
+
+variableDefinitions
+	::=	variableDeclarator { "," variableDeclarator }
+	;
+
+variableDeclarator
+	::=	IDENT declaratorBrackets varInitializer
+	;
+
+declaratorBrackets
+	::=	{ "[" "]" }
+	;
+
+varInitializer
+	::=	[ "=" initializer ]
+	;
+
+arrayInitializer
+	::=	"{"
+			[	initializer
+				{ "," initializer }
+				[","]
+			]
+		"}"
+	;
+
+
+initializer
+	::=	expression | arrayInitializer
+	;
+
+ctorHead
+	::=	IDENT
+		"(" parameterDeclarationList ")"
+		[ throwsClause ]
+	;
+
+throwsClause
+	::=	"throws" identifier { "," identifier }
+	;
+
+parameterDeclarationList
+	::=	[	parameterDeclaration
+			{ "," parameterDeclaration }
+			[ "," variableLengthParameterDeclaration ]
+		|
+			variableLengthParameterDeclaration
+		]
+	;
+
+parameterDeclaration
+	::=	parameterModifier typeSpec IDENT declaratorBrackets
+	;
+
+variableLengthParameterDeclaration
+	::=	parameterModifier typeSpec "..." IDENT declaratorBrackets
+	;
+
+parameterModifier
+	::=	{ annotation } [ "final" ] { annotation }
+	;
+
+compoundStatement
+	::=	"{" { statement } "}"
+	;
+
+statement
+	::=	compoundStatement
+	|	declaration ";"
+	|	expression ";"
+	|	modifiers classDefinition
+	|	IDENT ":" statement
+	|	"if" "(" expression ")" statement [ "else" statement ]
+	|	forStatement
+	|	"while" "(" expression ")" statement
+	|	"do" statement "while" "(" expression ")" ";"
+	|	"break" [ IDENT ] ";"
+	|	"continue" [ IDENT ] ";"
+	|	"return" [ expression ] ";"
+	|	"switch" "(" expression ")" "{" { casesGroup } "}"
+	|	tryBlock
+	|	"throw" expression ";"
+	|	"synchronized" "(" expression ")" compoundStatement
+	|	"assert" expression [ ":" expression ] ";"
+	|	";"
+	;
+
+forStatement
+	::=	"for" "(" ( traditionalForClause | forEachClause ) ")" statement
+	;
+
+traditionalForClause
+	::=	forInit ";" forCond ";" forIter
+	;
+
+forEachClause
+	::=	parameterDeclaration ":" expression
+	;
+
+casesGroup
+	::=	aCase { aCase } caseSList
+	;
+
+aCase
+	::=	("case" expression | "default") ":"
+	;
+
+caseSList
+	::=	{ statement }
+	;
+
+forInit
+	::=	[ declaration | expressionList ]
+	;
+
+forCond
+	::=	[ expression ]
+	;
+
+forIter
+	::=	[ expressionList ]
+	;
+
+tryBlock
+	::=	"try" compoundStatement { handler } [ finallyClause ]
+	;
+
+finallyClause
+	::=	"finally" compoundStatement
+	;
+
+handler
+	::=	"catch" "(" parameterDeclaration ")" compoundStatement
+	;
+
+expressionList
+	::=	expression { "," expression }
+	;
+
+expression
+	::=	assignmentExpression
+	;
+
+assignmentExpression
+	::=	conditionalExpression
+		[	(	"="
+			|	"+="
+			|	"-="
+			|	"*="
+			|	"/="
+			|	"%="
+			|	">>="
+			|	">>>="
+			|	"<<="
+			|	"&="
+			|	"^="
+			|	"|="
+			)
+			assignmentExpression
+		]
+	;
+
+conditionalExpression
+	::=	logicalOrExpression [ "?" assignmentExpression ":" conditionalExpression ]
+	;
+
+logicalOrExpression
+	::=	logicalAndExpression { "||" logicalAndExpression }
+	;
+
+logicalAndExpression
+	::=	inclusiveOrExpression { "&&" inclusiveOrExpression }
+	;
+
+inclusiveOrExpression
+	::=	exclusiveOrExpression { "|" exclusiveOrExpression }
+	;
+
+exclusiveOrExpression
+	::=	andExpression { "^" andExpression }
+	;
+
+andExpression
+	::=	equalityExpression { "&" equalityExpression }
+	;
+
+equalityExpression
+	::=	relationalExpression { ( "!=" | "==" ) relationalExpression }
+	;
+
+relationalExpression
+	::=	shiftExpression
+		(	{	(	"<"
+				|	">"
+				|	"<="
+				|	">="
+				)
+				shiftExpression
+			}
+		|	"instanceof" typeSpec
+		)
+	;
+
+shiftExpression
+	::=	additiveExpression { ( "<<" | ">>" | ">>>" ) additiveExpression }
+	;
+
+additiveExpression
+	::=	multiplicativeExpression { ( "+" | "-" ) multiplicativeExpression }
+	;
+
+multiplicativeExpression
+	::=	unaryExpression { ( "*" | "/" | "%" ) unaryExpression }
+	;
+
+unaryExpression
+	::=	"++" unaryExpression
+	|	"--" unaryExpression
+	|	"-" unaryExpression
+	|	"+" unaryExpression
+	|	unaryExpressionNotPlusMinus
+	;
+
+unaryExpressionNotPlusMinus
+	::=	"~" unaryExpression
+	|	"!" unaryExpression
+	|	"(" builtInTypeSpec ")" unaryExpression
+	|	"(" classTypeSpec ")" unaryExpressionNotPlusMinus
+	|	postfixExpression
+	;
+
+postfixExpression
+	::=	primaryExpression
+		{ 	"." [ typeArguments ]
+				(	IDENT [ "(" argList ")" ]
+				|	"super"
+					(	"(" argList ")"
+					|	"." [ typeArguments ] IDENT [ "(" argList ")" ]
+					)
+				)
+		|	"." "this"
+		|	"." newExpression
+		|	"[" expression "]"
+		}
+		[ "++" | "--" ]
+ 	;
+
+primaryExpression
+	::=	identPrimary [ "." "class" ]
+	|	constant
+	|	"true"
+	|	"false"
+	|	"null"
+	|	newExpression
+	|	"this"
+	|	"super"
+	|	"(" assignmentExpression ")"
+	|	builtInType { "[" "]" } "." "class"
+	;
+
+identPrimary
+	::=	[ typeArguments ]
+		IDENT
+		{ "." [ typeArguments ] IDENT }
+		[	"(" argList ")"
+		|	"[" "]" { "[" "]" }
+		]
+	;
+
+newExpression
+	::=	"new" [ typeArguments ] type
+		(	"(" argList ")" [ classBlock ]
+		|	newArrayDeclarator [ arrayInitializer ]
+		)
+	;
+
+argList
+	::=	expressionList | /*nothing*/
+	;
+
+newArrayDeclarator
+	::=	"[" [ expression ] "]" { "[" [ expression ] "]" }
+	;
+
+constant
+	::=	NUM_INT
+	|	CHAR_LITERAL
+	|	STRING_LITERAL
+	|	NUM_FLOAT
+	|	NUM_LONG
+	|	NUM_DOUBLE
+	;
+\end{lstlisting}
+
+\end{appendix}
+\end{document}

@@ -1,0 +1,373 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+%\usepackage{geometry}
+%\geometry{lmargin=2cm,rmargin=2cm,tmargin=1cm,bmar gin=1cm,headheight=0ex}
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\usepackage{listings}
+\lstloadlanguages{Java}
+\lstdefinestyle{java}{
+        language=Java,
+        escapeinside={(*@}{@*)},
+        frameround=tttt,
+        frame=tRBl,
+        numbers=left,
+        stepnumber=1,
+        numberstyle=\tiny,
+        basicstyle=\small\sffamily,
+        commentstyle=\slshape,
+        columns=fullflexible,
+        keepspaces=true,
+        fontadjust=true,
+        morecomment=[l]{--}%,
+%        literate=
+%                {>}{{$>$}}1
+%                {<}{{$<$}}1
+%                {\\}{{$\lambda$}}1
+%                {->}{{$\rightarrow$}}2
+}
+\lstdefinelanguage{TGSchema}{
+	keywords={Schema, EnumDomain, GraphClass, abstract, EdgeClass, VertexClass, from, to},
+	sensitive=true,
+	comment=[l]{//}
+}
+\lstdefinestyle{tgschema}{
+        language=TGSchema,
+        escapeinside={(*@}{@*)},
+        frameround=tttt,
+        frame=tRBl,
+        numbers=left,
+        stepnumber=1,
+        numberstyle=\tiny,
+        basicstyle=\small\sffamily,
+        commentstyle=\slshape,
+        columns=fullflexible,
+        keepspaces=true,
+        fontadjust=true
+}
+\lstset{numbers=none,
+        numberstyle=\tiny,
+        numbersep=5pt,
+        basicstyle=\small,        
+        xleftmargin=0.4cm,
+        breaklines=true,
+        captionpos=b}
+\usepackage{color}
+\newcommand{\thesame}{\color{red}\ttfamily}%
+\newcommand{\red}{\color{red}\ttfamily}%
+\newcommand{\blue}{\color{blue}\ttfamily}%
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Funktionalität des Extraktors}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+\tableofcontents
+% Dieser Befehl erstellt das Inhaltsverzeichnis. Damit die Seitenzahlen korrekt sind, muss das Dokument zweimal gesetzt werden!
+\newpage
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		1.0 & WIP & 28.06.2007 & Arne Baldauf & Initiale Version \\ \hline
+	\end{tabular}
+	\end{center}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\section{Überblick}
+In diesem Kapitel wird zunächst nur grob die Vorgehensweise des Javaextraktors erläutert und beschrieben, wie er erzeugt und benutzt wird. Auf die detaillierte Funktionalität und die eigentliche Struktur wird erst im darauf folgenden Kapitel eingegangen.
+
+\subsection{Vorgehensweise des Javaextraktors}
+Um den Entwicklungsaufwand möglichst gering zu halten und das Programm nicht zu komplex werden zu lassen, ist der Ablauf des Extraktors in mehrere voneinander abgegrenzte Arbeitsschritte aufgeteilt. Einen Überblick verschafft das Aktivitätsdiagramm in Abbildung 1. Die Arbeitsschritte werden in folgender Reihenfolge ausgeführt:
+
+\begin{enumerate}
+  \item{Die übergebenen Kommandozeilenparameter werden interpretiert und die entsprechenden Einstellungen werden gesetzt (diese werden später im Detail erläutert).}
+  \item{Aus allen Dateien und Verzeichnissen, welche beim Aufruf übergeben wurden, wird eine Liste der enthaltenen  
+  \emph{.java}-Dateien erstellt. Im Falle von Verzeichnissen werden auch alle enthaltenen Unterverzeichnisse rekursiv mit 
+  einbezogen. Angegebene, aber nicht existente Elemente werden dabei ignoriert, ebenso wie alle Dateien, welche nicht auf die 
+  Erweiterung \emph{.java} enden.}
+  \item{Es wird ein leerer, dem verwendeten Schema entsprechender TGraph erzeugt.
+	Darüber hinaus werden einige grundlegende Knoten und Kanten im Graph erzeugt und initialisiert, u.a. der übergebene 
+	Programmname. Näheres dazu siehe Kapitel \ref{schnittstelle_antlr}.}
+  \item{Für jede Quelltextdatei in der Liste werden die folgenden Schritte abgearbeitet:
+	  \begin{itemize}
+	    \item{Dem mit ANTLR erzeugten Parser wird die zu parsende Datei übergeben. Nach dem Abschluß des Parsing liefert dieser 
+	    einen AST zurück, der die Syntax des Quelltextes repräsentiert.}
+	    \item{Im TGraph werden die entsprechenden Verwaltungsinformationen für die Datei erzeugt.}
+	    \item{Dem mit ANTLR erzeugten Treewalker wird der AST, der TGraph sowie einige weitere Informationen (siehe dazu Kapitel 
+	    \ref{schnittstelle_antlr}) zum Verknüpfen mit den bereits existierenden Elementen im TGraph übergeben.\\
+			Der Treewalker durchläuft die Struktur des AST und bildet diese durch Erzeugung entsprechender Knoten und Kanten im 	
+			TGraph ab. Dabei erzeugt er bereits eine dem Metamodell und Schema entsprechende Struktur. Im gleichen Durchlauf werden 
+			alle lokalen Typinformationen des Quelltextes aufgesammelt und in einer eigenen 		
+			Struktur \texttt{TypeInfo} gespeichert\footnote{Diese ist nicht Bestandteil des TGraph und existiert nur temporär während 
+			der Ausführung im Arbeitsspeicher.}.}
+	    \item{Innerhalb der erzeugten Teilstruktur des TGraph werden lokale Typreferenzen aufgelöst und die entsprechenden Kanten 
+	    erzeugt. Dabei semantisch identische, mehrfach vorkommende Knoten werden zu einem einzigen Knoten zusammengeführt. Siehe 
+	    dazu Kapitel \ref{typechecking}.}
+	    \item{Die gesammelten Typinformationen werden dem Extraktor übergeben.}
+	  \end{itemize}}
+  \item{Über die gesamte Struktur des Graphen werden Typreferenzen aufgelöst, entsprechende Kanten erzeugt und wiederum 
+  semantisch identische, mehrfach vorkommende Knoten verschmolzen.\\
+	Wird ein referenzierter Typ dabei nicht gefunden, so wird mittels Reflection nach den entsprechenden Informationen im 
+	Classpath und in den standardmäßig zu Java gehörigen Bibliotheken gesucht. Die entsprechende Struktur wird im TGraph erzeugt 
+	und verbunden. Arbeitet der Extraktor im standardmäßigen \emph{lazy} Modus, so erzeugt er dabei nur die minimal benötigten 
+	Strukturen. Wurde hingegen der \emph{eager} Modus aktiviert, so werden möglichst viele Informationen des referenzierten Typs 
+	abgerufen und die entsprechenden Strukturen im TGraph erzeugt.}
+  \item{Der TGraph wird in einer Datei abgespeichert, dabei wird der übergebene Pfad und Dateiname verwendet. Existiert dort 
+  bereits eine gleichnamige Datei, so wird diese überschrieben.}
+\end{enumerate}
+Bei diesem Ablauf ist zu beachten, dass bei einem Programmaufruf für alle dabei analysierten Quelltexte nur \emph{ein} gemeinsamer Graph erzeugt wird.
+\clearpage
+\begin{figure}[h]
+  \begin{center}
+	  \includegraphics[width=10cm]{figures/JavaExtractorActivityDiagramm.pdf}
+	  \caption{Grober Ablauf des Extraktionsprozess}
+	  \label{activitydiagram}
+  \end{center}
+\end{figure}
+
+\subsection{Erzeugung des Javaextraktor}
+Da der Extraktor teils als Quelltext und teils als ANTLR-Grammatik vorliegt, müssen aus diesen einmalig die entsprechenden Programme erzeugt werden, bevor eine Verwendung stattfinden kann. Folgende Schritte müssen dazu durchgeführt werden:
+
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=6cm]{figures/repostructure.png}
+	  \caption{Verzeichnisstruktur im verwendeten lokalen Repository.}
+	  \label{repostructure}
+  \end{center}
+\end{figure}
+
+\begin{enumerate}
+	\item{Im folgenden wird die Verzeichnisstruktur verwendet, welche auch im SVN Repository des 	
+	GUPRO-Projektes\footnote{https://svn.uni-koblenz.de/gup/re-group/trunk/project} verwendet wird.\\
+	In ein lokales Arbeitsverzeichnis \emph{localrepository} werden zunächst die beiden Verzeichnisse \emph{localrepository/jgralab} und \emph{localrepository/javaextractor} des 	
+	Repositories gelegt (üblicherweise mittels \texttt{svn checkout}). Abbildung \ref{repostructure} zeigt die gesamte
+	Verzeichnisstruktur. Alle weiteren Schritte werden ausgehend vom Verzeichnis \emph{localrepository/javaextractor/src} durchgeführt.}
+	\item{Danach müssen folgende Verzeichnisse und Dateien in den \texttt{CLASSPATH} aufgenommen werden:
+	\begin{itemize}
+		\item{Das aktuelle Verzeichnis:\\
+		\texttt{"."}}
+		\item{Das Verzeichnis mit den Quellen von JGraLab:\\
+		\texttt{"../../jgralab/src"}}
+		\item{Das von JGraLab teilweise verwendete GetOPT:\\
+		\texttt{"../../jgralab/lib/java-getopt-1.0.13.jar"}}
+		\item{Das vom Extraktor verwendete ANTLR:\\
+		\texttt{"../../jgralab/lib/org.antlr\_2.7.6/antlr.jar"}}
+	\end{itemize}
+	Am einfachsten geschieht dies durch Setzen einer entsprechenden Umgebungsvariable. Die Alternative mittels Übergabe des Java-Kommandozeilenparameters \texttt{-cp} bei Kompilierung und Ausführung ist auch möglich, verkompliziert die Darstellung in diesem Dokument jedoch.}
+	\item{Anschließend müssen Lexer, Parser und Treewalker aus ihren Grammatiken durch ANTLR im Verzeichnis 	
+	\emph{localrepository/javaextractor/src/javaextractor} erzeugt werden. Die Erzeugung geschieht durch die folgenden zwei Aufrufe:
+\begin{lstlisting}
+java antlr.Tool -o javaextractor javaextractor/java15.g
+java antlr.Tool -o javaextractor javaextractor/java15.tree.g
+\end{lstlisting}}
+	\item{Dann müssen JGraLab und das darin enthaltene Programm \texttt{TGSchema2Java} zur Generierung von Graphklassen aus einem Schema 
+	 ebenfalls kompiliert werden:
+\begin{lstlisting}
+javac ../../jgralab/src/de/uni_koblenz/jgralab/*.java
+javac ../../jgralab/src/de/uni_koblenz/jgralab/utilities/tgschema2java/*.java
+\end{lstlisting}}
+	\item{Nun können die Graph-, Knoten- und Kantenklassen, die der Javaextraktor benötigt, erzeugt werden. \texttt{TGSchema2Java} generiert die entsprechenden Quelltexte aus den Informationen der Schemadatei (\emph{java5.tg} im Verzeichnis \emph{localrepository/javaextractor/src}) und schreibt diese in \emph{localrepository/javaextractor/src/javaextractor/schema}. Der Aufruf geschieht mittels des folgenden Kommandos:
+\begin{lstlisting}
+java de.uni_koblenz.jgralab.utilities.tgschema2java.TgSchema2Java -f java5.tg -p .
+\end{lstlisting}}
+	\item{
+	Nachdem nun alle benötigten Komponenten erzeugt und Quelltexte kompiliert wurden, wird das eigentliche Extraktorprogramm kompiliert:
+\begin{lstlisting}
+javac javaextractor/*.java
+\end{lstlisting}}
+\end{enumerate}
+Nach erfolgreicher Erzeugung kann der Javaextraktor nun Verwendung finden. Dies wird im nächsten Kapitel beschrieben.
+
+\subsection{Verwendung des Javaextraktor}
+Um den Javaextraktor zu verwenden, müssen die gleichen Verzeichnisse und Dateien im \texttt{CLASSPATH} verzeichnet sein, wie im vorherigen Kapitel beschrieben. Der Aufruf des Javaextraktors geschieht durch:
+\begin{lstlisting}
+java javaextractor.JavaExtractor
+\end{lstlisting}
+Zusätzlich interpretiert das Programm folgende (durch Leerzeichen getrennte) Kommandozeilenparameter:
+\begin{itemize}
+	\item{\texttt{PFAD} : Übergibt den Pfad zur zu parsenden Datei oder eines Verzeichnisses. Dieser Parameter kann beliebig oft, muss aber mindestens einmal vorhanden sein.}
+	\item{\texttt{-out DATEINAME} oder \texttt{-o DATEINAME} : Übergibt den Pfad zur Datei, in die der erzeugte Graph gespeichert wird. Die Datei sollte normalerweise die Endung \emph{.tg} besitzen. Dieser Parameter ist optional, standardmäßig wird die Datei \emph{extractedgraph.tg} im aktuellen Verzeichnis verwendet.}
+	\item{\texttt{-name PROGRAMMNAME} oder \texttt{-n PROGRAMMNAME} : Übergibt den Namen, welcher im erzeugten Graph als Programmname gesetzt wird. Dieser Parameter ist optional.}
+	\item{\texttt{-log DATEINAME} oder \texttt{-l DATEINAME} : Übergibt den Pfad zur Datei, in die das Log geschrieben wird. Dieser Parameter ist optional, standardmäßig wird die Datei \emph{javaextractor.log} im aktuellen Verzeichnis verwendet.}
+	\item{\texttt{-eager} oder \texttt{-e} : Weist das Programm an, möglichst vollständige Informationen zu nicht im Quelltext vorhandenen Referenzen zu generieren. Dieser Parameter ist optional.}
+\end{itemize}
+Zu beachten ist außerdem, dass bei der Verwendung über eine größere Menge Quelltext recht schnell der von Java eingestellte Heapspeicher überläuft. Die lässt sich verhindern, indem Java über den Kommandozeilenparameter \texttt{-Xmx} ein größerer Maximalwert hierfür zugewiesen wird.\\
+Ein konkreter Aufruf des Extraktors mit einer maximalen Heapgröße von 768MB und unter Verwendung aller o.g. Kommandozeilenparameter sieht dann zum Beispiel wie folgt aus:
+\begin{lstlisting}
+java -Xmx768M javaextractor.JavaExtractor -out testgraph.tg -name Testprogramm -log testextract.log -eager ../testit/test1.java ../testit/test2.java ../testit2
+\end{lstlisting}
+
+\newpage
+\section{Technisches}
+In diesem Kapitel werden die verwendeten Techniken des Javaextraktors im einzelnen erläutert. Dazu wird zunächst aufgezeigt, wie die benötigten Kanten- und Knotentypen (Graphklassen) für einen TGraph erzeugt werden, so dass dieser dem Metamodell entspricht. Als nächstes wird erörtert, wie die Umsetzung des parsererzeugten AST in den TGraph erfolgt. Anschließend wird näher auf die Berechnung der richtigen Positions- und Längenangaben der Sprachkonstrukte eingegangen. Abschließend wird das Verschmelzen von mehrfach vorkommenden, semantisch identischen Graphelementen beschrieben.
+
+\subsection{Erzeugung benötigter Graphklassen}
+Um sicherzustellen, dass ein TGraph dem Metamodell für Java entspricht, wird für jede Assoziation des Modells eine  Kantenklasse und für jede Klasse eine Knotenklasse benötigt. JGraLab stellt mit \texttt{TGSchema2Java} ein Werkzeug bereit, dass aus einer Schemadatei die Quelltexte eben dieser Klassen erzeugt. Dadurch bleibt im wesentlichen die Umsetzung des Modells in das Schema als Arbeitsschritt übrig. Das Dateiformat der Schemadatei ist ein JGraLab-spezifisches Format, die formale Definition eine Beschreibung finden sich in \cite{DipKahle}, S. 113ff. \\
+Im Schema selbst werden Knotenklassen, Kantenklassen, deren Vererbungsbeziehungen, Attribute, sowie Multiplizitäten und Richtung der Kanten formal festgelegt. JGraLab leitet dabei alle Klassen von seinen internen Standardklassen \emph{Edge} und \emph{Vertex} ab. Für im Schema definierte Attribute werden automatisch entsprechende Getter- und Setter-Methoden erzeugt. Desweiteren werden alle sonstigen benötigten Funktionalitäten, etwa zur Instanziierung oder für Navigation und Manipulation des Graphen, in entsprechenden Methoden generiert.\\
+Da gemäß der Anforderung die Angaben zu Position und Länge eines Sprachelements in den Kanten gespeichert werden sollen, wird im verwendeten Schema zunächst ein abstrakter Kantentyp definiert, von dem fast alle übrigen Kanten abgeleitet werden\footnote{Ausnahmen müssen für die Kanten gemacht werden, die im Graphen dazu dienen die Strukturen der einzelnen Quelltextdateien unter einem gemeinsamen "`Kopf"' zu verbinden}.
+\begin{lstlisting}[style=tgschema]
+abstract EdgeClass AttributedEdge from Vertex(0, *) to Vertex(0, *) {offset: Integer, length: Integer, line: Integer, column: Integer};
+\end{lstlisting}
+An diesem Kantentyp werden alle Eigenschaften einer TGraph-Kante ersichtlich. Die Kante besitzt eine Multiplizität, im speziellen Fall n-zu-m ("`\texttt{Vertex(0, *) to Vertex(0, *)}"'), und sie ist gerichtet ("`\texttt{from ... to}"'). Darüber hinaus werden vier Attribute für die Speicherung der Positionsinformationen festgelegt, alle sind vom Typ \texttt{Integer}:
+\begin{itemize}
+	\item{\texttt{offset}: Position des ersten Zeichens des Sprachelements relativ zum Anfang der Quelltextdatei. Der Wert ist Null-basiert.}
+	\item{\texttt{length}: Länge des Sprachelements in der Quelltextdatei.}
+	\item{\texttt{line}: Zeile des ersten Zeichens des Sprachelements in der Quelltextdatei. Der Wert ist Eins-basiert.}
+	\item{\texttt{column}: Spalte des ersten Zeichens des Sprachelements in der Quelltextdatei. Der Wert ist Eins-basiert.}
+\end{itemize}
+Gemäß der Schemasyntax wurde das komplette Metamodell in ein Schema umgesetzt. {Listing \ref{classdefschema} zeigt beispielhaft die  Klassendefinition aus dem Metamodell (siehe {Abbildung \ref{classdefmodel}) im Schema. Dabei wird ersichtlich, wie Vererbungsbeziehungen im Schema definiert werden: die Knotenklasse \texttt{ClassDefinition} ist abgeleitet von der Klasse \texttt{Type}. Ebenso wird auch die Kantenklasse \texttt{IsModifierOfClass} von \texttt{IsModifierOf} abgeleitet. Zwischenklassen in der Vererbungshierarchie von Kanten sind vor allem dafür gedacht, Anfragen auf den Graph zu erleichtern\footnote{In diesem Fall wäre es beispielsweise möglich, mittels Abfrage der \texttt{IsModifierOf}-Kanten alle Stellen von Modifiern im Graph auszugeben. Andernfalls müsste eine Abfrage von \texttt{IsModifierOfClass}, \texttt{IsModifierOfInterface}, \texttt{IsModifierOfMethod}, usw. erfolgen.}.
+
+\begin{lstlisting}[style=tgschema, caption=Repräsentation der Klassendefinition im Schema, label=classdefschema]
+VertexClass ClassDefinition: Type {name: String, fullyQualifiedName: String};
+EdgeClass IsModifierOfClass: IsModifierOf from Modifier(0, *) to ClassDefinition(1, 1);
+EdgeClass IsClassNameOf: AttributedEdge from Identifier(1, 1) to ClassDefinition(1, 1);
+EdgeClass IsTypeParameterOfClass: IsTypeParameterOf from TypeParameterDeclaration(0, *) to ClassDefinition(1, 1);
+EdgeClass IsSuperClassOfClass: IsSuperClassOf from TypeSpecification(0, 1) to ClassDefinition(1, 1);
+EdgeClass IsInterfaceOfClass: IsInterfaceOf from TypeSpecification(0, *) to ClassDefinition(1, 1);
+EdgeClass IsClassBlockOf: AttributedEdge from Block(1, 1) to ClassDefinition(1, 1);
+
+VertexClass Modifier { type : Modifiers } ;
+VertexClass Identifier { name : String } ;
+VertexClass TypeParameterDeclaration : Type ;
+abstract VertexClass TypeSpecification ;
+VertexClass Block : Statement;
+
+abstract EdgeClass IsModifierOf : AttributedEdge from Modifier( 0, * ) to Vertex( 1, 1 ) ;
+abstract EdgeClass IsTypeParameterOf : AttributedEdge from Vertex( 0, * ) to Vertex( 1, 1 ) ;
+abstract EdgeClass IsSuperClassOf : AttributedEdge from TypeSpecification( 0, 1 ) to Type( 1, 1 ) ;
+abstract EdgeClass IsInterfaceOf : AttributedEdge from TypeSpecification( 0, * ) to Type( 1, 1 ) ;
+\end{lstlisting}
+\clearpage
+\begin{figure}[float]
+  \begin{center}
+	  \includegraphics[width=10cm, angle=90]{figures/ClassDefinition.pdf}
+	  \caption{Metamodell der Klassendefinition}
+	  \label{classdefmodel}
+  \end{center}
+\end{figure}
+
+\subsection{Erzeugung des TGraphen im Treewalker}
+\label{schnittstelle_antlr}
+Wie bereits im letzten Kapitel kurz erwähnt, erfolgt die Umsetzung der Struktur des vom Parser erzeugten AST zum TGraph im Treewalker. Grundsätzlich ist es möglich (und auch etwas schneller) den TGraph bereits während des Parsings mit aufzubauen. Die Grammatik des Treewalkers ist aber erheblich kompakter und lesbarer als die des Parsers. Dies macht die Implementierung wesentlich einfacher. Gerade bei der Vermeidung und Suche von Fehlern ist eine kompakte Grammatik von Vorteil. Darüberhinaus ermöglicht die Arbeitsweise des Treewalkers eine einfache Möglichkeit zum Erzeugen der TGraph-Elemente, da die Struktur seiner Regeln derjenigen ähnelt, die der generierte Graph gemäß dem Metamodell besitzen soll.\\
+Zur Erzeugung des TGraphen ist es nicht nötig den Treewalker selbst anzupassen, sondern es genügt entsprechenden Code als semantische Aktionen in seine zugrundeliegende Grammatik einzufügen. Anschließend wird ein neuer Treewalker aus der Grammatik erzeugt.\\
+Zunächst müssen dem Treewalker einige Referenzen mitgegeben werden, damit dieser, die zu erzeugenden Graphelemente an die richtigen Stellen im Graphen verbinden kann. Diese werden mittels Setter-Methoden vom Javaextraktor gesetzt, bevor der AST traversiert wird. Dabei handelt es sich um die folgenden Elemente:
+\begin{itemize}
+  \item{\texttt{programGraph}: Der TGraph, der erweitert werden soll.}
+  \item{\texttt{programVertex}: Der Wurzelknoten im Graphen.}
+  \item{\texttt{sourceUsageVertex}: Der Knoten im Graphen, der Informationen zur Datei mit dem Quelltext des zu bearbeitenden 
+  AST beinhaltet.}
+  \item{\texttt{translationUnitVertex}: Der Knoten im Graphen, an den die erzeugte Struktur im TGraph verbunden wird.}
+\end{itemize}
+Die eigentliche Generierung einer Teilstruktur des TGraphen im Treewalker entspricht in den meisten Fällen dem folgenden Prinzip:
+\begin{enumerate}
+  \item{Am Beginn einer Regel wird ein Knoten der zur Regel äquivalenten Knotenklasse im TGraph erzeugt.}
+  \item{Mit diesem Knoten wird nach jeder referenzierten Unterregel der von der Unterregel zurückgegebene Knoten, durch Erzeugen einer Kante der 
+  entsprechenden Kantenklasse, verbunden.}
+  \item{Am Ende der Regel wird der in Punkt 1 erzeugte Knoten zurückgegeben.}
+\end{enumerate}
+Beim Erzeugen des Treewalkers aus der der Grammatik generiert ANTLR aus jeder Regel eine eigene Methode. Diese besitzen als Rückgabewert immer den Knoten des AST (vom Typ \texttt{AST}; dieser ist in ANTLR definiert), der von der Regel durchlaufen wird. Deswegen wird der erstellte TGraph-Knoten am Ende der Regel in einer globalen Variable (\texttt{currentVertex} - vom in JGraLab definierten Typ \texttt{Vertex} - zwischengespeichert.\\
+Eine Ausnahme zum o.a. Prinzip bildet die Listenregel. Dabei handelt es sich um eine Regel, die zwar selbst wiederum mehrere Regeln referenziert, jedoch zu ihr selbst keine Entsprechung als Knoten im TGraphen erzeugt. Zum Beispiel referenziert die Regel einer Methodendeklaration die Regel \texttt{parameters}, welche beliebig oft die Regel \texttt{parameterDeclaration} referenziert. Gemäß dem Schema muss aber direkt eine Kante zwischen jeder Parameterdeklaration und der Methodendeklaration erzeugt werden. In solchen Fällen übergibt die referenzierende Regel den eigenen Knoten (z.B. vom Typ \texttt{MethodDeclaration}) an die Listenregel (ebenfalls über die globale Variable \texttt{currentVertex}) und diese erzeugt die entsprechenden Kanten (z.B. vom Typ \texttt{IsParameterOfMethod}).\\
+Mit der beschriebenen Vorgehensweise funktioniert die komplette Erzeugung der grundlegenden TGraph-Strukturen, da die entsprechende Funktionalität durchgängig in allen Regeln implementiert ist.
+
+\subsection{Schnittstelle zu ANTLR}
+Damit die benötigten Positionsinformationen der repräsentierten Sprachelemente in den TGraph aufgenommen werden können, musste hierzu zunächst eine entsprechende Funktionalität im von ANTLR generierten Teil des Extraktors geschaffen werden. Zwar bietet die grundlegende Schnittstelle eines jeden von ANTLR generierten Lexers die Möglichkeit, Position über Zeile und Spalte sowie die Länge des erkannten Tokens abzufragen, jedoch sind diese nicht mehr über den erzeugten AST abfragbar. Ferner wird für den TGraph die Position in Form eines Offsets benötigt. Abbildung \ref{extractorclassdiagramm} zeigt das Klassendiagramm aller dafür benötigten und im folgenden beschriebenen Komponenten. \\
+\begin{figure}[h]
+  \begin{center}
+	  \includegraphics[width=10cm]{figures/JavaExtractorClassDiagramm.pdf}
+	  \caption{Klassendiagramm der Javaextraktor-Komponenten, welche unmittelbar mit ANTLR interagieren.}
+	  \label{extractorclassdiagramm}
+  \end{center}
+\end{figure}
+Damit alle benötigten Informationen in den generierten Tokens gespeichert werden können, wurde \texttt{CommonToken} als \texttt{CommonTokenAdapter} abgeleitet und angepasst. Die Ermittlung des Offsets eines Tokens erledigt der von \texttt{LexerSharedInputState} abgeleitete \texttt{LexerSharedInputStateAdapter}. Damit die Adapter beim Parsing benutzt werden, wurde \texttt{JavaLexerAdapter} anstelle seiner Basisklasse \texttt{JavaLexer} angepasst.\\
+Damit die Positionsangaben im \texttt{CommonTokenAdapter} später im AST noch erreichbar sind, stellt \texttt{CommonASTAdapter} Methoden zur Verfügung, um diese abzufragen.\\
+
+\subsection{Sammeln und Berechnen der benötigten Positionsinformationen}
+Durch diese Anpassungen ist es nun möglich, im Treewalker Positionsinformationen abzufragen und zu verarbeiten. Um aber auch die Position und Länge eines aus vielen Teilelementen zusammengesetzten Java-Sprachkonstrukts (z.B. eine Klassendefinition von Beginn des Klassenkopfes bis zum Ende des Rumpfes) in einer Kante korrekt berechnen zu können, musste  die Parser- und entsprechend auch die Treewalker-Grammatik angepasst werden. Dies war nötig, da einige zur Berechnung benötigte Elemente bislang nicht in den AST aufgenommen wurden\footnote{Semikola, runde und geschweifte Klammern sowie manche Schlüsselworte.} und deren Positionsinformation somit nicht mehr zugänglich war.\\
+Nach dieser Modifikation konnte das Berechnen und Speichern der jeweiligen Attribute implementiert werden. Die implementierte Funktionalität ist in den relevanten Treewalker-Regeln enthalten und ähnelt im Prinzip der Generierung der einzelnen Elemente des TGraphen:
+\begin{enumerate}
+\item{Nach jeder referenzierten Unterregel wird das zurückgegebene Anfangs- und End-AST-Element abgerufen und daraus die Positionsinformationen sowie die Gesamtlänge berechnet. Diese werden in die Kante eingetragen, welche den von der Regeln zurückgegebenen Knoten mit anbindet (bei einer Listenregel nicht).}
+\item{Am Ende der Regel wird das eigene Anfangs- und End-AST-Element zurückgegeben. Dabei handelt es sich entweder um das erste / letzte Element aus den Unterregeln oder um eventuell in der Regel direkt vorhandene AST-Elemente.}
+\end{enumerate}
+Für die Ermittlung werden zwei globale Variablen verwendet (\texttt{currentBeginAST} und \texttt{currentEndAST}). Mit Ausnahme der Kanten, unter denen sich keine zusammengesetzte Struktur befindet\footnote{Dies ist nur bei \texttt{Identifier} der Fall.}, findet die beschriebene Funktionalität im Treewalker durchgehend Verwendung.
+
+\subsection{Auflösen von Typ- und Variablenreferenzen}
+\label{typechecking}
+Im Graphen sollen Knoten, die den Namen einer Variable, eines Typs oder einer Methode repräsentieren nur einmal vorkommen. In einem Quelltext werden üblicherweise solche Elemente definiert, auf die dann, über deren Namen, zugegriffen wird. Im Quelltext kann somit der Name mehrfach vorkommen, im Graphen wird er durch einen Knoten vom Typ \texttt{Identifier} repräsentiert. Im Gegensatz zum Vorkommen im Quelltext, soll dessen Graphenrepäsentation aber einzigartig sein. Für jedes Vorkommen im Quelltext soll im Graphen aber eine Kante erzeugt werden. Zum Beispiel kommt der Name in der Deklaration einer Variable und bei deren Verwendung in einem Ausdruck vor. Dafür soll im Graphen jeweils eine Kante vom \texttt{Identifier}-Knoten zu den Graphenrepräsentationen der Deklaration (\texttt{Declaration}) und Verwendung (\texttt{FieldAccess}) erzeugt werden. Zusätzlich soll eine Kante von der Deklaration der Variable zur Verwendung dieser erzeugt werden. Analog verhält es sich mit Deklarationen und Definitionen von Typen und Methoden\footnote{Damit sind hier ebenso Konstruktoren gemeint. Das für Variablen gesagte gilt auch für Zugriffe auf Konstanten oder Enum-Werte.}.\\
+Der TGraph repräsentiert die Syntax der Quelltexte in Form eines ASG. Im Gegensatz zum AST sind bestimmte Elemente einzigartig und Schleifen erlaubt. Der Javaextraktor muss somit die Einzigartigkeit bestimmter Elemente im Graphen sicherstellen und in der Lage sein Typ- und Variablenverwendungen ihren Deklaration zuzuordnen, um sie im Graphen miteinander zu verbinden. Dies erfolgt in drei Schritten.
+\begin{enumerate}
+  \item{Während des Treewalkingvorgangs werden Elemente die einzigartig im Graph sein sollen nur einmal erzeugt. Dazu werden 
+  diese Elemente nach ihrer Erzeugung in einer Symboltabelle gesammelt, um während des restlichen Parsingvorgangs 
+  weiterhin zur Verfügung zu stehen. Wird ein bereits erzeugtes Graphelement nochmals im Quelltext identifiziert, wird statt 
+  ein neues Element zu erzeugen das bereits existierende wiederverwendet. Zusätzlich werden alle Typ- und 		
+  Variablendeklarationen in der Symboltabelle gesammelt, um die zusätzlichen Kanten möglichst schon 
+  während des Treewalkingvorganges zu erzeugen.\\
+  Folgende Knotentypen werden in der Symboltabelle gesammelt:
+	\begin{itemize}
+  	\item{\texttt{Type}}
+  	\item{\texttt{TypeParameterDeclaration}}
+  	\item{\texttt{Declaration}}
+  	\item{\texttt{ParameterDeclaration}}
+  	\item{\texttt{QualifiedName} verbunden zu:
+  	\begin{itemize}
+    	\item{\texttt{JavaPackage}}
+    	\item{\texttt{Import}}    
+    	\item{\texttt{TypeSpecification}}
+  	\end{itemize}}
+  	\item{\texttt{FieldAccess}}
+	\end{itemize}}
+	Nachdem der Parsingvorgang abgeschlossen ist, sind alle Deklarationen sowie alle noch nicht verbundenen Elemente bekannt.
+  \item{Im nächsten Schritt wird versucht die Elemente, die noch nicht mit ihrer Deklaration verbunden sind mit diesen zu 
+  verbinden. Nachdem dieser Vorgang abgeschlossen ist, sind nur noch die Elemente nicht verbunden, deren Deklarationen nicht in der Symboltabelle und somit auch nicht im Graphen vorkommen.}
+  \item{Im letzten Schritt wird versucht die Graphenrepräsentationen der fehlenden Deklarationen per Reflection zu erzeugen. 
+  Dies kann nur für Elemente funktionieren deren Klassen über den \texttt{CLASSPATH} erreicht werden können.}
+\end{enumerate}
+ 
+\newpage
+\begin{thebibliography}{breitestes Label}
+  \bibitem[1]{DipKahle} \emph{JGraLab: Konzeption, Entwurf und Implementierung einer Java-Klassenbibliothek für TGraphen}, Steffen Kahle, 2006\\   
+  \url{http://www.uni-koblenz.de/FB4/Publications/Theses/ShowThesis?id=2058}\\
+\end{thebibliography}
+
+%\newpage
+%\begin{appendix}
+%
+%\end{appendix}
+
+\end{document}

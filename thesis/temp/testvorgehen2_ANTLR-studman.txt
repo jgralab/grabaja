@@ -1,0 +1,11 @@
+1. Parsing des JDK Sourcecodes
+
+Geschieht komplett fehlerfrei in 1:06 Min.
+
+2. Parsing des Eclipse Sourcecodes
+
+Geschieht fehlerfrei bis auf 4 Stellen in 1:58 Min.
+
+3. Parsing des ANTLR Sourcecodes
+
+Geschieht fehlerfrei bis auf 1 Stelle in 00:03 Min.

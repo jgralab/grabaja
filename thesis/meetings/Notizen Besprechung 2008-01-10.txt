@@ -1,0 +1,6 @@
+- grober Zeitaufwand abschätzen (ohne die exakte derzeitige Abschätzung)
+- grobe Skalierbarkeit.
+- Beispieltabelle: Zeitdauer, Graphgröße, etc für ein paar Beispielquelltexte
+- Invocated --> Invoked
+- Attribut für Typknoten: Per Reflection oder nicht?
+- Text: weniger Umgangssprachlich

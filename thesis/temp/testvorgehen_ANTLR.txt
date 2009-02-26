@@ -1,0 +1,199 @@
+1. Installation:
+ - Entfällt, da JAR-Paket
+
+2. Erzeugung eines Parsers aus einer Beispielgrammatik (Calculator)
+ - funktioniert auch ohne Dokumentation mit ein wenig herumprobieren
+ - java -classpath "..\..\..\lib\antlr.jar" antlr.Tool calc.g
+ - javac -classpath "..\..\..\lib\antlr.jar" *.java
+
+3. Testen des erzeugten Parsers
+ - funktioniert mit: java -classpath "..\..\..\lib\antlr.jar;." Calc
+ - der erzeugte Parser liest die Eingabe
+ - bei korrekter Eingabesyntax
+   - Erzeugung eines AST
+   - Ausgeben des AST
+   - Berechnung des Ergebnisses durch den Treewalker
+
+4. Erzeugung eines Parsers aus der Javagrammatik
+ - Grammatik von Michael Stahl (Java 1.5)
+   - Erzeugung der Sourcecodes aus der Grammatik funktioniert
+     (java -classpath "..\lib\antlr.jar;" antlr.Tool java.g)
+     (java -classpath "..\lib\antlr.jar;" antlr.Tool java.tree.g)
+   - Kompilierung funktioniert
+     (javac -classpath "..\lib\antlr.jar;" *.java)
+ - Grammatik von Michael Studman (Java 1.5)
+   - Erzeugung der Sourcecodes aus der Grammatik funktioniert
+     (java -classpath "..\lib\antlr.jar;" antlr.Tool java15.g)
+     (java -classpath "..\lib\antlr.jar;" antlr.Tool java15.tree.g)
+   - Kompilierung funktioniert
+     (javac -classpath "..\lib\antlr.jar;" *.java)
+ - Grammatik von Scott Wisniewski (Java 1.5)
+   - Erzeugung der Sourcecodes aus der Grammatik funktioniert
+     (java -classpath "..\lib\antlr.jar;" antlr.Tool java1.5.g)
+     (java -classpath "..\lib\antlr.jar;" antlr.Tool java.tree.g)
+   - Erzeugung eines Kommandozeilen-Präprozessors aus dem gegebenen C#-Quelltext
+     funktioniert, wenn man selbst noch eine entspr. Main-Methode schreibt,
+     benötigt zum Kompilieren .NET Framework V2.0
+     (%WINDIR%\Microsoft.NET\Framework\v2.0.50727\csc.exe JavaPreProcessor.cs)
+   - Kompilierung des Parsers schlägt fehl, der erzeugte Quelltext des
+     Lexers enthält ungültige Befehle ("Char.IsLetter" bzw "Char.IsLetterOrDigit"
+     anstelle "Character.isLetter" bzw. "Character.isLetterOrDigit").
+     Nach der Korrektur dieser Fehler gelingt die Kompilierung
+     (javac -classpath "..\lib\antlr.jar;." Main.java)
+
+5. Testen des erzeugten Java-Parser
+
+ - Parser aus Grammatik von Michael Stahl (Java 1.5)
+   - Ausführen mit
+     (java -classpath "..\lib\antlr.jar;" Main -showtree Testdatei.java)
+   - "AbstractEnumShouldGiveParseError.java":
+     schlägt fehl, bemängelt aber nicht das ungültige Konstrukt,
+     sondern erwartet an davon völlig unabhängigen Stellen ein EOF
+     anstelle des jeweils vorhandenen Bezeichners, bzw. meldet
+     zuvor noch "unexpected opartion"
+   - "AbstractFinalShouldGiveParseError.java":
+     wird akzeptiert und die beiden widersprüchlichen Modifier
+     werden mit in den AST übernommen
+   - "AllowedForEachConstructs.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "AllowedGenericConstruct.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "AnotherAllowedForEachConstruct.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "Eric.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "EscapeSequences.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "ForEachInShouldGiveParseError.java":
+     wird als fehlerhaft erkannt, erwartet "(" anstelle von "each",
+     was korrekt ist
+   - "PublicPrivateShouldGiveParseError.java":
+     wird akzeptiert und die beiden widersprüchlichen Modifier
+     werden mit in den AST übernommen
+   - "Test15.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestJSR201.java":
+     schlägt fehl, erkennt offensichtlich das Keyword "enum" nicht
+   - "TestJSR201Berichtigt.java":
+     schlägt fehl, erkennt offensichtlich das Keyword "enum" nicht
+   - "TestsPositionsLinux.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestsPositionsMac.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestsPositionsWindows.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestZeilenumbrueche-ASCII.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestZeilenumbrueche-UniCode.java":
+     schlägt fehl, erkennt das Unicode-Encoding der Datei nicht
+
+ - Parser aus Grammatik von Michael Studman
+   - Ausführen mit
+     (java -classpath "..\lib\antlr.jar;" Main -showtree Testdatei.java)
+   - "AbstractEnumShouldGiveParseError.java":
+     wird akzeptiert und der ungültige Modifier wird mit in den AST übernommen
+   - "AbstractFinalShouldGiveParseError.java":
+     wird akzeptiert und die beiden widersprüchlichen Modifier
+     werden mit in den AST übernommen
+   - "AllowedForEachConstructs.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "AllowedGenericConstruct.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "AnotherAllowedForEachConstruct.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "Eric.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "EscapeSequences.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "ForEachInShouldGiveParseError.java":
+     wird als fehlerhaft erkannt, erwartet "(" anstelle von "each",
+     was korrekt ist
+   - "PublicPrivateShouldGiveParseError.java":
+     wird akzeptiert und die beiden widersprüchlichen Modifier
+     werden mit in den AST übernommen
+   - "Test15.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestJSR201.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestJSR201Berichtigt.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestsPositionsLinux.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestsPositionsMac.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestsPositionsWindows.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestZeilenumbrueche-ASCII.java":
+     wird akzeptiert und korrekt in den AST abgebildet
+   - "TestZeilenumbrueche-UniCode.java":
+     schlägt fehl, erkennt das Unicode-Encoding der Datei nicht
+
+ - Parser aus Grammatik von Scott Wisniewski
+   - Ausführen des Präprozessors mit
+     (JavaPreProcessor.exe file1 [file2] [file3] [file4] [...])
+   - Präprozessors läuft fehlerfrei über alle Testdateien und
+     speichert den neuen Code von z.B. "test.java" in
+     "test-PreProcessed.java"
+   - Ausführen des eigentlichen Parsers mit
+     (java -classpath "..\lib\antlr.jar;" Main -showtree Testdatei.java)
+   - "AbstractEnumShouldGiveParseError.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "AbstractFinalShouldGiveParseError.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "AllowedForEachConstructs.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "AllowedGenericConstruct.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "AnotherAllowedForEachConstruct.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "Eric.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "EscapeSequences.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "ForEachInShouldGiveParseError.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "PublicPrivateShouldGiveParseError.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "Test15.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "TestJSR201.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "TestJSR201Berichtigt.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "TestsPositionsLinux.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "TestsPositionsMac.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "TestsPositionsWindows.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "TestZeilenumbrueche-ASCII.java":
+     Der Parser bricht mit einem Fehler ab, und zwar an genau
+     der Stelle im Lexer, an der manuell korrigiert wurde
+   - "TestZeilenumbrueche-UniCode.java":
+     schlägt fehl, erkennt das Unicode-Encoding der Datei nicht
+
+
+
+6. Einbinden in eigenes Projekt
+ - funktioniert wie von Hersteller angegeben -> sehr gut
+ - funktioniert nicht wie angegeben -> sehr schlecht 
+ - funktioniert nicht wie angegeben, aber geht auf anderem Wege -> ausreichend
+   (Weg dokumentieren)
+ - funktioniert garnicht -> AUSSCHLUSS
+ - funktioniert in Eclipse -> sehr gut
+   (Weg dokumentieren)

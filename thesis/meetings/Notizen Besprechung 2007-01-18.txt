@@ -1,0 +1,11 @@
+- Einführung Modell / Metamodell ausführlich
+- Wir- / Ich-Form raus
+- Reihenfolgen im Modell beachten (keine Ordered-Kanten, aber Erwähnung im Text)
+- Keine Vermischung von Vx + Kapitel...
+- Erklärung und Versionierung trennen
+- Messung von Heuristiken nach Klassenanzahl
+- finalize != Destruktor
+- FGR: FoldGraphReference
+- isTrue -> True
+
+Nächstes Mal: Schema + Extraktor

@@ -1,0 +1,20 @@
+- Trennung von ArrayInitializer / ArrayCreation
+- TypeParameterDeclaration in Konstruktordefinition zulassen
+- Überprüfen: Deklarationen im ForIterator möglich?
+- Mail an Volker wegen Throws-Clause?
+- Einführen einer InstanceOfExpression
+- Identifizierung eines RAW-Typs mittels Flag (in TypeSpecification?)
+- Class- / Interface- / Enum-Definition (+Fields) zusammenfassen
+- VarLengtParamDecl von ParamDecl ableiten
+- Bei Class / Interface / ... : alles Definitions
+- Bei formalem Parameter: Parameter
+- Bei aktuellem Parameter: Argument
+- Method Call od. Invocation? --> Java Lang Spec.
+- Generics: Bei Verwendung Kante "isTypeSpecOf" auf Ident
+- Ident --> Identifier
+- Methode: Method Definition statt Declaration (außer: kein Body)
+- MethodInvocation: Keine Unterscheidung zwischen SuperClassMethodInvocation und normaler Invocation
+- Annotationen: komplett Erklären
+- Graph-Struktur etc. modellieren / erklären
+- Bounds: ändern
+- Kleinere Änderungen siehe Notizen im Metamodell

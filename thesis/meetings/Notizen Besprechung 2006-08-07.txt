@@ -1,0 +1,8 @@
+- Fields nicht unterscheiden und evtl. gleiche Kantennamen
+- RAW: nicht beachten
+- Verweisen auf Identifier bei der Benutzung von Klassen / Variablen / etc., oberster Knoten ist aber der Klassenknoten (Identifier darunter)
+- QualifiedName existent im Modell?
+- Jeder Type grundsätzlich QualifiedType
+- Schema festlegen beim Überarbeiten
+- Schema in GraLab übertragen
+-

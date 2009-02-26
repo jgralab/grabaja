@@ -1,0 +1,1419 @@
+\subsection{Vorgehen}
+
+\subsubsection{Grober Ablauf der Tests}
+Größtenteils fanden wir für unsere Zwecke im Internet Parsergeneratoren (plus Grammatiken) und Werkzeuge, die eben diese benutzen. 
+%Betrachten haben wir allerdings nur jene, die einen Parser in Java vorweisen konnten (aufgrund der Anforderungen bzgl. Betriebssystemen und Reflection).
+Im Groben haben wir die Tools wie folgt behandelt:\par
+
+Zunächst haben wir versucht die Software einzurichten. Dies reichte von einer vollautomatischen Installation mittels Setup, über einen einfachen Kommandozeilenaufruf, bis zur manuellen Kompilierung der Quelltexte. Dabei haben wir festgehalten, ob dies wie vom Hersteller angegeben funktionierte, oder wir einen eigenen Weg finden mussten. Ein Produkt, welches sich überhaupt nicht einrichten ließ, haben wir nicht angetroffen.\par
+Anschließend haben wir versucht aus einer einfachen Beispielgrammatik einen Parser zu erzeugen und diesen zu testen. Auch hier hielten wir fest, ob dies wie dokumentiert funktionierte oder ob wir einen eigenen Weg finden mussten. Teilweise stellten wir fest, dass die Erzeugung zwar noch dokumentiert war, die Verwendung der erzeugten Parser hingegen nicht mehr - und nicht immer fanden wir eine Lösung.\par
+Im letzten Schritt haben wir versucht aus den Javagrammatiken die Parser zu erzeugen und diese zu testen. Auch hier haben wir unser Vorgehen und die Ergebnisse dokumentiert. Leider mussten wir auch hier feststellen, dass die Erzeugung noch ausreichend dokumentiert war, die Verwendung der Parser aber nicht. Fanden wir keinen eigenen Weg diese zu benutzen, entfielen die Parsingtests, auf die wir im folgenden Abschnitt genauer eingehen.
+
+\subsubsection{Parsingtests}
+Sinn der Parsingtests war es, zu erfahren ob die Parser:
+\begin{itemize}
+  \item{die neuen Java 5 Ausdrücke verarbeiten können}
+  \item{auch komplizierte Javaausdrücke akzeptieren}
+  \item{untypische Fehler bemerken}
+  \item{mit problematischen Newlines klarkommen}
+\end{itemize}
+Dazu haben wir die Tests in drei Phasen unterteilt.\par
+
+In der ersten Phase wurden nur Quelltexte (Übersicht siehe Tabelle \ref{parsingtestphase1sources}) geparst, die vom Java Compiler \texttt{javac} fehlerfrei übersetzt werden können.\par
+Dazu mussten die Parser zunächst eine Klasse verarbeiten, die (laut Java Sprachspezifikation bis Version 1.4) grenzwertige, dennoch erlaubte Ausdrücke enthält.\par
+Als nächstes testeten wir, ob die Parser mit Unicode-Escapesequenzen umgehen können.\par
+Anschließend mussten die Parser Klassen verarbeiten, die jeweils nur einen Java 5 Ausdruck benutzen. Darauf aufbauend mussten diese zeigen, dass sie auch Klassen akzeptieren, die aus vielen komplizierten Kombinationen von Java 5 Ausdrücken bestehen (diese haben wir den Testquelltexten von CUP entnommen).\par
+%Dies ist als statistischer Test anzusehen
+
+In der zweiten Phase wurden nur Klassen  (Übersicht siehe Tabelle \ref{parsingtestphase2sources}) geparst, die vom Java Compiler javac nicht fehlerfrei übersetzt werden können. Dazu haben wir Klassen genommen, die nicht aufgrund des Typecheckings, sondern aufgrund ungültiger Ausdrücken nicht kompiliert werden können. Dabei handelt es sich u. a. um ungültige Kombinationen von Modifiern und um das \texttt{for each ( .. in .. )}-Konstrukt, welches in einer Preview
+von Java 5 noch erlaubt war, aus Kompatibilitätsgründen aber nicht mehr in der endgültigen Fassung enthalten ist.\par
+
+In der dritten Phase schließlich sollten die Parser zeigen, dass sie mit den unterschiedlichen Zeilenumbrüchen der Betriebssystemwelt umgehen können. Dazu haben wir, für jede Art von Zeilenumbruch, den Parsern eine separate Klasse (Übersicht siehe Tabelle \ref{parsingtestphase3sources}), sowie eine mit der Kombination aller Umbrüche, zum Parsen gegeben.\par
+
+\begin{table}[htbp]
+    \begin{tabular}{|l|p{7,3cm}|l|} \hline 
+      \textbf{Testquelltexte} & \textbf{Inhalt} & \textbf{Listing}\\ \hline
+      \hline
+      Eric & Grenzwertige, dennoch erlaubte Ausdrücke bis Java 1.4 & \ref{eric.java}\\ \hline
+      EscapeSequences & Unicode Escapesequenzen & \ref{escapesequences.java}\\ \hline
+      AllowedGenericConstruct &  Erlaubter generic-Ausdruck aus Java 5 & \ref{allowedgenericconstruct.java}\\ \hline
+      AllowedForEachConstructs &  Erlaubter ForEach-Ausdruck aus Java 5 & \ref{allowedforeachconstructs.java}\\ \hline
+      AnotherAllowedForEachConstruct & Erlaubter ForEach-Ausdruck aus Java 5 & \ref{anotherallowedforeachconstruct.java}\\ \hline
+      Test15 & Komplizierte Kombinationen von Java 5 Ausdrücken & \ref{test15.java}\\ \hline
+      TestJSR201Berichtigt & Komplizierte Kombinationen von Java 5 Ausdrücken & \ref{testjsr201berichtigt.java}\\ \hline      
+    \end{tabular}
+    \caption{Kurze Beschreibung der Quelltexte für erste Parsingphase}
+    \label{parsingtestphase1sources}
+\end{table}
+\begin{table}[htbp]
+   \begin{tabular}{|l|p{6,95cm}|l|} \hline 
+      \textbf{Testquelltexte} & \textbf{Inhalt} & \textbf{Listing}\\ \hline
+      \hline
+      ForEachInShouldGiveParseError & Nicht mehr erlaubter ForEachIn-Ausdruck & \ref{foreachinshouldgiveparseerror.java}\\ \hline
+      AbstractEnumShouldGiveParseError & Nicht erlaubter abstarkter Enum-Ausdruck & \ref{abstractenumshouldgiveparseerror.java}\\ \hline     
+      AbstractFinalShouldGiveParseError & Ungültige Kombination von abstract und final & \ref{abstractfinalshouldgiveparseerror.java}\\ \hline
+      PublicPrivateShouldGiveParseError & Ungültige Kombination von public und private & \ref{publicprivateshouldgiveparseerror.java}\\ \hline
+    \end{tabular}
+  \caption{Kurze Beschreibung der Quelltexte für zweite Parsingphase}
+  \label{parsingtestphase2sources}
+\end{table}
+\begin{table}[htbp]
+    \begin{tabular}{|l|l|} \hline 
+      \textbf{Testquelltexte} & \textbf{Inhalt}\\ \hline
+      \hline
+      TestsPositionsLinux & Newlines Linux\\ \hline
+      TestsPositionsMac &  Newlines Mac\\ \hline
+      TestsPositionsWindows &  Newlines Windows\\ \hline
+      TestZeilenumbrueche-ASCII & Kombination der Newlines, Datei ASCII-kodiert\\ \hline
+    \end{tabular}
+    \caption{Kurze Beschreibung der Quelltexte für dritte Parsingphase}
+    \label{parsingtestphase3sources}
+\end{table}
+
+\subsection{Parsergeneratoren}
+Bei einem Parsergenerator handelt es sich um ein Programm, welches aus einer Grammatik einen Parser erzeugt, der die Sprache, die in der Grammatik beschrieben wird, parsen kann. Da wir einen Parser für Java benötigen, werden in diesem Abschnitt die in Frage kommenden Parsergeneratoren genauer untersucht. 
+
+\subsubsection{JavaCC}
+Eine kurze Übersicht zu den wichtigsten Daten von JavaCC findet sich in Tabelle \ref{javaccoverview}.
+\paragraph{Historie.}
+Der Java Compiler Compiler wurde 1996 von Sreeni Viswanadha und Sriram Sankar, für die Sun Microsystems Laboratories, entwickelt. Seitdem ist das Werkzeug von den beiden stetig weiterentwickelt worden.\par
+Seit Juni 2003 steht der Quelltext unter der FreeBSD Lizenz frei zur Verfügung und die aktuelle JavaCC-Version wurde im Januar 2006 veröffentlicht.
+
+\paragraph{Charakterisierung.}
+JavaCC ist ein in Java implementierter Parsergenerator, der LL(k)-Parser und die zugehörigen Lexer in Java erzeugt. Eine Vielzahl von Grammatiken für verschiedene Programmiersprachen ist auf \cite{javaccgram1} und \cite{javaccgram2} verfügbar (auch für Java bis Version 5). Die Erzeugung von Bäumen geschieht nicht automatisch, sondern muss von Hand in die Grammatiken eingebaut werden. Alternativ kann dies auch durch den Einsatz von Werkzeugen, wie dem mitgelieferten JJTree oder JTB, erreicht werden, die auf der Basis von Grammatiken für JavaCC Bäume erzeugen können.
+%Ist ein Baum erzeugt, kann darüber eine Ausgabe erzeugt werden.
+
+\paragraph{Literatur.}
+Zu JavaCC wird eine ausführliche Dokumentation mitgeliefert. Diese umfasst neben einem Benutzerhandbuch, diversen Tutorials, einer FAQ, einer kurzen Schnittstellenbeschreibung der erzeugten Lexer und Parser auch eine Dokumentation zu JJTree. Weitere Unterstützung für den Benutzer bietet ein Forum und eine Mailingliste. Ferner gibt es auf der Homepage Links zu weiteren (externen) Grammatiken.\par
+Zu JavaCC gehört auch das Programm JJDoc, welches zu einer Grammatik eine HTML-Dokumentation erzeugen kann. Diese besteht aus einer BNF der Nichttermminale die untereinander verlinkt sind.
+
+\paragraph{Verwendung.}
+Bei JavaCC handelt es sich um ein Kommandozeilenwerkzeug. Als Aufrufparameter wird diesem, unter anderem, der Pfad zur Grammatik mitgeteilt, die in einen Parser übersetzt werden soll. Anschließend kann dieser kompiliert und (mit der zu parsenden Datei als Paramater) aufgerufen werden. Zur Laufzeit benötigen die erzeugten Parser keine Komponenten von JavaCC.
+%Grammatik:\par
+%Die Grammatik liegt in einer Datei vor, in der, zuallererst, eine Java-Klasse stehen muss, welche die mit den Eingabedaten für den %später erzeugten Parser, vorbehandeln muss. Danach werden die Tokens für die lexikalische Analyse und schließlich die Grammatik %für den Parser definiert. Hierbei\par
+%ES FEHLT Mischung regulärer Ausdrücke, Javacode und BNF, semantic actions\par
+%ACHTUNG Grammatik sieht komplizierter als ANTLR aus, kann aber mit unicode escape seq. umgehen - der Lexer erkennt diese\par
+
+\paragraph{Eigene Erfahrungen.}
+Da JavaCC in einem vorkompilierten JAR-Paket geliefert wird, entfällt die Einrichtung des Tools und man kann direkt damit arbeiten (ein JDK vorausgesetzt). Das Erzeugen der Parser aus den mitgebrachten Beispielgrammatiken (darunter auch eine für Java Version 5) funktionierte auf Anhieb wie dokumentiert. Allerdings musste zur Verwendung der Parser noch die CLASSPATH-Umgebungsvariable gesetzt werden, was die Dokumentation leider verschwieg. Danach war das Einbinden in eigene Projekte (auch Eclipse) mühelos möglich.
+
+\paragraph{Position \& Länge der Tokens im Quelltext.}
+Aus der Schnittstellen-Beschreibung geht hervor, dass von jedem Token Anfang und Ende im Eingabestrom abgerufen werden kann. Behält man zu jedem Knoten im AST eine Referenz auf das Ursprungstoken, kann auch nach dem Parsing auf dieses zugegriffen werden.
+
+\paragraph{Parsingtests.}
+Die neuen Java 5 Ausdrücke bereiten dem Parser keine Schwierigkeiten, obschon seine Grammatik vom Februar 2004 stammt, also schon vor dem Erscheinen der endgültigen Fassung von Java 5. Allerdings stolpert der Parser in den fehlerfreien Quelltexten jedesmal über den Ausdruck aus Listing \ref{javacctest1}.
+
+\begin{lstlisting}[caption=Quelltextauszug der für JavaCC problematisch ist, captionpos=b, style=java, label=javacctest1]
+  int[][] iaa = new int[10][10];
+  for (int ia[] : iaa)
+              // ^ hier erwartet der Parser etwas anderes
+\end{lstlisting}
+Offensichtlich kommt dieser mit Arrays in for-Konstrukten nicht klar und erwartet eine Laufvariable zum Indexieren. 
+Aus diesem Grund schlägt auch das Parsen von AllowedForEachConstruct.java, TestJSR201.java und TestJSR201Berichtigt.java fehl, da auch diese Klassen o. a. Code enthalten. Wird dieser Code auskommentiert, gelingt der Parsingvorgang erfolgreich.\par
+Doch auch in der Klasse Test15 stolpert der Parser über den (eigentlich korrekten) Ausdruck aus Listing \ref{javacctest2}.
+\begin{lstlisting}[caption=Quelltextauszug der für JavaCC problematisch ist, captionpos=b, style=java, label=javacctest2]
+	new <String> K<Integer>("xh");
+	       ^ hier meldet der Parser einen Fehler
+\end{lstlisting}
+In diesem Fall kommt der Parser nicht mit Generic-Ausdrücken nach einem \texttt{new} klar. Wird der Code auskommentiert, meldet der Parser in der nächsten Zeile den selben Fehler bei einem ähnlichen Ausdruck. Nach weiterem Auskommentieren wird die Klasse endlich erfolgreich geparst.\par
+
+Auch beim Parsen der fehlerhaften Quelltexte hinterlässt der Parser keinen guten Eindruck. Den simplen Fehler, dass mehr als ein Sichtbarkeits-Modifier bei einer Deklaration benutzt werden, erkennt der Parser nicht. Genauso kommentarlos verarbeitet der Parser die Modifier abstract und final in einer Deklaration. Wenigstens meldet der Parser einen Fehler bei einem falschen ForEachIn-Konstrukt.\par
+
+Das Parsen der Quelltexte mit problematischen Newlines absolviert der Parser hingegen tadellos.\par
+
+Eine Übersicht zu den Testergebnissen findet sich in Tabelle \ref{javacctestresults}.
+%Imports und Typen werden nicht aufgelöst.
+%Wir wissen nicht ob Unicode Escapesequenzen verarbeitet werden.
+%Erkennt auch nicht, dass abstract vor enum nicht zulässig
+\begin{table}[htbp]
+    \begin{tabular}{|p{6cm}|l|p{7,5cm}|} \hline 
+      \textbf{Testquelltext} & \textbf{OK} & \textbf{Grund}\\ \hline
+      \hline
+      AllowedGenericConstruct & Ja & Alles erkannt\\ \hline
+      AllowedForEachConstructs & Nein & Parse error at line 12, column 23.  Encountered: :\\ \hline
+      AnotherAllowedForEachConstruct & Ja & Alles erkannt\\ \hline
+      Eric & Ja & Alles erkannt\\ \hline
+      EscapeSequences & Ja & Alles erkannt\\ \hline
+      Test15 & Nein & Parse error at line 54, column 13.  Encountered: <\\ \hline
+      TestJSR201Berichtigt & Nein & Parse error at line 22, column 23.  Encountered: :\\ \hline      
+      \hline
+      ForEachInShouldGiveParseError & Ja & Fehler erkannt\\ \hline
+      AbstractEnumShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline     
+      AbstractFinalShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      PublicPrivateShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      %TestJSR201 & Nein & Parse error at line 13, column 23.  Encountered: :\\ \hline
+      \hline
+      TestsPositionsLinux & Ja & Alles erkannt\\ \hline
+      TestsPositionsMac & Ja &  Alles erkannt\\ \hline
+      TestsPositionsWindows & Ja &  Alles erkannt\\ \hline
+      TestZeilenumbrueche-ASCII & Ja & Alles erkannt\\ \hline
+    \end{tabular}
+    \caption{Ergebnisse Parsingtests JavaCC}
+    \label{javacctestresults}
+\end{table}
+
+\begin{table}[htbp]
+    \begin{tabular}{|l|p{11,5cm}|} \hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & neueste Version vom Januar 2006 \\ \hline
+      Dokumentation & FAQ, Tutorials, Benutzerhandbuch \\ \hline
+      Support & Mailingliste, Forum \\ \hline
+      Parsergenerator in & Java \\ \hline
+      Parser in & Java \\ \hline
+      Grammatiken für & Java (bis 5)\\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz & Free BSD \\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht JavaCC}
+    \label{javaccoverview}
+\end{table}
+
+\subsubsection{CUP}
+Eine kurze Übersicht zu den wichtigsten Daten von CUP findet sich in Tabelle \ref{cupoverview}.
+\paragraph{Historie.}
+Der Java(tm) Based Constructor of Useful Parsers (kurz CUP) wurde ursprünglich 1996 von Scott Hudson, Frank Flannery und C. Scott Ananian, an der Princeton University und Georgia Tech (siehe \cite{cupold}), entwickelt. Die Quelltexte sind als Open Source frei verfügbar. Seit Ende 1999 wird CUP von der Technischen Universität München (siehe \cite{cupnew}) gepflegt und weiterentwickelt. Verantwortlich für die aktuellste Version (0.11a, Mai 2005) ist dort Michael Petter.
+
+\paragraph{Charakterisierung.}
+CUP ist ein javabasierter LR(1)-Parsergenerator, der ebenfalls javabasierte Parser erzeugt. Auf der Homepage von CUP sind, neben Grammatiken für eine Vielzahl von Sprachen, auch welche für die Java-Sprachversionen 1.0 bis 5, verfügbar. CUP erstellt aus den Grammatiken nur einen Parser. Scanner/Lexer kann dieses Werkzeug nicht erzeugen. Ein passender Scanner/Lexer kann wahlweise von Hand geschrieben oder mit anderen Scannergeneratoren erzeugt werden. Dazu bietet CUP ein Interface für javabasierte Scanner, unterstützt aber im Besonderen JLex und JFlex.\par
+Auch im Falle von CUP geschieht die Baumerzeugung durch die generierten Java-Parser nicht automatisch. Diese Funktionalität muss, wie auch in JavaCC-Grammatiken, als Aktionscode in die Produktionen der Grammatik eingebaut werden.
+%NACHSCHAUEN: Was bieten JLex/JFlex für Java (hinsichtlich Kommentaren)
+
+\paragraph{Literatur.}
+Die Dokumentation zu CUP ist leider nur sehr spärlich. Es wird lediglich ein kurzes Benutzerhandbuch mitgeliefert, welches die Erstellung von Grammatiken und die Erzeugung eines Parsers mit CUP behandelt. Auf der Homepage existiert weiterhin ein Merkblatt, welches die Erstellung von CUP mit Ant beschreibt. Darüberhinausgehende Fragen können per E-Mail an den Verantwortlichen gestellt werden.\par
+Es bleibt dem Benutzer überlassen, herauszufinden wie die Grammatiken übersetzt und getestet werden können.
+%Positionabfrage von Tokens im Code wahrscheinlich nur über Lexer möglich
+
+\paragraph{Verwendung.}
+Auch CUP ist ein Kommandozeilenwerkzeug. Als Aufrufparameter wird diesem, unter anderem, der Pfad zur Grammatik mitgeteilt, die in einen Parser übersetzt werden soll. Der so erzeugte Parser muss dann in einem anderen Programm zusammen mit einem Lexer aufgerufen werden. Vorher muessen dem Lexer noch die zu parsenden Eingabedaten mitgegeben werden. Der Parsingvorgang wird dann durch den Parser, der zur Laufzeit weiterhin CUP benötigt, initiiert.
+
+\paragraph{Eigene Erfahrung.}
+Schon das Einrichten von CUP funktionierte nicht so reibungslos, wie es die Dokumentation suggerierte. Für Linuxsysteme wird ein Shellskript mitgeliefert, dass die Installation übernehmen soll. Leider brach es mit einer Fehlermeldung ab. Da CUP in unkompilierten Quelltexten geliefert wird, gelang uns die Kompilierung und das Ergänzen der CLASSPATH-Umgebungsvariablen schließlich von Hand.\par
+Die Erzeugung eines Parsers aus einer Beispielgrammatik (einfacher Taschenrechner) gelang wie im Benutzerhandbuch beschrieben. Über die Benutzung dieses Parsers schweigt sich die Dokumentation allerdings aus. Wir konnten diesen zwar starten, fanden aber nicht heraus wie dieser zu bedienen ist. Einzig eine reproduzierbare Fehlermeldung ließ sich dem Programm entlocken (nach zweimaliger Eingabe eines arithmetischen Ausdrucks).\par
+Auch die Erzeugung der Parser aus den Java-Grammatiken gelang zunächst erfolgreich. Allerdings ist auch in diesem Fall nicht beschrieben, wie diese Parser einzusetzen sind. Aus dem zu den Java-Grammatiken mitgelieferten Lexer und Codegerüst, welches eine Ausführung der Parser ermöglichen soll, konnten wir, nach vielem Ausprobieren und nochmaliger Erzeugung der Parser, herleiten wie diese zu benutzen sind. Nachdem wir in den Quelltexten zusätzlich noch einige imports ergänzt hatten, konnten wir die Parser endlich testen.\par
+Danach gelang auch die Integration des Parsers in ein Eclipse Projekt. Da der Parser zur Laufzeit Komponenten von CUP benötigt, haben wir die Laufzeitumgebung von CUP in ein JAR gepackt und in das Eclipseprojekt importiert.
+
+\paragraph{Position \& Länge der Tokens im Quelltext.}
+Zu diesem Thema schweigt sich die Dokumentation von CUP aus, ist dies doch eher Aufgabe des eingesetzten Lexers. Der mitgelieferte Beispiellexer bietet dafür aber keine Funktionaliäten.
+
+\paragraph{Parsingtests.}
+Das Parsen der fehlerfreien Quelltexte absolviert der Parser ohne Fehl und Tadel. Dies ist allerdings nicht weiter verwunderlich, da ein Teil der Testquelltexte aus CUP entnommen wurden.\par
+
+Allerdings erkennt dieser keinen einzigen Fehler in den fehlerhaften Quelltexten. Auch ForEachInShouldGiveParseError.java verarbeitet der Parser ohne Kommentar. Der Grund dafür ist, dass die Javagrammatik für CUP nicht der finalen Java-Version 5 entstammt, sondern auf einer Preview basiert (genauer: Prototyp 2.2 von JSR-14 + JSR-201, vom Juli 2003).\par
+
+Das Parsen der Quelltexte mit problematischen Newlines bereitet dem Parser hingegen keine Schwierigkeiten.\par
+
+Eine Übersicht zu den Testergebnissen findet sich in Tabelle \ref{cuptestresults}.
+%Grund siehe: http://java.sun.com/developer/technicalArticles/releases/j2se15langfeat/
+\begin{table}[htbp]
+    \begin{tabular}{|p{6cm}|l|p{7,5cm}|} \hline 
+      \textbf{Testquelltext} & \textbf{OK} & \textbf{Grund}\\ \hline
+      \hline
+      AllowedGenericConstruct & Ja & Alles erkannt\\ \hline
+      AllowedForEachConstructs & Ja & Alles erkannt\\ \hline
+      AnotherAllowedForEachConstruct & Ja & Alles erkannt\\ \hline
+      Eric & Ja & Alles erkannt\\ \hline
+      EscapeSequences & Ja & Alles erkannt\\ \hline
+      Test15 & Ja & Alles erkannt\\ \hline
+      TestJSR201Berichtigt & Ja & Alles erkannt\\ \hline      
+      \hline
+      ForEachInShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      AbstractEnumShouldGiveParseError & Neine & Fehler nicht erkannt\\ \hline      
+      AbstractFinalShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      PublicPrivateShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      %TestJSR201 & Nein & Fehler nicht erkannt\\ \hline
+      \hline
+      TestsPositionsLinux & Ja & Alles erkannt\\ \hline
+      TestsPositionsMac & Ja & Alles erkannt\\ \hline
+      TestsPositionsWindows & Ja & Alles erkannt\\ \hline
+      TestZeilenumbrueche-ASCII & Ja & Alles erkannt\\ \hline
+      %TestZeilenumbrueche-UniCode & Nein & Kommt mit Unicode nicht klar.\\ \hline
+    \end{tabular}
+    \caption{Ergebnisse Parsingtests CUP}
+    \label{cuptestresults}
+\end{table}
+
+\begin{table}[htbp]
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & letztes Update Mai 2005 \\ \hline
+      Dokumentation & Handbuch, Merkblatt \\ \hline
+      Support & über E-Mail Kontakt \\ \hline
+      Parsergenerator in & Java\\ \hline
+      Parser in & Java \\ \hline
+      Grammatiken für & Java (bis Prototyp 2.2 von JSR-14 + JSR-201) \\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz & GNU GPL \\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht CUP}
+    \label{cupoverview}
+\end{table}
+
+\subsubsection{Coco/R}
+Eine kurze Übersicht zu den wichtigsten Daten von Coco/R findet sich in Tabelle \ref{cocoroverview}.
+\paragraph{Historie.}
+Der Coco/R Compilergenerator der Universität Linz ging aus einer Diplomarbeit aus dem Jahr 1983 hervor. Das damals von Hans Mössenböck geschriebene Werkzeug Coco wurde 1987 von ihm zu Coco/R (noch in Oberon) weiterentwickelt. Bis heute wurden, meist durch Dritte, Varianten dieses Werkzeug in eine Vielzahl von verschiedenen Programmiersprachen portiert. Die Quelltexte sind frei verfügbar und unterliegen der GNU GPL. Coco/R wird weiter gepflegt und erfuhr zuletzt im September 2005 ein Update.
+
+\paragraph{Charakterisierung.}
+Dieser LL(k)-Parsergenerator existiert in und für eine Vielzahl von Programmiersprachen. Einige Grammatiken sind auf der Homepage (siehe \cite{cocorhomepage}) erhältlich - auch für Java, aber nur bis Sprachversion 1.4. Auch Coco/R bietet keine automatische Erzeugung von Bäumen. Diese Funktionalität muss, als Aktionscode zu den entsprechenden Produktionen, von Hand implementiert werden.
+
+\paragraph{Literatur.}
+Zu Coco/R existiert nur wenig Literatur. Auf der Homepage stehen ein recht ausführliches Handbuch zur Benutzung von Coco/R und einer kurzen Beschreibung der Schnittstellen der erzeugten Scanner und Parser, sowie zwei Artikel, die sich mit den Datenstrukturen des Parsergenerators und LL(1)-Konfliktauflösung beschäftigen. Ferner existiert eine Mailingliste, die über Updates von Coco/R informiert. Eine ausgewachsene API-Beschreibung, Tutorials oder ein Forum gibt es leider nicht.
+
+\paragraph{Verwendung.}
+Auch die Verwendung von Coco/R erfolgt über die Kommandozeile. Beim Aufruf muss als Parameter die Grammatik angegeben werden. Die so erzeugten Scanner und Parser müssen dann in einem eigenen Programm aufgerufen werden (benötigen aber keine Komponenten von Coco/R zur Laufzeit).\par
+Zu Testzwecken können von der Homepage zu jeder Grammatik Testprogramme heruntergeladen werden.
+
+\paragraph{Eigene Erfahrung.}
+Coco/R kommt als JAR-Paket und kann, sofern ein JDK installiert ist, sofort benutzt werden. Die Erzeugung des Javaparsers funktioniert wie im Benutzerhandbuch angegeben. Zum Kompilieren muss sich dieser aber mit dem Testprogramm von der Homepage in einem package befinden, was die Dokumentation leider verschweigt. Nachdem wir diese Hürde genommen hatten, konnten wir ans Testen des Parsers gehen. Auch eine Integration des Parsers in eigenes Projekt war anschließend möglich.
+
+\paragraph{Position \& Länge der Tokens im Quelltext.}
+Aus der Schnittstellenbeschreibung des Lexers (im Benutzerhandbuch) geht hervor, dass zu jedem Token der String (somit die Länge) und die Position im Quelltexte abgefragt werden kann. Auch hier müsste in jedem Knosten des AST eine Referenz zum Ursprungsknoten gehalten werden.
+
+\paragraph{Parsingtests.}
+Das Parsen der fehlerfreien Quelltexte führt zum Großteil zum erwarteten Ergebnis, da der Parser nicht mit Java 5 Konstrukten umgehen kann. Statische Imports, die neuen for-Ausdrücke und Generics sind ihm einfach nicht bekannt. Nur die Klasse Eric wird fehlerfrei geparst, da diese nur Ausdrücke enthält die schon in Java Version 1.4 erlaubt sind.\par
+
+Beim Parsen der fehlerhaften Quelltexte erkennt der Parser alle Fehler bis auf den ungültigen "`abstract final"'-Ausdruck.\par
+
+Die Quelltexten mit problematischen Newlines bereiten dem Parser überhaupt keine Schwierigkeiten.\par
+
+Eine Übersicht zu den Testergebnissen findet sich in Tabelle \ref{cocortestresults}.
+\begin{table}[htbp]
+    \begin{tabular}{|p{6cm}|l|p{7,5cm}|} \hline 
+      \textbf{Testquelltext} & \textbf{OK} & \textbf{Grund}\\ \hline
+      \hline
+      AllowedGenericConstruct & Nein & line 4 col 37: lbrace expected\\ \hline
+      AllowedForEachConstructs & Nein & line 12 col 23: "`;"' expected\\ \hline
+      AnotherAllowedForEachConstruct & Nein & line 10 col 34: ident expected\\ \hline
+      Eric & Ja & Alles erkannt\\ \hline
+      EscapeSequences & Ja & Alles erkannt\\ \hline
+      Test15 & Nein & line 5 col 20: lbrace expected \\ \hline
+      TestJSR201Berichtigt & Nein & line 1 col 8: ident expected\\ \hline      
+      \hline
+      ForEachInShouldGiveParseError & Ja & line 23 col 13: lpar expected\\
+                                    &    & line 23 col 23: dot expected\\
+                                    &    & line 23 col 28: dot expected\\ \hline
+      AbstractEnumShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      AbstractFinalShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      PublicPrivateShouldGiveParseError & Ja & line 14 col 20: illegal combination of modifiers: public private\\ \hline
+      %TestJSR201 & Nein & Fehler nicht erkannt\\ \hline
+      \hline
+      TestsPositionsLinux & Ja & Alles erkannt\\ \hline
+      TestsPositionsMac & Ja & Alles erkannt\\ \hline
+      TestsPositionsWindows & Ja & Alles erkannt\\ \hline
+      TestZeilenumbrueche-ASCII & Ja & Alles erkannt\\ \hline
+      %TestZeilenumbrueche-UniCode & Nein & Kommt mit Unicode nicht klar.\\ \hline
+    \end{tabular}
+    \caption{Ergebnisse Parsingtests Coco/R}
+    \label{cocortestresults}
+\end{table}
+
+\begin{table}[htbp]
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\\hline
+      \hline
+      Aktualität & September 2005 \\ \hline
+      Dokumentation & Handbuch, Artikel \\ \hline
+      Support & über E-Mail-Kontakt \\ \hline
+      Parsergenerator in & Java, C++ , C\#, Oberon, ua.\\ \hline
+      Parser in & Java, C++, C\# \\ \hline
+      Grammatiken für & Java (bis 1.4), C\# \\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz & GNU GPL \\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht Coco/R}  
+    \label{cocoroverview}  
+\end{table}
+
+\subsubsection{Cocktail}
+Eine kurze Übersicht zu den wichtigsten Daten von Cocktail findet sich in Tabelle \ref{cocktailoverview}.
+\paragraph{Historie.}
+Die Entwicklung der ersten Version der Cocktail Toolbox begann 1988 an der GMD Forschungsstelle der Universität Karlsruhe. Nachdem die Forschungsstelle Ende 1993 geschlossen wurde, übernahm Josef Grosch die Rechte und gründete die Firma CoCoLab (siehe \cite{cocolabhomepage}). Die Software ist inzwischen kostenpflichtig und erhält in größeren aber regelmäßigen Abständen Updates.
+
+\paragraph{Charakterisierung.}
+Die Cocktail Toolbox beinhaltet eine Reihe von Werkzeugen für den Compilerbau, die Programmtransformation und die Programmanalyse. Ziel bei der Entwicklung dieser Werkzeuge war eine gesteigerter Umfang und eine gesteigerte Leistungsfähigkeit im Vergleich zu Lex / Yacc.\par
+In der Toolbox sind u.a. Generatoren zur Erzeugung von LL(1)-, LR(1)- und LALR(2)-Parsern, sowie auch ein AST-Generator und -Transformator enthalten. Dabei unterstützen die Tools (neben anderen Sprachen wie Cobol, PL/I, SQL, C, C++, C\# und VB) auch Java bis einschließlich Version 5 und sind unter einer graphischen Benutzeroberfläche zusammengefasst.
+
+\paragraph{Verwendung.}
+Da die Nutzung kostenpflichtig ist, steht auf der Homepage nur eine beschränkt lauffähige Version zur Verfügung. Diese kommt ohne Oberfläche und besteht im Wesentlichen aus einer Sammlung der Kommandozeilenwerkzeuge. Da aber auch keine Grammatiken dabei sind, entfällt der Test der Werkzeuge.\par
+Allerdings werden auf der Homepage auch diverse Demoparser für eine Reihe von Sprachen zum Download angeboten. Im Weiteren haben wir den Java 5 Parser genauer untersucht.
+
+\paragraph{Literatur.}
+Auf der Homepage sind, neben ausführlichen Benutzerhandbüchern zu allen Werkzeugen, auch FAQs, Tutorials und Forschungsveröffentlichungen verfügbar. Eine API-Beschreibung, ein Forum oder eine Mailingliste gibt es nicht.
+
+\paragraph{Eigene Erfahrungen.}
+Da der Demoparser mit einer Benutzeroberfläche ausgestattet ist, fällt dessen Benutzung denkbar einfach aus. Nach dem Öffnen einer Datei zeigt dieser den AST des Quelltextes an und meldet eventuelle Parsingfehler.
+
+\paragraph{Position \& Länge der Tokens im Quelltext.}
+Zu diesem Thema waren in der Dokumentation keine Informationen zu finden. In dem Demoprogramm wird aber ersichtlich, dass die Position (als Zeile und Spalte) in den Knoten des AST aufgenommen wird.
+
+\paragraph{Parsingtests.}
+Das Parsen der fehlerfreien Quelltexte geschieht fast problemlos. Einzig die Klasse Test15 bereitet dem Parser Schwierigkeiten - teilweise führte dies sogar zum Absturz des Programms.\par
+
+Beim Parsen der fehlerhaften Quelltexte findet der Parser nur den nicht mehr erlaubten, \texttt{for each ( .. in .. )}-Ausdruck. Die abstrakte Enum-Konstruktion und ungültige Modifierkombinationen bemerkt der Parser nicht.\par
+
+Die Parsingtests der Quelltexte mit problematischen Newlines verliefen hingegen positiv.\par
+
+Eine Übersicht zu den Testergebnissen findet sich in Tabelle \ref{cocktailtestresults}.
+\begin{table}[htbp]
+    \begin{tabular}{|p{6cm}|l|p{7,5cm}|} \hline 
+      \textbf{Testquelltext} & \textbf{OK} & \textbf{Grund}\\ \hline
+      \hline
+      AllowedGenericConstruct & Ja & Alles erkannt\\ \hline
+      AllowedForEachConstructs & Ja & Alles erkannt\\ \hline
+      AnotherAllowedForEachConstruct & Ja & Alles erkannt\\ \hline
+      Eric & Ja & Alles erkannt\\ \hline
+      EscapeSequences & Ja & Alles erkannt\\ \hline
+      Test15 & Nein & Führt teilweise zum Absturz\\ \hline
+      TestJSR201Berichtigt & Ja & Alles erkannt\\ \hline      
+      \hline
+      ForEachInShouldGiveParseError & Ja & 23, 13 Error found/expected : Identifier/(\\
+                                    &    & 25, 17 Error found/expected : Identifier/(\\ \hline
+      AbstractEnumShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      AbstractFinalShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      PublicPrivateShouldGiveParseError & Nein & Fehler nicht erkannt\\ \hline
+      %TestJSR201 & Nein & Fehler nicht erkannt\\ \hline
+      \hline
+      TestsPositionsLinux & Ja & Alles erkannt\\ \hline
+      TestsPositionsMac & Ja & Alles erkannt\\ \hline
+      TestsPositionsWindows & Ja & Alles erkannt\\ \hline
+      TestZeilenumbrueche-ASCII & Ja & Alles erkannt\\ \hline
+      %TestZeilenumbrueche-UniCode & Nein & Kommt mit Unicode nicht klar\\ \hline
+    \end{tabular}
+    \caption{Ergebnisse Parsingtests Cocktail}
+    \label{cocktailtestresults}
+\end{table}
+
+\begin{table}[htbp]
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & letztes Update im August 2005 \\ \hline
+      Dokumentation & Einführung, Tutorials, FAQ, Handbücher, Artikel\\ \hline
+      Support & über E-Mail\\ \hline
+      Parsergenerator in & C \\ \hline
+      Parser in & Java, C++, C, Ada, Eiffel \\ \hline
+      Grammatiken für & Java (bis 5), C\#, C++, C, uva. \\ \hline
+      Unterstützte OS & Linux, Win32 \\ \hline
+      Lizenz & kostenpflichtig \\ \hline
+      Quelltexte & nicht verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht Cocktail}    
+    \label{cocktailoverview}
+\end{table}
+
+\subsubsection{ANTLR}
+Eine kurze Übersicht zu den wichtigsten Daten von ANTLR findet sich in Tabelle \ref{antlroverview}.
+\paragraph{Historie.}
+Die Entwicklung des "`ANother Tool for Language Recognition"' begann 1988, ursprünglich als Projekt an der Purdue Universität (West Lafayette, Indiana, USA), damals noch unter dem Namen "`YUCC"' bzw. "`PCCTS"'. Dieses Projekt wurde 1989 Inhalt der Masterarbeit von Terence Parr, welcher fortan die Schlüsselfigur hinter ANTLR wurde.\par
+Die erste öffentlich verfügbare Version erschien 1990 und ist seit jeher quelloffen verfügbar. Das Projekt wurde kontinuierlich weiterentwickelt und Terence Parr beschäftigt sich heute noch, als Professor an der Universität von San Francisco, mit ANTLR. Die derzeit aktuelle Version ist 2.7.6. Allerdings sind die Entwicklungsarbeiten an Version 3 schon weit fortgeschritten und die Veröffentlichung liegt in naher Zukunft.
+
+\paragraph{Charakterisierung.}
+ANTLR ist ein Framework zur Erstellung von Compilern bzw. deren einzelner Bestandteile, mit besonderem Schwerpunkt auf der Unterstützung von Bäumen (Erzeugung, Traversierung, Konvertierung). ANTLR liegt selbst in verschiedenen Sprachen vor und kann LL({*})-Parser in Java, C++ und C\# erzeugen. Dabei unterstützt ANTLR die automatische Erzeugung von ASTs. Deren Traversierung kann in separaten Baumgrammatiken beschrieben werden.\par
+Ferner soll in Version 3 noch eine graphische Benutzeroberfläche (ANTLRWorks) zum Entwickeln, Debuggen und Testen von Grammatiken hinzukommen.\par
+Für Java 1.5 sind auf der Homepage derzeit drei verschiedene Grammatiken verfügbar. Desweiteren sind Grammatiken für eine Vielzahl weiterer Sprachen dort abrufbar.
+%ANTLR akzeptiert Grammatiken in EBNF-Notation 
+
+\paragraph{Literatur.}
+Auf der ANTLR Homepage (siehe \cite{antlr_homepage}) steht eine umfangreiche Dokumentation, bestehend aus einer langen FAQ, Tutorials, einem Benutzerhandbuch, einer API-Beschreibung des Frameworks und zusätzlichen Veröffentlichungen von, teils wissenschaftlichen, Arbeiten zum Thema Compilerbau zur Verfügung. Fragen, die darüber hinausgehen, können in Foren sowie in einer Mailingliste gestellt werden.
+
+\paragraph{Verwendung.}
+Bei allen im Framework enthaltenen Tools handelt es sich um Kommandozeilenprogramme. Zusätzlich existiert eine graphische Oberfläche für die Benutzung der Kommandozeilenwerkzeuge unter Eclipse, ANTLR Studio genannt. Allerdings stammt es von einem Dritten und ist kostenpflichtig. Deshalb gehen wir im Weiteren nur auf die Kommandozeilenverwendung ein.\par
+Zur Erzeugung der Lexer und Parser muss ANTLR, mit einer Grammatik als Parameter, aufgerufen werden. Die so erzeugten Lexer und Parser müssen dann zur Verwendung in einem separaten Programm eingebaut werden. Dabei benötigen diese weiterhin ANTLR zur Laufzeit.
+
+\paragraph{Eigene Erfahrungen.}
+ANTLR wird (in der Javaversion) wahlweise in einem vorkompilierten JAR-Paket oder als Quelltextversion geliefert. Die Installation durch ein Setup-Programm verlief fehlerfrei und wir konnten direkt mit der Erzeugung der Parser beginnen. Rund um dieses Projekt existiert offensichtlich eine vergleichsweise große und aktive Community. Dieser entstammen auch die drei Grammatiken für Java 1.5, welche wir im weiteren gestestet haben.\par
+Die Erzeugung und Kompilierung des jeweiligen Lexers und Parsers aus den beiden Javagrammatiken von Michael Stahl und Michael Studman verlief fehlerfrei, so dass wir mit einem, auf der Homepage verfügbaren, Beispielprogramm die Parsingtests durchführen konnten.\par
+%(welches den jeweiligen Lexer / Parser über Dateien oder ganze Verzeichnisstrukturen laufen lässt und optional den AST ausgeben kann)
+Die dritte verfügbare Grammatik von Scott Wisniewski baut auf der von Studman auf. Sie soll die volle Spanne der Java-Identifier erkennen und mit Unicode-Escapesequenzen umgehen können. Für die Unicode-Unterstützung wird ein in C\# (für .NET 2.0) geschriebener Präprozessor mitgeliefert. Um diesen benutzen zu können, mussten wir zunächst einmal ein kleines Kommandozeilenprogramm schreiben, welches die Präprozessor-Klasse benutzt und die Eingabedateien verarbeitet. 
+% (diese besitzt selbst keine Main-Methode)
+Der Lexer und der Parser ließen sich zwar erzeugen, jedoch ließ sich ersterer nicht kompilieren, da an zwei Stellen im Javaquelltext "`Char.IsLetter(...)"' bzw. "`Char.IsLetterOrNumerical(...)"' erzeugt wurden. Nach manuellem Ersetzen durch "`Character.isLetter(...)"' bzw. "`Character.isLetterOrNumerical(...)"' (siehe API-Beschreibung von Java 5) war eine Kompilierung möglich. Allerdings konnten wir den Parser nicht testen, da dieser an den von uns korrigierten Stellen abbrach.
+% diese Grammatik nicht als fehlerfrei erachtet werden kann.\par
+
+\paragraph{Position \& Länge der Tokens im Quelltext.}
+Laut API-Beschreibung lässt sich die Position des Tokens im Quelltext nicht direkt abrufen. Lediglich Zeile, Spalte und Länge (über die Länge des Strings) des Tokens sind einsehbar.\par
+Es wäre aber möglich, die Klasse Token abzuleiten und dort die Position einzubauen. Dazu müsste allerdings noch der Lexer angepasst werden, damit dieser die Position auch in das Token einträgt.\par
+Die Knoten des AST (von ANTLR) enthalten eine Referenz auf das Token. Somit ist ein Abruf der benötigten Eigenschaften auch nach dem Parsing möglich.
+
+\paragraph{Parsingtests - Parser nach Grammatik von Michael Stahl.}
+Alle Testquelltexte mit fehlerfreien Konstrukten wurden von diesem Parser akzeptiert, ausgenommen diejenigen, welche \texttt{enum}-Konstrukte enthalten. Offensichtlich ist die vorhandene Grammatik nicht vollständig und erkennt diesen Ausdruck nicht.\par
+
+Das ungültige \texttt{for each ( .. in ..)} wurde korrekterweise nicht akzeptiert, alle ungültigen und widersprüchlichen Modifier wurden allerdings fälschlicherweise akzeptiert.\par
+
+Die Quelltexte mit problematischen Zeilenumbrüchen wurden fehlerfrei erkannt.\par
+
+Eine Übersicht zu den Testergebnissen findet sich in Tabelle \ref{antlrtestresultsstahl}.
+
+\paragraph{Parsingtests - Parser nach Grammatik von Michael Studman.}
+Alle Testquelltexte mit fehlerfreien Konstrukten wurden von diesem Parser akzeptiert, im Gegensatz zur Grammatik von Stahl auch solche mit \texttt{enum}-Ausdrücken.\par
+
+Die restlichen Ergebnisse sind identisch: Das ungültige \texttt{for each ( .. in .. )} wurde korrekterweise nicht akzeptiert, alle ungültigen und widersprüchlichen Modifier wurden fälschlicherweise akzeptiert.\par
+
+Die Quelltexte mit problematischen Zeilenumbrüchen wurden fehlerfrei erkannt.\par
+
+Eine Übersicht zu den Testergebnissen findet sich in Tabelle \ref{antlrtestresultsstudman}.
+\begin{table}[htbp]
+    \begin{tabular}{|p{6cm}|l|p{7,5cm}|} \hline 
+      \textbf{Testquelltext} & \textbf{OK} & \textbf{Grund}\\ \hline
+      \hline
+      AllowedGenericConstruct & Ja & Alles erkannt\\ \hline
+      AllowedForEachConstructs & Ja & Alles erkannt\\ \hline
+      AnotherAllowedForEachConstruct & Ja & Alles erkannt\\ \hline
+      Eric & Ja & Alles erkannt\\ \hline
+      EscapeSequences & Ja & Alles erkannt\\ \hline
+      Test15 & Ja & Alles erkannt\\ \hline
+      TestJSR201Berichtigt & Nein & Erkennt offensichtlich das Keyword "`enum"' nicht\\ \hline
+      \hline
+      ForEachInShouldGiveParseError & Ja & Erwartet korrekterweise "`("` anstelle von "`each"'\\ \hline
+      AbstractEnumShouldGiveParseError & Nein & Erkennt nicht den eigentlichen Fehler, sondern erkennt das "`enum"' nicht\\ \hline
+      AbstractFinalShouldGiveParseError & Nein & Beide widersprüchlichen Modifier werden ohne Fehlermeldung in den AST aufgenommen\\ \hline
+      PublicPrivateShouldGiveParseError & Nein & Beide widersprüchlichen Modifier werden ohne Fehlermeldung in den AST aufgenommen\\ \hline
+      \hline
+      TestsPositionsLinux & Ja & Alles erkannt\\ \hline
+      TestsPositionsMac & Ja & Alles erkannt\\ \hline
+      TestsPositionsWindows & Ja & Alles erkannt\\ \hline
+      TestZeilenumbrueche-ASCII & Ja & Alles erkannt\\ \hline
+      %TestZeilenumbrueche-UniCode & Nein & Kommt mit Unicode nicht klar\\ \hline
+    \end{tabular}
+    \caption{Ergebnisse Parsingtests ANTLR (Parser nach Stahl-Grammatik)}
+    \label{antlrtestresultsstahl}
+\end{table}
+
+\begin{table}[htbp]
+    \begin{tabular}{|p{6cm}|l|p{7,5cm}|} \hline 
+      \textbf{Testquelltext} & \textbf{OK} & \textbf{Grund}\\ \hline
+      \hline
+      AllowedGenericConstruct & Ja & Alles erkannt\\ \hline
+      AllowedForEachConstructs & Ja & Alles erkannt\\ \hline
+      AnotherAllowedForEachConstruct & Ja & Alles erkannt\\ \hline
+      Eric & Ja & Alles erkannt\\ \hline
+      EscapeSequences & Ja & Alles erkannt\\ \hline
+      Test15 & Ja & Alles erkannt\\ \hline
+      TestJSR201Berichtigt & Ja & Alles erkannt\\ \hline      
+      \hline
+      ForEachInShouldGiveParseError & Ja & Erwartet korrekterweise "`("` anstelle von "`each"'\\ \hline
+      AbstractEnumShouldGiveParseError & Nein & Der ungültige Modifier wird ohne Fehlermeldung in den AST aufgenommen\\ \hline
+      AbstractFinalShouldGiveParseError & Nein & Beide widersprüchlichen Modifier werden ohne Fehlermeldung in den AST aufgenommen\\ \hline
+      PublicPrivateShouldGiveParseError & Nein & Beide widersprüchlichen Modifier werden ohne Fehlermeldung in den AST aufgenommen\\ \hline
+      \hline
+      TestsPositionsLinux & Ja & Alles erkannt\\ \hline
+      TestsPositionsMac & Ja & Alles erkannt\\ \hline
+      TestsPositionsWindows & Ja & Alles erkannt\\ \hline
+      TestZeilenumbrueche-ASCII & Ja & Alles erkannt\\ \hline
+      %TestZeilenumbrueche-UniCode & Nein & Kommt mit Unicode nicht klar\\ \hline
+    \end{tabular}
+    \caption{Ergebnisse Parsingtests ANTLR (Parser nach Studman-Grammatik)}
+    \label{antlrtestresultsstudman}
+\end{table}
+
+\begin{table}[htbp]
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & neue Version in Entwicklung, Benutzer tragen immer wieder Grammatiken bei \\ \hline
+      Dokumentation & Einführung, Präsentationen, Tutorials, FAQ, Handbuch, Artikel, API-Spezifikation, Wiki in Arbeit \\ \hline
+      Support & Mailingliste, E-Mail\\ \hline
+      Parsergenerator in & Java, C++ \\ \hline
+      Parser in & Java, C++, C\#, Python (in Kürze) \\ \hline
+      Grammatiken für & Java (bis 5), C\#, C++, C, uva. \\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz & Public Domain (v2), Free BSD (v3) \\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular} 
+    \caption{Übersicht ANTLR}
+    \label{antlroverview}
+\end{table}
+
+\subsection{Werkzeuge, die Parsergeneratoren benutzen}
+In diesem Abschnitt werden Tools untersucht, welche auf einen Parsergenerator aufbauen oder mit einem durch einen Generator erzeugten Parser arbeiten und dafür eigene Java-Grammatiken mitbringen.
+
+\subsubsection{JAbstract - A full Abstract Syntax and Parser for Java}
+Eine kurze Übersicht zu den wichtigsten Daten von JAbstract findet sich in Tabelle \ref{jabstractoverview}.
+\paragraph{Historie.}
+Die Forschungsgruppe um Sebastian Danicic an der Goldsmiths Universität London beschäftigt sich unter anderem mit Programmtransformationen. Daraus ging auch JAbstract hervor. Mittlerweile wird dieses Projekt nicht mehr weiterentwickelt, da sich die Forschungsgruppe anderen Ansätzen zugewandt hat.
+
+\paragraph{Charakterisierung.}
+JAbstract ist ein Framework, welches Javaklassen zur Programmtransformation mittels eines AST bereitstellt. Um den AST (in dem selbst noch die Kommentare enthalten sind) aufzubauen, nutzt JAbstract eine JavaCC Grammatik, die aber nur Java bis Sprachversion 1.1 verarbeiten kann.
+
+\paragraph{Literatur.}
+Die Dokumentation zu diesem Projekt ist leider sehr spärlich. Auf der Homepage (siehe \cite{jabstracthomepage}) kann man nur die Quelltexte und die zugehörige, mit Javadoc erzeugte API-Beschreibung einsehen.
+
+\paragraph{Verwendung.}
+Der Parser von JAbstract wurde schon erzeugt, lediglich die Quelltexte müssen noch kompiliert werden. Danach kann der Parser über die Kommandozeile aufgerufen werden. Als Parameter gibt man ihm die zu parsende Klasse mit.
+
+\paragraph{Eigene Erfahrungen.}
+Liest man die wenigen Zeilen Beschreibung auf der Homepage zu JAbstract, zwingt sich einem der Gedanke auf, dass es sich hier nur um ein Proof-of-Concept-Projekt handelt.
+Auf eine E-Mail von uns, ob JAbstract noch gepflegt werde, bekamen wir die Antwort, dass wir uns lieber das System Stratego anschauen sollten, da dieses wesentlich besser für unsere Zwecke geeignet sei (Stratego erzeugt aber keine Parser in Java und wurde deshalb nicht weiter untersucht).
+
+\paragraph{Position \& Länge der Token im Quelltext.}
+Da es sich um eine JavaCC-Grammatik handelt, kann die Position der Tokens und deren Länge abgerufen werden. Wird eine Referenz im AST auf das Ursprungstoken gehalten, können Position und Länge auch nach dem Parsing abgerufen werden.
+
+\paragraph{Parsingtest.}
+Diese entfallen, da nur die Java-Sprachversion 1.1 unterstützt wird.
+
+\begin{table}[htbp]
+  %\begin{center}
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & letztes Update Januar 2005 \\ \hline
+      Dokumentation & API-Spezifikation \\ \hline
+      Support & über E-Mail Kontakt \\ \hline
+      Parsergenerator in & Java (javacc)\\ \hline
+      Parser in & Java \\ \hline
+      Grammatiken für & Java (bis 1.1)\\ \hline
+      Unterstützte OS &  durch Java alle relevanten \\ \hline
+      Lizenz & GNU GPL \\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht JAbstract}
+    \label{jabstractoverview}
+  %\end{center}
+\end{table}
+
+\subsubsection{JRefactory}
+Eine kurze Übersicht zu den wichtigsten Daten von JRefactory findet sich in Tabelle \ref{jrefactoryoverview}.
+\paragraph{Historie.}
+Die Entwicklung von JRefactory wurde 1999 von Chris Seguin begonnen und 2002 von Mike Atkinson übernommen. Die letzte veröffentlichte Version stammt von Ende 2003 und auch die Homepage ist seit diesem Zeitpunkt nicht mehr wesentlich aktualisiert worden.\par
+Mittlerweile kann das Projekt als eingestellt angesehen werden, da seit 2004 weder Aktivitäten in der Entwicklung, noch in der begleitenden Mailingliste, dem Forum oder der Homepage verzeichnet sind.
+
+\paragraph{Charakterisierung.}
+Bei JRefactory handelt es sich um ein Tool, welches Refactorings von Javaquelltexten unterstützt. Es kann als reines Kommandozeilenwerkzeug benutzt werden, bringt aber auch eine eigene Oberfläche mit. Ferner existieren PlugIns für diverse IDEs die Java unterstützen.\par
+Interressant für uns sind allerdigs nicht die Refactoring-Funktionen, sondern der intergrierte Javaparser. Dieser wird als separates Paket zum Download angeboten. Dabei handelt es sich um einen Parser, der auf einer eigenen JavaCC-Grammatik basiert. Diese soll auch  Sprachkonstrukte aus Java Version 5 kennen und einen AST erzeugen. So behandeln wir im Rest des Abschnitts nur den Javaparser genauer.
+
+\paragraph{Literatur.}
+Zu JRefactory existiert keine wirklich brauchbare Dokumentation. Die Homepage (siehe \cite{jrefactoryhomepage}) beschränkt sich eigentlich nur auf eine Beschreibung der Features.
+
+\paragraph{Verwendung.}
+Aufgrund der o. a. Dokumentationslage zogen wir die Dokumentation von JavaCC hinzu und konnten feststellen, dass der Parser in ein separates Programm eingebunden werden muss, welches die Vorbehandlung der Eingabedaten und das Anstoßen des Parsings übernimmt.
+
+\paragraph{Eigene Erfahrungen.}
+Da der Parser in einem vorkompilierten JAR-Paket geliefert wird, entfällt die Erzeugung mit JavaCC. Es wird zwar explizit darauf hingewiesen, dass Informationen zur Benutzung auf der Homepage verfügbar seien - leider ist dies nicht der Fall.\par
+Es gelang uns zwar eine Javaklasse zu schreiben, die einen Javaquelltext an den Parser weiterreicht und den Parsingvorgang (wie in der JavaCC-Dokumentation beschrieben) anstösst. Allerdings bekamen wir vom Parser keine Rückmeldung. So ist uns nicht klar, ob der Parsingvorgang überhaupt begann und ob dieser erfolgreich war.
+ 
+\paragraph{Parsingtests.}
+Die zugrundeliegende Grammatik stammt vom Juni 2003, ist also älteren Datums als die endgültige Fassung von Java 5. Unsere bisherigen Erfahrungen haben jedoch gezeigt, dass dies nicht von Vorteil für die Erkennungsrate der Parser ist. Leider mussten die Parsingtests aber entfallen, da es uns nicht gelang dem Parser eine brauchbare Rückmeldung zu entlocken.
+\begin{table}[htbp]
+ % \begin{center}
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & letztes Update November 2003 \\ \hline
+      Dokumentation & keine \\ \hline
+      Support & Mailingliste, Forum \\ \hline
+      Parsergenerator in & Java (da JavaCC)\\ \hline
+      Parser in & Java \\ \hline
+      Grammatiken für & Java (bis 5) für JavaCC\\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz & GNU GPL \\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht JRefactory}
+    \label{jrefactoryoverview}
+  %\end{center}
+\end{table}
+
+\subsubsection{FUJABA}
+Eine kurze Übersicht zu den wichtigsten Daten von FUJABA findet sich in Tabelle \ref{fujabaoverview}.
+\paragraph{Historie.}
+FUJABA steht für "`From UML to Java and back again"' und wurde 1997 von Tomas Klein, Ulrich Nickel, Jörg Niere und Albert Zündorf an der Universität Paderborn entwickelt. Seitdem unterliegt es einer ständigen Weiterentwicklung. Die aktuelle Version stammt vom März 2005, allerdings ist für März 2006 schon die nächste Version angekündigt.\par
+FUJABA ist Public Domain und die Quelltexte sind frei verfügbar. 
+
+\paragraph{Charakterisierung.}
+Die FUJABA Tool Suite  stellt Werkzeuge zur Verfügung, die aus UML Diagrammen einen javabasierten
+Prototypen erstellen. Der umgekehrte Weg ist ebenfalls möglich, sprich Java Quelltexte zu parsen und (bis zu einem gewissen Grad) in UML Diagramme umsetzen zu können. Dabei wird auch die Verwendung von Patterns durch eine eigene Spezifikationssprache unterstützt.\par
+Für uns ist allerdings lediglich der als PlugIn realisierte Javaparser von Bedeutung. Bisher kann dieser nur Javaquelltexte bis Java 1.4 parsen und den dazugehörigen AST aufbauen. Parsing von Java-5-Quelltexten ist geplant, aber noch nicht in Arbeit.\par
+
+\paragraph{Literatur.}
+Auf der Homepage (siehe \cite{fujabahomepage}) von FUJABA existiert eine ausführliche Dokumentation zu dessen Verwendung, für Entwickler existieren hingegen nur eine API-Beschreibung von FUJABA und ein paar Einträge im Wiki. Bei Fragen kann man sich an eine Mailingliste wenden.
+
+\paragraph{Verwendung.}
+Der Parser muss in ein separates Programm eingebunden werden, welches die Bereitstellung der Eingabedaten und das Anstoßen des Parsings übernimmt.
+
+\paragraph{Eigene Erfahrungen.}
+Durch Ausprobieren und Entpacken der PlugIn-Packages von Fujaba haben wir herausgefunden, dass sich FUJABA einer freizugänglichen JavaCC-Grammatik bedient. Aus dieser wurde erst mit jtb (Java Tree Builder, siehe \cite{jtbhomepage}) eine weitere Grammatik und Klassen für einen AST erzeugt. Aus der neuen Grammatik wurde schließlich mit JavaCC der Parser generiert, der den AST aufbaut.\par
+Darüber hinaus existiert ein FUJABA PlugIn, welches JavaAST heisst und auf dem AST arbeitet. Zwar kann man sich die Quelltexte von der Homepage herunterladen, doch leider sind gerade die Quelltexte dieses PlugIns nicht frei zugänglich. Auf Nachfragen in der Mailinglist wurde uns mitgeteilt, dass ein Zugriff auf den CVS-Server zwar grundsätzlich möglich sei, allerdings ist auch hier dieses PlugIn ausgeschlossen, da es im Moment Gegenstand der Forschung sei.\par
+Es gelang uns zwar den Parser zu erzeugen, aber nicht zu kompilieren. Auch die Verwendung des bereits kompilierten Parsers aus den FUJABA Binaries gelang uns nicht.\par
+Auf eine weitere Anfrage hin erfuhren wir, dass der erzeugte AST nicht vollständig ist, da dieser lediglich die Methodenrümpfe enthält sowie in der Darstellung der Ausdrücke stark vereinfacht ist. Alle weiteren Informationen wie etwa die Methodenköpfe oder Klassen werden nicht im AST, sondern im verwendeten UML-Modell gespeichert, so dass eine weitere Betrachtung und weitere Tests für dieses Tool entfallen.
+
+\paragraph{Position \& Länge der Token im Quelltext.}
+Da es sich um eine JavaCC-Grammatik handelt, gilt auch hier alles was bereits im Abschnitt JavaCC geschrieben wurde.
+
+\paragraph{Parsingtest.}
+Entfallen, da Parser nicht zu benutzen war.
+
+\begin{table}[htbp]
+  %\begin{center}
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & neue Version in Entwicklung (v5) \\ \hline
+      Dokumentation & Wiki, API-Spezifikation, FAQ, Tutorials \\ \hline
+      Support & Mailingliste, Forum \\ \hline
+      Parsergenerator in & Java (da JavaCC)\\ \hline
+      Parser in & Java \\ \hline
+      Grammatiken für & Java (bis 1.4) für JavaCC \\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz & teilweise open source \\ \hline
+      Quelltexte & teilweise frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht FUJABA}
+    \label{fujabaoverview}
+  %\end{center}
+\end{table}
+
+\subsection{Quelloffene Java-Compiler Implementationen}
+Da auch beim Kompilieren ein Parsing notwendig ist, haben wir die nachfolgenden quelloffenen Java-Compiler hinsichtlich der verwendeten Parser bzw. Grammatiken untersucht. Der Originalcompiler von Sun ist selbst leider nicht quelloffen (im Gegensatz zur Klassenbibliothek des JDK) und schied damit aus.
+
+\subsubsection{GCJ}
+Eine kurze Übersicht zu den wichtigsten Daten von GCJ findet sich in Tabelle \ref{gcjoverview}.
+\paragraph{Historie.}
+Die erste Version des GCC wurde im März 1987 veröffentlicht, damals allerdings noch als reiner C-Compiler. Mit der Zeit wurden Compiler für weitere Sprachen integriert, und der GNU C Compiler zur GNU Compiler Collection (beides als GCC bezeichnet) umbenannt. Mit der Version 2.95, welche im Juli 1999 veröffentlicht wurde, wurde erstmals ein Java-Compiler integriert. Mittlerweile ist die GCC bei Version 3.4.5 (Veröffentlichung vom 30.11.2005) angelangt und die derzeitige Entwicklung konzentriert sich auf die Version 4, von welcher bereits Entwicklerversionen verfügbar sind.
+
+\paragraph{Charakterisierung.}
+Der GNU Compiler for the Java(tm) Programming Language (GCJ; siehe \cite{gcjhomepage}) ist Teil der GNU Compiler Collection, welche neben dem GCJ auch Compiler für C, C++, Objective-C, Fortran und Ada, sowie Bibliotheken für die genannten Sprachen beinhaltet. Die komplette GCC ist quelloffen unter der GNU Public License (GPL) verfügbar.\par
+Der GCJ selbst ist in C geschrieben und benutzt einen mit Bison erzeugten Parser. Bison ist ein Parsergenerator, welcher kontextfreie LALR-Parser in C erzeugt. Bison selbst ist ebenfalls Teil des GNU-Projektes.
+
+\paragraph{Verwendung.}
+Bei den Programmen des GCC-Projektes handelt es sich um Kommandozeilenprogramme, so auch beim GJC und bei Bison.
+
+%Literatur:\\
+
+%Erfahrungen:\\
+
+%Übersicht:\\
+
+%???Parsingverfahren:\\
+
+\begin{table}[htbp]
+  %\begin{center}
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & letztes Update Oktober 2005 \\ \hline
+      Dokumentation & Wiki, Handbuch, FAQ, API-Spezifikation \\ \hline
+      Support & Mailingliste \\ \hline
+      Parsergenerator in & C (da Bison) \\ \hline
+      Parser in & C \\ \hline
+      Grammatiken für & Java (Version ?) \\ \hline
+      Unterstützte OS & Linux, Windows \\ \hline
+      Lizenz &  GPL\\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht GCJ}
+    \label{gcjoverview}
+  %\end{center}
+\end{table}
+
+\subsubsection{Java Espresso}
+Eine kurze Übersicht zu den wichtigsten Daten von ANTLR findet sich in Tabelle \ref{javaespressooverview}.\par
+Die Arbeitsweise dieses Compilers ist ausführlich auf der Homepage (siehe \cite{jespressohomepage}) dokumentiert. Dieser baut beim Parsen einen AST auf. Danach wird das Type-Checking durchgeführt, indem von jedem Knoten die Methode typeCheck() aufgerufen wird (die Knoten sind in Klassen beschrieben). Um dabei beispielsweise die Sichtbarkeiten aufzulösen, bedient sich Espresso einer eigenen Typhierarchie.
+\begin{table}[htbp]
+  %\begin{center}
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & letztes Update August 1998 \\ \hline
+      Dokumentation & Arbeitsweise, API-Spezifikation \\ \hline
+      Support & über E-Mail\\ \hline
+      Parsergenerator in & Java (da JavaCC) \\ \hline
+      Parser in & Java \\ \hline
+      Grammatiken für & Java (nur 1.0) für JavaCC \\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz &  open source\\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht Java Espresso}
+    \label{javaespressooverview}
+  %\end{center}
+\end{table}
+
+\subsection{Eclipse}
+\paragraph{Historie.}
+Die hinter Eclipse stehende Organisation wurde im November 2001 als Gemeinschaftsprojekt mehrerer großer IT-Firmen gegründet (Borland, IBM, MERANT, QNX Software Systems, Rational Software, Red Hat, SuSE, TogetherSoft, Webgain). Seitdem ist die Zahl der Mitgliedsfirmen erheblich gewachsen und die Organisation wurde zwischenzeitlich zu einer gemeinnützigen ("`non-profit"') Organisation umfunktioniert (siehe \cite{eclipsehomepage}). Vor diesem Hintergrund ist die Aktualität der Versionen (aktuell: 3.1.2 vom 18.01.2006) selbstverständlich und die weitere Fortentwicklung kann als gesichert gelten, wenn man zusätzlich die inzwischen weite Verbreitung von Eclipse bedenkt. Die Dokumentation ist bei allen Teilen der Software in größerem Maße vorhanden.
+
+\paragraph{Charakterisierung.}
+Bei Eclipse handelt es sich um eine frei verfügbare graphische Entwicklungsumgebung. Das Programm ist in Java implementiert und OpenSource-Software.
+
+\subsubsection{EMF - Eclipse Modeling Framework}
+
+%\paragraph{Historie.}
+%Hier gibt es nichts zu sagen, was nicht bereits unter der allgemeinen Historie von Eclipse genannt wurde.\par
+
+\paragraph{Charakterisierung.}
+Beim Eclipse Modeling Framework handelt es sich um die Architektur hinter Eclipse. Grundsätzlich stellt Eclipse lediglich die grundlegenden Funktionen einer Entwicklungsumgebung bereit und ist nicht auf eine bestimmte Programmiersprache festgelegt. Die Funktionalität zum Entwickeln in bestimmten Programmiersprachen wird dabei über Plugins realisiert, derzeit ist eine offizielle Unterstützung für COBOL, Fortran, C, C++, Java und AspectJ vorhanden (sowie inoffiziell noch einige weitere, wie z.B. CaesarJ). Das EMF an sich bietet keinerlei Modellierungsstruktur, welche feingranularer als die Klassenebene ist und ist folglich für den geplanten Java-Extraktor völlig ungeeignet. Informationen zur genaueren Struktur der Konzepte von Eclipse, EMF und Plugins finden sich u.a. in \cite{DipBoHi}.
+
+\subsubsection{JDT Core}
+Eine kurze Übersicht zu den wichtigsten Daten von JDT Code findet sich in Tabelle \ref{jdtcoreoverview}.
+\paragraph{Historie.}
+Die erste Version der JDT wurde im Juli 2002 veröffentlicht und seitdem bis auf die aktuelle Version 3.1.2 vom 18.01.2006 (entspricht in Version und Datum dem Eclipse-Paket selbst) weiterentwickelt, wobei bereits die Arbeiten an der nächsten Version 3.2.x im Gange sind.
+
+\paragraph{Charakterisierung.}
+Das Paket Java Developer Tools (siehe \cite{jdthomepage}) beinhaltet die Komponenten zur Java-Entwicklung unter Ecplise und ist seinerseits in das Core-, Debug- und User Interface-Paket unterteilt. Dabei beinhaltet das Core-Paket u.a. Funktionalitäten zur Repräsentation von Javacode als AST, inklusive Grammatik und Parser. Seit Version 3.1.0 unterstützt JDT Core auch Java5.\par
+In \cite{DipBoHi} werden Funktionalitäten des Refactorings auf dem AST des JDT aufgebaut. Dabei sind Modifikationen im AST möglich, welche dann wieder auf den zugrunde liegenden Code übertragbar sind. Dazu sind Positionsangaben der einzelnen Codelemente im AST gespeichert (anders wäre diese Funktionalität wohl kaum realisierbar).\par
+Aufgrund der Auslegung der JDT hinsichtlich der reinen Verwendung als Eclipse-Plugin ist es ohne größeren Aufwand (und vor allem ohne Eingriff in den Code der JDT selbst) nicht möglich, einen darauf aufbauenden Extraktor für Java zu implementieren, welcher ohne Eclipse und als Kommandozeilen-Programm eigenständig lauffähig wäre. Einer Implementation des Extraktors seinerseits als Eclipse-Plugin stünden jedoch keinerlei technischen Hürden im Weg.
+
+\paragraph{Verwendung.}
+Die Funktionalitäten von JDT Core sind nicht direkt als eigenes Programm zugänglich, sondern werden durch das Paket "`JDT User Interface"' in die graphische Oberfläche von Eclipse integriert. Ebenso ist es möglich, die Funktionalität über die Plugin-Schnittstellen in eigenen Eclipse-Plugins zu verwenden.
+
+%Literatur:\\
+
+%Erfahrungen:\\
+
+%Übersicht:\\
+
+%???Parsingverfahren:\\
+
+\begin{table}[htbp]
+  %\begin{center}
+    \begin{tabular}{|l|p{11,5cm}|}\hline 
+      \textbf{Kriterium} & \textbf{Rechercheergebnis} \\ \hline
+      \hline
+      Aktualität & letztes Update (Release-Version) 03.10.2005 \\ \hline
+      Dokumentation & Handbuch, API-Spezifikation, Newsgroups, FAQ, Forum, etc. \\ \hline
+      Support & über E-Mail, Newsgroups, Forum, IRC\\ \hline
+      Parsergenerator in & - entfällt - \\ \hline
+      Parser in & Java \\ \hline
+      Grammatiken für & Java bis 1.5 \\ \hline
+      Unterstützte OS & durch Java alle relevanten \\ \hline
+      Lizenz &  open source\\ \hline
+      Quelltexte & frei verfügbar \\ \hline
+    \end{tabular}
+    \caption{Übersicht JDTCore / Eclipse}
+    \label{jdtcoreoverview}
+  %\end{center}
+\end{table}
+
+\subsection{Fazit}
+Nach der vorangegangenen Übersicht können nun einige Tools aus der engeren Auswahl ausgeschlossen werden.\par
+JAbstract bietet zwar die Möglichkeit zur Erzeugung eines AST, entfällt aber aufgrund der völlig veralteten Grammatik und der mangelnden Weiterentwicklung.\par
+JRefactory unterstützt zwar Parsing von Java 1.5, ist aber, aufgrund der mangelhaften Dokumentation des Parsers (welche schon die Parsing-Tests vereitelte) und der Inaktivität der Entwickler seit fast zwei Jahren, als stabile Grundlage ebenfalls ausgeschlossen.\par
+Fujaba wird aktiv weiterentwickelt, liefert aber einen AST, der bei weitem nicht vollständig ist. Desweiteren wird derzeit lediglich Java bis Version 1.4 unterstützt, so dass dieses Tool technisch ungeeignet ist.\par
+GCJ entfällt aufgrund der Tatsache, dass sowohl der Parsergenerator als auch der erzeugte Parser in C vorliegen.\par
+
+Eclipse bzw. das JDT-Core-Paket besitzen zwar weitgehend alle benötigten Funktionen, implizieren aber eine Implementierung des Faktenextraktors als Eclipse-Plugin, so dass eine Integration als Kommandozeilenwerkzeug in Gupro entfällt.\par
+Cocktail entfällt aufgrund der Tatsache, dass es kostenpflichtig ist und mit den verfügbaren Demoversionen keine genaue Evaluierung der Funktionalität möglich ist.\par
+Coco/R unterstützt derzeit nur Java bis Version 1.4, ist nur begrenzt dokumentiert und bietet keine automatische Erzeugung eines AST an.\par
+Somit verbleiben noch JavaCC, CUP und ANTLR in der engeren Auswahl. JavaCC ist sehr gut dokumentiert und besitzt eine gute Community, bietet aber ebenfalls keine automatische Erzeugung des AST an. Darüber hinaus ist die derzeit verfügbare Grammatik für Java 1.5 fehlerhaft.\par
+CUP erzeugt ebenfalls keinen AST, ist nur begrenzt dokumentiert und liefert darüber hinaus keinen eigenen Lexer mit.\par
+ANTLR erzeugt, im Gegensatz zu den letzten drei genannten Projekten, auch automatisch einen AST und entspricht lediglich bei der Abfrage der Position des Token nicht ganz unseren Vorstellungen.\par
+
+An dieser Stelle sei ein Ausblick auf den (soweit möglich) abschätzbaren Aufwand der nächsten Schritte geworfen. Bei allen Tools wäre es notwendig, eine Funktionalität zu implementieren, welche die Kommentare mit in den AST aufnimmt.\par
+Bei JavaCC stünde zusätzlich eine Funktionalität zur Erzeugung des AST sowie eine Korrektur der Grammatik aus.\par
+Bei CUP wäre ebenfalls eine Implementierung der AST-Erzeugung und die Erstellung eines bracuhbaren Lexers notwendig.\par
+Für Coco/R müsste eine Grammatik für Java 1.5 erzeugt werden und ebenfalls die Funktionalität der AST-Erzeugung implementiert werden.\par
+Bei ANTLR wäre es lediglich notwendig, die Funktion zur Positionsabfrage zu modifizieren.\par
+
+Aufgrund der genannten Fähigkeiten und des geschätzten Aufwands im Vergleich der einzelnen Tools ist ANTLR unser derzeitiger Favorit.
+
+
+%\begin{table}[htbp]
+%    \begin{tabular}{|l||l|l|l|l|l|} \hline 
+%       & \textbf{JavaCC} & \textbf{CUP} & \textbf{Coco/R} & \textbf{Cocktail} & \textbf{ANTLR} \\
+%      \textbf{Kriterium} & & & & & \\ \hline
+%      \hline
+%      letzte Version & & & & & \\
+%      Datum & & & & & \\ \hline
+%      freie Benutzung & & & & & \\ \hline
+%      \hline
+%      allg. Dokomentation & & & & & \\ \hline
+%      FAQ & & & & & \\ \hline
+%      Tutorials & & & & & \\ \hline
+%      API-Dokumentation & & & & & \\ \hline
+%      zus. Arbeiten & & & & & \\ \hline
+%      Forum & & & & & \\ \hline
+%      Newsgroup & & & & & \\ \hline
+%      Mailingliste & & & & & \\ \hline
+%      Wiki & & & & & \\ \hline
+%      \hline
+%      Zielplattform Windows & & & & & \\ \hline
+%      Zielplattform Linux & & & & & \\ \hline
+%      Zielplattform MacOS & & & & & \\ \hline
+%      \hline
+%      Parsing Java 1.0 & & & & & \\ \hline
+%      Parsing Java 1.1 & & & & & \\ \hline
+%      Parsing Java 1.2 & & & & & \\ \hline
+%      Parsing Java 1.4 & & & & & \\ \hline
+%      Parsing Java 1.5 & & & & & \\ \hline
+%      \hline
+%      erzeugt AST & & & & & \\ \hline
+%      Tokenposition abfragbar & & & & & \\ \hline
+%      Tokenlänge abfragbar & & & & & \\ \hline
+%      \hline
+%      Erzeugung Beispielparser & & & & & \\ \hline
+%      Auführen Beispielparser & & & & & \\ \hline
+%      \hline
+%      Erzeugung Java-Parser & & & & & \\ \hline
+%      Kompilierung Java-Parser & & & & & \\ \hline
+%      Korrekt geparste Testdateien (von 15) & & & & & \\ \hline
+%    \end{tabular}
+%    \caption{Bewertungsübersicht}
+%\end{table}
+
+%\subsection{Nicht in Frage kommen...}
+%olgende Parsergeneratoren wurden auch in Betracht gezogen, allerdings sind diese für unsere Zwecke unzureichend.
+%begin{table}[htbp]
+  %\begin{tabular}{|p{4cm}|p{11cm}|}\hline 
+  %    \textbf{Werkzeug} &\textbf{Ausschlusskriterium} \\ \hline
+ %     \hline
+%      Accent & Parser \& Parsergenerator nur in C, erzeugter Parser nur in C und keine Grammatik für Parsing von Javaquelltexten\\ \hline
+     % jay & Komplett javabasiert aber keine Grammatik für Parsing von Javaquelltexten\\ \hline
+      %Stratego & Parser \& Parsergenerator nur in C, schon fertiger Parser in Stratego\\ \hline
+    %\end{tabular}
+%\end{table}
+
+%\newpage
+
+\subsection{Javaquelltexte für Tests}
+\begin{lstlisting}[caption=Eric.java, captionpos=b, style=java, label=eric.java]
+/**
+ * Diese Klasse wurde von Eric Blake geschrieben und enthaelt
+ * einige Graenzfalle der Javaspezifikation, bis Version 1.4.
+ * Stammt urspruenglich aus Testquelltexten fuer die Java 1.5
+ * Grammatik von CUP.
+ */
+
+/** Some valid java code from Eric Blake.  Some of these
+ *  constructions broke previous versions of the grammars.
+ *  These should all compile with any JLS2 javac, as well as
+ *  parse correctly (no syntax errors) using the
+ * java12.cup/java14.cup/java15.cup grammars in this package.*/
+class Eric{
+// parenthesized variables on the left-hand-size of
+// assignments are legal according to JLS 2.  See comments
+// on jikes bug 105
+// www-124.ibm.com/developerworks/bugs/?func=detailbug&bug
+// _id=105&group_id=10
+// for more details. According to Eric Blake:
+//  The 2nd edition JLS is weak on this point - the grammar
+//  in 15.26 prohibits assignments to parenthesized
+//  variables, but earlier in 15.8.5 it states that a
+//  parenthesized variable is still a variable (in JLS1, a
+//  parenthesized variable was a value), and the intent of
+//  assignment is that a variable appear on the left hand
+//  side.  Also, the grammar in chapter 18 (if you can call
+//  it such, because of its numerous typos and ambiguities)
+//  permits assignment to parenthesized variables.
+    void m(int i){
+        (i) = 1;
+    }
+// array access of an initialized array creation is legal;
+// see Sun bugs 4091602, 4321177:
+// developer.java.sun.com/developer/bugParade/bugs/4091602.html
+// developer.java.sun.com/developer/bugParade/bugs/4321177.html
+// Eric Blake says:
+//  Again, the body of the JLS prohibits this, but chapter 18
+//  permits it.
+    int i = new int[]{0}[0];
+    int j = new char[] { 'O', 'K' }.length;
+
+// plain identifiers can qualify instance creation and
+// explicit constructors; see Sun bug 4750181:
+// developer.java.sun.com/developer/bugParade/bugs/4750181.html
+// Eric Blake says:
+//  Sun admits the grammars between the earlier chapters and
+//  chapter 18 are incompatible, so they are not sure whether
+//  things like "identifier.new name()" should be legal or
+//  not. Chapter 18 treats identifiers as primaries, and javac
+//  compiles them.
+    class B { };
+    B b;
+    void foo(Eric e) {
+        e.b = e.new B();
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=EscapeSequences.java, captionpos=b, style=java, label=escapesequences.java]
+/**
+ * Diese Klasse enthaelt Escapesequenzen.
+ * Stammt urspruenglich aus Testquelltexten fuer die Java
+ * 1.5 Grammatik von CUP.
+ */
+class EscapeSequences
+{
+    char c = '\u0009';
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption=AllowedGenericConstruct.java, captionpos=b, style=java, label=allowedgenericconstruct.java]
+/**
+ *  Diese Klasse enthaelt zulaessige Generics-Konstrukte.
+ */
+public class AllowedGenericConstruct<T>
+{
+    class B<S>
+    {
+        //empty
+    }
+    AllowedGenericConstruct<Integer>.B<Integer> c;
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=AllowedForEachConstructs.java, captionpos=b, style=java, label=allowedforeachconstructs.java]
+import java.io.*;
+/**
+ * Diese Klasse benutzt ein ForEach-Konstrukt, welches in der
+ * endgueltigen Fassung von Java 5 erlaubt ist.
+ */
+public abstract class AllowedForEachConstructs{
+
+    public void printArray()
+    {
+        int[][] iaa = new int[10][10];
+        for (int ia[] : iaa)
+        {
+            for (int i : ia)
+            {
+                System.out.print(i);
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=AnotherAllowedForEachConstruct.java, captionpos=b, style=java, label=anotherallowedforeachconstruct.java]
+import java.io.*;
+/**
+ * Diese Klasse benutzt ein ForEach Konstrukt, welches in der
+ * endgueltigen Fassung von Java 5 erlaubt ist. seihe:
+ * http://java.sun.com/developer/technicalArticles/releases/
+ * j2se15langfeat/
+ */
+public abstract class AnotherAllowedForEachConstruct{
+
+    public void newFor(Collection<String> c)
+    {
+        for(String str : c)
+        {
+            sb.append(str);
+        }
+    }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=Test15.java, captionpos=b, style=java, label=test15.java]
+/** A valid JSR-14 Java program, which illustrates some
+ *  corner-cases in the 'smart lexer' lookahead implementation
+ *  of the grammar.  It should compile correctly using a
+ *  JSR-14 javac, as well as parse correctly (no syntax
+ *  errors) using the java15.cup grammar in this package.
+ */
+public class Test15<X> {
+    <T> Test15(T t) { }
+    int a = 1, b = 2;
+    C c1 = new C<Integer>(),
+    c2 = new C<B>(),
+    c3 = new C<B[]>();
+    C<B> cc2 = c2;
+    C<B[]> cc3 = c3;
+    boolean d = a < b, e = a < b;
+    int f[] = new int[5];
+    boolean g = a < f[1];
+    boolean h = ( a < f[1] );
+    Object i0 = (A) cc3;
+    Object  i = ( A < B[] > ) cc3;
+    Object  j = ( A < B > ) cc2;
+    Object  k = ( A < A < B[] > >) null;
+    Object  kk= ( A < A < B[] >>) null;
+    Test15<X>.H hh = null;
+    {
+	Test15<X>.H hhh = null;
+	for (boolean l=a<b, m=a<b; a<b ; l=a<b, f[0]++)
+	    a=a;
+	for (;d;)
+	    b=b;
+	A<Integer> m = c1;
+	if (m instanceof C<Integer>)
+	    a=a;
+	for (boolean n = m instanceof C<Integer>,
+		 o = a<b,
+		 p = cc3 instanceof C<B[]>;
+	     cc3 instanceof C<B[]>;
+	     n = m instanceof C<Integer>,
+		 o = a<b,
+		 p = cc3 instanceof C<B[]>)
+	    b=b;
+	for (;m instanceof C<Integer>;)
+	    a=a;
+	if (a < b >> 1)
+	    ;
+	Object o1 = new A<A<B>>(),
+	    o2 = new A<A<A<B>>>(),
+	    o3 = new A<A<D<B,A<B>>>>();
+
+	// new, "explicit parameter" version of method
+    // invocation.
+	A<Integer> aa = Test15.<A<Integer>>foo();
+	/* although the spec says this should work:
+           A<Integer> aa_ = <A<Integer>>foo();
+	 * Neal Gafter has assured me that this is a bug in the
+     * spec.
+	 * Type arguments are only valid after a dot. */
+
+	// "explicit parameters" with constructor invocations.
+    // prototype 2.2 chokes on this.
+	new <String> K<Integer>("xh");
+	this.new <String> K<Integer>("xh");
+    }
+
+    static class A<T> { T t; }
+    static class B { }
+    static class C<T> extends A<T> { }
+    static class D<A,B> { }
+    static class E<X,Y extends A<X>> { }
+    static interface F { }
+    // wildcard bounds.
+    static class G{
+        A<? extends F> a; A<? super C<Integer>> b;
+    }
+    class H { }
+    static class I extends A<Object[]> { }
+    static class J extends A<byte[]> { }
+    class K<Y> { <T>K(T t) { Test15.<T>foo(); } }
+
+    static <T> T foo() { return null; }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=TestJSR201Berichtigt.java, captionpos=b, style=java, label=testjsr201berichtigt.java]
+/**
+ * Diese Klasse ist ein Testquelltext fuer die Java 1.5
+ * Grammatik von CUP. Das Original wird von CUP fehlerfrei
+ * geparst, ist jedoch nicht mit javac kompilierbar.
+ * Nachdem wir einige Auskommentierungen vorgenommen
+ * hatten, wurde diese auch kommentarlos von javac
+ * kompiliert. Da diese Klasse recht komplexe Statements
+ * enthaelt, wird diese auch fuer die Parsingtests benutzt.
+ * Dies ist jedoch mehr ein statistischer Test.
+ */
+import static java.lang.Math.*; // test of static import
+import static java.lang.System.out; // ditto
+import java.util.*;
+
+class TestJSR201Berichtigt
+{
+    enum Color { red, green, blue ; };
+
+    public static void main(String... args/* varargs */)
+    {
+        /* for each on multi-dimensional array */
+        int[][] iaa = new int[10][10];
+        for (int ia[] : iaa)
+        {
+            for (int i : ia)
+            	out.print(i); // use static import.
+            out.println();
+        }
+        /* */
+//////////////////////////////////////////////////////////
+// Auskommentiert da der Compiler Color.VALUES nicht kennt
+//////////////////////////////////////////////////////////
+//        for (Color c : Color.VALUES)
+//        {
+//            switch(c)
+//            {
+//                case Color.red: out.print("R");
+//                break;
+//                case Color.green: out.print("G");
+//                break;
+//                case Color.blue: out.print("B");
+//                break;
+//                default: assert false;
+//            }
+//        }
+//////////////////////////////////////////////////////////
+        out.println();
+    }// end of main
+
+    // complex enum declaration, from JSR-201
+    public static enum Coin
+    {
+        penny(1), nickel(5), dime(10), quarter(25);
+        Coin(int value)
+        {
+            this.value = value;
+        }
+        private final int value;
+        public int value()
+        {
+            return value;
+        }
+    }
+
+    public static class Card implements Comparable,
+                                        java.io.Serializable
+    {
+        public enum Rank
+        {
+            deuce, three, four, five, six, seven,
+            eight, nine, ten, jack, queen, king, ace
+        }
+
+        public enum Suit
+        {
+            clubs, diamonds, hearts, spades
+        }
+
+        private final Rank rank;
+        private final Suit suit;
+
+        private Card(Rank rank, Suit suit)
+        {
+            if (rank == null || suit == null)
+                throw new NullPointerException(rank + ", " +
+                                               suit);
+            this.rank = rank;
+            this.suit = suit;
+        }
+
+        public Rank rank()
+        {
+            return rank;
+        }
+
+        public Suit suit()
+        {
+            return suit;
+        }
+
+        public String toString()
+        {
+            return rank + " of " + suit;
+        }
+
+        public int compareTo(Object o)
+        {
+            Card c = (Card)o;
+            int rankCompare = rank.compareTo(c.rank);
+            return rankCompare != 0 ? rankCompare :
+            suit.compareTo(c.suit);
+        }
+
+        private static List sortedDeck = new ArrayList(52);
+
+        /* BROKEN IN PROTOTYPE 2.0 */
+//////////////////////////////////////////////////////////
+// Auskommentiert da der Compiler Rank.VALUES und
+// Suit.VALUES nicht kennt
+//////////////////////////////////////////////////////////
+//        static
+//        {
+//            for (Rank rank : Rank.VALUES)
+//            for (Suit suit : Suit.VALUES)
+//                sortedDeck.add(new Card(rank, suit));
+//        }
+//////////////////////////////////////////////////////////
+        /* */
+
+        // Returns a shuffled deck
+        public static List newDeck()
+        {
+            List result = new ArrayList(sortedDeck);
+            Collections.shuffle(result);
+            return result;
+        }
+    } // end of class Card
+
+    // sophisticated example:
+//////////////////////////////////////////////////////////
+// abstract auskommentiert da fuer enum nicht zulaessig
+//////////////////////////////////////////////////////////
+    public static /*abstract*/ enum Operation
+    {
+        plus
+        {
+            double eval(double x, double y)
+            {
+                return x + y;
+            }
+        },
+        minus
+        {
+            double eval(double x, double y)
+            {
+                return x - y;
+            }
+        },
+        times
+        {
+            double eval(double x, double y)
+            {
+                return x * y;
+            }
+        },
+        divided_by
+        {
+            double eval(double x, double y)
+            {
+                return x / y;
+            }
+        };
+
+// Perform arithmetic operation represented by this constant
+        abstract double eval(double x, double y);
+
+        public static void main(String args[])
+        {
+            double x = Double.parseDouble(args[0]);
+            double y = Double.parseDouble(args[1]);
+//////////////////////////////////////////////////////////
+// Auskommentiert da in Compiler VALUES nicht kennt
+//////////////////////////////////////////////////////////
+//            for (Operation op : VALUES)
+//                out.println(x + " " + op + " " +
+//                            y + " = " + op.eval(x, y));
+//////////////////////////////////////////////////////////
+        }
+    }
+}// end of class TestJSR201Berichtigt
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=AbstractEnumShouldGiveParseError.java, captionpos=b, style=java, label=abstractenumshouldgiveparseerror.java]
+/**
+ * Diese Klasse definiert ein abstraktes enum, welches nicht
+ * erlaubt ist. Erzeugt beim Kompilieren mit javac
+ * folgenden Fehler:
+ *
+ * AbstractEnumShouldGiveParseError.java:3:
+ *     modifier abstract not allowed here
+ *     public static abstract enum Operation
+ *                            ^
+ * 1 error
+ *
+ */
+class AbstractEnumShouldGiveParseError{
+
+    public static abstract enum Operation
+    {
+        plus
+        {
+            double eval(double x, double y)
+            {
+                return x + y;
+            }
+        },
+        minus
+        {
+            double eval(double x, double y)
+            {
+                return x - y;
+            }
+        },
+        times
+        {
+            double eval(double x, double y)
+            {
+                return x * y;
+            }
+        },
+        divided_by
+        {
+            double eval(double x, double y)
+            {
+                return x / y;
+            }
+        };
+
+// Perform arithmetic operation represented by this constant
+        abstract double eval(double x, double y);
+
+        public static void main(String args[])
+        {
+            double x = Double.parseDouble(args[0]);
+            double y = Double.parseDouble(args[1]);
+        }
+    }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=AbstractFinalShouldGiveParseError.java, captionpos=b, style=java, label=abstractfinalshouldgiveparseerror.java]
+/**
+ * Diese Klasse kombiniert die Modifier abstract und final,
+ * welche sich gegenseitig ausschliessen.
+ * Erzeugt beim Kompilieren mit javac folgenden Fehler:
+ *
+ * AbstractFinalShouldGiveParseError.java:20:
+ * illegal combination of modifiers: abstract and final
+ *     public abstract final void someAbstractMethod();
+ *                                ^
+ * 1 error
+ *
+ */
+import java.io.*;
+
+public abstract class AbstractFinalShouldGiveParseError{
+
+    public abstract final void someAbstractMethod();
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=ForEachInShouldGiveParseError.java, captionpos=b, style=java, label=foreachinshouldgiveparseerror.java]
+/**
+ * Diese Klasse nutzt ein for each ( in ) Konstrukt, welches
+ * in den Previews zu Java 5 Tiger noch unterstuetzt wurde, es
+ * allerdings nicht in die endgueltige Fassung geschafft hat.
+ * Erzeugt beim Kompilieren mit javac folgenden Fehler:
+ *
+ * ForEachInShouldGiveParseError.java:13: '(' expected
+ *         for each (int ia[] in iaa)
+ *             ^
+ * ForEachInShouldGiveParseError.java:20:
+ *  illegal start of expression
+ *     }
+ *     ^
+ * 2 errors
+ *
+ */
+import java.io.*;
+
+public class ForEachInShouldGiveParseError{
+
+    public void printArray()
+    {
+        int[][] iaa = new int[10][10];
+        for each (int ia[] in iaa)
+        {
+            for each (int i in ia)
+            {
+             	System.out.println(i);
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=PublicPrivateShouldGiveParseError.java, captionpos=b, style=java, label=publicprivateshouldgiveparseerror.java]
+/**
+ * Diese Klasse kombiniert die Modifier public und private,
+ * welche sich gegenseitig ausschliessen. Erzeugt beim
+ * Kompilieren mit javac folgenden Fehler:
+ *
+ * PublicPrivateShouldGiveParseError.java:15:
+ *  illegal combination of modifiers: public and private
+ *     public private void someMethod();
+ *                         ^
+ * 1 error
+ */
+import java.io.*;
+
+public class PublicPrivateShouldGiveParseError{
+
+    public private void someMethod()
+    {
+        // do nothing
+    }
+}
+\end{lstlisting}

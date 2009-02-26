@@ -1,0 +1,20 @@
+- Formal: Blatt mit Aufteilung der Arbeitsanteile etc.
+- Zitate & Quellenangaben (Compilerbau-Buch, Gupro, JGralab)
+- Referenzen --> Typ-/Variablen-/Methodenreferenzen
+- Erweiterte Einführung in die Terminologie (Token, AST, ASG, etc...)
+- Überschriften mit höherer Aussagekraft
+- Abstract: nicht zwingend, aber wenn möglich ja
+- Latex: Abstand eines Abschnittes größer
+- Latex: Nicht alles sind Kapitel, sondern Abschnitte
+- Latex: Für doppelseitigen Druck optimieren (z.B. Beschreibung auf einer Seite und Grafik auf der gegenüberliegenden Seite)
+- Aufwandstabelle: "." als Tausendertrennzeichen
+- Ausblick: halbe Seite
+- Schlusswort evtl. ähnlich wie Abstract
+- Positiv enden
+- Unterscheidung der Laufzeitdauer in Parsing, GraphBuilding, Resolving
+
+
+
+- Datenträger mit aller Software und allen Quelltexten etc.
+- Exemplar pro Betreuer (2) und eines für Prüfungsamt
+- Alle 3 Exemplare an das Prüfungsamt

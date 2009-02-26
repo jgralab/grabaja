@@ -1,0 +1,8 @@
+- GUPRO (Schreibweise!)
+- Einleitung: Was ist GUPro / JGraLab
+- Priorit‰ten: nur drei
+- Aufwandsabsch‰tzung? -> Typechecking
+- EA: Pins statt Ports (evtl: Kerstin Falkowski fragen)
+- Knoten / Kanten per Reflection: Attribute auf -1 o.‰.
+- Resolver etc.: Singleton / static factory
+- Programmierung abschlieﬂen

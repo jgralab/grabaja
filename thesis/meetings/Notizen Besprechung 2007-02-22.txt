@@ -1,0 +1,4 @@
+- TypeChecking / Merging in möglichst einem Durchlauf
+- Achtung bei Overloading (Bestimmung über Parameter / Rückgabe; Hashing über komplette Methodensignatur)
+- Testen: gleichnamige Klassen in unterschiedl. Packages?
+- Flag bzgl. Vorgehen: lazy / eager

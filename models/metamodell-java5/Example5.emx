@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.ibm.com/xtools/1.5.0/Notation" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmlns:umlnotation="http://www.ibm.com/xtools/1.5.0/Umlnotation" xmi:id="_BHeAIKWsEdu5-MwvVIPvWA" name="Example5" appliedProfile="_BHeAJKWsEdu5-MwvVIPvWA _BHeAJ6WsEdu5-MwvVIPvWA _BHeAKqWsEdu5-MwvVIPvWA _BHeALaWsEdu5-MwvVIPvWA _BHeAMKWsEdu5-MwvVIPvWA">
+  <eAnnotations xmi:id="_BHeAIaWsEdu5-MwvVIPvWA" source="uml2.diagrams" references="_BHeAIqWsEdu5-MwvVIPvWA">
+    <contents xmi:type="notation:Diagram" xmi:id="_BHeAIqWsEdu5-MwvVIPvWA" type="Freeform" name="Main">
+      <children xmi:id="_BjyIsKWsEdu5-MwvVIPvWA" targetEdges="_BjyI3aWsEdu5-MwvVIPvWA _BjyJAqWsEdu5-MwvVIPvWA">
+        <children xmi:id="_BjyIsaWsEdu5-MwvVIPvWA" type="ImageCompartment">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+          <layoutConstraint xmi:type="notation:Size" xmi:id="_BjyIsqWsEdu5-MwvVIPvWA" width="1320" height="1320"/>
+        </children>
+        <children xmi:id="_BjyIs6WsEdu5-MwvVIPvWA" type="Stereotype">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+        </children>
+        <children xmi:id="_BjyItKWsEdu5-MwvVIPvWA" type="Name">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+        </children>
+        <children xmi:id="_BjyItaWsEdu5-MwvVIPvWA" type="AttributeCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyItqWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+        </children>
+        <children xmi:id="_BjyIt6WsEdu5-MwvVIPvWA" type="OperationCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyIuKWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+        </children>
+        <children xmi:id="_BjyIuaWsEdu5-MwvVIPvWA" visible="false" type="SignalCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyIuqWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+        </children>
+        <children xmi:id="_BjyIu6WsEdu5-MwvVIPvWA" visible="false" type="StructureCompartment">
+          <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_BjyIvKWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_BjyIvaWsEdu5-MwvVIPvWA" showStereotype="Label"/>
+        <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_LicvEOmgEdquA6b433cuhw?Blank%20Model/DoWhileStatement"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BjyIvqWsEdu5-MwvVIPvWA" x="2544" y="636"/>
+      </children>
+      <children xmi:id="_BjyIv6WsEdu5-MwvVIPvWA" sourceEdges="_BjyI3aWsEdu5-MwvVIPvWA">
+        <children xmi:id="_BjyIwKWsEdu5-MwvVIPvWA" type="ImageCompartment">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+          <layoutConstraint xmi:type="notation:Size" xmi:id="_BjyIwaWsEdu5-MwvVIPvWA" width="1320" height="1320"/>
+        </children>
+        <children xmi:id="_BjyIwqWsEdu5-MwvVIPvWA" type="Stereotype">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+        </children>
+        <children xmi:id="_BjyIw6WsEdu5-MwvVIPvWA" type="Name">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+        </children>
+        <children xmi:id="_BjyIxKWsEdu5-MwvVIPvWA" type="AttributeCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyIxaWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+        </children>
+        <children xmi:id="_BjyIxqWsEdu5-MwvVIPvWA" type="OperationCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyIx6WsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+        </children>
+        <children xmi:id="_BjyIyKWsEdu5-MwvVIPvWA" visible="false" type="SignalCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyIyaWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+        </children>
+        <children xmi:id="_BjyIyqWsEdu5-MwvVIPvWA" visible="false" type="StructureCompartment">
+          <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_BjyIy6WsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_BjyIzKWsEdu5-MwvVIPvWA" showStereotype="Label"/>
+        <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_y6Y5YOmNEdquA6b433cuhw?Blank%20Model/Statement"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BjyIzaWsEdu5-MwvVIPvWA" x="5088" y="5724"/>
+      </children>
+      <children xmi:id="_BjyIzqWsEdu5-MwvVIPvWA" sourceEdges="_BjyJAqWsEdu5-MwvVIPvWA">
+        <children xmi:id="_BjyIz6WsEdu5-MwvVIPvWA" type="ImageCompartment">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+          <layoutConstraint xmi:type="notation:Size" xmi:id="_BjyI0KWsEdu5-MwvVIPvWA" width="1320" height="1320"/>
+        </children>
+        <children xmi:id="_BjyI0aWsEdu5-MwvVIPvWA" type="Stereotype">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+        </children>
+        <children xmi:id="_BjyI0qWsEdu5-MwvVIPvWA" type="Name">
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+        </children>
+        <children xmi:id="_BjyI06WsEdu5-MwvVIPvWA" type="AttributeCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyI1KWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+        </children>
+        <children xmi:id="_BjyI1aWsEdu5-MwvVIPvWA" type="OperationCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyI1qWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+        </children>
+        <children xmi:id="_BjyI16WsEdu5-MwvVIPvWA" visible="false" type="SignalCompartment">
+          <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyI2KWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+        </children>
+        <children xmi:id="_BjyI2aWsEdu5-MwvVIPvWA" visible="false" type="StructureCompartment">
+          <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_BjyI2qWsEdu5-MwvVIPvWA"/>
+          <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_BjyI26WsEdu5-MwvVIPvWA" showStereotype="Label"/>
+        <element xmi:type="uml:Class" href="Java5%20meta%20model%20v3.emx#_K3wpwOmUEdquA6b433cuhw?Blank%20Model/Expression"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BjyI3KWsEdu5-MwvVIPvWA" x="1272" y="5724"/>
+      </children>
+      <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_BHeAI6WsEdu5-MwvVIPvWA"/>
+      <edges xmi:id="_BjyI3aWsEdu5-MwvVIPvWA" source="_BjyIv6WsEdu5-MwvVIPvWA" target="_BjyIsKWsEdu5-MwvVIPvWA">
+        <children xmi:id="_BjyI3qWsEdu5-MwvVIPvWA" type="NameLabel">
+          <children xmi:id="_BjyI36WsEdu5-MwvVIPvWA" type="Stereotype">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_YnlwgDboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf"/>
+          </children>
+          <children xmi:id="_BjyI4KWsEdu5-MwvVIPvWA" type="Name">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_YnlwgDboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf"/>
+          </children>
+          <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_YnlwgDboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BjyI4aWsEdu5-MwvVIPvWA" x="-212" y="-932"/>
+        </children>
+        <children xmi:id="_BjyI4qWsEdu5-MwvVIPvWA" type="ToMultiplicityLabel">
+          <children xmi:id="_BjyI46WsEdu5-MwvVIPvWA" type="ToMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI5KWsEdu5-MwvVIPvWA" x="-297" y="340"/>
+        </children>
+        <children xmi:id="_BjyI5aWsEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <children xmi:id="_BjyI5qWsEdu5-MwvVIPvWA" type="ToRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI56WsEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_BjyI6KWsEdu5-MwvVIPvWA" type="FromMultiplicityLabel">
+          <children xmi:id="_BjyI6aWsEdu5-MwvVIPvWA" type="FromMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI6qWsEdu5-MwvVIPvWA" y="397"/>
+        </children>
+        <children xmi:id="_BjyI66WsEdu5-MwvVIPvWA" visible="false" type="FromRoleLabel">
+          <children xmi:id="_BjyI7KWsEdu5-MwvVIPvWA" type="FromRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI7aWsEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_BjyI7qWsEdu5-MwvVIPvWA" type="ToQualifierLabel">
+          <children xmi:id="_BjyI76WsEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyI8KWsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI8aWsEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_BjyI8qWsEdu5-MwvVIPvWA" type="FromQualifierLabel">
+          <children xmi:id="_BjyI86WsEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyI9KWsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI9aWsEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_BjyI9qWsEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <eAnnotations xmi:id="_BjyI96WsEdu5-MwvVIPvWA" source="ToConstraintLabel"/>
+          <children xmi:id="_BjyI-KWsEdu5-MwvVIPvWA" visible="false" type="ToConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyI-aWsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgjboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI-qWsEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <children xmi:id="_BjyI-6WsEdu5-MwvVIPvWA" type="FromRoleLabel">
+          <eAnnotations xmi:id="_BjyI_KWsEdu5-MwvVIPvWA" source="FromConstraintLabel"/>
+          <children xmi:id="_BjyI_aWsEdu5-MwvVIPvWA" visible="false" type="FromConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyI_qWsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_YnlwgTboEduQa5OXADjnGA?Blank%20Model/Statement/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyI_6WsEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_BjyJAKWsEdu5-MwvVIPvWA" showStereotype="Text"/>
+        <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_YnlwgDboEduQa5OXADjnGA?Blank%20Model/isLoopBodyOf"/>
+        <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_BjyJAaWsEdu5-MwvVIPvWA" points="[12, -23, -97, 169]$[74, -215, -35, -23]"/>
+      </edges>
+      <edges xmi:id="_BjyJAqWsEdu5-MwvVIPvWA" source="_BjyIzqWsEdu5-MwvVIPvWA" target="_BjyIsKWsEdu5-MwvVIPvWA">
+        <children xmi:id="_BjyJA6WsEdu5-MwvVIPvWA" type="NameLabel">
+          <children xmi:id="_BjyJBKWsEdu5-MwvVIPvWA" type="Stereotype">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_a6zwUDboEduQa5OXADjnGA?Blank%20Model/isConditionOf"/>
+          </children>
+          <children xmi:id="_BjyJBaWsEdu5-MwvVIPvWA" type="Name">
+            <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_a6zwUDboEduQa5OXADjnGA?Blank%20Model/isConditionOf"/>
+          </children>
+          <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_a6zwUDboEduQa5OXADjnGA?Blank%20Model/isConditionOf"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BjyJBqWsEdu5-MwvVIPvWA" x="-542" y="-1113"/>
+        </children>
+        <children xmi:id="_BjyJB6WsEdu5-MwvVIPvWA" type="ToMultiplicityLabel">
+          <children xmi:id="_BjyJCKWsEdu5-MwvVIPvWA" type="ToMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJCaWsEdu5-MwvVIPvWA" y="397"/>
+        </children>
+        <children xmi:id="_BjyJCqWsEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <children xmi:id="_BjyJC6WsEdu5-MwvVIPvWA" type="ToRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJDKWsEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_BjyJDaWsEdu5-MwvVIPvWA" type="FromMultiplicityLabel">
+          <children xmi:id="_BjyJDqWsEdu5-MwvVIPvWA" type="FromMultiplicity">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJD6WsEdu5-MwvVIPvWA" y="397"/>
+        </children>
+        <children xmi:id="_BjyJEKWsEdu5-MwvVIPvWA" visible="false" type="FromRoleLabel">
+          <children xmi:id="_BjyJEaWsEdu5-MwvVIPvWA" type="FromRole">
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJEqWsEdu5-MwvVIPvWA" y="-397"/>
+        </children>
+        <children xmi:id="_BjyJE6WsEdu5-MwvVIPvWA" type="ToQualifierLabel">
+          <children xmi:id="_BjyJFKWsEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyJFaWsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJFqWsEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_BjyJF6WsEdu5-MwvVIPvWA" type="FromQualifierLabel">
+          <children xmi:id="_BjyJGKWsEdu5-MwvVIPvWA" type="QualifierCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyJGaWsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJGqWsEdu5-MwvVIPvWA" y="-185"/>
+        </children>
+        <children xmi:id="_BjyJG6WsEdu5-MwvVIPvWA" type="ToRoleLabel">
+          <eAnnotations xmi:id="_BjyJHKWsEdu5-MwvVIPvWA" source="ToConstraintLabel"/>
+          <children xmi:id="_BjyJHaWsEdu5-MwvVIPvWA" visible="false" type="ToConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyJHqWsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUjboEduQa5OXADjnGA?Blank%20Model/isConditionOf/%3CProperty%3E"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJH6WsEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <children xmi:id="_BjyJIKWsEdu5-MwvVIPvWA" type="FromRoleLabel">
+          <eAnnotations xmi:id="_BjyJIaWsEdu5-MwvVIPvWA" source="FromConstraintLabel"/>
+          <children xmi:id="_BjyJIqWsEdu5-MwvVIPvWA" visible="false" type="FromConstraintCompartment">
+            <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BjyJI6WsEdu5-MwvVIPvWA"/>
+            <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          </children>
+          <element xmi:type="uml:Property" href="Java5%20meta%20model%20v3.emx#_a6zwUTboEduQa5OXADjnGA?Blank%20Model/Expression/dowhilestatement"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_BjyJJKWsEdu5-MwvVIPvWA" y="1058"/>
+        </children>
+        <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_BjyJJaWsEdu5-MwvVIPvWA" showStereotype="Text"/>
+        <element xmi:type="uml:Association" href="Java5%20meta%20model%20v3.emx#_a6zwUDboEduQa5OXADjnGA?Blank%20Model/isConditionOf"/>
+        <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_BjyJJqWsEdu5-MwvVIPvWA" points="[-1, -23, 21, 169]$[-15, -215, 7, -23]"/>
+      </edges>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_BHeAJKWsEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_BHeAJaWsEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_BHeAJqWsEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_PROFILES/Basic.profile.uml2#_6mFRgK86Edih9-GG5afQ0g"/>
+    <importedProfile href="pathmap://UML2_PROFILES/Basic.profile.uml2#_6mFRgK86Edih9-GG5afQ0g"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_BHeAJ6WsEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_BHeAKKWsEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_BHeAKaWsEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_PROFILES/Intermediate.profile.uml2#_Cz7csK87Edih9-GG5afQ0g"/>
+    <importedProfile href="pathmap://UML2_PROFILES/Intermediate.profile.uml2#_Cz7csK87Edih9-GG5afQ0g"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_BHeAKqWsEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_BHeAK6WsEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_BHeALKWsEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_PROFILES/Complete.profile.uml2#_M7pTkK87Edih9-GG5afQ0g"/>
+    <importedProfile href="pathmap://UML2_PROFILES/Complete.profile.uml2#_M7pTkK87Edih9-GG5afQ0g"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_BHeALaWsEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_BHeALqWsEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_BHeAL6WsEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default"/>
+    <importedProfile href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default"/>
+  </packageImport>
+  <packageImport xmi:type="uml:ProfileApplication" xmi:id="_BHeAMKWsEdu5-MwvVIPvWA">
+    <eAnnotations xmi:id="_BHeAMaWsEdu5-MwvVIPvWA" source="attributes">
+      <details xmi:id="_BHeAMqWsEdu5-MwvVIPvWA" key="version" value="0"/>
+    </eAnnotations>
+    <importedPackage xmi:type="uml:Profile" href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment"/>
+    <importedProfile href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment"/>
+  </packageImport>
+  <packageImport xmi:id="_BHeAM6WsEdu5-MwvVIPvWA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML2_LIBRARIES/UML2PrimitiveTypes.library.uml2#_EfRZoK86EdieaYgxtVWN8Q"/>
+  </packageImport>
+</uml:Model>

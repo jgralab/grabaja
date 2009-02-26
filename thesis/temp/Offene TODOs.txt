@@ -1,0 +1,8 @@
+- lokales TypeChecking / Merging
+- globales TypeChecking / Merging
+- (evtl.) Komplettierung des Graphen per Reflection
+- (evtl.) Reflection mittels separatem Classpath / Classpath-Suche
+- Metamodell ausarbeiten / an aktuelles Schema anpassen
+- (evtl.) GreQl-Beispielanfragen
+- schriftliche Ausarbeitung fertigstellen
+- Quellen im Literaturverzeichnis sollen Autor, Titel und Datum beinhalten

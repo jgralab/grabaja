@@ -1,0 +1,106 @@
+% Diese Vorlage wurde von Simon Berwert erstellt. Weitere Erklärungen findest du auf folgender Seite: http://www.unimac.ch/students/latex.de.html
+
+
+
+% A. PRÄAMBEL
+% ***************************************************************************************************
+
+\documentclass[smallheadings,headsepline, titlepage,12pt,a4paper]{scrartcl}
+% Hier gibt man an, welche Art von Dokument man schreiben möchte.
+% MÃ¶glichkeiten in {}: scrartcl, scrreprt, scrbook, aber auch: article, report, book
+\usepackage[ngerman]{babel} % ermöglicht deutsche Silbentrennung und direkte Eingabe von Umlauten, ...
+\usepackage{ucs}
+\usepackage[ansinew]{inputenc} % teilt LaTeX die Texcodierung mit. Bei Windowssystemen: ansinew
+\usepackage[T1]{fontenc} % ermöglicht die Silbentrennung von WÃ¶rtern mit Umlauten
+\usepackage{hyperref} % PDF wird mit Lesezeichen (verlinktes Inhaltsverzeichnis) versehen (bei Betrachtung mit Acrobat Reader sichtbar)
+\typearea{12} % Breite des bedruckten Bereiches vergrössern (funktioniert nur in \documentclass mit: scrreprt, scrartcl, scrbook)
+\pagestyle{headings} % schaltet Kopfzeilen ein
+\clubpenalty = 10000 % schliesst Schusterjungen aus
+\widowpenalty = 10000 % schliesst Hurenkinder aus
+
+\usepackage{longtable} % ermöglicht die Verwendung von langen Tabellen
+\usepackage{graphicx} % ermöglicht die Verwendung von Graphiken.
+\usepackage{times}
+\begin{document}
+
+% B. TITELSEITE UND INHALTSVERZEICHNIS
+% ***************************************************************************************************
+
+\titlehead{Universität Koblenz-Landau\\
+Institut für Softwaretechnik\\
+Universitätsstr. 1\\
+56072 Koblenz}
+
+\subject{Studienarbeit Java-Faktenextraktor für GUPRO}
+\title{Anforderungsliste}
+\author{Arne Baldauf \url{abaldauf@uni-koblenz.de}\\ Nicolas Vika \url{ultbreit@uni-koblenz.de}}
+\date{\today}
+\maketitle
+\newpage
+
+%\tableofcontents
+
+% C. DOKUMENTHISTORIE
+% ***************************************************************************************************
+\begin{table}
+	\begin{tabular}{|l|l|l|l|p{4,5cm}|}
+	  \hline
+	  Version & Status & Datum & Autor(en) & Erläuterung \\
+	  \hline \hline
+		1.0 & WIP & 19.12.2005 & Arne Baldauf, Nicolas Vika & Initiale Version\\ \hline
+		1.1 & WIP & 06.01.2006 & Arne Baldauf & Abnahme \& Erweiterung\\ \hline
+		1.2 & WIP & 19.01.2006 & Arne Baldauf & Vervollständigungen\\ \hline
+	\end{tabular}
+	\caption{Dokumentenhistorie}
+\end{table}
+
+% D. HAUPTTEIL
+% ***************************************************************************************************
+\begin{longtable}{|l|l|p{9cm}|l|}
+  \hline
+  Nr. & Kategorie & Anforderung & Priorität \\
+  \hline \hline
+  1.1 & Funktionalität & Der Faktenextraktor soll Java-Quelltexte, nach Möglichkeit bis einschließlich Version 5, zu einem TGraphen umsetzen können & - \\
+  \hline
+  1.2 & Funktionalität & Die Schemata sollen, neben einer feinkörnigen Graphenrepräsentation des Codes, auch höhere Abstraktionsniveaus abdecken. & - \\
+  \hline
+  1.3 & Funktionalität & Der Faktenextraktor soll als eigenständiges Programm lauffähig sein, nach Möglichkeit als Commandline-Utility & - \\
+  \hline
+  1.4 & Funktionalität & Für die Erstellung verschiedener TGraphen durch den Extraktor sollen einige sinnvolle Schemata erstellt werden & - \\
+  \hline
+  1.5 & Funktionalität & Für die Arbeit mit TGraphen (der verschiedenen Schemata) sollen einige sinnvolle Beispielanfragen in GreQL formuliert werden, welche auf die objektorientierte Ausrichtung von Java abzielen. & - \\
+  \hline
+  1.6 & Funktionalität & Der Faktenextraktor soll effizient arbeiten. & - \\
+  \hline
+  1.7 & Funktionalität & Die Positionen der identifizierten Elemente im Quelltext müssen Gupro-konform im TGraph mitgespeichert werden, zwecks Nutzung durch den graphenbasierten Quelltextbrowser. & - \\
+  \hline
+  1.8 & Funktionalität & Der Faktenextraktor soll möglichst fehlertolerant sein (d.h. (syntaktisch) fehlerhafter Java-Code durch Ignorieren oder Auslassen, sollte nicht zum Fehlschlagen des kompletten Parsing führen) & - \\
+  \hline
+  1.9 & Funktionalität & Der Faktenextraktor muss Quelltext-Referenzen auflösen können & - \\
+  \hline
+  1.10 & Funktionalität & Der Faktenextraktor soll nur den Code feingranular im TGraph repräsentieren, welcher als Quellcode vorliegt; von referenziertem Code (welcher nur in .class- oder in .jar-Dateien ohne Quelltext vorliegt) müssen mittels Reflection lediglich die Signaturen extrahiert werden & - \\
+  \hline
+  2.1 & Programmierung & Der Faktenextraktor soll in Java realisiert werden (Als IDE kommt Eclipse zum Einsatz) & - \\
+  \hline
+  2.2 & Programmierung & Der Programmierstil aus der Vorlesung "`Programmierung"' soll angewandt werden & - \\
+  \hline
+  2.3 & Programmierung & Der Quelltext soll mit Unit-Testing überprüft werden & - \\
+  \hline
+  3.1 & Dokumentation & Der Quelltext soll mit Javadoc kommentiert werden & - \\
+  \hline
+  3.2 & Dokumentation & Die Architektur soll in UML visualisiert werden & - \\
+  \hline
+  4.1 & Recherche & Es soll nach bestehenden Tools recherchiert werden, welche für den Extraktor verwendet werden können & - \\
+  \hline
+  4.2 & Recherche & Bestehende Tools sollen hinsichtlich ihrer Tauglichkeit für dieses Projekt bewertet werden & - \\
+  \hline
+  4.3 & Recherche & Bestehende Tools sollten den eigenen Entwicklungsaufwand möglichst weit reduzieren & - \\
+  \hline
+  4.4 & Recherche & Bestehende Tools sollten sich möglichst noch in der aktiven Weiterentwicklung befinden, so dass evtl. bestehende Fehler korrigiert werden und eine Weiterentwicklung (etwa für neue Java-Versionen) absehbar ist & - \\
+  \hline
+  4.5 & Recherche & Recherchierte Tools sollten, selbst im Falle der Unbrauchbarkeit für diese Projekt, kurz beschrieben und abgehandelt werden & - \\
+  \hline
+  \caption{Anforderungsliste}
+\end{longtable}
+
+\end{document}

@@ -13,7 +13,7 @@
   
   <!-- project directory -->
   <property name="project.dir"			
-		    value="../javaextractor"/>
+		    value="../${projectname}"/>
   
   <!-- source directory -->
   <property name="src.dir"				

@@ -19,21 +19,26 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
+		indentLevel++;
+
 		bw.append("{\n");
 		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
-			((CGMember) imo.getAlpha()).generateCode(bw, indentLevel + 1);
-			bw.append('\n');
+			JavaCodeGenerator.indent(bw, indentLevel);
+			((CGMember) imo.getAlpha()).generateCode(bw, indentLevel);
+			bw.append("\n\n");
 		}
 
 		for (IsStatementOfBody isob : getIsStatementOfBodyIncidences(EdgeDirection.IN)) {
 			CGStatement s = (CGStatement) isob.getAlpha();
-			s.generateCode(bw, indentLevel + 1);
+			JavaCodeGenerator.indent(bw, indentLevel);
+			s.generateCode(bw, indentLevel);
 			if (!JavaCodeGenerator.isBlockConstruct(s)) {
 				bw.append(';');
 			}
 			bw.append("\n");
 		}
 
+		indentLevel--;
 		JavaCodeGenerator.indent(bw, indentLevel);
 		bw.append("}");
 	}

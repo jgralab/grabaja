@@ -16,8 +16,7 @@ public class CGBooleanConstantImpl extends BooleanConstantImpl implements
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		// TODO Auto-generated method stub
-
+		bw.append(Boolean.toString(value));
 	}
 
 }

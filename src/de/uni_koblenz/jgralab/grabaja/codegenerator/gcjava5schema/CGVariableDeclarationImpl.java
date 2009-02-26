@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
-import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsInitializerOfVariable;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfVariable;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.VariableDeclarationImpl;
@@ -20,7 +19,6 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		JavaCodeGenerator.indent(bw, indentLevel);
 
 		// first the modifiers
 		for (IsModifierOfVariable imov : getIsModifierOfVariableIncidences(EdgeDirection.IN)) {

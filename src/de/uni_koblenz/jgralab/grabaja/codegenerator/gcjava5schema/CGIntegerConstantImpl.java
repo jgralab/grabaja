@@ -16,8 +16,7 @@ public class CGIntegerConstantImpl extends IntegerConstantImpl implements
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		// TODO Auto-generated method stub
-
+		bw.append(literal);
 	}
 
 }

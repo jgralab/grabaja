@@ -17,7 +17,7 @@ public class CGConditionalExpressionImpl extends ConditionalExpressionImpl
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		bw.append('(');
+		bw.append("((");
 
 		// new the condition (1,1)
 		((CGExpression) getFirstIsConditionOfExpression(EdgeDirection.IN)
@@ -35,6 +35,7 @@ public class CGConditionalExpressionImpl extends ConditionalExpressionImpl
 		((CGExpression) getFirstIsMismatchOf(EdgeDirection.IN).getAlpha())
 				.generateCode(bw, indentLevel);
 
+		bw.append(')');
 	}
 
 }

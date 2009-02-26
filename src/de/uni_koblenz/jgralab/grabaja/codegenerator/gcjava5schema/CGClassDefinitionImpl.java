@@ -5,7 +5,10 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ClassDefinitionImpl;
 
 public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
@@ -18,6 +21,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
+
 		// write all modifiers
 		for (IsModifierOfClass imoc : getIsModifierOfClassIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imoc.getAlpha()).generateCode(bw, indentLevel);
@@ -29,7 +33,33 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 				.generateCode(bw, indentLevel);
 		bw.append(' ');
 
-		// TODO: here come extended classes and implemented interfaces...
+		// now the type parameters (0,*)
+		for (IsTypeParameterOfClass itpoc : getIsTypeParameterOfClassIncidences(EdgeDirection.IN)) {
+			bw.append("<");
+			// TODO: CGTypeParameterDeclaration's missing...
+			bw.append(">");
+		}
+
+		// the superclass (0,1)
+		IsSuperClassOfClass iscoc = getFirstIsSuperClassOfClass(EdgeDirection.IN);
+		if (iscoc != null) {
+			bw.append("extends ");
+			((CGTypeSpecification) iscoc.getAlpha()).generateCode(bw,
+					indentLevel);
+		}
+
+		// the interfaces (0,*)
+		boolean first = true;
+		for (IsInterfaceOfClass iioc : getIsInterfaceOfClassIncidences(EdgeDirection.IN)) {
+			if (first) {
+				first = false;
+				bw.append(" implements ");
+			} else {
+				bw.append(", ");
+			}
+			((CGTypeSpecification) iioc.getAlpha()).generateCode(bw,
+					indentLevel);
+		}
 
 		// write the class block (there's exactly one)
 		((CGBlockImpl) getFirstIsClassBlockOf(EdgeDirection.IN).getAlpha())

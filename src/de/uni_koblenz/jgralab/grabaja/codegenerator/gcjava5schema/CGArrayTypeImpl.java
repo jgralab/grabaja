@@ -11,6 +11,7 @@ public class CGArrayTypeImpl extends ArrayTypeImpl implements
 
 	public CGArrayTypeImpl(int id, Graph g) {
 		super(id, g);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

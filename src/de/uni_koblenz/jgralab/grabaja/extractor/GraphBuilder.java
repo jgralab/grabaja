@@ -124,11 +124,11 @@ public class GraphBuilder {
 		int parsingSuccessCount = 0;
 		int parsingFailedCount = 0;
 		ArrayList<CommentClass> comments = new ArrayList<CommentClass>(); // Collects
-																			// comments
-																			// found
-																			// in
-																			// a
-																			// file.
+		// comments
+		// found
+		// in
+		// a
+		// file.
 		LocalTypeSpecificationResolver localResolver = new LocalTypeSpecificationResolver(
 				symbolTable);
 		for (int i = 0; i < fileList.size(); i++) {
@@ -146,7 +146,7 @@ public class GraphBuilder {
 			}
 			comments.clear(); // Clear comments before parsing next file.
 			symbolTable.nextFile(); // Clear type information of just parsed
-									// file before parsing next one.
+			// file before parsing next one.
 			if (i % progressBar.getUpdateInterval() == 0) {
 				progressBar.progress(1);
 			}
@@ -175,33 +175,33 @@ public class GraphBuilder {
 			// @TODO make it a singleton
 			JavaLexerAdapter javaLexer = new JavaLexerAdapter(inputState);
 			javaLexer
-					.setTokenObjectClass("de.gupro.javaextractor.adapters.CommonTokenAdapter"); // Tells
-																								// lexer
-																								// to
-																								// use
-																								// token
-																								// with
-																								// attribute
-																								// for
-																								// offset.
+					.setTokenObjectClass("de.uni_koblenz.jgralab.grabaja.extractor.adapters.CommonTokenAdapter"); // Tells
+			// lexer
+			// to
+			// use
+			// token
+			// with
+			// attribute
+			// for
+			// offset.
 			javaLexer.setCommentCollection(comments);
 			// javaLexer.setLogger( logger );
 			// Create a parser that reads from the lexer.
 			// @TODO make it a singleton
 			JavaRecognizer javaParser = new JavaRecognizer(javaLexer);
 			javaParser
-					.setASTNodeClass("de.gupro.javaextractor.adapters.CommonASTAdapter"); // Tells
-																							// parser
-																							// to
-																							// use
-																							// AST
-																							// with
-																							// attribute
-																							// for
-																							// offset.
+					.setASTNodeClass("de.uni_koblenz.jgralab.grabaja.extractor.adapters.CommonASTAdapter"); // Tells
+			// parser
+			// to
+			// use
+			// AST
+			// with
+			// attribute
+			// for
+			// offset.
 			javaParser.setFilename(fileName);
 			javaParser.compilationUnit(); // Start parsing at the
-											// compilationUnit rule
+			// compilationUnit rule
 			// logger.info( "parsing was succesful" );
 			return (CommonAST) javaParser.getAST();
 		} catch (Exception exception) {
@@ -238,7 +238,7 @@ public class GraphBuilder {
 			}
 			SourceUsage sourceUsageVertex = programGraph.createSourceUsage();
 			sourceUsageVertex.setLengthOfFile(0); // @TODO warum muss das 0
-													// sein???
+			// sein???
 			programGraph.createIsSourceUsageIn(sourceUsageVertex,
 					translationUnitVertex);
 			SourceFile sourceFileVertex = programGraph.createSourceFile();

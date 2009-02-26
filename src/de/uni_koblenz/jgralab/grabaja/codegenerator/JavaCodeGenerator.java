@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.GraphFactory;
 import de.uni_koblenz.jgralab.GraphIOException;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBlockImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBooleanConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBuiltInCastImpl;
@@ -40,6 +41,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInCast;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ConditionalExpression;
+import de.uni_koblenz.jgralab.grabaja.java5schema.DoWhile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldAccess;
 import de.uni_koblenz.jgralab.grabaja.java5schema.For;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
@@ -61,9 +63,11 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Return;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.StringConstant;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TraditionalForClause;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
+import de.uni_koblenz.jgralab.grabaja.java5schema.While;
 
 public class JavaCodeGenerator {
 
@@ -75,6 +79,15 @@ public class JavaCodeGenerator {
 	 */
 	public File getBaseDirectory() {
 		return baseDirectory;
+	}
+
+	public static boolean isLoop(Vertex v) {
+		return v instanceof While || v instanceof For || v instanceof DoWhile;
+	}
+
+	public static boolean isBlockConstruct(Vertex v) {
+		return v instanceof Block || v instanceof If || v instanceof Switch
+				| isLoop(v);
 	}
 
 	public static void indent(BufferedWriter bw, int level) throws IOException {

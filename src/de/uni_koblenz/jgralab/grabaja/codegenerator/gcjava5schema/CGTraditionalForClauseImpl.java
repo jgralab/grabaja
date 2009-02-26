@@ -46,7 +46,7 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 			((CGExpression) iio.getAlpha()).generateCode(bw, 0);
 		}
 
-		bw.append(')');
+		bw.append(") ");
 	}
 
 }

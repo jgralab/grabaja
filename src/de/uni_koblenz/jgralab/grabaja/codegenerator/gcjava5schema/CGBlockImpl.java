@@ -26,12 +26,13 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 		}
 
 		for (IsStatementOfBody isob : getIsStatementOfBodyIncidences(EdgeDirection.IN)) {
-			CGStatement s =	(CGStatement) isob.getAlpha();
+			CGStatement s = (CGStatement) isob.getAlpha();
 			s.generateCode(bw, indentLevel + 1);
-			// TODO: Add ";" only for non-block constructs
-			bw.append(";");
+			if (!JavaCodeGenerator.isBlockConstruct(s)) {
+				bw.append(';');
+			}
+			bw.append("\n");
 		}
-		bw.append("\n");
 
 		JavaCodeGenerator.indent(bw, indentLevel);
 		bw.append("}");

@@ -6,6 +6,7 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
+import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMemberOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfBody;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BlockImpl;
@@ -22,10 +23,27 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 		indentLevel++;
 
 		bw.append("{\n");
+
+		boolean first = true;
 		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
-			JavaCodeGenerator.indent(bw, indentLevel);
-			((CGMember) imo.getAlpha()).generateCode(bw, indentLevel);
-			bw.append("\n\n");
+			CGMember m = (CGMember) imo.getAlpha();
+
+			if (m instanceof EnumConstant) {
+				if (first) {
+					JavaCodeGenerator.indent(bw, indentLevel);
+					first = false;
+				} else {
+					bw.append(", ");
+				}
+				m.generateCode(bw, indentLevel);
+			} else {
+				JavaCodeGenerator.indent(bw, indentLevel);
+				m.generateCode(bw, indentLevel);
+				bw.append("\n\n");
+			}
+		}
+		if (!first) {
+			bw.append('\n');
 		}
 
 		for (IsStatementOfBody isob : getIsStatementOfBodyIncidences(EdgeDirection.IN)) {

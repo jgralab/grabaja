@@ -31,25 +31,33 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		// write the class name
 		((CGIdentifierImpl) getFirstIsClassNameOf(EdgeDirection.IN).getAlpha())
 				.generateCode(bw, indentLevel);
-		bw.append(' ');
 
 		// now the type parameters (0,*)
+		boolean first = true;
 		for (IsTypeParameterOfClass itpoc : getIsTypeParameterOfClassIncidences(EdgeDirection.IN)) {
-			bw.append("<");
-			// TODO: CGTypeParameterDeclaration's missing...
+			if (first) {
+				first = false;
+				bw.append("<");
+			} else {
+				bw.append(", ");
+			}
+			((CGTypeParameterDeclarationImpl) itpoc.getAlpha()).generateCode(
+					bw, indentLevel);
+		}
+		if (!first) {
 			bw.append(">");
 		}
 
 		// the superclass (0,1)
 		IsSuperClassOfClass iscoc = getFirstIsSuperClassOfClass(EdgeDirection.IN);
 		if (iscoc != null) {
-			bw.append("extends ");
+			bw.append(" extends ");
 			((CGTypeSpecification) iscoc.getAlpha()).generateCode(bw,
 					indentLevel);
 		}
 
 		// the interfaces (0,*)
-		boolean first = true;
+		first = true;
 		for (IsInterfaceOfClass iioc : getIsInterfaceOfClassIncidences(EdgeDirection.IN)) {
 			if (first) {
 				first = false;
@@ -60,6 +68,8 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 			((CGTypeSpecification) iioc.getAlpha()).generateCode(bw,
 					indentLevel);
 		}
+
+		bw.append(' ');
 
 		// write the class block (there's exactly one)
 		((CGBlockImpl) getFirstIsClassBlockOf(EdgeDirection.IN).getAlpha())

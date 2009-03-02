@@ -17,6 +17,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBuiltInTypeI
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGClassDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGClassImportDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGConditionalExpressionImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGDoubleConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGEnumConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGEnumDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGFieldAccessImpl;
@@ -63,6 +64,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ConditionalExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.DoWhile;
+import de.uni_koblenz.jgralab.grabaja.java5schema.DoubleConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldAccess;
@@ -152,6 +154,8 @@ public class JavaCodeGenerator {
 				CGClassImportDefinitionImpl.class);
 		f.setVertexImplementationClass(ConditionalExpression.class,
 				CGConditionalExpressionImpl.class);
+		f.setVertexImplementationClass(DoubleConstant.class,
+				CGDoubleConstantImpl.class);
 		f.setVertexImplementationClass(EnumConstant.class,
 				CGEnumConstantImpl.class);
 		f.setVertexImplementationClass(EnumDefinition.class,

@@ -12,6 +12,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBooleanConst
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBuiltInCastImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBuiltInTypeImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGClassDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGClassImportDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGConditionalExpressionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGFieldAccessImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGForImpl;
@@ -23,6 +24,9 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodDeclar
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodInvocationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGModifierImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGNullImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGPackageDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGPackageImportDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGParameterDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGPostfixExpressionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGProgramImpl;
@@ -34,12 +38,16 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGSourceUsageI
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGStringConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTraditionalForClauseImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTranslationUnitImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeArgumentImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeParameterDeclarationImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeParameterUsageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGVariableDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BooleanConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInCast;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.ClassImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ConditionalExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.DoWhile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldAccess;
@@ -54,6 +62,9 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodInvocation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Modifier;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Null;
+import de.uni_koblenz.jgralab.grabaja.java5schema.PackageDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.PackageImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ParameterDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.PostfixExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Program;
@@ -66,6 +77,9 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.StringConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TraditionalForClause;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
+import de.uni_koblenz.jgralab.grabaja.java5schema.TypeArgument;
+import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterDeclaration;
+import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.While;
 
@@ -107,6 +121,8 @@ public class JavaCodeGenerator {
 				CGBuiltInTypeImpl.class);
 		f.setVertexImplementationClass(ClassDefinition.class,
 				CGClassDefinitionImpl.class);
+		f.setVertexImplementationClass(ClassImportDefinition.class,
+				CGClassImportDefinitionImpl.class);
 		f.setVertexImplementationClass(ConditionalExpression.class,
 				CGConditionalExpressionImpl.class);
 		f.setVertexImplementationClass(FieldAccess.class,
@@ -127,6 +143,11 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(MethodInvocation.class,
 				CGMethodInvocationImpl.class);
 		f.setVertexImplementationClass(Modifier.class, CGModifierImpl.class);
+		f.setVertexImplementationClass(Null.class, CGNullImpl.class);
+		f.setVertexImplementationClass(PackageDefinition.class,
+				CGPackageDefinitionImpl.class);
+		f.setVertexImplementationClass(PackageImportDefinition.class,
+				CGPackageImportDefinitionImpl.class);
 		f.setVertexImplementationClass(ParameterDeclaration.class,
 				CGParameterDeclarationImpl.class);
 		f.setVertexImplementationClass(PostfixExpression.class,
@@ -148,6 +169,12 @@ public class JavaCodeGenerator {
 				CGTraditionalForClauseImpl.class);
 		f.setVertexImplementationClass(TranslationUnit.class,
 				CGTranslationUnitImpl.class);
+		f.setVertexImplementationClass(TypeArgument.class,
+				CGTypeArgumentImpl.class);
+		f.setVertexImplementationClass(TypeParameterDeclaration.class,
+				CGTypeParameterDeclarationImpl.class);
+		f.setVertexImplementationClass(TypeParameterUsage.class,
+				CGTypeParameterUsageImpl.class);
 		f.setVertexImplementationClass(VariableDeclaration.class,
 				CGVariableDeclarationImpl.class);
 	}

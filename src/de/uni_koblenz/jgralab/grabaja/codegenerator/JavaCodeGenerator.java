@@ -7,6 +7,9 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.GraphFactory;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.Vertex;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGAnnotationDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGAnnotationFieldImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGAnnotationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBlockImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBooleanConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBuiltInCastImpl;
@@ -47,7 +50,11 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeArgument
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeParameterDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeParameterUsageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGVariableDeclarationImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGVariableInitializerImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGWildcardArgumentImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Annotation;
+import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationField;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BooleanConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInCast;
@@ -92,6 +99,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.TypeArgument;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
+import de.uni_koblenz.jgralab.grabaja.java5schema.VariableInitializer;
 import de.uni_koblenz.jgralab.grabaja.java5schema.While;
 import de.uni_koblenz.jgralab.grabaja.java5schema.WildcardArgument;
 
@@ -124,6 +132,13 @@ public class JavaCodeGenerator {
 
 	static {
 		GraphFactory f = Java5Schema.instance().getGraphFactory();
+		f
+				.setVertexImplementationClass(Annotation.class,
+						CGAnnotationImpl.class);
+		f.setVertexImplementationClass(AnnotationDefinition.class,
+				CGAnnotationDefinitionImpl.class);
+		f.setVertexImplementationClass(AnnotationField.class,
+				CGAnnotationFieldImpl.class);
 		f.setVertexImplementationClass(Block.class, CGBlockImpl.class);
 		f.setVertexImplementationClass(BooleanConstant.class,
 				CGBooleanConstantImpl.class);
@@ -199,6 +214,8 @@ public class JavaCodeGenerator {
 				CGTypeParameterUsageImpl.class);
 		f.setVertexImplementationClass(VariableDeclaration.class,
 				CGVariableDeclarationImpl.class);
+		f.setVertexImplementationClass(VariableInitializer.class,
+				CGVariableInitializerImpl.class);
 		f.setVertexImplementationClass(WildcardArgument.class,
 				CGWildcardArgumentImpl.class);
 	}

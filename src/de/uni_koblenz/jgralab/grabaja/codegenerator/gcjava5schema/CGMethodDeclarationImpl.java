@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfMember;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExceptionThrownByMethod;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfMethod;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsParameterOfMethod;
@@ -29,7 +30,13 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 
 	static void generateMethodDeclarationCodeFor(MethodDeclaration md,
 			BufferedWriter bw, int indentLevel) throws IOException {
-		// first the modifiers
+		// first the annotations (0,*)
+		for (IsAnnotationOfMember iaot : md
+				.getIsAnnotationOfMemberIncidences(EdgeDirection.IN)) {
+			((CGAnnotationImpl) iaot.getAlpha()).generateCode(bw, indentLevel);
+		}
+
+		// the modifiers
 		for (IsModifierOfMethod imom : md
 				.getIsModifierOfMethodIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imom.getAlpha()).generateCode(bw, indentLevel);

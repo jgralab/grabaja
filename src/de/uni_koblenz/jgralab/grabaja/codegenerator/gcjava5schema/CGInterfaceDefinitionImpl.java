@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfInterface;
@@ -20,6 +21,11 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
+		// first the annotations (0,*)
+		for (IsAnnotationOfType iaot : getIsAnnotationOfTypeIncidences(EdgeDirection.IN)) {
+			((CGAnnotationImpl) iaot.getAlpha()).generateCode(bw, indentLevel);
+		}
+
 		// write all modifiers (0,*)
 		for (IsModifierOfInterface imoc : getIsModifierOfInterfaceIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imoc.getAlpha()).generateCode(bw, indentLevel);

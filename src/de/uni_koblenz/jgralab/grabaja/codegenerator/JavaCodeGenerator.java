@@ -33,6 +33,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGProgramImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGQualifiedNameImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGQualifiedTypeImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGReturnImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGSimpleArgumentImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGSourceFileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGSourceUsageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGStringConstantImpl;
@@ -42,6 +43,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeArgument
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeParameterDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGTypeParameterUsageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGVariableDeclarationImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGWildcardArgumentImpl;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BooleanConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInCast;
@@ -71,6 +73,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Program;
 import de.uni_koblenz.jgralab.grabaja.java5schema.QualifiedName;
 import de.uni_koblenz.jgralab.grabaja.java5schema.QualifiedType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Return;
+import de.uni_koblenz.jgralab.grabaja.java5schema.SimpleArgument;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.StringConstant;
@@ -82,6 +85,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.While;
+import de.uni_koblenz.jgralab.grabaja.java5schema.WildcardArgument;
 
 public class JavaCodeGenerator {
 
@@ -158,6 +162,8 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(QualifiedType.class,
 				CGQualifiedTypeImpl.class);
 		f.setVertexImplementationClass(Return.class, CGReturnImpl.class);
+		f.setVertexImplementationClass(SimpleArgument.class,
+				CGSimpleArgumentImpl.class);
 		f
 				.setVertexImplementationClass(SourceFile.class,
 						CGSourceFileImpl.class);
@@ -177,6 +183,8 @@ public class JavaCodeGenerator {
 				CGTypeParameterUsageImpl.class);
 		f.setVertexImplementationClass(VariableDeclaration.class,
 				CGVariableDeclarationImpl.class);
+		f.setVertexImplementationClass(WildcardArgument.class,
+				CGWildcardArgumentImpl.class);
 	}
 
 	public void setGraph(String graphFile) throws GraphIOException {

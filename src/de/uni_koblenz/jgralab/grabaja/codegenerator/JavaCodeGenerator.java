@@ -20,6 +20,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGIdentifierIm
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGIfImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGInfixExpressionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGIntegerConstantImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGJavaPackageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodInvocationImpl;
@@ -60,6 +61,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.InfixExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IntegerConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
+import de.uni_koblenz.jgralab.grabaja.java5schema.JavaPackage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodInvocation;
@@ -140,6 +142,8 @@ public class JavaCodeGenerator {
 				CGInfixExpressionImpl.class);
 		f.setVertexImplementationClass(IntegerConstant.class,
 				CGIntegerConstantImpl.class);
+		f.setVertexImplementationClass(JavaPackage.class,
+				CGJavaPackageImpl.class);
 		f.setVertexImplementationClass(MethodDeclaration.class,
 				CGMethodDeclarationImpl.class);
 		f.setVertexImplementationClass(MethodDefinition.class,

@@ -7,6 +7,7 @@ import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArgumentOfMethodInvocation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMethodContainerOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsNameOfInvokedMethod;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.MethodInvocationImpl;
 
 public class CGMethodInvocationImpl extends MethodInvocationImpl implements
@@ -26,11 +27,13 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 			bw.append('.');
 		}
 
-		// then the method name (1,1)
-		((CGIdentifierImpl) getFirstIsNameOfInvokedMethod(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
-
 		// TODO: Do I need to do something with the `type' attribute?
+
+		// then the method name (0,1), 0 in the case of constructors
+		IsNameOfInvokedMethod inoim = getFirstIsNameOfInvokedMethod(EdgeDirection.IN);
+		if (inoim != null) {
+			((CGIdentifierImpl) inoim.getAlpha()).generateCode(bw, indentLevel);
+		}
 
 		bw.append('(');
 

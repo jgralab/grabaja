@@ -26,6 +26,9 @@ public class CGEnumConstantImpl extends EnumConstantImpl implements
 		// TODO What's the Block the schema has at the IsEnumConstantBlockOf
 		// edge???
 
+		// TODO What's the Expression the schema has at the
+		// IsArgumentOfEnumConstant edge???
+
 		// the name (1,1)
 		((CGIdentifierImpl) getFirstIsEnumConstantNameOf(EdgeDirection.IN)
 				.getAlpha()).generateCode(bw, indentLevel);

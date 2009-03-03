@@ -25,18 +25,31 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 
 		bw.append("{\n");
 
+		// first the enum constants (0,*)
 		boolean first = true;
 		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
 			CGMember m = (CGMember) imo.getAlpha();
+			if (!(m instanceof EnumConstant)) {
+				continue;
+			}
+			if (first) {
+				JavaCodeGenerator.indent(bw, indentLevel);
+				first = false;
+			} else {
+				bw.append(", ");
+			}
+			m.generateCode(bw, indentLevel);
+		}
+		if (!first) {
+			bw.append(";\n\n");
+		}
 
+		// then every member except enum constants (0,*)
+		first = true;
+		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
+			CGMember m = (CGMember) imo.getAlpha();
 			if (m instanceof EnumConstant) {
-				if (first) {
-					JavaCodeGenerator.indent(bw, indentLevel);
-					first = false;
-				} else {
-					bw.append(", ");
-				}
-				m.generateCode(bw, indentLevel);
+				continue;
 			} else if (m instanceof MethodDeclaration) {
 				JavaCodeGenerator.indent(bw, indentLevel);
 				m.generateCode(bw, indentLevel);

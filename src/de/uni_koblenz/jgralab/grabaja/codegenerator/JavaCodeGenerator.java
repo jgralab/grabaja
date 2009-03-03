@@ -40,6 +40,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodDefini
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGMethodInvocationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGModifierImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGNullImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGObjectCreationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGPackageDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGPackageImportDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGParameterDeclarationImpl;
@@ -99,6 +100,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodInvocation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Modifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Null;
+import de.uni_koblenz.jgralab.grabaja.java5schema.ObjectCreation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.PackageDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.PackageImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ParameterDeclaration;
@@ -211,6 +213,8 @@ public class JavaCodeGenerator {
 				CGMethodInvocationImpl.class);
 		f.setVertexImplementationClass(Modifier.class, CGModifierImpl.class);
 		f.setVertexImplementationClass(Null.class, CGNullImpl.class);
+		f.setVertexImplementationClass(ObjectCreation.class,
+				CGObjectCreationImpl.class);
 		f.setVertexImplementationClass(PackageDefinition.class,
 				CGPackageDefinitionImpl.class);
 		f.setVertexImplementationClass(PackageImportDefinition.class,

@@ -16,11 +16,13 @@ public class CGForImpl extends ForImpl implements CGStatement {
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		bw.append("for ");
+		bw.append("for (");
 
 		// now comes the head (exactly one)
 		((CGForHead) getFirstIsHeadOfFor(EdgeDirection.IN).getAlpha())
 				.generateCode(bw, indentLevel);
+
+		bw.append(") ");
 
 		// now the body (exactly one)
 		((CGBlockImpl) getFirstIsLoopBodyOfFor(EdgeDirection.IN).getAlpha())

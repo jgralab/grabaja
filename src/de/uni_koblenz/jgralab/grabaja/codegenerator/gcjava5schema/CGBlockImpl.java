@@ -9,6 +9,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMemberOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfBody;
+import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BlockImpl;
 
 public class CGBlockImpl extends BlockImpl implements CGStatement {
@@ -36,10 +37,14 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 					bw.append(", ");
 				}
 				m.generateCode(bw, indentLevel);
-			} else {
+			} else if (m instanceof MethodDeclaration) {
 				JavaCodeGenerator.indent(bw, indentLevel);
 				m.generateCode(bw, indentLevel);
 				bw.append("\n\n");
+			} else {
+				JavaCodeGenerator.indent(bw, indentLevel);
+				m.generateCode(bw, indentLevel);
+				bw.append(";\n\n");
 			}
 		}
 		if (!first) {

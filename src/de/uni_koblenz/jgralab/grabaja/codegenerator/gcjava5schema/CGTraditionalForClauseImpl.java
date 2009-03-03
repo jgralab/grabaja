@@ -20,9 +20,7 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		bw.append('(');
-
-		// now the run var inits
+		// the run var inits
 		boolean first = true;
 		for (IsRunVariableInitializationOf irvio : getIsRunVariableInitializationOfIncidences(EdgeDirection.IN)) {
 			if (first) {
@@ -45,8 +43,6 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 		for (IsIteratorOf iio : getIsIteratorOfIncidences(EdgeDirection.IN)) {
 			((CGExpression) iio.getAlpha()).generateCode(bw, 0);
 		}
-
-		bw.append(") ");
 	}
 
 }

@@ -925,7 +925,7 @@ interfaceBlock
         }
         blockBegin:LCURLY
         (
-            methodDecl{ memberFactory.attachMember( ( Member )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
+            methodDef{ memberFactory.attachMember( ( Member )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
             |
             variableDef{
                 Field fieldVertex = memberFactory.createField( blockVertex, currentAST );
@@ -955,7 +955,7 @@ objBlock
         (
             ctorDef{ memberFactory.attachMember( ( ConstructorDefinition )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
             |
-            methodDef{ memberFactory.attachMember( ( MethodDefinition )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
+            methodDef{ memberFactory.attachMember( ( MethodDeclaration )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
             |
             variableDef{
                 Field fieldVertex = memberFactory.createField( blockVertex, currentAST );
@@ -1033,7 +1033,7 @@ enumBlock
         (
             ctorDef{ memberFactory.attachMember( ( ConstructorDefinition )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
             |
-            methodDef{ memberFactory.attachMember( ( MethodDefinition )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
+            methodDef{ memberFactory.attachMember( ( MethodDeclaration )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
             |
             variableDef{
                 Field fieldVertex = memberFactory.createField( blockVertex, currentAST );
@@ -1107,59 +1107,6 @@ ctorDef{ inMethod = true; }
     { inMethod = false; }
     ;
 
-methodDecl{
-	// added on 2009-03-03 as quick fix by ultbreit
-    TypeSpecification typeSpecificationVertex = null;
-    AST typeSpecificationBeginAST = null;
-    AST typeSpecificationEndAST = null;
-	//end of quickfix
-}
-    :
-    #(
-        METHOD_DEF{
-            MethodDeclaration methodDeclarationVertex = programGraph.createMethodDeclaration();
-            currentVertex = methodDeclarationVertex;
-            AST methodBeginAST = null;
-			Vertex parentScope = currentScope;
-			currentScope = methodDeclarationVertex;
-			symbolTable.addScopeInfo( currentScope, parentScope );
-        }
-        modifiers{
-            currentVertex = methodDeclarationVertex;
-            methodBeginAST = currentBeginAST; // if there are modifiers, the begin element will be set; otherwise, it remains null.
-        }
-        (
-            typeParameters{
-                currentVertex = methodDeclarationVertex;
-                if (methodBeginAST == null) methodBeginAST = currentBeginAST; // if there have been no modifiers, set the begin element.
-            }
-        )?
-        typeSpec{
-            // added on 2009-03-03 as quick fix by ultbreit
-            typeSpecificationVertex = ( TypeSpecification )currentVertex; // keep reference
-            typeSpecificationBeginAST = currentBeginAST;
-            typeSpecificationEndAST = currentEndAST;
-            //end of quickfix
-            // added on 2009-03-03 as quick fix by ultbreit
-            if( currentDimensionCount > 0 ){
-                ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
-                typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, methodDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
-            }
-			//else typeSpecificationFactory.attachTypeSpecification( typeSpecificationVertex, methodDefinitionVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
-			// end of quick fix
-            currentVertex = methodDeclarationVertex;
-            if (methodBeginAST == null) methodBeginAST = currentBeginAST; // if there have been no modifiers an no type parameters, now there definitely is a value to be set.
-        }
-        methodHead
-        methodDeclarationEnd:SEMI{
-            currentVertex = methodDeclarationVertex;
-            setBeginAndEndAST( methodBeginAST, methodDeclarationEnd );
-            currentScope = parentScope;
-            symbolTable.addMethodDeclaration( fullyQualifiedNameOfCurrentType, methodDeclarationVertex );
-        }
-    )
-    ;
-
 methodDef{
 	inMethod = true;
 	// added on 2009-03-03 as quick fix by ultbreit
@@ -1171,13 +1118,14 @@ methodDef{
     :
     #(
         METHOD_DEF{
-            MethodDefinition methodDefinitionVertex = programGraph.createMethodDefinition();
+            MethodDeclaration methodDefinitionVertex = programGraph.createMethodDeclaration();
             currentVertex = methodDefinitionVertex;
             AST methodBeginAST = null;
 			Vertex parentScope = currentScope;
 			currentScope = methodDefinitionVertex;
 			symbolTable.addScopeInfo( currentScope, parentScope );
         }
+        
         modifiers{
 			currentDimensionCount = 0; //set dimensions to 0 because we do not know yet if next rule has an array declaration
             currentVertex = methodDefinitionVertex;
@@ -1206,19 +1154,32 @@ methodDef{
             if (methodBeginAST == null) methodBeginAST = currentBeginAST; // if there have been no modifiers an no type parameters, now there definitely is a value to be set.
         }
         methodHead{
-
 			currentVertex = methodDefinitionVertex;
 		}
-        (
-            {
+        (blockBegin:LCURLY {
+                currentVertex = methodDefinitionVertex;
+                System.out.println("MethodDeclaration is a MethodDefinition!");
+                MethodDeclaration old = methodDefinitionVertex;
+                methodDefinitionVertex = programGraph.createMethodDefinition();
+                currentVertex = methodDefinitionVertex;
+
+                Edge curr = old.getFirstEdge();
+                    while (curr != null) {
+                        Edge next = curr.getNextEdge();
+                        curr.setThis(methodDefinitionVertex);
+                        curr = next;
+                }
+                
+                old.delete();
                 Block blockVertexOfMethod = programGraph.createBlock();
                 currentVertex = blockVertexOfMethod;
             }
             slist{ // statement list
-                memberFactory.attachBlock( blockVertexOfMethod, methodDefinitionVertex, currentBeginAST, currentEndAST );
+                memberFactory.attachBlock( blockVertexOfMethod, (MethodDefinition) methodDefinitionVertex,
+                                           currentBeginAST, currentEndAST );
                 currentVertex = methodDefinitionVertex;
             }
-        )?
+        ) // <== here has to be a ?, removed for debugging purposes...
         ( methodDefinitionEnd:SEMI{ currentEndAST = methodDefinitionEnd; } )?
         {
             currentBeginAST = methodBeginAST; // currentEndAST already set correctly
@@ -1424,7 +1385,7 @@ enumConstantBlock
         }
         blockBegin:LCURLY
         (
-            methodDef{ memberFactory.attachMember( ( MethodDefinition )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
+            methodDef{ memberFactory.attachMember( ( MethodDeclaration )currentVertex, blockVertex, currentBeginAST, currentEndAST ); }
             |
             variableDef{
                 Field fieldVertex = memberFactory.createField( blockVertex, currentAST );
@@ -2180,7 +2141,7 @@ expr
     ;
 
 conditionalExpr
-    :
+    :   
     #(
         QUESTION
         expr{

@@ -829,7 +829,12 @@ annotationMemberValueInitializer{ Vertex parentVertex = currentVertex; }
             expressionFactory.attachRightHandSide( ( InfixExpression )parentVertex, variableInitializerVertex, currentBeginAST, currentEndAST );
             currentVertex = variableInitializerVertex;
         }
-        else if( parentVertex instanceof AnnotationField ) annotationFactory.attachDefaultValue( ( AnnotationField )parentVertex, variableInitializerVertex, currentBeginAST, currentEndAST );
+        else if( parentVertex instanceof AnnotationField ){
+// added on 2009-03-03 as quick fix by abaldauf
+            expressionFactory.attachVariableInitializer( ( Expression )currentVertex, variableInitializerVertex, currentBeginAST, currentEndAST );
+// end fix
+            annotationFactory.attachDefaultValue( ( AnnotationField )parentVertex, variableInitializerVertex, currentBeginAST, currentEndAST );
+        }
         else if( parentVertex instanceof Annotation ) currentVertex = variableInitializerVertex; // must be a variable initializer serving as argument for an annotation (like some int constant)
     }
     |
@@ -2589,8 +2594,9 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
         newExpression
         |
         constant{
-            if( parentVertex instanceof VariableInitializer )
-                expressionFactory.attachVariableInitializer( ( Expression )currentVertex, ( VariableInitializer )parentVertex, currentBeginAST, currentEndAST );
+// added on 2009-03-03 as quick fix by abaldauf
+//            if( parentVertex instanceof VariableInitializer )
+//                expressionFactory.attachVariableInitializer( ( Expression )currentVertex, ( VariableInitializer )parentVertex, currentBeginAST, currentEndAST );
         }
         |
         superClass:"super"{

@@ -476,12 +476,17 @@ typeUpperBounds{ Vertex parentVertex = currentVertex; }
 
 typeSpec : #(TYPE typeSpecArray ) ;
 
+/**
+ * Takes care of an array type specification.
+ */
 typeSpecArray
     :
     #(
         ARRAY_DECLARATOR
+        {currentDimensionCount++;}
     	typeSpecArray{
-            currentDimensionCount++;
+            //System.Out.writeln("Found array type specification!");
+            //currentDimensionCount++;
             currentArrayTypeEndAST = currentEndAST; // this must be set if there is no closing bracket (which is the case for int a[] array declarations)
 		}
     	( arrayTypeEnd:RBRACK{ currentArrayTypeEndAST = arrayTypeEnd;} )?
@@ -501,11 +506,20 @@ type{ Vertex parentVertex = currentVertex; }
 			symbolTable.addUnresolvedTypeSpecification( currentScope, qualifiedTypeVertex );
            	if( !typeSpecificationFactory.attachTypeSpecification( qualifiedTypeVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = classType;
             currentVertex = qualifiedTypeVertex;
-
+            System.out.println("classType");
         }
         |
         primitiveType:builtInType{
-            if( !typeSpecificationFactory.attachTypeSpecification( ( TypeSpecification )currentVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = primitiveType;
+            if(currentDimensionCount > 0 )
+            	System.out.println("type is an array with " + currentDimensionCount + " dimensions" );
+            else
+            	System.out.println("type is no array");
+            //
+            // added on 2009-03-03 as quick fix by ultbreit
+            if(currentDimensionCount == 0) //check if it is an array type specification or else it is attached twice as IsReturnTypeOf
+            // end of quick fix
+            	if( !typeSpecificationFactory.attachTypeSpecification( ( TypeSpecification )currentVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = primitiveType;
+			System.out.println("builtInType");
         }
     )
     ;
@@ -875,14 +889,16 @@ extendsClause{ Vertex parentVertex = currentVertex; }
         )*
     )
     ;
-
+/**
+ * Takes care of implements clause in a class declaration. E. g. "class String implements Comparable"
+ */
 implementsClause{ Vertex parentVertex = currentVertex; }
     :
     #(
         IMPLEMENTS_CLAUSE
         (
 			{
-				QualifiedType qualifiedTypeVertex = programGraph.createQualifiedType();
+				QualifiedType qualifiedTypeVertex = programGraph.createQualifiedType(); //vertex representing implemented interface
 				currentVertex = qualifiedTypeVertex;
 			}
 			classOrInterfaceType{
@@ -1086,7 +1102,13 @@ ctorDef{ inMethod = true; }
     { inMethod = false; }
     ;
 
-methodDecl
+methodDecl{
+	// added on 2009-03-03 as quick fix by ultbreit
+    TypeSpecification typeSpecificationVertex = null;
+    AST typeSpecificationBeginAST = null;
+    AST typeSpecificationEndAST = null;
+	//end of quickfix
+}
     :
     #(
         METHOD_DEF{
@@ -1108,6 +1130,18 @@ methodDecl
             }
         )?
         typeSpec{
+            // added on 2009-03-03 as quick fix by ultbreit
+            typeSpecificationVertex = ( TypeSpecification )currentVertex; // keep reference
+            typeSpecificationBeginAST = currentBeginAST;
+            typeSpecificationEndAST = currentEndAST;
+            //end of quickfix
+            // added on 2009-03-03 as quick fix by ultbreit
+            if( currentDimensionCount > 0 ){
+                ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+                typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, methodDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
+            }
+			//else typeSpecificationFactory.attachTypeSpecification( typeSpecificationVertex, methodDefinitionVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+			// end of quick fix
             currentVertex = methodDeclarationVertex;
             if (methodBeginAST == null) methodBeginAST = currentBeginAST; // if there have been no modifiers an no type parameters, now there definitely is a value to be set.
         }
@@ -1121,7 +1155,14 @@ methodDecl
     )
     ;
 
-methodDef{ inMethod = true; }
+methodDef{
+	inMethod = true;
+	// added on 2009-03-03 as quick fix by ultbreit
+    TypeSpecification typeSpecificationVertex = null;
+    AST typeSpecificationBeginAST = null;
+    AST typeSpecificationEndAST = null;
+	//end of quickfix
+}
     :
     #(
         METHOD_DEF{
@@ -1133,6 +1174,7 @@ methodDef{ inMethod = true; }
 			symbolTable.addScopeInfo( currentScope, parentScope );
         }
         modifiers{
+			currentDimensionCount = 0; //set dimensions to 0 because we do not know yet if next rule has an array declaration
             currentVertex = methodDefinitionVertex;
             methodBeginAST = currentBeginAST; // if there are modifiers, the begin element will be set; otherwise, it remains null.
         }
@@ -1143,16 +1185,31 @@ methodDef{ inMethod = true; }
         }
         )?
         typeSpec{
+            // added on 2009-03-03 as quick fix by ultbreit
+            typeSpecificationVertex = ( TypeSpecification )currentVertex; // keep reference
+            typeSpecificationBeginAST = currentBeginAST;
+            typeSpecificationEndAST = currentEndAST;
+            //end of quickfix
+            // added on 2009-03-03 as quick fix by ultbreit
+            if( currentDimensionCount > 0 ){
+                ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+                typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, methodDefinitionVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
+            }
+			//else typeSpecificationFactory.attachTypeSpecification( typeSpecificationVertex, methodDefinitionVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+			// end of quick fix
             currentVertex = methodDefinitionVertex;
             if (methodBeginAST == null) methodBeginAST = currentBeginAST; // if there have been no modifiers an no type parameters, now there definitely is a value to be set.
         }
-        methodHead{ currentVertex = methodDefinitionVertex; }
+        methodHead{
+
+			currentVertex = methodDefinitionVertex;
+		}
         (
             {
                 Block blockVertexOfMethod = programGraph.createBlock();
                 currentVertex = blockVertexOfMethod;
             }
-            slist{
+            slist{ // statement list
                 memberFactory.attachBlock( blockVertexOfMethod, methodDefinitionVertex, currentBeginAST, currentEndAST );
                 currentVertex = methodDefinitionVertex;
             }
@@ -1201,7 +1258,7 @@ variableDef{
             else typeSpecificationFactory.attachTypeSpecification( typeSpecificationVertex, variableDeclarationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
         }
         varInitializer{
-            //check if this is a definition or just a declaration
+            //check if this is really a definition or just a declaration
             if( currentVertex != null ) expressionFactory.attachExpression( ( Expression )currentVertex, variableDeclarationVertex, currentBeginAST, currentEndAST );
             currentVertex = variableDeclarationVertex;
             currentBeginAST = variableBeginAST;	// currentEndAST already set correctly
@@ -1210,7 +1267,13 @@ variableDef{
     )
     ;
 
-parameterDef
+parameterDef{
+	// added on 2009-03-03 as quick fix by ultbreit
+    TypeSpecification typeSpecificationVertex = null;
+    AST typeSpecificationBeginAST = null;
+    AST typeSpecificationEndAST = null;
+	//end of quickfix
+}
     :
     #(
         PARAMETER_DEF{
@@ -1219,14 +1282,27 @@ parameterDef
             AST parameterBeginAST = null;
         }
         modifiers{
+			currentDimensionCount = 0; //set dimensions to 0 because we do not know yet if next rule has an array declaration
             currentVertex = parameterDeclarationVertex;
             parameterBeginAST = currentBeginAST; // if there are modifiers, the begin element will be set; otherwise, it remains null.
         }
         typeSpec{
+            // added on 2009-03-03 as quick fix by ultbreit
+            typeSpecificationVertex = ( TypeSpecification )currentVertex; // keep reference
+            typeSpecificationBeginAST = currentBeginAST;
+            typeSpecificationEndAST = currentEndAST;
+            //end of quickfix
             currentVertex = parameterDeclarationVertex;
             if (parameterBeginAST == null) parameterBeginAST = currentBeginAST; // if there have been no modifiers, now there definitely is a value to be set.
         }
         parameterName:IDENT{
+            // added on 2009-03-03 as quick fix by ultbreit
+            if( currentDimensionCount > 0 ){
+                ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+                typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, parameterDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
+            }
+			//else typeSpecificationFactory.attachTypeSpecification( typeSpecificationVertex, parameterDeclarationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+			// end of quick fix
             identifierFactory.createIdentifier( parameterDeclarationVertex, parameterName );
             setBeginAndEndAST( parameterBeginAST, parameterName );
             fieldFactory.addParameterDeclaration( parameterDeclarationVertex, currentScope );
@@ -1234,7 +1310,13 @@ parameterDef
     )
     ;
 
-variableLengthParameterDef
+variableLengthParameterDef{
+	// added on 2009-03-03 as quick fix by ultbreit
+    TypeSpecification typeSpecificationVertex = null;
+    AST typeSpecificationBeginAST = null;
+    AST typeSpecificationEndAST = null;
+	//end of quickfix
+}
     :
     #(
         VARIABLE_PARAMETER_DEF{
@@ -1243,14 +1325,27 @@ variableLengthParameterDef
             AST varParameterBeginAST = null;
         }
         modifiers{
+			currentDimensionCount = 0; //set dimensions to 0 because we do not know yet if next rule has an array declaration
             currentVertex = variableLengthDeclarationVertex;
             varParameterBeginAST = currentBeginAST; // if there are modifiers, the begin element will be set; otherwise, it remains null.
         }
         typeSpec{
+            // added on 2009-03-03 as quick fix by ultbreit
+            typeSpecificationVertex = ( TypeSpecification )currentVertex; // keep reference
+            typeSpecificationBeginAST = currentBeginAST;
+            typeSpecificationEndAST = currentEndAST;
+            //end of quickfix
             currentVertex = variableLengthDeclarationVertex;
             if (varParameterBeginAST == null) varParameterBeginAST = currentBeginAST; // if there have been no modifiers, now there definitely is a value to be set.
         }
         parameterName:IDENT{
+            // added on 2009-03-03 as quick fix by ultbreit
+            if( currentDimensionCount > 0 ){
+                ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+                typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, variableLengthDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
+            }
+			//else typeSpecificationFactory.attachTypeSpecification( typeSpecificationVertex, variableLengthDeclarationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
+			// end of quick fix
 			identifierFactory.createIdentifier( variableLengthDeclarationVertex, parameterName );
             setBeginAndEndAST( varParameterBeginAST, parameterName );
             fieldFactory.addParameterDeclaration( variableLengthDeclarationVertex, currentScope );

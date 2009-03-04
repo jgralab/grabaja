@@ -28,17 +28,17 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 public class TypeSpecificationFactory extends SubgraphFactory{
 
 	/**
-	 * Stores builtin types already used.
+	 * Stores builtin type vertices already used.
 	 */
 	HashMap< BuiltInTypes, BuiltInType > builtInTypes;
 
 	/**
-	 * Instantiates and initializes an instance.
-	 * @param programGraph The graph to be used.
-	 * @param symbolTable The symbol table to be used.
+	 * Creates and initializes a TypeSpecificationFactory.
+	 * @param programGraph Graph to be used.
+	 * @param symbolTable Symbol table to be used.
 	 */
-    public TypeSpecificationFactory( Java5 pg, SymbolTable symbolTable ){
-        programGraph = pg;
+    public TypeSpecificationFactory( Java5 programGraph, SymbolTable symbolTable ){
+        this.programGraph = programGraph;
         this.symbolTable = symbolTable;
     }
 
@@ -47,16 +47,7 @@ public class TypeSpecificationFactory extends SubgraphFactory{
 	 * @param builtInTypeType The builtin type's type.
 	 * @return The created vertex.
 	 */
- /*   public BuiltInType createBuiltInType( BuiltInTypes builtInTypeType ){
-        if( builtInTypes == null ) builtInTypes = new HashMap< BuiltInTypes, BuiltInType>();
-        if( builtInTypes.containsKey( builtInTypeType ) ) return builtInTypes.get( builtInTypeType );
-        BuiltInType builtInTypeVertex = programGraph.createBuiltInType();
-        builtInTypeVertex.setType( builtInTypeType );
-        builtInTypes.put( builtInTypeType, builtInTypeVertex );
-        return builtInTypeVertex;
-	} */
-
-	public BuiltInType createBuiltInType( BuiltInTypes builtInType ){
+ 	public BuiltInType createBuiltInType( BuiltInTypes builtInType ){
 		if( symbolTable.hasBuiltInType( builtInType ) ) return symbolTable.getBuiltInType( builtInType );
 		BuiltInType builtInTypeVertex = programGraph.createBuiltInType();
 		builtInTypeVertex.setType( builtInType );
@@ -66,14 +57,15 @@ public class TypeSpecificationFactory extends SubgraphFactory{
 
 	/**
 	 * Creates an edge between a type specification and a method declaration (return type), parameter declaration (parameter type) or annotation field (field type).
-	 * @param typeSpecificationVertex The type specification.
-	 * @param parentVertex The method / parameter / annotation field.
-	 * @param beginAST The AST element representing the first element of the type specification.
-	 * @param endAST The AST element representing the last element of the type specification.
+	 * @param typeSpecificationVertex Vertex representing a type specification.
+	 * @param parentVertex Vertex representing a method, parameter or annotation field.
+	 * @param beginAST AST element representing first element of type specification in source code.
+	 * @param endAST AST element representing last element of type specification in source code.
 	 */
     public boolean attachTypeSpecification( TypeSpecification typeSpecificationVertex, Vertex parentVertex, AST beginAST, AST endAST ){
         if( parentVertex instanceof MethodDeclaration ){
             IsReturnTypeOf isReturnTypeOfEdge = programGraph.createIsReturnTypeOf( typeSpecificationVertex, ( MethodDeclaration )parentVertex );
+            System.out.println("IsReturnTypeOf created");
             Utilities.fillEdgeAttributesFromASTDifference( isReturnTypeOfEdge, beginAST, endAST );
             return true;
         }
@@ -91,12 +83,12 @@ public class TypeSpecificationFactory extends SubgraphFactory{
     }
 
 	/**
-	 * Creates a vertex for an array type.
+	 * Creates a vertex representing an array type.
 	 * @param currentDimensionCount The amount of dimensions of the array.
 	 * @param typeSpecificationVertex The type specification of the array's elements.
-	 * @param beginAST The AST element representing the first element of the type specification.
-	 * @param endAST The AST element representing the last element of the type specification.
-	 * @return The created vertex.
+	 * @param beginAST AST element representing the first element of type specification.
+	 * @param endAST AST element representing the last element of type specification.
+	 * @return A vertex representing an array type.
 	 */
     public ArrayType createArrayType( int currentDimensionCount, TypeSpecification typeSpecificationVertex, AST beginAST, AST endAST ){
         ArrayType arrayTypeVertex = programGraph.createArrayType();

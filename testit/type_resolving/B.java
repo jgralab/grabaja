@@ -1,6 +1,6 @@
 package B;
 /**
- * Demonstrates resolving of nested types, no reslving of external types is needed here.
+ * Demonstrates resolving of nested types, no resolving of external types is needed here.
  * Challenge of this class is that package name cannot be part of a fully qualified type
  * specification because class and package share same name.
  */

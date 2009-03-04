@@ -1,6 +1,6 @@
 /**
  * Demonstrates resolving of nested type if it hides a type parameter and
- * if it hidden by one.
+ * if it is hidden by one.
  */
 public class TestCombinationOfNestedTypesAndTypeParameters< A >{
 

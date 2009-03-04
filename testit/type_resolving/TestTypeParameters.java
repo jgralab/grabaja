@@ -5,7 +5,7 @@
 
 import java.util.*;
 
-public class TestTypeParameters< A extends Collection >{ // type parameter has upper bound to demnostrate that creation of Identifier vertex is not dispensible
+public class TestTypeParameters< A extends Collection >{ // type parameter has upper bound to demonstrate that creation of Identifier vertex is not dispensible
 
 	A a; // field has type of type parameter of class
 

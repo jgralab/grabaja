@@ -74,7 +74,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.While;
 public class StatementFactory extends SubgraphFactory{
 
 	/**
-	 * Stores the defined labels of the current file.
+	 * Stores the defined labels of the current file. @TODO move to symbol table
 	 */
     private HashMap< String, Label > labels;
 

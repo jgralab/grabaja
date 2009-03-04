@@ -266,7 +266,7 @@ public class SymbolTable{
         return booleanFalseConstant;
     }
 
-//------ null expression -------------------
+//------ null expression (unique in graph) -------------------
 
 	/**
 	 * Holds the unique vertex in graph, which represents a null expression.
@@ -287,7 +287,7 @@ public class SymbolTable{
     }
 
 
-//----- modifiers (unique in graph) -----
+//----- modifiers (unique in graph) ----------------------------
 
     private HashMap< Modifiers, Modifier > modifiers = new HashMap< Modifiers, Modifier >();
 

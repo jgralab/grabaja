@@ -1156,7 +1156,7 @@ methodDef{
         methodHead{
 			currentVertex = methodDefinitionVertex;
 		}
-        (blockBegin:LCURLY {
+        (slist{ // statement list
                 currentVertex = methodDefinitionVertex;
                 System.out.println("MethodDeclaration is a MethodDefinition!");
                 MethodDeclaration old = methodDefinitionVertex;
@@ -1173,13 +1173,11 @@ methodDef{
                 old.delete();
                 Block blockVertexOfMethod = programGraph.createBlock();
                 currentVertex = blockVertexOfMethod;
-            }
-            slist{ // statement list
                 memberFactory.attachBlock( blockVertexOfMethod, (MethodDefinition) methodDefinitionVertex,
                                            currentBeginAST, currentEndAST );
                 currentVertex = methodDefinitionVertex;
-            }
-        ) // <== here has to be a ?, removed for debugging purposes...
+        })?
+        
         ( methodDefinitionEnd:SEMI{ currentEndAST = methodDefinitionEnd; } )?
         {
             currentBeginAST = methodBeginAST; // currentEndAST already set correctly

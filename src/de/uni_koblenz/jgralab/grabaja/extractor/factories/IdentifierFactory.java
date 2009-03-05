@@ -306,8 +306,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * @param ast
 	 *            The AST element representing the identifier.
 	 */
-	public void createIdentifier(MethodInvocation methodInvocationVertex,
-			AST ast) {
+	public void createIdentifier(MethodInvocation methodInvocationVertex, AST ast) {
 		Identifier identifierVertex = createIdentifier(ast);
 		IsNameOfInvokedMethod isNameOfInvokedMethodEdge = programGraph
 				.createIsNameOfInvokedMethod(identifierVertex,
@@ -325,22 +324,16 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * @param expressionVertex
 	 *            The leading expression.
 	 * @param ast
-	 *            The AST element representing the identifier.
+	 *            AST element representing identifier.
 	 * @param beginAST
-	 *            The AST element representing the first element of the leading
-	 *            expression.
+	 *            AST element representing first element of leading expression.
 	 * @param endAST
-	 *            The AST element representing the last element of the leading
-	 *            side expression.
+	 *            AST element representing last element of leading side expression.
 	 */
-	public void createIdentifier(MethodInvocation methodInvocationVertex,
-			Expression expressionVertex, AST ast, AST beginAST, AST endAST) {
+	public void createIdentifier(MethodInvocation methodInvocationVertex, Expression expressionVertex, AST ast, AST beginAST, AST endAST) {
 		createIdentifier(methodInvocationVertex, ast);
-		IsMethodContainerOf isMethodContainerOfEdge = programGraph
-				.createIsMethodContainerOf(expressionVertex,
-						methodInvocationVertex);
-		Utilities.fillEdgeAttributesFromASTDifference(isMethodContainerOfEdge,
-				beginAST, endAST);
+		IsMethodContainerOf isMethodContainerOfEdge = programGraph.createIsMethodContainerOf(expressionVertex,methodInvocationVertex);
+		Utilities.fillEdgeAttributesFromASTDifference(isMethodContainerOfEdge,beginAST, endAST);
 	}
 
 	/**

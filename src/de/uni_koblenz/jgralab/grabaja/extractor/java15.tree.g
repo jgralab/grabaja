@@ -264,7 +264,23 @@ importDefinition
         |
         #(  //@TODO static imports
             staticImportBegin:STATIC_IMPORT{ inImport = true; }
-            identifierStar{ currentVertex = importFactory.createImportDefinition( ( QualifiedName )currentVertex, currentBeginAST, currentEndAST ); }
+            identifierStar{
+				ImportDefinition importVertex = null;
+				QualifiedName qualifiedNameVertex = null;
+				if( currentFullyQualifiedName.endsWith( ".*" ) ){
+					qualifiedNameVertex = qualifiedNameFactory.createQualifiedName( currentFullyQualifiedName.substring( 0, currentFullyQualifiedName.length() - 2 ) );
+					importVertex = importFactory.createPackageImportDefinition();
+				}
+				else{
+					qualifiedNameVertex = qualifiedNameFactory.createQualifiedType( null, currentFullyQualifiedName );
+					importVertex = importFactory.createClassImportDefinition();
+				}
+				importFactory.attach( qualifiedNameVertex, importVertex, currentBeginAST, currentEndAST );
+				currentVertex = importVertex;
+				currentFullyQualifiedName = "";
+
+				//currentVertex = importFactory.createImportDefinition( ( QualifiedName )currentVertex, currentBeginAST, currentEndAST );
+			}
             staticImportEnd:SEMI{ setBeginAndEndAST( staticImportBegin, staticImportEnd ); }
         )
     )
@@ -510,16 +526,18 @@ type{ Vertex parentVertex = currentVertex; }
         }
         |
         primitiveType:builtInType{
+            /*
             if(currentDimensionCount > 0 )
             	System.out.println("type is an array with " + currentDimensionCount + " dimensions" );
             else
             	System.out.println("type is no array");
+            */
             //
             // added on 2009-03-03 as quick fix by ultbreit
             if(currentDimensionCount == 0) //check if it is an array type specification or else it is attached twice as IsReturnTypeOf
             // end of quick fix
             	if( !typeSpecificationFactory.attachTypeSpecification( ( TypeSpecification )currentVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = primitiveType;
-			// System.out.println("builtInType");
+			//System.out.println("builtInType");
         }
     )
     ;
@@ -1126,7 +1144,7 @@ methodDef{
 			currentScope = methodDefinitionVertex;
 			symbolTable.addScopeInfo( currentScope, parentScope );
         }
-        
+
         modifiers{
 			currentDimensionCount = 0; //set dimensions to 0 because we do not know yet if next rule has an array declaration
             currentVertex = methodDefinitionVertex;
@@ -1165,7 +1183,6 @@ methodDef{
                 System.out.println("MethodDeclaration is a MethodDefinition!");
                 MethodDeclaration old = methodDefinitionVertex;
                 methodDefinitionVertex = programGraph.createMethodDefinition();
-                
                 Edge curr = old.getFirstEdge();
                     while (curr != null) {
                         Edge next = curr.getNextEdge();
@@ -1177,7 +1194,7 @@ methodDef{
                                            currentBeginAST, currentEndAST );
                 currentVertex = methodDefinitionVertex;
          })?
-        
+
         ( methodDefinitionEnd:SEMI{ currentEndAST = methodDefinitionEnd; } )?
         {
             if (!(methodDefinitionVertex instanceof MethodDefinition)) {
@@ -2144,7 +2161,7 @@ expr
     ;
 
 conditionalExpr
-    :   
+    :
     #(
         QUESTION
         expr{
@@ -2471,7 +2488,8 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                     |
                     accessToMetaClass:"class"{
                         if( parentVertex instanceof MethodInvocation ){
-                            identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )accessToMetaClass, fieldName, currentBeginAST, currentEndAST );
+							// quick fix 2009-03-05 by ultbreit: replaced accesToMetaClass by currentVertex on cast to Expression anf fieldName with accessToMetaClass in next line as it seems to be consistent with all other productions
+                            identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST );
                             currentVertex = parentVertex;
                         }
                         else currentVertex = fieldFactory.createFieldAccess( ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST, currentScope );

@@ -65,7 +65,6 @@ public class TypeSpecificationFactory extends SubgraphFactory{
     public boolean attachTypeSpecification( TypeSpecification typeSpecificationVertex, Vertex parentVertex, AST beginAST, AST endAST ){
         if( parentVertex instanceof MethodDeclaration ){
             IsReturnTypeOf isReturnTypeOfEdge = programGraph.createIsReturnTypeOf( typeSpecificationVertex, ( MethodDeclaration )parentVertex );
-            System.out.println("IsReturnTypeOf created");
             Utilities.fillEdgeAttributesFromASTDifference( isReturnTypeOfEdge, beginAST, endAST );
             return true;
         }

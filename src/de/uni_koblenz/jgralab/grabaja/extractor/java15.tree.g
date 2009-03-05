@@ -1146,6 +1146,7 @@ methodDef{
             //end of quickfix
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
+                typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, methodDefinitionVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }
@@ -1218,6 +1219,7 @@ variableDef{
             identifierFactory.attachIdentifier( ( Identifier )currentVertex, variableDeclarationVertex, currentBeginAST, currentEndAST );
             currentAST = currentEndAST; // save ident as currentAST for position informations of the field name in invoking rules...
             if( currentDimensionCount > 0 ){
+                typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, variableDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }
@@ -1264,6 +1266,7 @@ parameterDef{
         parameterName:IDENT{
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
+                typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, parameterDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }
@@ -1307,6 +1310,7 @@ variableLengthParameterDef{
         parameterName:IDENT{
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
+                typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, variableLengthDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }

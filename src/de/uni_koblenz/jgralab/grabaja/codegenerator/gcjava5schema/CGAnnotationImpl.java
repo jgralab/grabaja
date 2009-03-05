@@ -19,6 +19,7 @@ public class CGAnnotationImpl extends AnnotationImpl implements CodeGenerator {
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
 		bw.append('@');
+
 		// the name (1,1)
 		((CGQualifiedName) getFirstIsAnnotationNameOf(EdgeDirection.IN)
 				.getAlpha()).generateCode(bw, indentLevel);

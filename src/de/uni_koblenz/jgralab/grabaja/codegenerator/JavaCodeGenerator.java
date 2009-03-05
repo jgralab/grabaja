@@ -10,6 +10,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGAnnotationDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGAnnotationFieldImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGAnnotationImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGArrayTypeImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBlockImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBooleanConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBreakImpl;
@@ -68,6 +69,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGWildcardArgu
 import de.uni_koblenz.jgralab.grabaja.java5schema.Annotation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationField;
+import de.uni_koblenz.jgralab.grabaja.java5schema.ArrayType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BooleanConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Break;
@@ -164,6 +166,7 @@ public class JavaCodeGenerator {
 				CGAnnotationDefinitionImpl.class);
 		f.setVertexImplementationClass(AnnotationField.class,
 				CGAnnotationFieldImpl.class);
+		f.setVertexImplementationClass(ArrayType.class, CGArrayTypeImpl.class);
 		f.setVertexImplementationClass(Block.class, CGBlockImpl.class);
 		f.setVertexImplementationClass(BooleanConstant.class,
 				CGBooleanConstantImpl.class);

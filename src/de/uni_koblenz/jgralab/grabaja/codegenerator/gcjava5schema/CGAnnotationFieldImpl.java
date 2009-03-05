@@ -34,6 +34,7 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 		// the name (1,1)
 		((CGIdentifierImpl) getFirstIsAnnotationFieldNameOf(EdgeDirection.IN)
 				.getAlpha()).generateCode(bw, indentLevel);
+		bw.append("()");
 
 		// the default value (TODO: Currently it's (1,1), but (0,1) would be
 		// correct)
@@ -42,8 +43,6 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 			bw.append(" default ");
 			((CGExpression) idvo.getAlpha()).generateCode(bw, indentLevel);
 		}
-
-		bw.append(';');
 	}
 
 }

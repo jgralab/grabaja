@@ -22,7 +22,6 @@ public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 		// first the meta annotations (annotations annotating this annotation
 		// def) (0,*)
 		for (IsMetaAnnotationOf imao : getIsMetaAnnotationOfIncidences(EdgeDirection.IN)) {
-			bw.append('@');
 			((CGAnnotationImpl) imao.getAlpha()).generateCode(bw, indentLevel);
 		}
 

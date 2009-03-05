@@ -506,7 +506,7 @@ type{ Vertex parentVertex = currentVertex; }
 			symbolTable.addUnresolvedTypeSpecification( currentScope, qualifiedTypeVertex );
            	if( !typeSpecificationFactory.attachTypeSpecification( qualifiedTypeVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = classType;
             currentVertex = qualifiedTypeVertex;
-            System.out.println("classType");
+            // System.out.println("classType");
         }
         |
         primitiveType:builtInType{
@@ -519,7 +519,7 @@ type{ Vertex parentVertex = currentVertex; }
             if(currentDimensionCount == 0) //check if it is an array type specification or else it is attached twice as IsReturnTypeOf
             // end of quick fix
             	if( !typeSpecificationFactory.attachTypeSpecification( ( TypeSpecification )currentVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = primitiveType;
-			System.out.println("builtInType");
+			// System.out.println("builtInType");
         }
     )
     ;

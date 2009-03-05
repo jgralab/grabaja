@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="testit/cginput"/>
+	<classpathentry kind="src" path="testit/codegen"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jgralab"/>
 	<classpathentry kind="var" path="UKOISTHOME/common/lib/antlr/org.antlr_2.7.6.jar"/>

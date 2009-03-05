@@ -17,8 +17,13 @@ public class CGVariableInitializerImpl extends VariableInitializerImpl
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		((CGExpression) getFirstIsInitializerOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+		try {
+			((CGExpression) getFirstIsInitializerOf(EdgeDirection.IN)
+					.getAlpha()).generateCode(bw, indentLevel);
+		} catch (NullPointerException e) {
+			System.err
+					.println("Found VariableInitializer without Expression vertex!");
+		}
 	}
 
 }

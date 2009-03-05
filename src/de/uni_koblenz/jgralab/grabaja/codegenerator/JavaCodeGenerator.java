@@ -268,8 +268,15 @@ public class JavaCodeGenerator {
 		javaGraph = Java5Schema.instance().loadJava5(graphFile);
 	}
 
+	public void setGraph(Java5 graph) {
+		javaGraph = graph;
+	}
+
 	public void setOutputDirectory(String sourcesDir) throws IOException {
 		baseDirectory = new File(sourcesDir);
+		if (!baseDirectory.exists()) {
+			baseDirectory.mkdir();
+		}
 		if (!baseDirectory.isDirectory()) {
 			throw new IOException(baseDirectory + " is no directory!");
 		}

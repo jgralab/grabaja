@@ -1119,6 +1119,7 @@ methodDef{
     #(
         METHOD_DEF{
             MethodDeclaration methodDefinitionVertex = programGraph.createMethodDeclaration();
+            Block blockVertexOfMethod = programGraph.createBlock(); // if it's a definition, otherwise it'll be deleted later...
             currentVertex = methodDefinitionVertex;
             AST methodBeginAST = null;
 			Vertex parentScope = currentScope;
@@ -1156,30 +1157,31 @@ methodDef{
         methodHead{
 			currentVertex = methodDefinitionVertex;
 		}
-        (slist{ // statement list
-                currentVertex = methodDefinitionVertex;
+        ({
+            currentVertex = blockVertexOfMethod;
+         }
+         slist { // statement list
                 System.out.println("MethodDeclaration is a MethodDefinition!");
                 MethodDeclaration old = methodDefinitionVertex;
                 methodDefinitionVertex = programGraph.createMethodDefinition();
-                currentVertex = methodDefinitionVertex;
-
+                
                 Edge curr = old.getFirstEdge();
                     while (curr != null) {
                         Edge next = curr.getNextEdge();
                         curr.setThis(methodDefinitionVertex);
                         curr = next;
                 }
-                
                 old.delete();
-                Block blockVertexOfMethod = programGraph.createBlock();
-                currentVertex = blockVertexOfMethod;
-                memberFactory.attachBlock( blockVertexOfMethod, (MethodDefinition) methodDefinitionVertex,
+                memberFactory.attachBlock( (Block) currentVertex, (MethodDefinition) methodDefinitionVertex,
                                            currentBeginAST, currentEndAST );
                 currentVertex = methodDefinitionVertex;
-        })?
+         })?
         
         ( methodDefinitionEnd:SEMI{ currentEndAST = methodDefinitionEnd; } )?
         {
+            if (!(methodDefinitionVertex instanceof MethodDefinition)) {
+                blockVertexOfMethod.delete();
+            }
             currentBeginAST = methodBeginAST; // currentEndAST already set correctly
             currentScope = parentScope;
             symbolTable.addMethodDeclaration( fullyQualifiedNameOfCurrentType, methodDefinitionVertex );

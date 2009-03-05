@@ -25,13 +25,15 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		// first the annotations (0,*)
 		for (IsAnnotationOfType iaot : getIsAnnotationOfTypeIncidences(EdgeDirection.IN)) {
 			((CGAnnotationImpl) iaot.getAlpha()).generateCode(bw, indentLevel);
+			bw.append('\n');
 		}
 
 		// write all modifiers
 		for (IsModifierOfClass imoc : getIsModifierOfClassIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imoc.getAlpha()).generateCode(bw, indentLevel);
+			bw.append(' ');
 		}
-		bw.append(" class ");
+		bw.append("class ");
 
 		// write the class name
 		((CGIdentifierImpl) getFirstIsClassNameOf(EdgeDirection.IN).getAlpha())

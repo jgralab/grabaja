@@ -9,7 +9,8 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 		X {
 			@Override
 			float eval(int a, int b) {
-				return a * b * CONST_FLOAT;
+				float f = CONST_FLOAT + 1;
+				return a * b * f;
 			}
 		},
 		Y {

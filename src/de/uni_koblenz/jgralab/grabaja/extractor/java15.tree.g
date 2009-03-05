@@ -2554,8 +2554,8 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
         |
         constant{
 // added on 2009-03-03 as quick fix by abaldauf
-//            if( parentVertex instanceof VariableInitializer )
-//                expressionFactory.attachVariableInitializer( ( Expression )currentVertex, ( VariableInitializer )parentVertex, currentBeginAST, currentEndAST );
+            if( parentVertex instanceof VariableInitializer )
+                expressionFactory.attachVariableInitializer( ( Expression )currentVertex, ( VariableInitializer )parentVertex, currentBeginAST, currentEndAST );
         }
         |
         superClass:"super"{

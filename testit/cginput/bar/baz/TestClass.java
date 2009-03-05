@@ -15,7 +15,7 @@ public class TestClass<S, T> {
 
 	public S baz(T foo) {
 		char[][][] x = new char[1][2][3]; // the one array syntax
-		//char y[][][] = new char[1][2][3]; // the other array syntax
+		char y[][][] = new char[1][2][3]; // the other array syntax
 		return (foo.hashCode() % 17 == 0) ? null : null;
 	}
 

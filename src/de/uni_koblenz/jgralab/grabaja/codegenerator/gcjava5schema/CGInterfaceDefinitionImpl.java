@@ -57,7 +57,7 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 		for (IsSuperClassOfInterface iscoi : getIsSuperClassOfInterfaceIncidences(EdgeDirection.IN)) {
 			if (first) {
 				first = false;
-				bw.append(" implements ");
+				bw.append(" extends ");
 			} else {
 				bw.append(", ");
 			}

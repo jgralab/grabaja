@@ -57,8 +57,13 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 			} else {
 				bw.append(", ");
 			}
-			// TODO: CGTypeParameterDeclaration's missing...
+			((CGTypeParameterDeclarationImpl) itpom.getAlpha()).generateCode(
+					bw, indentLevel);
 		}
+		if (!first) {
+			bw.append('>');
+		}
+
 		bw.append(' ');
 
 		// then the name (exactly one)

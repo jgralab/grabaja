@@ -6,6 +6,7 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExternalDeclarationIn;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Type;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.SourceUsageImpl;
 
 public class CGSourceUsageImpl extends SourceUsageImpl implements
@@ -19,9 +20,14 @@ public class CGSourceUsageImpl extends SourceUsageImpl implements
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
 		for (IsExternalDeclarationIn iedi : getIsExternalDeclarationInIncidences(EdgeDirection.IN)) {
-			((CGExternalDeclaration) iedi.getAlpha()).generateCode(bw,
-					indentLevel);
+			CGExternalDeclaration exDec = (CGExternalDeclaration) iedi
+					.getAlpha();
+
+			if (exDec instanceof Type) {
+				bw.append('\n');
+			}
+
+			exDec.generateCode(bw, indentLevel);
 		}
 	}
-
 }

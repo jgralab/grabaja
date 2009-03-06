@@ -4,19 +4,18 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 
 import de.uni_koblenz.jgralab.Graph;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.SourceFileImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.CharConstantImpl;
 
-public class CGSourceFileImpl extends SourceFileImpl implements CodeGenerator {
+public class CGCharConstantImpl extends CharConstantImpl implements CGExpression {
 
-	public CGSourceFileImpl(int arg0, Graph arg1) {
-		super(arg0, arg1);
+	public CGCharConstantImpl(int id, Graph g) {
+		super(id, g);
 	}
 
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		// nothing to do here...
-
+		bw.append(literal);
 	}
 
 }

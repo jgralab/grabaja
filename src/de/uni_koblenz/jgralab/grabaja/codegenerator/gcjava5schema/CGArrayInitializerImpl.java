@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsContentOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSizeOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ArrayInitializerImpl;
 
@@ -18,20 +19,35 @@ public class CGArrayInitializerImpl extends ArrayInitializerImpl implements
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		// TODO: Implement the IsContentOf Expressions for literal array creations...
-
-		bw.append('[');
+		// this array creation uses a literal form: {{1,2,3}, {4,5,6}}
 		boolean first = true;
-		for (IsSizeOf ico : getIsSizeOfIncidences(EdgeDirection.IN)) {
+		for (IsContentOf ico : getIsContentOfIncidences(EdgeDirection.IN)) {
 			if (first) {
+				bw.append('{');
 				first = false;
 			} else {
 				bw.append(", ");
 			}
 			((CGExpression) ico.getAlpha()).generateCode(bw, indentLevel);
 		}
+		if (!first) {
+			bw.append('}');
+		}
 
-		bw.append(']');
+		// this array creation has the form: new Foo[1][2][38]
+		first = true;
+		for (IsSizeOf ico : getIsSizeOfIncidences(EdgeDirection.IN)) {
+			if (first) {
+				bw.append('[');
+				first = false;
+			} else {
+				bw.append(", ");
+			}
+			((CGExpression) ico.getAlpha()).generateCode(bw, indentLevel);
+		}
+		if (!first) {
+			bw.append(']');
+		}
 	}
 
 }

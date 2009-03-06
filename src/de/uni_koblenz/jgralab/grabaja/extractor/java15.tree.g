@@ -1164,7 +1164,7 @@ methodDef{
             //end of quickfix
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
-                typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                // typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, methodDefinitionVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }

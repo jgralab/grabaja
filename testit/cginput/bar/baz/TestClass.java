@@ -9,22 +9,33 @@ import bar.TestClass2;
 import bar.TestClass2.Things;
 
 public class TestClass<S, T> {
-	public T bar(T foo) {
+	@SuppressWarnings("unused")
+	@Inti
+	private class LocalClass {
+		S theEss = null;
+	}
+
+	public T mBar(T foo) {
 		return foo;
 	}
 
-	public S baz(T foo) {
-		char[][][] x = new char[1][2][3]; // the one array syntax
-		char y[][][] = new char[1][2][3]; // the other array syntax
-		return (foo.hashCode() % 17 == 0) ? null : null;
+	public char[] mBaz(T foo) {
+		// the one array syntax
+		char[][][] x = new char[1][2][3];
+		// the other array syntax
+		char y[][] = { { 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' } };
+		return ((foo.hashCode() % y.length * x.length == 0) ? x[0][1] : y[2]);
 	}
 
+	@SuppressWarnings("unused")
+	@Inti
 	@SampleAnnotation(number = 17, text = "I annotate getSet()", doubleVal = 0.1)
-	public static Set<? super Integer> getSet(
+	private static Set<? super Integer> getSet(
 			Map<Integer, Map<? extends Integer, ? super ArrayList<Integer>>> foo) {
-		return null;
+		return foo.keySet();
 	}
 
+	@SampleAnnotation
 	public void rotateThings(TestClass2<S, T>[] tcs2) {
 		for (TestClass2<S, T> tc2 : tcs2) {
 			switch (tc2.myThing) {
@@ -39,4 +50,8 @@ public class TestClass<S, T> {
 			}
 		}
 	}
+}
+
+@interface Inti {
+
 }

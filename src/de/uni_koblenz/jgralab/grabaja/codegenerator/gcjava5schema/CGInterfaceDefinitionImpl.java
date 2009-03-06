@@ -29,8 +29,9 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 		// write all modifiers (0,*)
 		for (IsModifierOfInterface imoc : getIsModifierOfInterfaceIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imoc.getAlpha()).generateCode(bw, indentLevel);
+			bw.append(' ');
 		}
-		bw.append(" interface ");
+		bw.append("interface ");
 
 		// write the iface name (1,1)
 		((CGIdentifierImpl) getFirstIsInterfaceNameOf(EdgeDirection.IN)

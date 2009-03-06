@@ -6,7 +6,10 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
+import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
+import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMemberOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfBody;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
@@ -50,7 +53,10 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 			CGMember m = (CGMember) imo.getAlpha();
 			if (m instanceof EnumConstant) {
 				continue;
-			} else if (m instanceof MethodDeclaration) {
+			} else if (m instanceof MethodDeclaration
+					|| m instanceof ClassDefinition
+					|| m instanceof InterfaceDefinition
+					|| m instanceof AnnotationDefinition) {
 				JavaCodeGenerator.indent(bw, indentLevel);
 				m.generateCode(bw, indentLevel);
 				bw.append("\n\n");

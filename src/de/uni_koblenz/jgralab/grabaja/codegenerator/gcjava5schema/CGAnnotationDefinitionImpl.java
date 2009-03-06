@@ -28,8 +28,9 @@ public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 		// write all modifiers (0,*)
 		for (IsModifierOfAnnotation imoa : getIsModifierOfAnnotationIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imoa.getAlpha()).generateCode(bw, indentLevel);
+			bw.append(' ');
 		}
-		bw.append(" @interface ");
+		bw.append("@interface ");
 
 		// write the annotation name (1,1)
 		((CGIdentifierImpl) getFirstIsAnnotationDefinitionNameOf(

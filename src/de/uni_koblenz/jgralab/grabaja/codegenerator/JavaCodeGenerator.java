@@ -19,6 +19,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBreakImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBuiltInCastImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGBuiltInTypeImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGCaseImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGCharConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGClassDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGClassImportDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.gcjava5schema.CGConditionalExpressionImpl;
@@ -80,6 +81,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Break;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInCast;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Case;
+import de.uni_koblenz.jgralab.grabaja.java5schema.CharConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ConditionalExpression;
@@ -184,6 +186,9 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(BuiltInType.class,
 				CGBuiltInTypeImpl.class);
 		f.setVertexImplementationClass(Case.class, CGCaseImpl.class);
+		f
+				.setVertexImplementationClass(CharConstant.class,
+						CGCharConstantImpl.class);
 		f.setVertexImplementationClass(ClassDefinition.class,
 				CGClassDefinitionImpl.class);
 		f.setVertexImplementationClass(ClassImportDefinition.class,

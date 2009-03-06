@@ -23,7 +23,11 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 		abstract float eval(int a, int b);
 	};
 
-	public abstract void varLenMeth(String... strings);
+	public void varLenMeth(String... strings) {
+		synchronized (myThing) {
+			myThing = Things.Y;
+		}
+	}
 
 	public Things myThing = Things.X;
 }

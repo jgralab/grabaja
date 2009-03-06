@@ -60,6 +60,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSourceFileIm
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSourceUsageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGStringConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSwitchImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSynchronizedImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGThrowImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTraditionalForClauseImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTranslationUnitImpl;
@@ -127,6 +128,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.StringConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Synchronized;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Throw;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TraditionalForClause;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
@@ -167,7 +169,7 @@ public class JavaCodeGenerator {
 	}
 
 	// TODO: Those are missing:
-	// "VariableLengthDeclarationImpl" "TryImpl" "SynchronizedImpl"
+	// "TryImpl"
 	// "StaticInitializerDefinitionImpl" "StaticConstructorDefinitionImpl"
 	// "SingleLineCommentImpl" "MultiLineCommentImpl" "LongConstantImpl"
 	// "JavaDocCommentImpl" "Java5SchemaFactory" "Java5Impl"
@@ -270,6 +272,8 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(StringConstant.class,
 				CGStringConstantImpl.class);
 		f.setVertexImplementationClass(Switch.class, CGSwitchImpl.class);
+		f.setVertexImplementationClass(Synchronized.class,
+				CGSynchronizedImpl.class);
 		f.setVertexImplementationClass(Throw.class, CGThrowImpl.class);
 		f.setVertexImplementationClass(TraditionalForClause.class,
 				CGTraditionalForClauseImpl.class);

@@ -24,7 +24,7 @@ public class TestClass<S, T> {
 		char[][][] x = new char[1][2][3];
 		// the other array syntax
 		char y[][] = { { 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' } };
-		return ((foo.hashCode() % y.length * x.length == 0) ? x[0][1] : y[2]);
+		return ((foo.hashCode() % (y.length * x.length) == 0) ? x[0][1] : y[2]);
 	}
 
 	@SuppressWarnings("unused")

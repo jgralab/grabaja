@@ -1164,7 +1164,9 @@ methodDef{
             //end of quickfix
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
-                // typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                if (typeSpecificationVertex.getLastEdge() != null) {
+                    typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                }
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, methodDefinitionVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }
@@ -1282,7 +1284,9 @@ parameterDef{
         parameterName:IDENT{
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
-                typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                if (typeSpecificationVertex.getLastEdge() != null) {
+                    typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                }
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, parameterDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }
@@ -1326,7 +1330,9 @@ variableLengthParameterDef{
         parameterName:IDENT{
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
-                typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                if (typeSpecificationVertex.getLastEdge() != null) {
+                    typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                }
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, variableLengthDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
             }
@@ -2750,8 +2756,11 @@ newExpression{
                     expressionFactory.attachObjectCreationType( objectCreationVertex, qualifiedNameVertex, typeBeginAST, typeEndAST );
                 IsNameOf isNameOfEdge = qualifiedNameVertex.getFirstIsNameOf();
                 //@TODO this should be a qualified name not an identifier
-                if( isNameOfEdge != null )
-                	expressionFactory.attachNameOfInvokedMethod( ( Identifier )isNameOfEdge.getAlpha(), methodInvocationVertex, typeEndAST, typeEndAST );
+                if( isNameOfEdge != null ) {
+                    Identifier ident = ( Identifier )isNameOfEdge.getAlpha();
+                	expressionFactory.attachNameOfInvokedMethod( ident, methodInvocationVertex, typeEndAST, typeEndAST );
+                    System.out.println("attached " + ident.getName());
+                }
                 currentVertex = objectCreationVertex;
                 currentEndAST = ccallEnd;
                 symbolTable.addMethodInvocation( methodInvocationVertex, currentScope );

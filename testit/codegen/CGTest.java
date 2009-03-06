@@ -22,21 +22,29 @@ public class CGTest {
 		String graphFile = outputDir + File.separator + "cginput.tg";
 		String dotFile = outputDir + File.separator + "cginput.dot";
 
-		// Delete the files in the output dir
-		Runtime.getRuntime().exec("rm -rf " + outputDir).waitFor();
-		new File(outputDir).mkdir();
+		File outDir = new File(outputDir);
+		if (outDir.exists()) {
+			if (deleteFile(outDir)) {
+				System.out.println("Deleted the old output directory.");
+			} else {
+				System.out.println("Couldn't delete the old output directory.");
+			}
+		}
+		outDir.mkdir();
 
 		// Extract
 		JavaExtractor.main(new String[] { "-o", graphFile,
 				"testit" + File.separator + "cginput" });
 		Java5 g = Java5Schema.instance().loadJava5(graphFile);
 
-		// Dot & PDF
+		// Dot
 		Tg2Dot t2d = new Tg2Dot();
 		t2d.setGraph(g);
 		t2d.setReversedEdges(true);
 		t2d.setOutputFile(dotFile);
 		t2d.printGraph();
+
+		// PDF
 		Runtime.getRuntime().exec(
 				"dot -Tpdf -o " + outputDir + File.separator + "cginput.pdf "
 						+ dotFile).waitFor();
@@ -49,6 +57,7 @@ public class CGTest {
 		// Make a diff
 		Process proc = Runtime.getRuntime().exec(
 				"diff -ru --ignore-all-space testit/cginput " + outputDir);
+		proc.waitFor();
 		BufferedWriter bw = new BufferedWriter(new FileWriter(outputDir
 				+ File.separator + "differences.diff"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(proc
@@ -62,5 +71,16 @@ public class CGTest {
 		bw.close();
 
 		System.out.println("Finito.");
+	}
+
+	public static boolean deleteFile(File f) {
+		if (f.isDirectory()) {
+			for (File child : f.listFiles()) {
+				if (!deleteFile(child)) {
+					System.out.println("Couldn't delete " + child + ".");
+				}
+			}
+		}
+		return f.delete();
 	}
 }

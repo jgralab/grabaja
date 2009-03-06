@@ -27,6 +27,10 @@ public enum TestEnum {
 	}
 
 	public boolean isFirstEnumValue() {
+		int aaa = 2;
+		while (aaa < 10) {
+			aaa *= aaa;
+		}
 		if (ordinal() == 0) {
 			return true;
 		} else {

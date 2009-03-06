@@ -80,7 +80,7 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 			} else {
 				bw.append(", ");
 			}
-			((CGParameterDeclarationImpl) ipom.getAlpha()).generateCode(bw,
+			((CGParameterDeclaration) ipom.getAlpha()).generateCode(bw,
 					indentLevel);
 		}
 		bw.append(')');

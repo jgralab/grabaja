@@ -68,6 +68,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTypeParamete
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTypeParameterUsageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGVariableDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGVariableInitializerImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGVariableLengthDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWhileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWildcardArgumentImpl;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Annotation;
@@ -134,6 +135,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableInitializer;
+import de.uni_koblenz.jgralab.grabaja.java5schema.VariableLengthDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.While;
 import de.uni_koblenz.jgralab.grabaja.java5schema.WildcardArgument;
 
@@ -283,6 +285,8 @@ public class JavaCodeGenerator {
 				CGVariableDeclarationImpl.class);
 		f.setVertexImplementationClass(VariableInitializer.class,
 				CGVariableInitializerImpl.class);
+		f.setVertexImplementationClass(VariableLengthDeclaration.class,
+				CGVariableLengthDeclarationImpl.class);
 		f.setVertexImplementationClass(While.class, CGWhileImpl.class);
 		f.setVertexImplementationClass(WildcardArgument.class,
 				CGWildcardArgumentImpl.class);

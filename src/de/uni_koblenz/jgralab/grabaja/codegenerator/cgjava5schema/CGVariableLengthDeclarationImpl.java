@@ -6,13 +6,13 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfParameter;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ParameterDeclarationImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.VariableLengthDeclarationImpl;
 
-public class CGParameterDeclarationImpl extends ParameterDeclarationImpl
-		implements CGParameterDeclaration {
+public class CGVariableLengthDeclarationImpl extends
+		VariableLengthDeclarationImpl implements CGParameterDeclaration {
 
-	public CGParameterDeclarationImpl(int arg0, Graph arg1) {
-		super(arg0, arg1);
+	public CGVariableLengthDeclarationImpl(int id, Graph g) {
+		super(id, g);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class CGParameterDeclarationImpl extends ParameterDeclarationImpl
 		// then the type spec (1,1)
 		((CGTypeSpecification) getFirstIsTypeOfParameter(EdgeDirection.IN)
 				.getAlpha()).generateCode(bw, indentLevel);
-		bw.append(' ');
+		bw.append("... ");
 
 		// then the name (1,1)
 		((CGIdentifierImpl) getFirstIsParameterNameOf(EdgeDirection.IN)

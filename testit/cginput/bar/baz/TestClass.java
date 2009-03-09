@@ -7,6 +7,8 @@ import java.util.Set;
 import bar.SampleAnnotation;
 import bar.TestClass2;
 import bar.TestClass2.Things;
+import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGExpression;
 
 public class TestClass<S, T> {
 	@SuppressWarnings("unused")
@@ -19,9 +21,10 @@ public class TestClass<S, T> {
 		return foo;
 	}
 
-	public char[] mBaz(T foo) {
+	public char[] mBaz(T foo, Graph g) {
 		// the one array syntax
 		char[][][] x = new char[1][2][3];
+		CGExpression e = (CGExpression) g.getFirstVertex();
 		// the other array syntax
 		char y[][] = { { 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' } };
 		return ((foo.hashCode() % (y.length * x.length) == 0) ? x[0][1] : y[2]);

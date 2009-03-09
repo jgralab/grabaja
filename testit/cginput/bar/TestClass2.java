@@ -32,6 +32,8 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 				continue l1;
 			} else if (i < strings.length) {
 				s = strings[i];
+			} else {
+				; // the empty statement
 			}
 		} while (s != null);
 		synchronized (myThing) {

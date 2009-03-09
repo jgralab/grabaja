@@ -26,9 +26,11 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 	public void varLenMeth(String... strings) {
 		int i = 0;
 		String s = null;
-		do {
+		l1: do {
 			s = null;
-			if (i < strings.length) {
+			if (i < 3) {
+				continue l1;
+			} else if (i < strings.length) {
 				s = strings[i];
 			}
 		} while (s != null);

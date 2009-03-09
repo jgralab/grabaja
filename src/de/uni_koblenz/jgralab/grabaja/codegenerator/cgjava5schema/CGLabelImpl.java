@@ -3,6 +3,7 @@ package de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.LabelImpl;
 
@@ -15,8 +16,15 @@ public class CGLabelImpl extends LabelImpl implements CGStatement {
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		// TODO Auto-generated method stub
+		// the name (1,1)
+		((CGIdentifierImpl) getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
+				.generateCode(bw, indentLevel);
 
+		bw.append(": ");
+
+		// the statement (1,1)
+		((CGStatement) getFirstIsAttachedTo(EdgeDirection.IN).getAlpha())
+				.generateCode(bw, indentLevel);
 	}
 
 }

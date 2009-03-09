@@ -24,6 +24,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGClassDefinit
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGClassImportDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGConditionalExpressionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGConstructorDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGContinueImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGDefaultImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGDoWhileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGDoubleConstantImpl;
@@ -91,6 +92,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ConditionalExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ConstructorDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Continue;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Default;
 import de.uni_koblenz.jgralab.grabaja.java5schema.DoWhile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.DoubleConstant;
@@ -175,7 +177,7 @@ public class JavaCodeGenerator {
 	// "TryImpl"
 	// "StaticInitializerDefinitionImpl" "StaticConstructorDefinitionImpl"
 	// "SingleLineCommentImpl" "MultiLineCommentImpl"
-	// "JavaDocCommentImpl" "Java5SchemaFactory" "Java5Impl"
+	// "JavaDocCommentImpl"
 	// "EmptyStatementImpl" "ContinueImpl" "CommentImpl"
 	// "ClassCastImpl" "CatchImpl" "AssertImpl")
 	static {
@@ -211,6 +213,7 @@ public class JavaCodeGenerator {
 				CGConditionalExpressionImpl.class);
 		f.setVertexImplementationClass(ConstructorDefinition.class,
 				CGConstructorDefinitionImpl.class);
+		f.setVertexImplementationClass(Continue.class, CGContinueImpl.class);
 		f.setVertexImplementationClass(Default.class, CGDefaultImpl.class);
 		f.setVertexImplementationClass(DoubleConstant.class,
 				CGDoubleConstantImpl.class);

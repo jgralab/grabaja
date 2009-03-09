@@ -6,31 +6,30 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsBreakTargetOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsContinueTargetOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Label;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BreakImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ContinueImpl;
 
-public class CGBreakImpl extends BreakImpl implements CGStatement {
+public class CGContinueImpl extends ContinueImpl implements CGStatement {
 
-	public CGBreakImpl(int id, Graph g) {
+	public CGContinueImpl(int id, Graph g) {
 		super(id, g);
 	}
 
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		bw.append("break");
+		bw.append("continue");
 
 		// the label (0,1)
-		IsBreakTargetOf ibto = getFirstIsBreakTargetOf(EdgeDirection.IN);
-		if (ibto != null) {
+		IsContinueTargetOf icto = getFirstIsContinueTargetOf(EdgeDirection.IN);
+		if (icto != null) {
 			bw.append(' ');
 			// We need to write the identifier on our own here, else we'd
 			// produce an endless recursion
-			bw.append(((Identifier) ((Label) ibto.getAlpha())
+			bw.append(((Identifier) ((Label) icto.getAlpha())
 					.getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
 					.getName());
 		}
 	}
-
 }

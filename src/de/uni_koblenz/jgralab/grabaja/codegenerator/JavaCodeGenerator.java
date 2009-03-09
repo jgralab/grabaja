@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
+import de.uni_koblenz.jgralab.Edge;
+import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.GraphFactory;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.Vertex;
@@ -109,6 +111,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.DoubleConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EmptyStatement;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Expression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Field;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldAccess;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FloatConstant;
@@ -179,6 +182,15 @@ public class JavaCodeGenerator {
 	public static boolean isBlockConstruct(Vertex v) {
 		return v instanceof Block || v instanceof If || v instanceof Switch
 				|| v instanceof Try | isLoop(v);
+	}
+
+	public static boolean isNestedExpression(Vertex v) {
+		for (Edge e : v.incidences(EdgeDirection.OUT)) {
+			if (e.getOmega() instanceof Expression) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static void indent(BufferedWriter bw, int level) throws IOException {

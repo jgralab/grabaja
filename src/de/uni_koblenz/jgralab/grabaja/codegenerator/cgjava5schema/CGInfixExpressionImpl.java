@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.InfixExpressionImpl;
 
 public class CGInfixExpressionImpl extends InfixExpressionImpl implements
@@ -17,6 +18,11 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
+		boolean isNested = JavaCodeGenerator.isNestedExpression(this);
+		if (isNested) {
+			bw.append('(');
+		}
+
 		// first the LHS (1,1)
 		((CGExpression) getFirstIsLeftHandSideOfInfixExpression(
 				EdgeDirection.IN).getAlpha()).generateCode(bw, indentLevel);
@@ -129,5 +135,9 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 		// then the RHS (1,1)
 		((CGExpression) getFirstIsRightHandSideOfInfixExpression(
 				EdgeDirection.IN).getAlpha()).generateCode(bw, indentLevel);
+
+		if (isNested) {
+			bw.append(')');
+		}
 	}
 }

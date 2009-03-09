@@ -10,7 +10,7 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 	}
 
 	static {
-		System.out.println("Static initializer.");
+		System.out.println("Static initializer." + (1 * ((2 + 3) / 4)));
 		try {
 			throw new Exception("TestException");
 		} catch (Exception e) {

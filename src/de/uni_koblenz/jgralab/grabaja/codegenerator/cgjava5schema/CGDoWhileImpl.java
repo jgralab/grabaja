@@ -16,7 +16,7 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 	@Override
 	public void generateCode(BufferedWriter bw, int indentLevel)
 			throws IOException {
-		bw.append("do");
+		bw.append("do ");
 
 		// the block (1,1)
 		((CGStatement) getFirstIsLoopBodyOfDoWhile(EdgeDirection.IN).getAlpha())
@@ -27,7 +27,7 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 		// the condition (1,1)
 		((CGExpression) getFirstIsConditionOfDoWhile(EdgeDirection.IN)
 				.getAlpha()).generateCode(bw, indentLevel);
-		bw.append(");");
+		bw.append(")");
 	}
 
 }

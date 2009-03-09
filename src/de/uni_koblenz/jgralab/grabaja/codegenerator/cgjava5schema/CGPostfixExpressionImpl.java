@@ -32,5 +32,4 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 			throw new RuntimeException("Unknown operator " + operator + "!!!");
 		}
 	}
-
 }

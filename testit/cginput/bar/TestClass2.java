@@ -5,6 +5,14 @@ import bar.baz.TestClass;
 public abstract class TestClass2<S, T> extends TestClass<S, T> {
 	private static final float CONST_FLOAT = -16.4f;
 
+	{
+		System.out.println("Static constructor.");
+	}
+
+	static {
+		System.out.println("Static initializer.");
+	}
+
 	public enum Things {
 		X {
 			@Override
@@ -32,6 +40,7 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 				continue l1;
 			} else if (i < strings.length) {
 				s = strings[i];
+				assert !s.equals("TheForbiddenString") : "The forbidden String was used!!!";
 			} else {
 				; // the empty statement
 			}

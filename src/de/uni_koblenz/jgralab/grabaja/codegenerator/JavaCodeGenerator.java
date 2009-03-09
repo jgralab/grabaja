@@ -13,6 +13,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGAnnotationIm
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGArrayCreationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGArrayInitializerImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGArrayTypeImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGAssertImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGBlockImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGBooleanConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGBreakImpl;
@@ -63,6 +64,8 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGReturnImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSimpleArgumentImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSourceFileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSourceUsageImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGStaticConstructorDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGStaticInitializerDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGStringConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSwitchImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSynchronizedImpl;
@@ -83,6 +86,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationField;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ArrayCreation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ArrayInitializer;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ArrayType;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Assert;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BooleanConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Break;
@@ -135,6 +139,8 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Return;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SimpleArgument;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
+import de.uni_koblenz.jgralab.grabaja.java5schema.StaticConstructorDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.StaticInitializerDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.StringConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Synchronized;
@@ -183,7 +189,7 @@ public class JavaCodeGenerator {
 	// "SingleLineCommentImpl" "MultiLineCommentImpl"
 	// "JavaDocCommentImpl"
 	// "CommentImpl"
-	// "ClassCastImpl" "CatchImpl" "AssertImpl")
+	// "CatchImpl")
 	static {
 		GraphFactory f = Java5Schema.instance().getGraphFactory();
 		f
@@ -198,6 +204,7 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(ArrayInitializer.class,
 				CGArrayInitializerImpl.class);
 		f.setVertexImplementationClass(ArrayType.class, CGArrayTypeImpl.class);
+		f.setVertexImplementationClass(Assert.class, CGAssertImpl.class);
 		f.setVertexImplementationClass(Block.class, CGBlockImpl.class);
 		f.setVertexImplementationClass(BooleanConstant.class,
 				CGBooleanConstantImpl.class);
@@ -285,6 +292,10 @@ public class JavaCodeGenerator {
 						CGSourceFileImpl.class);
 		f.setVertexImplementationClass(SourceUsage.class,
 				CGSourceUsageImpl.class);
+		f.setVertexImplementationClass(StaticConstructorDefinition.class,
+				CGStaticConstructorDefinitionImpl.class);
+		f.setVertexImplementationClass(StaticInitializerDefinition.class,
+				CGStaticInitializerDefinitionImpl.class);
 		f.setVertexImplementationClass(StringConstant.class,
 				CGStringConstantImpl.class);
 		f.setVertexImplementationClass(Switch.class, CGSwitchImpl.class);

@@ -2,7 +2,7 @@ package bar;
 
 @SampleAnnotation
 public @interface SampleAnnotation {
-	public int number() default -1;
+	public long number() default -1l;
 
 	public String text() default "";
 

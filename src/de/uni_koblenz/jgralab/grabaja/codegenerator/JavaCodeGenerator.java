@@ -40,6 +40,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGIntegerConst
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGInterfaceDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGJavaPackageImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGLabelImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGLongConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGMethodDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGMethodDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGMethodInvocationImpl;
@@ -108,6 +109,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
 import de.uni_koblenz.jgralab.grabaja.java5schema.JavaPackage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Label;
+import de.uni_koblenz.jgralab.grabaja.java5schema.LongConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodInvocation;
@@ -171,7 +173,7 @@ public class JavaCodeGenerator {
 	// TODO: Those are missing:
 	// "TryImpl"
 	// "StaticInitializerDefinitionImpl" "StaticConstructorDefinitionImpl"
-	// "SingleLineCommentImpl" "MultiLineCommentImpl" "LongConstantImpl"
+	// "SingleLineCommentImpl" "MultiLineCommentImpl"
 	// "JavaDocCommentImpl" "Java5SchemaFactory" "Java5Impl"
 	// "EmptyStatementImpl" "DoWhileImpl" "ContinueImpl" "CommentImpl"
 	// "ClassCastImpl" "CatchImpl" "AssertImpl")
@@ -236,6 +238,8 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(JavaPackage.class,
 				CGJavaPackageImpl.class);
 		f.setVertexImplementationClass(Label.class, CGLabelImpl.class);
+		f.setVertexImplementationClass(LongConstant.class,
+				CGLongConstantImpl.class);
 		f.setVertexImplementationClass(MethodDeclaration.class,
 				CGMethodDeclarationImpl.class);
 		f.setVertexImplementationClass(MethodDefinition.class,

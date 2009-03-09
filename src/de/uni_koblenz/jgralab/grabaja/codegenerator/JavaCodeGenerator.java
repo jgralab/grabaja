@@ -20,6 +20,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGBreakImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGBuiltInCastImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGBuiltInTypeImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGCaseImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGCatchImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGCharConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGClassCastImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGClassDefinitionImpl;
@@ -72,6 +73,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGSynchronized
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGThrowImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTraditionalForClauseImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTranslationUnitImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTryImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTypeArgumentImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTypeParameterDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGTypeParameterUsageImpl;
@@ -93,6 +95,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Break;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInCast;
 import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Case;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Catch;
 import de.uni_koblenz.jgralab.grabaja.java5schema.CharConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassCast;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
@@ -147,6 +150,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Synchronized;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Throw;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TraditionalForClause;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Try;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeArgument;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterUsage;
@@ -174,7 +178,7 @@ public class JavaCodeGenerator {
 
 	public static boolean isBlockConstruct(Vertex v) {
 		return v instanceof Block || v instanceof If || v instanceof Switch
-				| isLoop(v);
+				|| v instanceof Try | isLoop(v);
 	}
 
 	public static void indent(BufferedWriter bw, int level) throws IOException {
@@ -184,12 +188,9 @@ public class JavaCodeGenerator {
 	}
 
 	// TODO: Those are missing:
-	// "TryImpl"
-	// "StaticInitializerDefinitionImpl" "StaticConstructorDefinitionImpl"
 	// "SingleLineCommentImpl" "MultiLineCommentImpl"
 	// "JavaDocCommentImpl"
 	// "CommentImpl"
-	// "CatchImpl")
 	static {
 		GraphFactory f = Java5Schema.instance().getGraphFactory();
 		f
@@ -214,6 +215,7 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(BuiltInType.class,
 				CGBuiltInTypeImpl.class);
 		f.setVertexImplementationClass(Case.class, CGCaseImpl.class);
+		f.setVertexImplementationClass(Catch.class, CGCatchImpl.class);
 		f.setVertexImplementationClass(CharConstant.class,
 				CGCharConstantImpl.class);
 		f.setVertexImplementationClass(ClassCast.class, CGClassCastImpl.class);
@@ -306,6 +308,7 @@ public class JavaCodeGenerator {
 				CGTraditionalForClauseImpl.class);
 		f.setVertexImplementationClass(TranslationUnit.class,
 				CGTranslationUnitImpl.class);
+		f.setVertexImplementationClass(Try.class, CGTryImpl.class);
 		f.setVertexImplementationClass(TypeArgument.class,
 				CGTypeArgumentImpl.class);
 		f.setVertexImplementationClass(TypeParameterDeclaration.class,

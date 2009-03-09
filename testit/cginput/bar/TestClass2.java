@@ -11,6 +11,13 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 
 	static {
 		System.out.println("Static initializer.");
+		try {
+			throw new Exception("TestException");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("finally");
+		}
 	}
 
 	public enum Things {

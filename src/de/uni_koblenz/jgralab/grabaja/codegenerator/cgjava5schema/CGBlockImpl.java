@@ -7,6 +7,7 @@ import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
@@ -15,6 +16,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfBody;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.StaticConstructorDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.StaticInitializerDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Try;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BlockImpl;
 
 public class CGBlockImpl extends BlockImpl implements CGStatement {
@@ -55,7 +57,8 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 			CGMember m = (CGMember) imo.getAlpha();
 			if (m instanceof EnumConstant) {
 				continue;
-			} else if (m instanceof MethodDeclaration
+			} else if (m instanceof Try || m instanceof Block
+					|| m instanceof MethodDeclaration
 					|| m instanceof ClassDefinition
 					|| m instanceof InterfaceDefinition
 					|| m instanceof AnnotationDefinition

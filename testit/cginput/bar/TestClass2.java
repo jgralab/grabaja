@@ -24,6 +24,14 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 	};
 
 	public void varLenMeth(String... strings) {
+		int i = 0;
+		String s = null;
+		do {
+			s = null;
+			if (i < strings.length) {
+				s = strings[i];
+			}
+		} while (s != null);
 		synchronized (myThing) {
 			myThing = Things.Y;
 		}

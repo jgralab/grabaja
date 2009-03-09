@@ -25,6 +25,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGClassImportD
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGConditionalExpressionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGConstructorDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGDefaultImpl;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGDoWhileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGDoubleConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGEnumConstantImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGEnumDefinitionImpl;
@@ -175,7 +176,7 @@ public class JavaCodeGenerator {
 	// "StaticInitializerDefinitionImpl" "StaticConstructorDefinitionImpl"
 	// "SingleLineCommentImpl" "MultiLineCommentImpl"
 	// "JavaDocCommentImpl" "Java5SchemaFactory" "Java5Impl"
-	// "EmptyStatementImpl" "DoWhileImpl" "ContinueImpl" "CommentImpl"
+	// "EmptyStatementImpl" "ContinueImpl" "CommentImpl"
 	// "ClassCastImpl" "CatchImpl" "AssertImpl")
 	static {
 		GraphFactory f = Java5Schema.instance().getGraphFactory();
@@ -213,6 +214,7 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(Default.class, CGDefaultImpl.class);
 		f.setVertexImplementationClass(DoubleConstant.class,
 				CGDoubleConstantImpl.class);
+		f.setVertexImplementationClass(DoWhile.class, CGDoWhileImpl.class);
 		f.setVertexImplementationClass(EnumConstant.class,
 				CGEnumConstantImpl.class);
 		f.setVertexImplementationClass(EnumDefinition.class,

@@ -22,7 +22,7 @@ public class CGArrayInitializerImpl extends ArrayInitializerImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// this array creation uses a literal form: {{1,2,3}, {4,5,6}}

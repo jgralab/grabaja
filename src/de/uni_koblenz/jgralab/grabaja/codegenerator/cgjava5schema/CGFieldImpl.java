@@ -19,7 +19,7 @@ public class CGFieldImpl extends FieldImpl implements CGMember {
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// field creation var decl (1,1)

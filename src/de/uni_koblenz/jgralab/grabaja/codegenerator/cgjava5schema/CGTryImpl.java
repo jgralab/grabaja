@@ -21,7 +21,7 @@ public class CGTryImpl extends TryImpl implements CGStatement {
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		bw.append("try ");

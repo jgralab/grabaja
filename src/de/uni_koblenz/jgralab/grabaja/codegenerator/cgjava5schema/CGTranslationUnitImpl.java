@@ -30,7 +30,7 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// each TU has exactly one SourceFile

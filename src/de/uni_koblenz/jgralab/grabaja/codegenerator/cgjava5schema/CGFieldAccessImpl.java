@@ -21,7 +21,7 @@ public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// First the container (0,1)

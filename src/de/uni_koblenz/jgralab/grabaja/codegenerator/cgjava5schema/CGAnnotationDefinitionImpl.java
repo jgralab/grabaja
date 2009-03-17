@@ -22,7 +22,7 @@ public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// first the meta annotations (annotations annotating this annotation

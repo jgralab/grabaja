@@ -19,7 +19,7 @@ public class CGForEachClauseImpl extends ForEachClauseImpl implements CGForHead 
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// the parameter decl (1,1)

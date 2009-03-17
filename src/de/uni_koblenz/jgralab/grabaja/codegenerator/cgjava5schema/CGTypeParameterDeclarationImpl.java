@@ -20,7 +20,7 @@ public class CGTypeParameterDeclarationImpl extends
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// the identifier (1,1)

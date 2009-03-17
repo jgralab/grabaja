@@ -20,7 +20,7 @@ public class CGProgramImpl extends ProgramImpl implements CodeGenerator {
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		Vertex last = this;

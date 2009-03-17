@@ -20,7 +20,7 @@ public class CGConditionalExpressionImpl extends ConditionalExpressionImpl
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		boolean isNested = JavaCodeGenerator.isNestedExpression(this);

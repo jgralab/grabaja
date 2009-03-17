@@ -19,7 +19,7 @@ public class CGFloatConstantImpl extends FloatConstantImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		bw.append(literal);

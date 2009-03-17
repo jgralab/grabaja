@@ -19,7 +19,7 @@ public class CGEmptyStatementImpl extends EmptyStatementImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// the empty statement: do NOTHING...

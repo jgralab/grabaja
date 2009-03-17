@@ -20,7 +20,7 @@ public class CGArrayTypeImpl extends ArrayTypeImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// the type spec (1,1)

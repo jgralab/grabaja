@@ -20,7 +20,7 @@ public class CGSimpleArgumentImpl extends SimpleArgumentImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// typespec (1,1)

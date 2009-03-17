@@ -400,7 +400,10 @@ public class JavaCodeGenerator {
 	}
 
 	private void markDependencies() {
-		// TODO: Mark dependent vertices
+		if (cgElements == null) {
+			return;
+		}
+
 		Vertex v = null;
 		for (AttributedElement ae : cgElements.getMarkedElements()) {
 			if (!(ae instanceof Vertex)) {
@@ -410,6 +413,9 @@ public class JavaCodeGenerator {
 			v = (Vertex) ae;
 			markTop(v);
 			markBottom(v);
+
+			// TODO: Fix dependencies such as
+			// "class-def needs its naming identifier"
 		}
 	}
 

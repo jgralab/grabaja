@@ -129,8 +129,8 @@ public class CGTest {
 
 	public static void main(String[] args) throws GraphIOException,
 			IOException, InterruptedException {
-		// testCompleteGraphCodeGeneration();
-		testPartialGraphCodeGeneration();
+		testCompleteGraphCodeGeneration();
+		// testPartialGraphCodeGeneration();
 	}
 
 	public static boolean deleteFile(File f) {

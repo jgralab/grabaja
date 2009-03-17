@@ -19,7 +19,7 @@ public class CGPackageImportDefinitionImpl extends PackageImportDefinitionImpl
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// TODO Auto-generated method stub

@@ -22,7 +22,7 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// modifiers (0,*)

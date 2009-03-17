@@ -25,7 +25,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// first the annotations (0,*)

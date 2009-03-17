@@ -19,7 +19,7 @@ public class CGLabelImpl extends LabelImpl implements CGStatement {
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// the name (1,1)

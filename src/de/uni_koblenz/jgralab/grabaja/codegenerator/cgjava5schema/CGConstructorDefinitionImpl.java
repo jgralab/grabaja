@@ -24,7 +24,7 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// the modifiers (0,*)

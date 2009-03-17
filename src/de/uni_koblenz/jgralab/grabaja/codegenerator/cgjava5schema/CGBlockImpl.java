@@ -25,63 +25,72 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		indentLevel++;
 
 		bw.append("{\n");
+		JavaCodeGenerator.indent(bw, indentLevel);
+
+		Vertex last = null;
+		boolean finishedWithLF = false;
 
 		// first the enum constants (0,*)
-		boolean first = true;
 		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
 			CGMember m = (CGMember) imo.getAlpha();
 			if (!(m instanceof EnumConstant)) {
 				continue;
 			}
-			if (first) {
-				JavaCodeGenerator.indent(bw, indentLevel);
-				first = false;
-			} else {
+			if (last != null) {
 				bw.append(", ");
 			}
-			m.generateCode(jcg, bw, indentLevel);
+			last = m.generateCode(jcg, bw, indentLevel);
 		}
-		if (!first) {
+		if (last != null) {
 			bw.append(";\n\n");
+			finishedWithLF = true;
 		}
 
 		// then every member except enum constants (0,*)
-		first = true;
 		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
 			CGMember m = (CGMember) imo.getAlpha();
 			if (m instanceof EnumConstant) {
 				continue;
 			} else {
-				JavaCodeGenerator.indent(bw, indentLevel);
-				Vertex last = m.generateCode(jcg, bw, indentLevel);
-				if (last instanceof Block || last instanceof MethodDeclaration) {
+				if (last != null) {
 					bw.append("\n\n");
-				} else {
-					bw.append(";\n\n");
+					JavaCodeGenerator.indent(bw, indentLevel);
+					finishedWithLF = false;
+				}
+				last = m.generateCode(jcg, bw, indentLevel);
+				if (last != null) {
+					if (!(last instanceof Block || last instanceof MethodDeclaration)) {
+						bw.append(";");
+					}
 				}
 			}
-		}
-		if (!first) {
-			bw.append('\n');
 		}
 
 		for (IsStatementOfBody isob : getIsStatementOfBodyIncidences(EdgeDirection.IN)) {
 			CGStatement s = (CGStatement) isob.getAlpha();
-			JavaCodeGenerator.indent(bw, indentLevel);
-			Vertex last = s.generateCode(jcg, bw, indentLevel);
-			if (!(last instanceof Block || last instanceof Switch)) {
-				bw.append(';');
+			if (last != null) {
+				bw.append("\n");
+				JavaCodeGenerator.indent(bw, indentLevel);
+				finishedWithLF = false;
 			}
-			bw.append("\n");
+			last = s.generateCode(jcg, bw, indentLevel);
+			if (last != null) {
+				if (!(last instanceof Block || last instanceof Switch)) {
+					bw.append(';');
+				}
+			}
 		}
 
 		indentLevel--;
+		if (!finishedWithLF) {
+			bw.append("\n");
+		}
 		JavaCodeGenerator.indent(bw, indentLevel);
 		bw.append("}");
 

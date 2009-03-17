@@ -19,7 +19,7 @@ public class CGClassCastImpl extends ClassCastImpl implements CGExpression {
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
-			return this;
+			return null;
 		}
 
 		// the type spec (1,1)

@@ -124,6 +124,8 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.If;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InfixExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IntegerConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsBreakTargetOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsContinueTargetOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
 import de.uni_koblenz.jgralab.grabaja.java5schema.JavaPackage;
@@ -168,6 +170,21 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.WildcardArgument;
 public class JavaCodeGenerator {
 
 	private BooleanGraphMarker cgElements = null;
+
+	/**
+	 * @return the cgElements
+	 */
+	public BooleanGraphMarker getCgElements() {
+		return cgElements;
+	}
+
+	/**
+	 * @param cgElements
+	 *            the cgElements to set
+	 */
+	public void setCgElements(BooleanGraphMarker cgElements) {
+		this.cgElements = cgElements;
+	}
 
 	private Java5 javaGraph = null;
 
@@ -378,12 +395,47 @@ public class JavaCodeGenerator {
 			BooleanGraphMarker elementsToBeGenerated) throws IOException,
 			GraphIOException {
 		this(graphFile, outputDir);
-		markDependencies(elementsToBeGenerated);
+		cgElements = elementsToBeGenerated;
 	}
 
-	private void markDependencies(BooleanGraphMarker elementsToBeGenerated) {
+	private void markDependencies() {
 		// TODO: Mark dependent vertices
-		cgElements = elementsToBeGenerated;
+		Vertex v = null;
+		for (AttributedElement ae : cgElements.getMarkedElements()) {
+			if (!(ae instanceof Vertex)) {
+				continue;
+			}
+
+			v = (Vertex) ae;
+			markTop(v);
+			markBottom(v);
+		}
+	}
+
+	private boolean isNonTreeEdge(Edge e) {
+		return e instanceof IsBreakTargetOf || e instanceof IsContinueTargetOf;
+	}
+
+	private void markTop(Vertex v) {
+		cgElements.mark(v);
+		System.out.println("Top-Marked " + v);
+		for (Edge e : v.incidences(EdgeDirection.OUT)) {
+			if (isNonTreeEdge(e)) {
+				continue;
+			}
+			markTop(e.getOmega());
+		}
+	}
+
+	private void markBottom(Vertex v) {
+		cgElements.mark(v);
+		System.out.println("Bottom-Marked " + v);
+		for (Edge e : v.incidences(EdgeDirection.IN)) {
+			if (isNonTreeEdge(e)) {
+				continue;
+			}
+			markBottom(e.getAlpha());
+		}
 	}
 
 	public boolean generationWanted(AttributedElement v) {
@@ -391,6 +443,7 @@ public class JavaCodeGenerator {
 	}
 
 	public void generateCode() throws IOException {
+		markDependencies();
 		for (Program p : javaGraph.getProgramVertices()) {
 			((CGProgramImpl) p).generateCode(this, null, 0);
 		}

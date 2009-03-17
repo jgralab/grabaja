@@ -92,6 +92,9 @@ public class CGTest {
 				"-o",
 				graphFile,
 				"testit" + File.separator + "cginput" + File.separator + "bar"
+						+ File.separator + "baz" + File.separator
+						+ "TestClass.java",
+				"testit" + File.separator + "cginput" + File.separator + "bar"
 						+ File.separator + "TestClass2.java" });
 		JavaCodeGenerator jcg = new JavaCodeGenerator(graphFile, outputDir);
 		BooleanGraphMarker codeElems = new BooleanGraphMarker(jcg

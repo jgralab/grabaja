@@ -3,6 +3,7 @@ package de.uni_koblenz.jgralab.grabaja.codegenerator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
 import de.uni_koblenz.jgralab.AttributedElement;
 import de.uni_koblenz.jgralab.BooleanGraphMarker;
@@ -416,20 +417,27 @@ public class JavaCodeGenerator {
 		return e instanceof IsBreakTargetOf || e instanceof IsContinueTargetOf;
 	}
 
+	private HashSet<Vertex> x = new HashSet<Vertex>();
+
 	private void markTop(Vertex v) {
 		cgElements.mark(v);
-		System.out.println("Top-Marked " + v);
+
+		if (v instanceof QualifiedName) {
+			// QNs are linked to multiple other vertices and introduce cycles...
+			return;
+		}
+
 		for (Edge e : v.incidences(EdgeDirection.OUT)) {
 			if (isNonTreeEdge(e)) {
 				continue;
 			}
 			markTop(e.getOmega());
 		}
+		x.remove(v);
 	}
 
 	private void markBottom(Vertex v) {
 		cgElements.mark(v);
-		System.out.println("Bottom-Marked " + v);
 		for (Edge e : v.incidences(EdgeDirection.IN)) {
 			if (isNonTreeEdge(e)) {
 				continue;

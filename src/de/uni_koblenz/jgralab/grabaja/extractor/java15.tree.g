@@ -2452,7 +2452,7 @@ conditionalExpr
     |   primaryExpression
     ;
 
-primaryExpression{ Vertex parentVertex = currentVertex; }
+primaryExpression{ Vertex parentVertex = currentVertex; System.out.println("primaryExpression");}
     :
     (
         ident:IDENT{
@@ -2462,6 +2462,7 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
 				currentVertex = fieldAccessVertex;
 			}
             setBeginAndEndAST( ident );
+
         }
         |
         #(
@@ -2470,7 +2471,10 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                 expr
                 (
                     fieldName:IDENT{
-                        if( parentVertex instanceof MethodInvocation ){
+                        if( parentVertex instanceof MethodInvocation &&
+                        	((( MethodInvocation )parentVertex).getFirstIsNameOfInvokedMethod() == null) //2009-03-17 quick fix by ultbreit: added check for edge existence
+                          ){
+                            //System.out.println("Identifier --> MethodInvocation");
                             identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, fieldName, currentBeginAST, currentEndAST );
                             currentVertex = parentVertex;
                         }

@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsReturnedBy;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ReturnImpl;
@@ -16,16 +17,20 @@ public class CGReturnImpl extends ReturnImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append("return");
+
+		Vertex last = this;
 
 		// now the returned exp (0 or 1)
 		IsReturnedBy irb = getFirstIsReturnedBy(EdgeDirection.IN);
 		if (irb != null) {
 			bw.append(' ');
-			((CGExpression) irb.getAlpha()).generateCode(jcg, bw, indentLevel);
+			last = ((CGExpression) irb.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
+		return last;
 	}
 
 }

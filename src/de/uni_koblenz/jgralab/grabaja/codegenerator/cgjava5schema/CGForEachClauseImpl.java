@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ForEachClauseImpl;
 
@@ -15,7 +16,7 @@ public class CGForEachClauseImpl extends ForEachClauseImpl implements CGForHead 
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// the parameter decl (1,1)
 		((CGParameterDeclarationImpl) getFirstIsParameterOfForEachClause(
@@ -25,8 +26,8 @@ public class CGForEachClauseImpl extends ForEachClauseImpl implements CGForHead 
 		bw.append(" : ");
 
 		// the enumerable (1,1)
-		((CGExpression) getFirstIsEnumerableOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGExpression) getFirstIsEnumerableOf(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 
 }

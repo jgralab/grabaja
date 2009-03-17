@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMetaAnnotationOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfAnnotation;
@@ -18,7 +19,7 @@ public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// first the meta annotations (annotations annotating this annotation
 		// def) (0,*)
@@ -43,8 +44,8 @@ public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 		bw.append(' ');
 
 		// the body block (1,1)
-		((CGBlockImpl) getFirstIsAnnotationBlockOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsAnnotationBlockOf(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 
 }

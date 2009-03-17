@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExceptionThrownByConstructor;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfConstructor;
@@ -20,7 +21,7 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// the modifiers (0,*)
 		for (IsModifierOfConstructor imoc : getIsModifierOfConstructorIncidences(EdgeDirection.IN)) {
@@ -74,8 +75,8 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 		}
 
 		// the block (1,1)
-		((CGBlockImpl) getFirstIsBodyOfConstructor(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsBodyOfConstructor(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 
 }

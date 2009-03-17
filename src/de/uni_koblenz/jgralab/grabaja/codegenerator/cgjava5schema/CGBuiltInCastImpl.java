@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BuiltInCastImpl;
 
@@ -15,7 +16,7 @@ public class CGBuiltInCastImpl extends BuiltInCastImpl implements CGExpression {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append('(');
 
@@ -26,7 +27,7 @@ public class CGBuiltInCastImpl extends BuiltInCastImpl implements CGExpression {
 		bw.append(") ");
 
 		// now the casted expression (1,1)
-		((CGExpression) getFirstIsCastedValueOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGExpression) getFirstIsCastedValueOf(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 }

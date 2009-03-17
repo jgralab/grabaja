@@ -1,11 +1,12 @@
 package de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema;
 
-import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsInitializerOfVariable;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfVariable;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.VariableDeclarationImpl;
@@ -18,7 +19,7 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 
 		// first the modifiers
@@ -34,15 +35,19 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 		bw.append(' ');
 
 		// then the name (exactly one)
-		((CGIdentifierImpl) getFirstIsVariableNameOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		Vertex last = ((CGIdentifierImpl) getFirstIsVariableNameOf(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		// then the initializer (0 or 1)
 		IsInitializerOfVariable iiov = getFirstIsInitializerOfVariable(EdgeDirection.IN);
 		if (iiov != null) {
 			bw.append(" = ");
-			((CGExpression) iiov.getAlpha()).generateCode(jcg, bw, indentLevel);
+			last = ((CGExpression) iiov.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
+
+		return last;
 	}
 
 }

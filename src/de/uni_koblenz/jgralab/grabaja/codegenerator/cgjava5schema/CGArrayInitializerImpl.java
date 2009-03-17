@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsContentOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSizeOf;
@@ -18,7 +19,7 @@ public class CGArrayInitializerImpl extends ArrayInitializerImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// this array creation uses a literal form: {{1,2,3}, {4,5,6}}
 		boolean first = true;
@@ -49,6 +50,8 @@ public class CGArrayInitializerImpl extends ArrayInitializerImpl implements
 		if (!first) {
 			bw.append(']');
 		}
+
+		return this;
 	}
 
 }

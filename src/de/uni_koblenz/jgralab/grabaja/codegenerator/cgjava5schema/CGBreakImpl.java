@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsBreakTargetOf;
@@ -18,7 +19,7 @@ public class CGBreakImpl extends BreakImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append("break");
 
@@ -32,6 +33,8 @@ public class CGBreakImpl extends BreakImpl implements CGStatement {
 					.getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
 					.getName());
 		}
+
+		return this;
 	}
 
 }

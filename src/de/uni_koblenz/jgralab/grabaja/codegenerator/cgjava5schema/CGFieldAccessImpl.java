@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArrayElementIndexOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldContainerOf;
@@ -17,7 +18,7 @@ public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// First the container (0,1)
 		IsFieldContainerOf ifco = getFirstIsFieldContainerOf(EdgeDirection.IN);
@@ -37,6 +38,8 @@ public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 					.generateCode(jcg, bw, indentLevel);
 			bw.append(']');
 		}
+
+		return this;
 	}
 
 }

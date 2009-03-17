@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSourceUsageIn;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
@@ -26,7 +27,7 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// each TU has exactly one SourceFile
 		SourceFile sf = (SourceFile) getFirstIsPrimarySourceFor(
@@ -34,11 +35,16 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 		String fileName = cg_tu_directory + File.separator
 				+ sf.getName().replaceAll(".*/", "");
 		bw = new BufferedWriter(new FileWriter(fileName));
+
+		Vertex last = this;
+
 		for (IsSourceUsageIn isui : getIsSourceUsageInIncidences(EdgeDirection.IN)) {
-			((CGSourceUsageImpl) isui.getAlpha()).generateCode(jcg, bw,
+			last = ((CGSourceUsageImpl) isui.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 		bw.flush();
 		bw.close();
+
+		return last;
 	}
 }

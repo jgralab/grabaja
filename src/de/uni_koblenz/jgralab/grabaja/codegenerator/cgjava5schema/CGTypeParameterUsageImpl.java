@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeDefinitionOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.TypeParameterUsageImpl;
@@ -17,12 +18,16 @@ public class CGTypeParameterUsageImpl extends TypeParameterUsageImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		Vertex last = this;
 		// the types (0,*), but i guess in this case it should always be (1,1)
 		for (IsTypeDefinitionOf itdo : getIsTypeDefinitionOfIncidences(EdgeDirection.IN)) {
-			((CGType) itdo.getAlpha()).generateCode(jcg, bw, indentLevel);
+			last = ((CGType) itdo.getAlpha())
+					.generateCode(jcg, bw, indentLevel);
 		}
+
+		return last;
 	}
 
 }

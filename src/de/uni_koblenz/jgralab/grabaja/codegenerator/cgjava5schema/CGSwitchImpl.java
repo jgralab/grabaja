@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsCaseOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDefaultCaseOf;
@@ -17,8 +18,8 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		bw.append("switch (");
 
 		// the argument condition (1,1)
@@ -38,12 +39,15 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 		IsDefaultCaseOf idco = getFirstIsDefaultCaseOf(EdgeDirection.IN);
 		if (idco != null) {
 			JavaCodeGenerator.indent(bw, indentLevel);
-			((CGDefaultImpl) idco.getAlpha()).generateCode(jcg, bw, indentLevel + 1);
+			((CGDefaultImpl) idco.getAlpha()).generateCode(jcg, bw,
+					indentLevel + 1);
 			bw.append('\n');
 		}
 
 		JavaCodeGenerator.indent(bw, indentLevel);
 		bw.append('}');
+
+		return this;
 	}
 
 }

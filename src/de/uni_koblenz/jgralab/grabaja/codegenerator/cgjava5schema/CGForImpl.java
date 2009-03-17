@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ForImpl;
 
@@ -15,7 +16,7 @@ public class CGForImpl extends ForImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append("for (");
 
@@ -26,7 +27,7 @@ public class CGForImpl extends ForImpl implements CGStatement {
 		bw.append(") ");
 
 		// now the body (exactly one)
-		((CGBlockImpl) getFirstIsLoopBodyOfFor(EdgeDirection.IN).getAlpha())
+		return ((CGBlockImpl) getFirstIsLoopBodyOfFor(EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 	}
 

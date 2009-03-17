@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeArgumentOfTypeSpecification;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BuiltInTypeImpl;
@@ -17,7 +18,7 @@ public class CGBuiltInTypeImpl extends BuiltInTypeImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append(type.toString().toLowerCase());
 
@@ -36,6 +37,8 @@ public class CGBuiltInTypeImpl extends BuiltInTypeImpl implements
 		if (!first) {
 			bw.append('>');
 		}
+
+		return this;
 	}
 
 }

@@ -5,17 +5,14 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
-import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ConstructorDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
 import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMemberOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfBody;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.StaticConstructorDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.StaticInitializerDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BlockImpl;
 
 public class CGBlockImpl extends BlockImpl implements CGStatement {
@@ -25,7 +22,7 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		indentLevel++;
 
@@ -56,20 +53,14 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 			CGMember m = (CGMember) imo.getAlpha();
 			if (m instanceof EnumConstant) {
 				continue;
-			} else if (m instanceof MethodDeclaration
-					|| m instanceof ConstructorDefinition
-					|| m instanceof ClassDefinition
-					|| m instanceof InterfaceDefinition
-					|| m instanceof AnnotationDefinition
-					|| m instanceof StaticConstructorDefinition
-					|| m instanceof StaticInitializerDefinition) {
-				JavaCodeGenerator.indent(bw, indentLevel);
-				m.generateCode(jcg, bw, indentLevel);
-				bw.append("\n\n");
 			} else {
 				JavaCodeGenerator.indent(bw, indentLevel);
-				m.generateCode(jcg, bw, indentLevel);
-				bw.append(";\n\n");
+				Vertex last = m.generateCode(jcg, bw, indentLevel);
+				if (last instanceof Block || last instanceof MethodDeclaration) {
+					bw.append("\n\n");
+				} else {
+					bw.append(";\n\n");
+				}
 			}
 		}
 		if (!first) {
@@ -79,8 +70,8 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 		for (IsStatementOfBody isob : getIsStatementOfBodyIncidences(EdgeDirection.IN)) {
 			CGStatement s = (CGStatement) isob.getAlpha();
 			JavaCodeGenerator.indent(bw, indentLevel);
-			s.generateCode(jcg, bw, indentLevel);
-			if (!JavaCodeGenerator.isBlockConstruct(s)) {
+			Vertex last = s.generateCode(jcg, bw, indentLevel);
+			if (!(last instanceof Block || last instanceof Switch)) {
 				bw.append(';');
 			}
 			bw.append("\n");
@@ -89,5 +80,7 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 		indentLevel--;
 		JavaCodeGenerator.indent(bw, indentLevel);
 		bw.append("}");
+
+		return this;
 	}
 }

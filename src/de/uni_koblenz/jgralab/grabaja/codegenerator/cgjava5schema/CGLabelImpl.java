@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.LabelImpl;
 
@@ -15,7 +16,7 @@ public class CGLabelImpl extends LabelImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// the name (1,1)
 		((CGIdentifierImpl) getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
@@ -24,7 +25,7 @@ public class CGLabelImpl extends LabelImpl implements CGStatement {
 		bw.append(": ");
 
 		// the statement (1,1)
-		((CGStatement) getFirstIsAttachedTo(EdgeDirection.IN).getAlpha())
+		return ((CGStatement) getFirstIsAttachedTo(EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 	}
 

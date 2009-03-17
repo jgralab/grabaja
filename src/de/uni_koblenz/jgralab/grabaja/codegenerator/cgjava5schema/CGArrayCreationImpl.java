@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDimensionInitializerOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsElementTypeOfCreatedArray;
@@ -18,20 +19,24 @@ public class CGArrayCreationImpl extends ArrayCreationImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		Vertex last = this;
+
 		// the type (0,1)
 		IsElementTypeOfCreatedArray ietoca = getFirstIsElementTypeOfCreatedArray(EdgeDirection.IN);
 		if (ietoca != null) {
 			bw.append("new ");
 			// this array creation has the form: new Foo[1][2][38]
-			((CGTypeSpecification) ietoca.getAlpha()).generateCode(jcg, bw,
-					indentLevel);
+			last = ((CGTypeSpecification) ietoca.getAlpha()).generateCode(jcg,
+					bw, indentLevel);
 		}
 		// now the initializers (1,*)
 		for (IsDimensionInitializerOf idio : getIsDimensionInitializerOfIncidences(EdgeDirection.IN)) {
-			((CGArrayInitializerImpl) idio.getAlpha()).generateCode(jcg, bw,
-					indentLevel);
+			last = ((CGArrayInitializerImpl) idio.getAlpha()).generateCode(jcg,
+					bw, indentLevel);
 		}
+
+		return last;
 	}
 }

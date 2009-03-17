@@ -1,11 +1,12 @@
 package de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema;
 
-import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfEnum;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.EnumDefinitionImpl;
@@ -17,7 +18,7 @@ public class CGEnumDefinitionImpl extends EnumDefinitionImpl implements CGType {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// first the annotations (0,*)
 		for (IsAnnotationOfType iaot : getIsAnnotationOfTypeIncidences(EdgeDirection.IN)) {
@@ -40,8 +41,8 @@ public class CGEnumDefinitionImpl extends EnumDefinitionImpl implements CGType {
 		bw.append(' ');
 
 		// the block (1,1)
-		((CGBlockImpl) getFirstIsEnumBlockOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsEnumBlockOf(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 
 }

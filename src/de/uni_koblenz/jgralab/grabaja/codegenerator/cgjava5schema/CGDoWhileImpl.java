@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.DoWhileImpl;
 
@@ -15,7 +16,7 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append("do ");
 
@@ -29,6 +30,8 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 		((CGExpression) getFirstIsConditionOfDoWhile(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 		bw.append(")");
+
+		return this;
 	}
 
 }

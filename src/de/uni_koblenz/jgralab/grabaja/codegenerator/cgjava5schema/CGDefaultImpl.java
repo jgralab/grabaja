@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfDefaultCase;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.DefaultImpl;
@@ -16,8 +17,8 @@ public class CGDefaultImpl extends DefaultImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		bw.append("default:\n");
 
 		// then the statements (0,*)
@@ -33,6 +34,7 @@ public class CGDefaultImpl extends DefaultImpl implements CGStatement {
 			bw.append(";");
 		}
 
+		return this;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDefaultValueOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfAnnotationField;
@@ -18,7 +19,7 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		// modifiers (0,*)
 		for (IsModifierOfAnnotationField imoaf : getIsModifierOfAnnotationFieldIncidences(EdgeDirection.IN)) {
@@ -43,8 +44,11 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 		IsDefaultValueOf idvo = getFirstIsDefaultValueOf(EdgeDirection.IN);
 		if (idvo != null) {
 			bw.append(" default ");
-			((CGExpression) idvo.getAlpha()).generateCode(jcg, bw, indentLevel);
+			return ((CGExpression) idvo.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
+
+		return this;
 	}
 
 }

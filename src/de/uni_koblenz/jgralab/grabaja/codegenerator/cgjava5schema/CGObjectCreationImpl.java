@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ObjectCreationImpl;
 
@@ -16,7 +17,7 @@ public class CGObjectCreationImpl extends ObjectCreationImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append("new ");
 
@@ -25,7 +26,7 @@ public class CGObjectCreationImpl extends ObjectCreationImpl implements
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// the constructor method invocation (1,1)
-		((CGMethodInvocationImpl) getFirstIsConstructorInvocationOf(
+		return ((CGMethodInvocationImpl) getFirstIsConstructorInvocationOf(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 	}

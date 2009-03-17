@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.VariableInitializerImpl;
 
@@ -16,15 +17,16 @@ public class CGVariableInitializerImpl extends VariableInitializerImpl
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		try {
-			((CGExpression) getFirstIsInitializerOf(EdgeDirection.IN)
+			return ((CGExpression) getFirstIsInitializerOf(EdgeDirection.IN)
 					.getAlpha()).generateCode(jcg, bw, indentLevel);
 		} catch (NullPointerException e) {
 			System.err
 					.println("Found VariableInitializer without Expression vertex!");
 		}
+		return this;
 	}
 
 }

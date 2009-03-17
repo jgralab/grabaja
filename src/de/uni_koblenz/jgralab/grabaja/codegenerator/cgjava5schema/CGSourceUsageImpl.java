@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExternalDeclarationIn;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Type;
@@ -18,8 +19,9 @@ public class CGSourceUsageImpl extends SourceUsageImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		Vertex last = this;
 		for (IsExternalDeclarationIn iedi : getIsExternalDeclarationInIncidences(EdgeDirection.IN)) {
 			CGExternalDeclaration exDec = (CGExternalDeclaration) iedi
 					.getAlpha();
@@ -28,7 +30,8 @@ public class CGSourceUsageImpl extends SourceUsageImpl implements
 				bw.append('\n');
 			}
 
-			exDec.generateCode(jcg, bw, indentLevel);
+			last = exDec.generateCode(jcg, bw, indentLevel);
 		}
+		return last;
 	}
 }

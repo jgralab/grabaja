@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.InfixExpressionImpl;
 
@@ -16,8 +17,8 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		boolean isNested = JavaCodeGenerator.isNestedExpression(this);
 		if (isNested) {
 			bw.append('(');
@@ -25,7 +26,8 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 
 		// first the LHS (1,1)
 		((CGExpression) getFirstIsLeftHandSideOfInfixExpression(
-				EdgeDirection.IN).getAlpha()).generateCode(jcg, bw, indentLevel);
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(' ');
 
@@ -133,11 +135,13 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 		bw.append(" ");
 
 		// then the RHS (1,1)
-		((CGExpression) getFirstIsRightHandSideOfInfixExpression(
-				EdgeDirection.IN).getAlpha()).generateCode(jcg, bw, indentLevel);
+		Vertex last = ((CGExpression) getFirstIsRightHandSideOfInfixExpression(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		if (isNested) {
 			bw.append(')');
 		}
+		return last;
 	}
 }

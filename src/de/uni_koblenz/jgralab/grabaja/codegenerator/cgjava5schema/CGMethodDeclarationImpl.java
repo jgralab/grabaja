@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfMember;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExceptionThrownByMethod;
@@ -22,11 +23,11 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		generateMethodDeclarationCodeFor(jcg, this, bw, indentLevel);
 		bw.append(";");
-
+		return this;
 	}
 
 	static void generateMethodDeclarationCodeFor(JavaCodeGenerator jcg,

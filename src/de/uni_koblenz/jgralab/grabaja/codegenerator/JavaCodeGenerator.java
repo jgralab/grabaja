@@ -183,15 +183,6 @@ public class JavaCodeGenerator {
 		return baseDirectory;
 	}
 
-	public static boolean isLoop(Vertex v) {
-		return v instanceof While || v instanceof For || v instanceof DoWhile;
-	}
-
-	public static boolean isBlockConstruct(Vertex v) {
-		return v instanceof Block || v instanceof If || v instanceof Switch
-				|| v instanceof Synchronized || v instanceof Try | isLoop(v);
-	}
-
 	public static boolean isNestedExpression(Vertex v) {
 		for (Edge e : v.incidences(EdgeDirection.OUT)) {
 			if (e.getOmega() instanceof Expression) {

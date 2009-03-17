@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.SynchronizedImpl;
 
@@ -15,7 +16,7 @@ public class CGSynchronizedImpl extends SynchronizedImpl implements CGStatement 
 	}
 
 	@Override
-	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		bw.append("synchronized (");
 		// the monitor (1,1)
@@ -24,7 +25,7 @@ public class CGSynchronizedImpl extends SynchronizedImpl implements CGStatement 
 		bw.append(") ");
 
 		// the block (1,1)
-		((CGBlockImpl) getFirstIsSynchronizedBodyOf(EdgeDirection.IN)
+		return ((CGBlockImpl) getFirstIsSynchronizedBodyOf(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 }

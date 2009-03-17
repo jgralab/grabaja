@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArgumentOfMethodInvocation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMethodContainerOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsNameOfInvokedMethod;
@@ -18,12 +19,12 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// first the container (0,1)
 		IsMethodContainerOf imco = getFirstIsMethodContainerOf(EdgeDirection.IN);
 		if (imco != null) {
-			((CGExpression) imco.getAlpha()).generateCode(bw, indentLevel);
+			((CGExpression) imco.getAlpha()).generateCode(jcg, bw, indentLevel);
 			bw.append('.');
 		}
 
@@ -32,7 +33,8 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 		// then the method name (0,1), 0 in the case of constructors
 		IsNameOfInvokedMethod inoim = getFirstIsNameOfInvokedMethod(EdgeDirection.IN);
 		if (inoim != null) {
-			((CGIdentifierImpl) inoim.getAlpha()).generateCode(bw, indentLevel);
+			((CGIdentifierImpl) inoim.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
 
 		bw.append('(');
@@ -45,7 +47,8 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 			} else {
 				bw.append(", ");
 			}
-			((CGExpression) iaomi.getAlpha()).generateCode(bw, indentLevel);
+			((CGExpression) iaomi.getAlpha())
+					.generateCode(jcg, bw, indentLevel);
 		}
 		bw.append(')');
 	}

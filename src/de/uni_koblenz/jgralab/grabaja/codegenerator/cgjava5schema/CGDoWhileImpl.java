@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.DoWhileImpl;
 
 public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
@@ -14,19 +15,19 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		bw.append("do ");
 
 		// the block (1,1)
 		((CGStatement) getFirstIsLoopBodyOfDoWhile(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(" while (");
 
 		// the condition (1,1)
 		((CGExpression) getFirstIsConditionOfDoWhile(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 		bw.append(")");
 	}
 

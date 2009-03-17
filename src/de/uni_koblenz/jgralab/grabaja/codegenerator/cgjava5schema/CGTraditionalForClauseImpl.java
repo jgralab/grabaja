@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsForConditionOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsIteratorOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsRunVariableInitializationOf;
@@ -18,8 +19,8 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// the run var inits
 		boolean first = true;
 		for (IsRunVariableInitializationOf irvio : getIsRunVariableInitializationOfIncidences(EdgeDirection.IN)) {
@@ -28,20 +29,20 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 			} else {
 				bw.append(", ");
 			}
-			((CGStatement) irvio.getAlpha()).generateCode(bw, 0);
+			((CGStatement) irvio.getAlpha()).generateCode(jcg, bw, 0);
 		}
 		bw.append("; ");
 
 		// now the condition (0 or 1)
 		IsForConditionOf ifco = getFirstIsForConditionOf(EdgeDirection.IN);
 		if (ifco != null) {
-			((CGExpression) ifco.getAlpha()).generateCode(bw, 0);
+			((CGExpression) ifco.getAlpha()).generateCode(jcg, bw, 0);
 		}
 		bw.append("; ");
 
 		// now the iterators
 		for (IsIteratorOf iio : getIsIteratorOfIncidences(EdgeDirection.IN)) {
-			((CGExpression) iio.getAlpha()).generateCode(bw, 0);
+			((CGExpression) iio.getAlpha()).generateCode(jcg, bw, 0);
 		}
 	}
 

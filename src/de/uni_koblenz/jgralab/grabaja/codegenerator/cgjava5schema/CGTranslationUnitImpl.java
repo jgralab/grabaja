@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSourceUsageIn;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.TranslationUnitImpl;
@@ -25,8 +26,8 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// each TU has exactly one SourceFile
 		SourceFile sf = (SourceFile) getFirstIsPrimarySourceFor(
 				EdgeDirection.IN).getAlpha();
@@ -34,7 +35,8 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 				+ sf.getName().replaceAll(".*/", "");
 		bw = new BufferedWriter(new FileWriter(fileName));
 		for (IsSourceUsageIn isui : getIsSourceUsageInIncidences(EdgeDirection.IN)) {
-			((CGSourceUsageImpl) isui.getAlpha()).generateCode(bw, indentLevel);
+			((CGSourceUsageImpl) isui.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
 		bw.flush();
 		bw.close();

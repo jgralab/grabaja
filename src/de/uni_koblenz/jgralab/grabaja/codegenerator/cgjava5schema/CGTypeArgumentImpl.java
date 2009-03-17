@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSimpleArgumentOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsWildcardArgumentOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.TypeArgumentImpl;
@@ -17,8 +18,8 @@ public class CGTypeArgumentImpl extends TypeArgumentImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// The simple args (0,*)
 		boolean first = true;
 		for (IsSimpleArgumentOf isao : getIsSimpleArgumentOfIncidences(EdgeDirection.IN)) {
@@ -27,7 +28,7 @@ public class CGTypeArgumentImpl extends TypeArgumentImpl implements
 			} else {
 				bw.append(", ");
 			}
-			((CGSimpleArgumentImpl) isao.getAlpha()).generateCode(bw,
+			((CGSimpleArgumentImpl) isao.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 
@@ -39,7 +40,7 @@ public class CGTypeArgumentImpl extends TypeArgumentImpl implements
 			} else {
 				bw.append(", ");
 			}
-			((CGWildcardArgumentImpl) iwao.getAlpha()).generateCode(bw,
+			((CGWildcardArgumentImpl) iwao.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 	}

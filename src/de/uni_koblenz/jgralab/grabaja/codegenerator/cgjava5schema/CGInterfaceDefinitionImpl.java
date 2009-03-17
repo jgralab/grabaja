@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfInterface;
@@ -19,23 +20,25 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// first the annotations (0,*)
 		for (IsAnnotationOfType iaot : getIsAnnotationOfTypeIncidences(EdgeDirection.IN)) {
-			((CGAnnotationImpl) iaot.getAlpha()).generateCode(bw, indentLevel);
+			((CGAnnotationImpl) iaot.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
 
 		// write all modifiers (0,*)
 		for (IsModifierOfInterface imoc : getIsModifierOfInterfaceIncidences(EdgeDirection.IN)) {
-			((CGModifierImpl) imoc.getAlpha()).generateCode(bw, indentLevel);
+			((CGModifierImpl) imoc.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 			bw.append(' ');
 		}
 		bw.append("interface ");
 
 		// write the iface name (1,1)
 		((CGIdentifierImpl) getFirstIsInterfaceNameOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// now the type parameters (0,*)
 		boolean first = true;
@@ -47,7 +50,7 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 				bw.append(", ");
 			}
 			((CGTypeParameterDeclarationImpl) itpoc.getAlpha()).generateCode(
-					bw, indentLevel);
+					jcg, bw, indentLevel);
 		}
 		if (!first) {
 			bw.append(">");
@@ -62,7 +65,7 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 			} else {
 				bw.append(", ");
 			}
-			((CGTypeSpecification) iscoi.getAlpha()).generateCode(bw,
+			((CGTypeSpecification) iscoi.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 
@@ -70,7 +73,7 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 
 		// the body block (1,1)
 		((CGBlockImpl) getFirstIsInterfaceBlockOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

@@ -17,20 +17,20 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
 			throws IOException {
 		bw.append("switch (");
 
 		// the argument condition (1,1)
 		((CGExpression) getFirstIsSwitchArgumentOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(") {\n");
 
 		// the cases (0,*)
 		for (IsCaseOf c : getIsCaseOfIncidences(EdgeDirection.IN)) {
 			JavaCodeGenerator.indent(bw, indentLevel);
-			((CGCaseImpl) c.getAlpha()).generateCode(bw, indentLevel + 1);
+			((CGCaseImpl) c.getAlpha()).generateCode(jcg, bw, indentLevel + 1);
 			bw.append('\n');
 		}
 
@@ -38,7 +38,7 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 		IsDefaultCaseOf idco = getFirstIsDefaultCaseOf(EdgeDirection.IN);
 		if (idco != null) {
 			JavaCodeGenerator.indent(bw, indentLevel);
-			((CGDefaultImpl) idco.getAlpha()).generateCode(bw, indentLevel + 1);
+			((CGDefaultImpl) idco.getAlpha()).generateCode(jcg, bw, indentLevel + 1);
 			bw.append('\n');
 		}
 

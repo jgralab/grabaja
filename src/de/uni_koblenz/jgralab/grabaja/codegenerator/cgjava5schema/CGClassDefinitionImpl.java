@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfClass;
@@ -20,23 +21,25 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// first the annotations (0,*)
 		for (IsAnnotationOfType iaot : getIsAnnotationOfTypeIncidences(EdgeDirection.IN)) {
-			((CGAnnotationImpl) iaot.getAlpha()).generateCode(bw, indentLevel);
+			((CGAnnotationImpl) iaot.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
 
 		// write all modifiers
 		for (IsModifierOfClass imoc : getIsModifierOfClassIncidences(EdgeDirection.IN)) {
-			((CGModifierImpl) imoc.getAlpha()).generateCode(bw, indentLevel);
+			((CGModifierImpl) imoc.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 			bw.append(' ');
 		}
 		bw.append("class ");
 
 		// write the class name
 		((CGIdentifierImpl) getFirstIsClassNameOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		// now the type parameters (0,*)
 		boolean first = true;
@@ -48,7 +51,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 				bw.append(", ");
 			}
 			((CGTypeParameterDeclarationImpl) itpoc.getAlpha()).generateCode(
-					bw, indentLevel);
+					jcg, bw, indentLevel);
 		}
 		if (!first) {
 			bw.append(">");
@@ -58,7 +61,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		IsSuperClassOfClass iscoc = getFirstIsSuperClassOfClass(EdgeDirection.IN);
 		if (iscoc != null) {
 			bw.append(" extends ");
-			((CGTypeSpecification) iscoc.getAlpha()).generateCode(bw,
+			((CGTypeSpecification) iscoc.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 
@@ -71,7 +74,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 			} else {
 				bw.append(", ");
 			}
-			((CGTypeSpecification) iioc.getAlpha()).generateCode(bw,
+			((CGTypeSpecification) iioc.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 
@@ -79,7 +82,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 
 		// write the class block (there's exactly one)
 		((CGBlockImpl) getFirstIsClassBlockOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

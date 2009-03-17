@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.PostfixExpressionImpl;
 
 public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
@@ -15,11 +16,12 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// the LHS (1,1)
 		((CGExpression) getFirstIsLeftHandSideOfPostfixExpression(
-				EdgeDirection.IN).getAlpha()).generateCode(bw, indentLevel);
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		switch (operator) {
 		case DECREMENT:

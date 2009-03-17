@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExceptionThrownByConstructor;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfConstructor;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsParameterOfConstructor;
@@ -19,17 +20,18 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// the modifiers (0,*)
 		for (IsModifierOfConstructor imoc : getIsModifierOfConstructorIncidences(EdgeDirection.IN)) {
-			((CGModifierImpl) imoc.getAlpha()).generateCode(bw, indentLevel);
+			((CGModifierImpl) imoc.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 			bw.append(' ');
 		}
 
 		// the name (1,1)
 		((CGIdentifierImpl) getFirstIsNameOfConstructor(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// the type parameters (0,*)
 		boolean first = true;
@@ -41,7 +43,7 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 				bw.append(", ");
 			}
 			((CGTypeParameterDeclarationImpl) itpoc.getAlpha()).generateCode(
-					bw, indentLevel);
+					jcg, bw, indentLevel);
 		}
 
 		// the parameters (0,*)
@@ -53,8 +55,8 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 			} else {
 				bw.append(", ");
 			}
-			((CGParameterDeclarationImpl) ipoc.getAlpha()).generateCode(bw,
-					indentLevel);
+			((CGParameterDeclarationImpl) ipoc.getAlpha()).generateCode(jcg,
+					bw, indentLevel);
 		}
 		bw.append(')');
 
@@ -67,13 +69,13 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 			} else {
 				bw.append(", ");
 			}
-			((CGTypeSpecification) ietbc.getAlpha()).generateCode(bw,
+			((CGTypeSpecification) ietbc.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 
 		// the block (1,1)
 		((CGBlockImpl) getFirstIsBodyOfConstructor(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

@@ -17,12 +17,12 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// create the directory
 		String relativeDirName = fullyQualifiedName.replaceAll("\\.",
 				File.separator);
-		File pkg = new File(JavaCodeGenerator.instance().getBaseDirectory()
+		File pkg = new File(jcg.getBaseDirectory().getCanonicalPath()
 				+ File.separator + relativeDirName);
 		pkg.mkdirs();
 
@@ -30,7 +30,7 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 		for (IsPartOf ipo : getIsPartOfIncidences(EdgeDirection.IN)) {
 			CGTranslationUnitImpl tu = (CGTranslationUnitImpl) ipo.getAlpha();
 			tu.setDirectory(pkg.getAbsolutePath());
-			tu.generateCode(bw, indentLevel);
+			tu.generateCode(jcg, bw, indentLevel);
 		}
 	}
 

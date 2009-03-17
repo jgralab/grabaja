@@ -16,7 +16,7 @@ public class CGDefaultImpl extends DefaultImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
 			throws IOException {
 		bw.append("default:\n");
 
@@ -29,7 +29,7 @@ public class CGDefaultImpl extends DefaultImpl implements CGStatement {
 				bw.append("\n");
 			}
 			JavaCodeGenerator.indent(bw, indentLevel);
-			((CGStatement) isodc.getAlpha()).generateCode(bw, indentLevel);
+			((CGStatement) isodc.getAlpha()).generateCode(jcg, bw, indentLevel);
 			bw.append(";");
 		}
 

@@ -8,15 +8,11 @@ import java.io.InputStreamReader;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
 import de.uni_koblenz.jgralab.utilities.tg2dot.Tg2Dot;
 
 public class CGTest {
 	public static void main(String[] args) throws GraphIOException,
 			IOException, InterruptedException {
-
-		JavaCodeGenerator.instance();
 
 		String outputDir = "testit" + File.separator + "cgoutput";
 		String graphFile = outputDir + File.separator + "cginput.tg";
@@ -35,11 +31,11 @@ public class CGTest {
 		// Extract
 		JavaExtractor.main(new String[] { "-o", graphFile,
 				"testit" + File.separator + "cginput" });
-		Java5 g = Java5Schema.instance().loadJava5(graphFile);
+		JavaCodeGenerator jcg = new JavaCodeGenerator(graphFile, outputDir);
 
 		// Dot
 		Tg2Dot t2d = new Tg2Dot();
-		t2d.setGraph(g);
+		t2d.setGraph(jcg.getJavaGraph());
 		t2d.setReversedEdges(true);
 		t2d.setOutputFile(dotFile);
 		t2d.printGraph();
@@ -50,9 +46,7 @@ public class CGTest {
 						+ dotFile).waitFor();
 
 		// Generate Code
-		JavaCodeGenerator.instance().setGraph(g);
-		JavaCodeGenerator.instance().setOutputDirectory(outputDir);
-		JavaCodeGenerator.instance().generateCode();
+		jcg.generateCode();
 
 		// Make a diff
 		Process proc = Runtime.getRuntime().exec(

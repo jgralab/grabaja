@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.WhileImpl;
 
 public class CGWhileImpl extends WhileImpl implements CGStatement {
@@ -14,17 +15,17 @@ public class CGWhileImpl extends WhileImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		bw.append("while (");
 
 		((CGExpression) getFirstIsConditionOfWhile(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(") ");
 
 		((CGStatement) getFirstIsLoopBodyOfWhile(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

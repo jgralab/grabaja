@@ -166,6 +166,14 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.WildcardArgument;
 public class JavaCodeGenerator {
 
 	private Java5 javaGraph = null;
+
+	/**
+	 * @return the javaGraph
+	 */
+	public Java5 getJavaGraph() {
+		return javaGraph;
+	}
+
 	private File baseDirectory = null;
 
 	/**
@@ -181,7 +189,7 @@ public class JavaCodeGenerator {
 
 	public static boolean isBlockConstruct(Vertex v) {
 		return v instanceof Block || v instanceof If || v instanceof Switch
-				|| v instanceof Try | isLoop(v);
+				|| v instanceof Synchronized || v instanceof Try | isLoop(v);
 	}
 
 	public static boolean isNestedExpression(Vertex v) {
@@ -338,15 +346,7 @@ public class JavaCodeGenerator {
 				CGWildcardArgumentImpl.class);
 	}
 
-	public void setGraph(String graphFile) throws GraphIOException {
-		javaGraph = Java5Schema.instance().loadJava5(graphFile);
-	}
-
-	public void setGraph(Java5 graph) {
-		javaGraph = graph;
-	}
-
-	public void setOutputDirectory(String sourcesDir) throws IOException {
+	private void setOutputDirectory(String sourcesDir) throws IOException {
 		baseDirectory = new File(sourcesDir);
 		if (!baseDirectory.exists()) {
 			baseDirectory.mkdir();
@@ -363,38 +363,31 @@ public class JavaCodeGenerator {
 		}
 	}
 
-	private JavaCodeGenerator() {
+	public JavaCodeGenerator(Java5 graph, String outputDir) throws IOException {
+		javaGraph = graph;
+		setOutputDirectory(outputDir);
 	}
 
-	private static JavaCodeGenerator thisInstance = null;
-
-	public static JavaCodeGenerator instance() {
-		if (thisInstance == null) {
-			thisInstance = new JavaCodeGenerator();
-		}
-		return thisInstance;
+	public JavaCodeGenerator(String graphFile, String outputDir)
+			throws IOException, GraphIOException {
+		javaGraph = Java5Schema.instance().loadJava5(graphFile);
+		setOutputDirectory(outputDir);
 	}
 
 	public void generateCode() throws IOException {
 		for (Program p : javaGraph.getProgramVertices()) {
-			((CGProgramImpl) p).generateCode(null, 0);
+			((CGProgramImpl) p).generateCode(this, null, 0);
 		}
 	}
 
-	/**
-	 * @param args
-	 * @throws GraphIOException
-	 * @throws IOException
-	 */
 	public static void main(String[] args) throws IOException, GraphIOException {
 		if (args.length != 2) {
 			System.err
-					.println("Usage: java JavaCodeGenerator java-graph.tg /path/to/src/dir");
+					.println("Usage: java JavaCodeGenerator java-graph.tg /path/to/output/dir");
 			return;
 		}
-		JavaCodeGenerator.instance().setGraph(args[0]);
-		JavaCodeGenerator.instance().setOutputDirectory(args[1]);
-		JavaCodeGenerator.instance().generateCode();
+		JavaCodeGenerator jcg = new JavaCodeGenerator(args[0], args[1]);
+		jcg.generateCode();
 		System.out.println("Successfully generated code in " + args[1] + ".");
 	}
 

@@ -16,13 +16,13 @@ public class CGAnnotationImpl extends AnnotationImpl implements CodeGenerator {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
 			throws IOException {
 		bw.append('@');
 
 		// the name (1,1)
 		((CGQualifiedName) getFirstIsAnnotationNameOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// the args (0,*)
 		boolean first = true;
@@ -33,7 +33,7 @@ public class CGAnnotationImpl extends AnnotationImpl implements CodeGenerator {
 			} else {
 				bw.append(", ");
 			}
-			((CGExpression) iaao.getAlpha()).generateCode(bw, indentLevel);
+			((CGExpression) iaao.getAlpha()).generateCode(jcg, bw, indentLevel);
 		}
 		if (!first) {
 			bw.append(")");

@@ -1,5 +1,6 @@
 package de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema;
 
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -16,29 +17,31 @@ public class CGEnumDefinitionImpl extends EnumDefinitionImpl implements CGType {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		// first the annotations (0,*)
 		for (IsAnnotationOfType iaot : getIsAnnotationOfTypeIncidences(EdgeDirection.IN)) {
-			((CGAnnotationImpl) iaot.getAlpha()).generateCode(bw, indentLevel);
+			((CGAnnotationImpl) iaot.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
 
 		// modifiers (0,*)
 		for (IsModifierOfEnum imoe : getIsModifierOfEnumIncidences(EdgeDirection.IN)) {
-			((CGModifierImpl) imoe.getAlpha()).generateCode(bw, indentLevel);
+			((CGModifierImpl) imoe.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
 
 		bw.append(" enum ");
 
 		// the name (1,1)
 		((CGIdentifierImpl) getFirstIsEnumNameOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(' ');
 
 		// the block (1,1)
 		((CGBlockImpl) getFirstIsEnumBlockOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

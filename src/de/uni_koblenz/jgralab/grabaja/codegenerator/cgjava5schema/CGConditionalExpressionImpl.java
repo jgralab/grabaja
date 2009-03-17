@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ConditionalExpressionImpl;
 
 public class CGConditionalExpressionImpl extends ConditionalExpressionImpl
@@ -15,25 +16,25 @@ public class CGConditionalExpressionImpl extends ConditionalExpressionImpl
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		bw.append("((");
 
 		// new the condition (1,1)
 		((CGExpression) getFirstIsConditionOfExpression(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(") ? ");
 
 		// now the match (1,1)
 		((CGExpression) getFirstIsMatchOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(" : ");
 
 		// now the mismatch (1,1)
 		((CGExpression) getFirstIsMismatchOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(')');
 	}

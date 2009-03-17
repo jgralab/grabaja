@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfMember;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExceptionThrownByMethod;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfMethod;
@@ -21,31 +22,34 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
-		generateMethodDeclarationCodeFor(this, bw, indentLevel);
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
+		generateMethodDeclarationCodeFor(jcg, this, bw, indentLevel);
 		bw.append(";");
 
 	}
 
-	static void generateMethodDeclarationCodeFor(MethodDeclaration md,
-			BufferedWriter bw, int indentLevel) throws IOException {
+	static void generateMethodDeclarationCodeFor(JavaCodeGenerator jcg,
+			MethodDeclaration md, BufferedWriter bw, int indentLevel)
+			throws IOException {
 		// first the annotations (0,*)
 		for (IsAnnotationOfMember iaot : md
 				.getIsAnnotationOfMemberIncidences(EdgeDirection.IN)) {
-			((CGAnnotationImpl) iaot.getAlpha()).generateCode(bw, indentLevel);
+			((CGAnnotationImpl) iaot.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		}
 
 		// the modifiers
 		for (IsModifierOfMethod imom : md
 				.getIsModifierOfMethodIncidences(EdgeDirection.IN)) {
-			((CGModifierImpl) imom.getAlpha()).generateCode(bw, indentLevel);
+			((CGModifierImpl) imom.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 			bw.append(' ');
 		}
 
 		// then the return type (exactly one)
 		((CGTypeSpecification) md.getFirstIsReturnTypeOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// then the type parameters (0,*)
 		boolean first = true;
@@ -58,7 +62,7 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 				bw.append(", ");
 			}
 			((CGTypeParameterDeclarationImpl) itpom.getAlpha()).generateCode(
-					bw, indentLevel);
+					jcg, bw, indentLevel);
 		}
 		if (!first) {
 			bw.append('>');
@@ -68,7 +72,7 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 
 		// then the name (exactly one)
 		((CGIdentifierImpl) md.getFirstIsNameOfMethod(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// now comes the parameter list as many ParameterDeclarations
 		bw.append('(');
@@ -80,7 +84,7 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 			} else {
 				bw.append(", ");
 			}
-			((CGParameterDeclaration) ipom.getAlpha()).generateCode(bw,
+			((CGParameterDeclaration) ipom.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 		bw.append(')');
@@ -95,7 +99,7 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 			} else {
 				bw.append(", ");
 			}
-			((CGTypeSpecification) ietbm.getAlpha()).generateCode(bw,
+			((CGTypeSpecification) ietbm.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		}
 	}

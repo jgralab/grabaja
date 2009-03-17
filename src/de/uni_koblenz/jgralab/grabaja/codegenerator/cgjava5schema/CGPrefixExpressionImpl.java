@@ -16,7 +16,7 @@ public class CGPrefixExpressionImpl extends PrefixExpressionImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
 			throws IOException {
 		boolean isNested = JavaCodeGenerator.isNestedExpression(this);
 		if (isNested) {
@@ -49,7 +49,7 @@ public class CGPrefixExpressionImpl extends PrefixExpressionImpl implements
 
 		// the RHS (1,1)
 		((CGExpression) getFirstIsRightHandSideOfPrefixExpression(
-				EdgeDirection.IN).getAlpha()).generateCode(bw, indentLevel);
+				EdgeDirection.IN).getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		if (isNested) {
 			bw.append(')');

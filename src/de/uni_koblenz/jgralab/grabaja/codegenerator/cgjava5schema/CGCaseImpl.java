@@ -16,13 +16,13 @@ public class CGCaseImpl extends CaseImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
 			throws IOException {
 		bw.append("case ");
 
 		// the condition (1,1)
 		((CGExpression) getFirstIsCaseConditionOf(EdgeDirection.IN).getAlpha())
-				.generateCode(bw, indentLevel);
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(":\n");
 
@@ -35,7 +35,7 @@ public class CGCaseImpl extends CaseImpl implements CGStatement {
 				bw.append("\n");
 			}
 			JavaCodeGenerator.indent(bw, indentLevel);
-			((CGStatement) isoc.getAlpha()).generateCode(bw, indentLevel);
+			((CGStatement) isoc.getAlpha()).generateCode(jcg, bw, indentLevel);
 			bw.append(";");
 		}
 

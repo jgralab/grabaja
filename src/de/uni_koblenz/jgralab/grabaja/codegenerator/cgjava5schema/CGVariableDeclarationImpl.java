@@ -1,5 +1,6 @@
 package de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema;
 
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -17,29 +18,30 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 
 		// first the modifiers
 		for (IsModifierOfVariable imov : getIsModifierOfVariableIncidences(EdgeDirection.IN)) {
-			((CGModifierImpl) imov.getAlpha()).generateCode(bw, indentLevel);
+			((CGModifierImpl) imov.getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 			bw.append(' ');
 		}
 
 		// then the type (exactly one)
 		((CGTypeSpecification) getFirstIsTypeOfVariable(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 		bw.append(' ');
 
 		// then the name (exactly one)
 		((CGIdentifierImpl) getFirstIsVariableNameOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// then the initializer (0 or 1)
 		IsInitializerOfVariable iiov = getFirstIsInitializerOfVariable(EdgeDirection.IN);
 		if (iiov != null) {
 			bw.append(" = ");
-			((CGExpression) iiov.getAlpha()).generateCode(bw, indentLevel);
+			((CGExpression) iiov.getAlpha()).generateCode(jcg, bw, indentLevel);
 		}
 	}
 

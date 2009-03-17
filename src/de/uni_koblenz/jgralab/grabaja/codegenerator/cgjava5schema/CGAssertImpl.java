@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMessageOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.AssertImpl;
 
@@ -15,19 +16,19 @@ public class CGAssertImpl extends AssertImpl implements CGStatement {
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		bw.append("assert ");
 
 		// the condition (1,1)
 		((CGExpression) getFirstIsConditionOfAssert(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// the message (0,1)
 		IsMessageOf imo = getFirstIsMessageOf(EdgeDirection.IN);
 		if (imo != null) {
 			bw.append(" : ");
-			((CGExpression) imo.getAlpha()).generateCode(bw, indentLevel);
+			((CGExpression) imo.getAlpha()).generateCode(jcg, bw, indentLevel);
 		}
 	}
 

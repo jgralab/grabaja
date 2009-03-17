@@ -16,7 +16,7 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw, int indentLevel)
 			throws IOException {
 		boolean isNested = JavaCodeGenerator.isNestedExpression(this);
 		if (isNested) {
@@ -25,7 +25,7 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 
 		// first the LHS (1,1)
 		((CGExpression) getFirstIsLeftHandSideOfInfixExpression(
-				EdgeDirection.IN).getAlpha()).generateCode(bw, indentLevel);
+				EdgeDirection.IN).getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(' ');
 
@@ -134,7 +134,7 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 
 		// then the RHS (1,1)
 		((CGExpression) getFirstIsRightHandSideOfInfixExpression(
-				EdgeDirection.IN).getAlpha()).generateCode(bw, indentLevel);
+				EdgeDirection.IN).getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		if (isNested) {
 			bw.append(')');

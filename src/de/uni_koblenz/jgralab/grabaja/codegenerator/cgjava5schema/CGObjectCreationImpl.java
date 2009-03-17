@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ObjectCreationImpl;
 
 public class CGObjectCreationImpl extends ObjectCreationImpl implements
@@ -15,17 +16,18 @@ public class CGObjectCreationImpl extends ObjectCreationImpl implements
 	}
 
 	@Override
-	public void generateCode(BufferedWriter bw, int indentLevel)
-			throws IOException {
+	public void generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
+			int indentLevel) throws IOException {
 		bw.append("new ");
 
 		// the type (1,1)
 		((CGTypeSpecification) getFirstIsTypeOfObject(EdgeDirection.IN)
-				.getAlpha()).generateCode(bw, indentLevel);
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// the constructor method invocation (1,1)
 		((CGMethodInvocationImpl) getFirstIsConstructorInvocationOf(
-				EdgeDirection.IN).getAlpha()).generateCode(bw, indentLevel);
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

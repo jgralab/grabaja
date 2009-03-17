@@ -23,6 +23,10 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// the modifiers (0,*)
 		for (IsModifierOfConstructor imoc : getIsModifierOfConstructorIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imoc.getAlpha()).generateCode(jcg, bw,

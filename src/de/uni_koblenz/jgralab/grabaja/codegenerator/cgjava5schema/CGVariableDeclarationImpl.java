@@ -21,6 +21,9 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
 
 		// first the modifiers
 		for (IsModifierOfVariable imov : getIsModifierOfVariableIncidences(EdgeDirection.IN)) {

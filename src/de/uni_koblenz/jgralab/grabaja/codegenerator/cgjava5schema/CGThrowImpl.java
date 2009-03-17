@@ -18,6 +18,10 @@ public class CGThrowImpl extends ThrowImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("throw ");
 
 		// the exception (1,1)

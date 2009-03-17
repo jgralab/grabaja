@@ -20,6 +20,10 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("switch (");
 
 		// the argument condition (1,1)

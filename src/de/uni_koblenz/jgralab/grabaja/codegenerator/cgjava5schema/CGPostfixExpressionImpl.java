@@ -19,6 +19,15 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
+		boolean isNested = JavaCodeGenerator.isNestedExpression(this);
+		if (isNested) {
+			bw.append('(');
+		}
+
 		// the LHS (1,1)
 		((CGExpression) getFirstIsLeftHandSideOfPostfixExpression(
 				EdgeDirection.IN).getAlpha())
@@ -33,6 +42,10 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 			break;
 		default:
 			throw new RuntimeException("Unknown operator " + operator + "!!!");
+		}
+
+		if (isNested) {
+			bw.append(')');
 		}
 
 		return this;

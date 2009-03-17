@@ -22,6 +22,10 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		Vertex last = this;
 
 		// the run var inits

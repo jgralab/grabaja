@@ -18,6 +18,10 @@ public class CGBuiltInCastImpl extends BuiltInCastImpl implements CGExpression {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append('(');
 
 		// now the type (1,1)

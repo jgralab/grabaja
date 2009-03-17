@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
+import de.uni_koblenz.jgralab.AttributedElement;
+import de.uni_koblenz.jgralab.BooleanGraphMarker;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.GraphFactory;
@@ -164,6 +166,8 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.While;
 import de.uni_koblenz.jgralab.grabaja.java5schema.WildcardArgument;
 
 public class JavaCodeGenerator {
+
+	private BooleanGraphMarker cgElements = null;
 
 	private Java5 javaGraph = null;
 
@@ -361,8 +365,29 @@ public class JavaCodeGenerator {
 
 	public JavaCodeGenerator(String graphFile, String outputDir)
 			throws IOException, GraphIOException {
-		javaGraph = Java5Schema.instance().loadJava5(graphFile);
-		setOutputDirectory(outputDir);
+		this(Java5Schema.instance().loadJava5(graphFile), outputDir);
+	}
+
+	public JavaCodeGenerator(Java5 graph, String outputDir,
+			BooleanGraphMarker elementsToBeGenerated) throws IOException {
+		this(graph, outputDir);
+		cgElements = elementsToBeGenerated;
+	}
+
+	public JavaCodeGenerator(String graphFile, String outputDir,
+			BooleanGraphMarker elementsToBeGenerated) throws IOException,
+			GraphIOException {
+		this(graphFile, outputDir);
+		markDependencies(elementsToBeGenerated);
+	}
+
+	private void markDependencies(BooleanGraphMarker elementsToBeGenerated) {
+		// TODO: Mark dependent vertices
+		cgElements = elementsToBeGenerated;
+	}
+
+	public boolean generationWanted(AttributedElement v) {
+		return cgElements == null || cgElements.isMarked(v);
 	}
 
 	public void generateCode() throws IOException {

@@ -18,6 +18,10 @@ public class CGLabelImpl extends LabelImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// the name (1,1)
 		((CGIdentifierImpl) getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);

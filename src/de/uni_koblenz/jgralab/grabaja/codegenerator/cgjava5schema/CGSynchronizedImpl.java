@@ -18,6 +18,10 @@ public class CGSynchronizedImpl extends SynchronizedImpl implements CGStatement 
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("synchronized (");
 		// the monitor (1,1)
 		((CGExpression) getFirstIsMonitorOf(EdgeDirection.IN).getAlpha())

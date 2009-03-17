@@ -20,6 +20,10 @@ public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// First the container (0,1)
 		IsFieldContainerOf ifco = getFirstIsFieldContainerOf(EdgeDirection.IN);
 		if (ifco != null) {

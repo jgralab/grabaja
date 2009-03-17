@@ -19,6 +19,10 @@ public class CGProgramImpl extends ProgramImpl implements CodeGenerator {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		Vertex last = this;
 		for (IsPackageOf ipo : getIsPackageOfIncidences(EdgeDirection.IN)) {
 			last = ((CGJavaPackageImpl) ipo.getAlpha()).generateCode(jcg, bw,

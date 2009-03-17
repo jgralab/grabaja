@@ -19,6 +19,10 @@ public class CGDefaultImpl extends DefaultImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("default:\n");
 
 		// then the statements (0,*)

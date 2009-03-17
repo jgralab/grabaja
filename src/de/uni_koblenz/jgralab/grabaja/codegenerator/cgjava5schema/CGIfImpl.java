@@ -19,6 +19,10 @@ public class CGIfImpl extends IfImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("if (");
 
 		// here comes the condition (exactly one)

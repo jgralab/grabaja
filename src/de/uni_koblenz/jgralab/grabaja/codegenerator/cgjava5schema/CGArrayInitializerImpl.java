@@ -21,6 +21,10 @@ public class CGArrayInitializerImpl extends ArrayInitializerImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// this array creation uses a literal form: {{1,2,3}, {4,5,6}}
 		boolean first = true;
 		for (IsContentOf ico : getIsContentOfIncidences(EdgeDirection.IN)) {

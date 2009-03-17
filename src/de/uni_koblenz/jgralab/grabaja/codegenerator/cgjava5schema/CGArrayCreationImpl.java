@@ -21,6 +21,10 @@ public class CGArrayCreationImpl extends ArrayCreationImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		Vertex last = this;
 
 		// the type (0,1)

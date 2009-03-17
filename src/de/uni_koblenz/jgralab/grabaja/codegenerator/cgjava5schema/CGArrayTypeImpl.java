@@ -19,6 +19,10 @@ public class CGArrayTypeImpl extends ArrayTypeImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// the type spec (1,1)
 		((CGTypeSpecification) getFirstIsElementTypeOf(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);

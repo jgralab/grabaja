@@ -20,6 +20,10 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// create the directory
 		String relativeDirName = fullyQualifiedName.replaceAll("\\.",
 				File.separator);

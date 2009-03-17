@@ -21,6 +21,10 @@ public class CGBreakImpl extends BreakImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("break");
 
 		// the label (0,1)

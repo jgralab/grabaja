@@ -19,6 +19,10 @@ public class CGAnnotationImpl extends AnnotationImpl implements CodeGenerator {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append('@');
 
 		// the name (1,1)

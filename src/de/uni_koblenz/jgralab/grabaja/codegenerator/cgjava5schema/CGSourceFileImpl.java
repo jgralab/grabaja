@@ -17,6 +17,10 @@ public class CGSourceFileImpl extends SourceFileImpl implements CodeGenerator {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// nothing to do here...
 		return this;
 	}

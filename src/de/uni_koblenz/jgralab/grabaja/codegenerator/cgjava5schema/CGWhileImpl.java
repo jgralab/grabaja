@@ -18,6 +18,10 @@ public class CGWhileImpl extends WhileImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("while (");
 
 		((CGExpression) getFirstIsConditionOfWhile(EdgeDirection.IN).getAlpha())

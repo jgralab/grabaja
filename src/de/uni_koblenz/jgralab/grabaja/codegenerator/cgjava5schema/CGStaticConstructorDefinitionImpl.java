@@ -19,6 +19,10 @@ public class CGStaticConstructorDefinitionImpl extends
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// the block (1,1)
 		return ((CGBlockImpl) getFirstIsBodyOfStaticConstructor(
 				EdgeDirection.IN).getAlpha())

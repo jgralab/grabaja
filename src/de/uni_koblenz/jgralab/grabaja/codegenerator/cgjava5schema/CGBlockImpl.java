@@ -24,6 +24,10 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		indentLevel++;
 
 		bw.append("{\n");

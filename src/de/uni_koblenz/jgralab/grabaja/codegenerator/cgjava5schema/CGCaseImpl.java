@@ -19,6 +19,10 @@ public class CGCaseImpl extends CaseImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("case ");
 
 		// the condition (1,1)

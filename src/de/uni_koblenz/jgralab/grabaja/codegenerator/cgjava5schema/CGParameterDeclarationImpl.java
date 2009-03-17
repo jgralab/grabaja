@@ -20,6 +20,10 @@ public class CGParameterDeclarationImpl extends ParameterDeclarationImpl
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// first the modifier (0,1)
 		IsModifierOfParameter imop = getFirstIsModifierOfParameter(EdgeDirection.IN);
 		if (imop != null) {

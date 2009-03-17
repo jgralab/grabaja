@@ -20,6 +20,10 @@ public class CGBuiltInTypeImpl extends BuiltInTypeImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append(type.toString().toLowerCase());
 
 		// type args (0,*)

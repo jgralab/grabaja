@@ -18,6 +18,10 @@ public class CGBooleanConstantImpl extends BooleanConstantImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append(Boolean.toString(value));
 		return this;
 	}

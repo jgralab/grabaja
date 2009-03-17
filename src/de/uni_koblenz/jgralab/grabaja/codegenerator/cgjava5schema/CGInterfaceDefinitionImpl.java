@@ -23,6 +23,10 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// first the annotations (0,*)
 		for (IsAnnotationOfType iaot : getIsAnnotationOfTypeIncidences(EdgeDirection.IN)) {
 			((CGAnnotationImpl) iaot.getAlpha()).generateCode(jcg, bw,

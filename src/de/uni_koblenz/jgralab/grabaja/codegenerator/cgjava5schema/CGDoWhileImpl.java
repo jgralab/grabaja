@@ -18,6 +18,10 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("do ");
 
 		// the block (1,1)

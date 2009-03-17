@@ -22,6 +22,10 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// first the container (0,1)
 		IsMethodContainerOf imco = getFirstIsMethodContainerOf(EdgeDirection.IN);
 		if (imco != null) {

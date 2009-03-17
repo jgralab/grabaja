@@ -19,6 +19,10 @@ public class CGSimpleArgumentImpl extends SimpleArgumentImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// typespec (1,1)
 		return ((CGTypeSpecification) getFirstIsTypeOfSimpleArgument(
 				EdgeDirection.IN).getAlpha())

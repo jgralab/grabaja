@@ -21,6 +21,10 @@ public class CGSourceUsageImpl extends SourceUsageImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		Vertex last = this;
 		for (IsExternalDeclarationIn iedi : getIsExternalDeclarationInIncidences(EdgeDirection.IN)) {
 			CGExternalDeclaration exDec = (CGExternalDeclaration) iedi

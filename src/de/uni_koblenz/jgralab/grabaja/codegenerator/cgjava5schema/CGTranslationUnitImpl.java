@@ -29,6 +29,10 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// each TU has exactly one SourceFile
 		SourceFile sf = (SourceFile) getFirstIsPrimarySourceFor(
 				EdgeDirection.IN).getAlpha();

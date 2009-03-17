@@ -21,6 +21,10 @@ public class CGContinueImpl extends ContinueImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("continue");
 
 		// the label (0,1)

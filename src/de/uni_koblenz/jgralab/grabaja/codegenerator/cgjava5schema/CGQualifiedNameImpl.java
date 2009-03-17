@@ -20,6 +20,10 @@ public class CGQualifiedNameImpl extends QualifiedNameImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append(fullyQualifiedName);
 		// type args (0,*)
 		boolean first = true;

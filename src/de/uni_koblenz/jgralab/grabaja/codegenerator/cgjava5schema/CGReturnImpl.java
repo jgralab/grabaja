@@ -19,6 +19,10 @@ public class CGReturnImpl extends ReturnImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("return");
 
 		Vertex last = this;

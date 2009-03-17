@@ -18,6 +18,10 @@ public class CGClassCastImpl extends ClassCastImpl implements CGExpression {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// the type spec (1,1)
 		bw.append('(');
 		((CGTypeSpecification) getFirstIsCastedTypeOf(EdgeDirection.IN)
@@ -25,8 +29,8 @@ public class CGClassCastImpl extends ClassCastImpl implements CGExpression {
 		bw.append(") ");
 
 		// the object (1,1)
-		return ((CGExpression) getFirstIsCastedObjectOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGExpression) getFirstIsCastedObjectOf(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 
 }

@@ -19,6 +19,10 @@ public class CGPackageDefinitionImpl extends PackageDefinitionImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("package ");
 
 		// the pkg def (1,1)

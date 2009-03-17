@@ -17,6 +17,10 @@ public class CGIdentifierImpl extends IdentifierImpl implements CodeGenerator {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append(name);
 		return this;
 	}

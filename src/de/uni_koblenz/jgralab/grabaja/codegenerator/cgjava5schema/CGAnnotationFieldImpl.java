@@ -21,6 +21,10 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		// modifiers (0,*)
 		for (IsModifierOfAnnotationField imoaf : getIsModifierOfAnnotationFieldIncidences(EdgeDirection.IN)) {
 			((CGModifierImpl) imoaf.getAlpha()).generateCode(jcg, bw,

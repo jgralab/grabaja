@@ -19,6 +19,10 @@ public class CGAssertImpl extends AssertImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("assert ");
 
 		// the condition (1,1)

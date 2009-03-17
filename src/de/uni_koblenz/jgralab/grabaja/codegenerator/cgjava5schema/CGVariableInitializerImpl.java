@@ -19,6 +19,10 @@ public class CGVariableInitializerImpl extends VariableInitializerImpl
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		try {
 			return ((CGExpression) getFirstIsInitializerOf(EdgeDirection.IN)
 					.getAlpha()).generateCode(jcg, bw, indentLevel);

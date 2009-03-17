@@ -18,6 +18,10 @@ public class CGDoubleConstantImpl extends DoubleConstantImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append(literal);
 		return this;
 	}

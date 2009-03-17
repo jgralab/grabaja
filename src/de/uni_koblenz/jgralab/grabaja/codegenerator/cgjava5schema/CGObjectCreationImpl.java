@@ -19,6 +19,10 @@ public class CGObjectCreationImpl extends ObjectCreationImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("new ");
 
 		// the type (1,1)

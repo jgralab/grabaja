@@ -25,6 +25,10 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		generateMethodDeclarationCodeFor(jcg, this, bw, indentLevel);
 		bw.append(";");
 		return this;

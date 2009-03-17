@@ -18,6 +18,10 @@ public class CGForImpl extends ForImpl implements CGStatement {
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("for (");
 
 		// now comes the head (exactly one)
@@ -27,8 +31,8 @@ public class CGForImpl extends ForImpl implements CGStatement {
 		bw.append(") ");
 
 		// now the body (exactly one)
-		return ((CGBlockImpl) getFirstIsLoopBodyOfFor(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsLoopBodyOfFor(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 
 }

@@ -19,6 +19,10 @@ public class CGPrefixExpressionImpl extends PrefixExpressionImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		boolean isNested = JavaCodeGenerator.isNestedExpression(this);
 		if (isNested) {
 			bw.append('(');

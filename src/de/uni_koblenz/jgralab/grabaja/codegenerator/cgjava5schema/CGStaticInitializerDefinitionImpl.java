@@ -19,6 +19,10 @@ public class CGStaticInitializerDefinitionImpl extends
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		bw.append("static ");
 
 		// the block (1,1)

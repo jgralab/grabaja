@@ -21,6 +21,10 @@ public class CGTypeArgumentImpl extends TypeArgumentImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
+		if (!jcg.generationWanted(this)) {
+			return this;
+		}
+
 		Vertex last = this;
 
 		// The simple args (0,*)

@@ -3,6 +3,7 @@ package de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
@@ -22,8 +23,13 @@ public class CGPackageImportDefinitionImpl extends PackageImportDefinitionImpl
 			return null;
 		}
 
-		// TODO Auto-generated method stub
+		bw.append("import ");
 
+		// the qualified name (1,1)
+		((CGQualifiedName) getFirstIsImportedTypeOf(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
+
+		bw.append(".*");
 		return this;
 	}
 

@@ -1,6 +1,6 @@
 package bar;
 
-import bar.baz.TestClass;
+import bar.baz.*;
 
 public abstract class TestClass2<S, T> extends TestClass<S, T> {
 	private static final float CONST_FLOAT = -16.4f;

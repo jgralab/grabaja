@@ -8,6 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExternalDeclarationIn;
+import de.uni_koblenz.jgralab.grabaja.java5schema.PackageDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Type;
 import de.uni_koblenz.jgralab.grabaja.java5schema.impl.SourceUsageImpl;
 
@@ -25,17 +26,19 @@ public class CGSourceUsageImpl extends SourceUsageImpl implements
 			return null;
 		}
 
-		Vertex last = this;
 		for (IsExternalDeclarationIn iedi : getIsExternalDeclarationInIncidences(EdgeDirection.IN)) {
 			CGExternalDeclaration exDec = (CGExternalDeclaration) iedi
 					.getAlpha();
-
-			if (exDec instanceof Type) {
-				bw.append('\n');
+			Vertex last = exDec.generateCode(jcg, bw, indentLevel);
+			if (last != null) {
+				if (exDec instanceof PackageDefinition) {
+					bw.append(";\n");
+				} else if (!(exDec instanceof Type)) {
+					bw.append(";");
+				}
 			}
-
-			last = exDec.generateCode(jcg, bw, indentLevel);
+			bw.append('\n');
 		}
-		return last;
+		return this;
 	}
 }

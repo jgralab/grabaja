@@ -29,8 +29,6 @@ public class CGPackageDefinitionImpl extends PackageDefinitionImpl implements
 		((CGQualifiedName) getFirstIsPackageNameOf(EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
-		bw.append(";\n\n");
-
 		return this;
 	}
 

@@ -26,11 +26,9 @@ public class CGClassImportDefinitionImpl extends ClassImportDefinitionImpl
 		bw.append("import ");
 
 		// the qualified name (1,1)
-		((CGQualifiedName) getFirstIsImportedTypeOf(EdgeDirection.IN)
+		return ((CGQualifiedName) getFirstIsImportedTypeOf(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
-		bw.append(";\n");
 
-		return this;
 	}
 
 }

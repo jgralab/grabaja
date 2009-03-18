@@ -130,13 +130,19 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsBreakTargetOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsClassNameOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsContinueTargetOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsEnumNameOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceNameOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMetaAnnotationOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfAnnotation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfEnum;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeDefinitionOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
 import de.uni_koblenz.jgralab.grabaja.java5schema.JavaPackage;
@@ -436,12 +442,33 @@ public class JavaCodeGenerator {
 		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
 		markedElems.addAll(cgElements.getMarkedElements());
 		for (AttributedElement ae : markedElems) {
+			// Fix all Types (TypeParameterDeclarations don't need to be fixed
+			// explicitly, because the class/interface/enum/ann defs mark them
+			// automatically)
 			if (ae instanceof AnnotationDefinition) {
 				fixAnnotationDefinition((AnnotationDefinition) ae);
 			} else if (ae instanceof ClassDefinition) {
 				fixClassDefinition((ClassDefinition) ae);
+			} else if (ae instanceof InterfaceDefinition) {
+				fixInterfaceDefinition((InterfaceDefinition) ae);
+			} else if (ae instanceof EnumDefinition) {
+				fixEnumDefinition((EnumDefinition) ae);
 			}
 		}
+	}
+
+	private void fixEnumDefinition(EnumDefinition ed) {
+		markBelow(ed, IsAnnotationOfType.class);
+		markBelow(ed, IsModifierOfEnum.class);
+		markBelow(ed, IsEnumNameOf.class);
+	}
+
+	private void fixInterfaceDefinition(InterfaceDefinition id) {
+		markBelow(id, IsAnnotationOfType.class);
+		markBelow(id, IsModifierOfInterface.class);
+		markBelow(id, IsInterfaceNameOf.class);
+		markBelow(id, IsTypeParameterOfInterface.class);
+		markBelow(id, IsSuperClassOfInterface.class);
 	}
 
 	private void fixClassDefinition(ClassDefinition cd) {

@@ -122,6 +122,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.For;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ForEachClause;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.If;
+import de.uni_koblenz.jgralab.grabaja.java5schema.ImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InfixExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IntegerConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
@@ -454,41 +455,61 @@ public class JavaCodeGenerator {
 			} else if (ae instanceof EnumDefinition) {
 				fixEnumDefinition((EnumDefinition) ae);
 			}
+
+			// Fix all marked SourceUsages (PackageDefinitions and
+			// ImportDefinitions have to be included)
+			else if (ae instanceof SourceUsage) {
+				fixSourceUsage((SourceUsage) ae);
+			}
 		}
 	}
 
+	private void fixSourceUsage(SourceUsage tu) {
+		markBelowVertex(tu, PackageDefinition.class);
+		markBelowVertex(tu, ImportDefinition.class);
+	}
+
 	private void fixEnumDefinition(EnumDefinition ed) {
-		markBelow(ed, IsAnnotationOfType.class);
-		markBelow(ed, IsModifierOfEnum.class);
-		markBelow(ed, IsEnumNameOf.class);
+		markBelowEdge(ed, IsAnnotationOfType.class);
+		markBelowEdge(ed, IsModifierOfEnum.class);
+		markBelowEdge(ed, IsEnumNameOf.class);
 	}
 
 	private void fixInterfaceDefinition(InterfaceDefinition id) {
-		markBelow(id, IsAnnotationOfType.class);
-		markBelow(id, IsModifierOfInterface.class);
-		markBelow(id, IsInterfaceNameOf.class);
-		markBelow(id, IsTypeParameterOfInterface.class);
-		markBelow(id, IsSuperClassOfInterface.class);
+		markBelowEdge(id, IsAnnotationOfType.class);
+		markBelowEdge(id, IsModifierOfInterface.class);
+		markBelowEdge(id, IsInterfaceNameOf.class);
+		markBelowEdge(id, IsTypeParameterOfInterface.class);
+		markBelowEdge(id, IsSuperClassOfInterface.class);
 	}
 
 	private void fixClassDefinition(ClassDefinition cd) {
-		markBelow(cd, IsAnnotationOfType.class);
-		markBelow(cd, IsModifierOfClass.class);
-		markBelow(cd, IsClassNameOf.class);
-		markBelow(cd, IsTypeParameterOfClass.class);
-		markBelow(cd, IsSuperClassOfClass.class);
-		markBelow(cd, IsInterfaceOfClass.class);
+		markBelowEdge(cd, IsAnnotationOfType.class);
+		markBelowEdge(cd, IsModifierOfClass.class);
+		markBelowEdge(cd, IsClassNameOf.class);
+		markBelowEdge(cd, IsTypeParameterOfClass.class);
+		markBelowEdge(cd, IsSuperClassOfClass.class);
+		markBelowEdge(cd, IsInterfaceOfClass.class);
 	}
 
 	private void fixAnnotationDefinition(AnnotationDefinition ad) {
-		markBelow(ad, IsMetaAnnotationOf.class);
-		markBelow(ad, IsModifierOfAnnotation.class);
-		markBelow(ad, IsAnnotationDefinitionNameOf.class);
+		markBelowEdge(ad, IsMetaAnnotationOf.class);
+		markBelowEdge(ad, IsModifierOfAnnotation.class);
+		markBelowEdge(ad, IsAnnotationDefinitionNameOf.class);
 	}
 
-	private void markBelow(Vertex v, Class<? extends Edge> clazz) {
+	private void markBelowEdge(Vertex v, Class<? extends Edge> clazz) {
 		for (Edge e : v.incidences(clazz, EdgeDirection.IN)) {
 			markAllBelow(e.getAlpha());
+		}
+	}
+
+	private void markBelowVertex(Vertex v, Class<? extends Vertex> clazz) {
+		for (Edge e : v.incidences(EdgeDirection.IN)) {
+			Vertex child = e.getAlpha();
+			if (clazz.isInstance(child)) {
+				markAllBelow(child);
+			}
 		}
 	}
 

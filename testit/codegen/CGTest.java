@@ -9,8 +9,10 @@ import de.uni_koblenz.jgralab.BooleanGraphMarker;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
-import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
+import de.uni_koblenz.jgralab.greql2.evaluator.GreqlEvaluator;
+import de.uni_koblenz.jgralab.greql2.jvalue.JValue;
+import de.uni_koblenz.jgralab.greql2.jvalue.JValueSet;
 import de.uni_koblenz.jgralab.utilities.tg2dot.Tg2Dot;
 
 public class CGTest {
@@ -74,25 +76,46 @@ public class CGTest {
 	}
 
 	private static void markVarLenMethMethod(JavaCodeGenerator jcg) {
+		String query = "from md  : V{MethodDefinition}, "
+				+ "          idx : V{Identifier} "
+				+ "     with idx.name = \"varLenMeth\" and idx -->{IsNameOfMethod} md "
+				+ "     reportSet md                                           "
+				+ "     end";
+		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
+				null);
+		eval.startEvaluation();
+		JValueSet result = (JValueSet) eval.getEvaluationResult();
+
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
-		for (MethodDefinition md : jcg.getJavaGraph()
-				.getMethodDefinitionVertices()) {
-			if (((Identifier) md.getFirstIsNameOfMethod().getAlpha()).getName()
-					.equals("varLenMeth")) {
-				marker.mark(md);
-			}
+		for (JValue md : result) {
+			marker.mark(md.toVertex());
 		}
 		jcg.setCgElements(marker);
 	}
 
 	private static void markMBazMethod(JavaCodeGenerator jcg) {
+		String query = "from md  : V{MethodDefinition}, "
+				+ "          idx : V{Identifier} "
+				+ "     with idx.name = \"mBaz\" and idx -->{IsNameOfMethod} md "
+				+ "     reportSet md                                           "
+				+ "     end";
+		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
+				null);
+		eval.startEvaluation();
+		JValueSet result = (JValueSet) eval.getEvaluationResult();
+
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
-		for (MethodDefinition md : jcg.getJavaGraph()
-				.getMethodDefinitionVertices()) {
-			if (((Identifier) md.getFirstIsNameOfMethod().getAlpha()).getName()
-					.equals("mBaz")) {
-				marker.mark(md);
-			}
+		for (JValue md : result) {
+			marker.mark(md.toVertex());
+		}
+		jcg.setCgElements(marker);
+	}
+
+	private static void markAllClasses(JavaCodeGenerator jcg) {
+		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
+		for (ClassDefinition cd : jcg.getJavaGraph()
+				.getClassDefinitionVertices()) {
+			marker.mark(cd);
 		}
 		jcg.setCgElements(marker);
 	}

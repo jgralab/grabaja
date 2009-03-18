@@ -38,6 +38,7 @@ public class CGAnnotationImpl extends AnnotationImpl implements CodeGenerator {
 			} else {
 				bw.append(", ");
 			}
+
 			((CGExpression) iaao.getAlpha()).generateCode(jcg, bw, indentLevel);
 		}
 		if (!first) {

@@ -50,7 +50,8 @@ public class CGTest {
 
 		// Generate Code
 
-		markMBazMethod(jcg);
+		// markMBazMethod(jcg);
+		markVarLenMethMethod(jcg);
 		jcg.generateCode();
 
 		// Make a diff
@@ -70,6 +71,18 @@ public class CGTest {
 		bw.close();
 
 		System.out.println("Finito.");
+	}
+
+	private static void markVarLenMethMethod(JavaCodeGenerator jcg) {
+		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
+		for (MethodDefinition md : jcg.getJavaGraph()
+				.getMethodDefinitionVertices()) {
+			if (((Identifier) md.getFirstIsNameOfMethod().getAlpha()).getName()
+					.equals("varLenMeth")) {
+				marker.mark(md);
+			}
+		}
+		jcg.setCgElements(marker);
 	}
 
 	private static void markMBazMethod(JavaCodeGenerator jcg) {

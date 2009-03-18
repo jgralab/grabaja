@@ -20,7 +20,9 @@ public class CGQualifiedTypeImpl extends QualifiedTypeImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
-		// code has to be generated unconditionally, when it's used...
+		if (!jcg.generationWanted(this)) {
+			return null;
+		}
 
 		bw.append(fullyQualifiedName);
 		// type args (0,*)

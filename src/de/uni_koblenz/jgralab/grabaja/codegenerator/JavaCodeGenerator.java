@@ -3,7 +3,7 @@ package de.uni_koblenz.jgralab.grabaja.codegenerator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import de.uni_koblenz.jgralab.AttributedElement;
 import de.uni_koblenz.jgralab.BooleanGraphMarker;
@@ -125,8 +125,18 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.If;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InfixExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IntegerConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationDefinitionNameOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsBreakTargetOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsClassNameOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsContinueTargetOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsMetaAnnotationOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfAnnotation;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfClass;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeDefinitionOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
 import de.uni_koblenz.jgralab.grabaja.java5schema.JavaPackage;
@@ -412,18 +422,53 @@ public class JavaCodeGenerator {
 
 			v = (Vertex) ae;
 			markTop(v);
-			markBottom(v);
+			markAllBelow(v);
+		}
 
-			// TODO: Fix dependencies such as
-			// "class-def needs its naming identifier"
+		fixMarks();
+	}
+
+	/**
+	 * Fix the marks. For example, if a ClassDefinition is marked, then it's
+	 * naming Identifier has to be marked, too.
+	 */
+	private void fixMarks() {
+		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
+		markedElems.addAll(cgElements.getMarkedElements());
+		for (AttributedElement ae : markedElems) {
+			if (ae instanceof AnnotationDefinition) {
+				fixAnnotationDefinition((AnnotationDefinition) ae);
+			} else if (ae instanceof ClassDefinition) {
+				fixClassDefinition((ClassDefinition) ae);
+			}
+		}
+	}
+
+	private void fixClassDefinition(ClassDefinition cd) {
+		markBelow(cd, IsAnnotationOfType.class);
+		markBelow(cd, IsModifierOfClass.class);
+		markBelow(cd, IsClassNameOf.class);
+		markBelow(cd, IsTypeParameterOfClass.class);
+		markBelow(cd, IsSuperClassOfClass.class);
+		markBelow(cd, IsInterfaceOfClass.class);
+	}
+
+	private void fixAnnotationDefinition(AnnotationDefinition ad) {
+		markBelow(ad, IsMetaAnnotationOf.class);
+		markBelow(ad, IsModifierOfAnnotation.class);
+		markBelow(ad, IsAnnotationDefinitionNameOf.class);
+	}
+
+	private void markBelow(Vertex v, Class<? extends Edge> clazz) {
+		for (Edge e : v.incidences(clazz, EdgeDirection.IN)) {
+			markAllBelow(e.getAlpha());
 		}
 	}
 
 	private boolean isNonTreeEdge(Edge e) {
-		return e instanceof IsBreakTargetOf || e instanceof IsContinueTargetOf;
+		return e instanceof IsBreakTargetOf || e instanceof IsContinueTargetOf
+				|| e instanceof IsTypeDefinitionOf;
 	}
-
-	private HashSet<Vertex> x = new HashSet<Vertex>();
 
 	private void markTop(Vertex v) {
 		cgElements.mark(v);
@@ -439,16 +484,15 @@ public class JavaCodeGenerator {
 			}
 			markTop(e.getOmega());
 		}
-		x.remove(v);
 	}
 
-	private void markBottom(Vertex v) {
+	private void markAllBelow(Vertex v) {
 		cgElements.mark(v);
 		for (Edge e : v.incidences(EdgeDirection.IN)) {
 			if (isNonTreeEdge(e)) {
 				continue;
 			}
-			markBottom(e.getAlpha());
+			markAllBelow(e.getAlpha());
 		}
 	}
 

@@ -54,6 +54,7 @@ public class CGTest {
 
 		// markMBazMethod(jcg);
 		markVarLenMethMethod(jcg);
+		// markAllClasses(jcg);
 		jcg.generateCode();
 
 		// Make a diff

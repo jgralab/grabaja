@@ -422,11 +422,12 @@ public class JavaCodeGenerator {
 		}
 
 		Vertex v = null;
-		for (AttributedElement ae : cgElements.getMarkedElements()) {
+		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
+		markedElems.addAll(cgElements.getMarkedElements());
+		for (AttributedElement ae : markedElems) {
 			if (!(ae instanceof Vertex)) {
 				continue;
 			}
-
 			v = (Vertex) ae;
 			markTop(v);
 			markAllBelow(v);
@@ -443,9 +444,10 @@ public class JavaCodeGenerator {
 		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
 		markedElems.addAll(cgElements.getMarkedElements());
 		for (AttributedElement ae : markedElems) {
+
 			// Fix all Types (TypeParameterDeclarations don't need to be fixed
-			// explicitly, because the class/interface/enum/ann defs mark them
-			// automatically)
+			// explicitly, because the class/interface/enum/annotation defs mark
+			// them automatically)
 			if (ae instanceof AnnotationDefinition) {
 				fixAnnotationDefinition((AnnotationDefinition) ae);
 			} else if (ae instanceof ClassDefinition) {

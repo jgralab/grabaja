@@ -36,8 +36,8 @@ public class CGSourceUsageImpl extends SourceUsageImpl implements
 				} else if (!(exDec instanceof Type)) {
 					bw.append(";");
 				}
+				bw.append('\n');
 			}
-			bw.append('\n');
 		}
 		return this;
 	}

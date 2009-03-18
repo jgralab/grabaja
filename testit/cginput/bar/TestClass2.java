@@ -1,6 +1,6 @@
 package bar;
 
-import bar.baz.*;
+import bar.baz.TestClass;
 
 public abstract class TestClass2<S, T> extends TestClass<S, T> {
 	private static final float CONST_FLOAT = -16.4f;
@@ -42,7 +42,6 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 		int i = 0;
 		String s = null;
 		l1: do {
-			s = null;
 			if (i < 3) {
 				continue l1;
 			} else if (i < strings.length) {

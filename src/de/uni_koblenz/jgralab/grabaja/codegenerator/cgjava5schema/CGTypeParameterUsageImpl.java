@@ -20,9 +20,7 @@ public class CGTypeParameterUsageImpl extends TypeParameterUsageImpl implements
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
-		if (!jcg.generationWanted(this)) {
-			return null;
-		}
+		// write them unconditionally
 
 		Vertex last = this;
 		// the types (0,*), but i guess in this case it should always be (1,1)

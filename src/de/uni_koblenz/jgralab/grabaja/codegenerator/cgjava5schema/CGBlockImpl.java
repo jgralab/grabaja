@@ -34,7 +34,6 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 		JavaCodeGenerator.indent(bw, indentLevel);
 
 		Vertex last = null;
-		boolean finishedWithLF = false;
 
 		// first the enum constants (0,*)
 		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
@@ -49,9 +48,10 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 		}
 		if (last != null) {
 			bw.append(";\n\n");
-			finishedWithLF = true;
+			JavaCodeGenerator.indent(bw, indentLevel);
 		}
 
+		last = null;
 		// then every member except enum constants (0,*)
 		for (IsMemberOf imo : getIsMemberOfIncidences(EdgeDirection.IN)) {
 			CGMember m = (CGMember) imo.getAlpha();
@@ -61,7 +61,6 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 				if (last != null) {
 					bw.append("\n\n");
 					JavaCodeGenerator.indent(bw, indentLevel);
-					finishedWithLF = false;
 				}
 				last = m.generateCode(jcg, bw, indentLevel);
 				if (last != null) {
@@ -77,7 +76,6 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 			if (last != null) {
 				bw.append("\n");
 				JavaCodeGenerator.indent(bw, indentLevel);
-				finishedWithLF = false;
 			}
 			last = s.generateCode(jcg, bw, indentLevel);
 			if (last != null) {
@@ -88,12 +86,9 @@ public class CGBlockImpl extends BlockImpl implements CGStatement {
 		}
 
 		indentLevel--;
-		if (!finishedWithLF) {
-			bw.append("\n");
-		}
+		bw.append("\n");
 		JavaCodeGenerator.indent(bw, indentLevel);
 		bw.append("}");
-
 		return this;
 	}
 }

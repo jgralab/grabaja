@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import de.uni_koblenz.jgralab.BooleanGraphMarker;
-import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
@@ -16,8 +15,8 @@ import de.uni_koblenz.jgralab.utilities.tg2dot.Tg2Dot;
 
 public class CGTest {
 
-	public static void testCompleteGraphCodeGeneration()
-			throws GraphIOException, IOException, InterruptedException {
+	public static void main(String[] args) throws GraphIOException,
+			IOException, InterruptedException {
 		String outputDir = "testit" + File.separator + "cgoutput";
 		String graphFile = outputDir + File.separator + "cginput.tg";
 		String dotFile = outputDir + File.separator + "cginput.dot";
@@ -50,6 +49,8 @@ public class CGTest {
 						+ dotFile).waitFor();
 
 		// Generate Code
+
+		markMBazMethod(jcg);
 		jcg.generateCode();
 
 		// Make a diff
@@ -71,66 +72,16 @@ public class CGTest {
 		System.out.println("Finito.");
 	}
 
-	public static void testPartialGraphCodeGeneration()
-			throws GraphIOException, IOException, InterruptedException {
-		String outputDir = "testit" + File.separator + "cgoutput";
-		String graphFile = outputDir + File.separator + "cginput.tg";
-		String dotFile = outputDir + File.separator + "cginput.dot";
-
-		File outDir = new File(outputDir);
-		if (outDir.exists()) {
-			if (deleteFile(outDir)) {
-				System.out.println("Deleted the old output directory.");
-			} else {
-				System.out.println("Couldn't delete the old output directory.");
-			}
-		}
-		outDir.mkdir();
-
-		// Extract
-		JavaExtractor.main(new String[] {
-				"-o",
-				graphFile,
-				"testit" + File.separator + "cginput" + File.separator + "bar"
-						+ File.separator + "baz" + File.separator
-						+ "TestClass.java",
-				"testit" + File.separator + "cginput" + File.separator + "bar"
-						+ File.separator + "TestClass2.java" });
-		JavaCodeGenerator jcg = new JavaCodeGenerator(graphFile, outputDir);
-		BooleanGraphMarker codeElems = new BooleanGraphMarker(jcg
-				.getJavaGraph());
-		// Mark the method definition of varLenMeth()
+	private static void markMBazMethod(JavaCodeGenerator jcg) {
+		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (MethodDefinition md : jcg.getJavaGraph()
 				.getMethodDefinitionVertices()) {
-			if (((Identifier) md.getFirstIsNameOfMethod(EdgeDirection.IN)
-					.getAlpha()).getName().equals("varLenMeth")) {
-				codeElems.mark(md);
+			if (((Identifier) md.getFirstIsNameOfMethod().getAlpha()).getName()
+					.equals("mBaz")) {
+				marker.mark(md);
 			}
 		}
-		jcg.setCgElements(codeElems);
-
-		// Dot
-		Tg2Dot t2d = new Tg2Dot();
-		t2d.setGraph(jcg.getJavaGraph());
-		t2d.setReversedEdges(true);
-		t2d.setOutputFile(dotFile);
-		t2d.printGraph();
-
-		// PDF
-		Runtime.getRuntime().exec(
-				"dot -Tpdf -o " + outputDir + File.separator + "cginput.pdf "
-						+ dotFile).waitFor();
-
-		// Generate Code
-		jcg.generateCode();
-
-		System.out.println("Finito.");
-	}
-
-	public static void main(String[] args) throws GraphIOException,
-			IOException, InterruptedException {
-		testCompleteGraphCodeGeneration();
-		// testPartialGraphCodeGeneration();
+		jcg.setCgElements(marker);
 	}
 
 	public static boolean deleteFile(File f) {

@@ -19,9 +19,7 @@ public class CGTypeParameterDeclarationImpl extends
 	@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
-		if (!jcg.generationWanted(this)) {
-			return null;
-		}
+		// write it unconditionally
 
 		// the identifier (1,1)
 		return ((CGIdentifierImpl) getFirstIsTypeParameterDeclarationNameOf(

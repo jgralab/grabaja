@@ -87,103 +87,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGVariableInit
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGVariableLengthDeclarationImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWhileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWildcardArgumentImpl;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Annotation;
-import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.AnnotationField;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ArrayCreation;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ArrayInitializer;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ArrayType;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Assert;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Block;
-import de.uni_koblenz.jgralab.grabaja.java5schema.BooleanConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Break;
-import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInCast;
-import de.uni_koblenz.jgralab.grabaja.java5schema.BuiltInType;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Case;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Catch;
-import de.uni_koblenz.jgralab.grabaja.java5schema.CharConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ClassCast;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ClassImportDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ConditionalExpression;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ConstructorDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Continue;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Default;
-import de.uni_koblenz.jgralab.grabaja.java5schema.DoWhile;
-import de.uni_koblenz.jgralab.grabaja.java5schema.DoubleConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.EmptyStatement;
-import de.uni_koblenz.jgralab.grabaja.java5schema.EnumConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.EnumDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Expression;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Field;
-import de.uni_koblenz.jgralab.grabaja.java5schema.FieldAccess;
-import de.uni_koblenz.jgralab.grabaja.java5schema.FloatConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.For;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ForEachClause;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
-import de.uni_koblenz.jgralab.grabaja.java5schema.If;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ImportDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.InfixExpression;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IntegerConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationDefinitionNameOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsBreakTargetOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsClassNameOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsContinueTargetOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsEnumNameOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceNameOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfClass;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsMetaAnnotationOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfAnnotation;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfClass;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfEnum;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfInterface;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfClass;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfInterface;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeDefinitionOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfClass;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfInterface;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
-import de.uni_koblenz.jgralab.grabaja.java5schema.JavaPackage;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Label;
-import de.uni_koblenz.jgralab.grabaja.java5schema.LongConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.MethodInvocation;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Modifier;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Null;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ObjectCreation;
-import de.uni_koblenz.jgralab.grabaja.java5schema.PackageDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.PackageImportDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ParameterDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.PostfixExpression;
-import de.uni_koblenz.jgralab.grabaja.java5schema.PrefixExpression;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Program;
-import de.uni_koblenz.jgralab.grabaja.java5schema.QualifiedName;
-import de.uni_koblenz.jgralab.grabaja.java5schema.QualifiedType;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Return;
-import de.uni_koblenz.jgralab.grabaja.java5schema.SimpleArgument;
-import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
-import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
-import de.uni_koblenz.jgralab.grabaja.java5schema.StaticConstructorDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.StaticInitializerDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.StringConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Synchronized;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Throw;
-import de.uni_koblenz.jgralab.grabaja.java5schema.TraditionalForClause;
-import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Try;
-import de.uni_koblenz.jgralab.grabaja.java5schema.TypeArgument;
-import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterUsage;
-import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.VariableInitializer;
-import de.uni_koblenz.jgralab.grabaja.java5schema.VariableLengthDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.While;
-import de.uni_koblenz.jgralab.grabaja.java5schema.WildcardArgument;
+import de.uni_koblenz.jgralab.grabaja.java5schema.*;
 
 public class JavaCodeGenerator {
 
@@ -463,7 +367,27 @@ public class JavaCodeGenerator {
 			else if (ae instanceof SourceUsage) {
 				fixSourceUsage((SourceUsage) ae);
 			}
+
+			// Fix MethodDeclarations (complete signature)
+			else if (ae instanceof MethodDeclaration) {
+				fixMethodDeclaration((MethodDeclaration) ae);
+			}
+
+			// Fix Labels (need to mark the naming Identifier)
+			else if (ae instanceof Label) {
+				markBelowEdge((Label) ae, IsLabelNameOf.class);
+			}
 		}
+	}
+
+	private void fixMethodDeclaration(MethodDeclaration md) {
+		markBelowEdge(md, IsAnnotationOfMember.class);
+		markBelowEdge(md, IsModifierOfMethod.class);
+		markBelowEdge(md, IsReturnTypeOf.class);
+		markBelowEdge(md, IsTypeParameterOfMethod.class);
+		markBelowEdge(md, IsNameOfMethod.class);
+		markBelowEdge(md, IsParameterOfMethod.class);
+		markBelowEdge(md, IsExceptionThrownByMethod.class);
 	}
 
 	private void fixSourceUsage(SourceUsage tu) {

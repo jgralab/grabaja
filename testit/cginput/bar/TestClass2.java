@@ -1,8 +1,6 @@
 package bar;
 
-import bar.baz.TestClass;
-
-public abstract class TestClass2<S, T> extends TestClass<S, T> {
+public abstract class TestClass2 extends Object {
 	private static final float CONST_FLOAT = -16.4f;
 
 	{
@@ -37,6 +35,9 @@ public abstract class TestClass2<S, T> extends TestClass<S, T> {
 
 		abstract float eval(int a, int b);
 	};
+
+	public static void staticMethod() {
+	}
 
 	public void varLenMeth(String... strings) {
 		int i = 0;

@@ -10,6 +10,7 @@ import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
+import de.uni_koblenz.jgralab.grabaja.java5schema.DoWhile;
 import de.uni_koblenz.jgralab.greql2.evaluator.GreqlEvaluator;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValue;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValueSet;
@@ -53,8 +54,9 @@ public class CGTest {
 		// Generate Code
 
 		// markMBazMethod(jcg);
-		markVarLenMethMethod(jcg);
+		// markVarLenMethMethod(jcg);
 		// markAllClasses(jcg);
+		markDoWhile(jcg);
 		jcg.generateCode();
 
 		// Make a diff
@@ -74,6 +76,14 @@ public class CGTest {
 		bw.close();
 
 		System.out.println("Finito.");
+	}
+
+	private static void markDoWhile(JavaCodeGenerator jcg) {
+		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
+		for (DoWhile dw : jcg.getJavaGraph().getDoWhileVertices()) {
+			marker.mark(dw);
+		}
+		jcg.setCgElements(marker);
 	}
 
 	private static void markVarLenMethMethod(JavaCodeGenerator jcg) {

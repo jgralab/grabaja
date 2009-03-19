@@ -40,11 +40,11 @@ public class TestClass<S, T> {
 
 	@SampleAnnotation
 	public void rotateThings(TestClass2[] tcs2) {
-		TestClass2.staticMethod();
 		for (TestClass2 tc2 : tcs2) {
 			tc2.varLenMeth(new String[] { "a", "b", "c" });
 			switch (tc2.myThing) {
 			case X:
+				TestClass2.staticMethod();
 				tc2.myThing = Things.Y;
 				break;
 			case Y:

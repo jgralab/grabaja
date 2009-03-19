@@ -7,10 +7,10 @@ import java.io.InputStreamReader;
 
 import de.uni_koblenz.jgralab.BooleanGraphMarker;
 import de.uni_koblenz.jgralab.GraphIOException;
+import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
-import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
-import de.uni_koblenz.jgralab.grabaja.java5schema.DoWhile;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
 import de.uni_koblenz.jgralab.greql2.evaluator.GreqlEvaluator;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValue;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValueSet;
@@ -55,8 +55,7 @@ public class CGTest {
 
 		// markMBazMethod(jcg);
 		// markVarLenMethMethod(jcg);
-		// markAllClasses(jcg);
-		markDoWhile(jcg);
+		markAll(jcg, Switch.class);
 		jcg.generateCode();
 
 		// Make a diff
@@ -76,14 +75,6 @@ public class CGTest {
 		bw.close();
 
 		System.out.println("Finito.");
-	}
-
-	private static void markDoWhile(JavaCodeGenerator jcg) {
-		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
-		for (DoWhile dw : jcg.getJavaGraph().getDoWhileVertices()) {
-			marker.mark(dw);
-		}
-		jcg.setCgElements(marker);
 	}
 
 	private static void markVarLenMethMethod(JavaCodeGenerator jcg) {
@@ -122,11 +113,11 @@ public class CGTest {
 		jcg.setCgElements(marker);
 	}
 
-	private static void markAllClasses(JavaCodeGenerator jcg) {
+	private static void markAll(JavaCodeGenerator jcg,
+			Class<? extends Vertex> clazz) {
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
-		for (ClassDefinition cd : jcg.getJavaGraph()
-				.getClassDefinitionVertices()) {
-			marker.mark(cd);
+		for (Vertex v : jcg.getJavaGraph().vertices(clazz)) {
+			marker.mark(v);
 		}
 		jcg.setCgElements(marker);
 	}

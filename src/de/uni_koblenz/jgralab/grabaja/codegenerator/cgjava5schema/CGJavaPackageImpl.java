@@ -25,6 +25,7 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 		}
 
 		// create the directory
+		System.out.println("JavaPackage: " + fullyQualifiedName);
 		String relativeDirName = fullyQualifiedName.replaceAll("\\.",
 				File.separator);
 		File pkg = new File(jcg.getBaseDirectory().getCanonicalPath()

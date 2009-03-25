@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
@@ -36,8 +37,10 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 		// each TU has exactly one SourceFile
 		SourceFile sf = (SourceFile) getFirstIsPrimarySourceFor(
 				EdgeDirection.IN).getAlpha();
-		String fileName = cg_tu_directory + File.separator
-				+ sf.getName().replaceAll(".*/", "");
+		String fileName = cg_tu_directory
+				+ File.separator
+				+ sf.getName().replaceAll(".*" + Pattern.quote(File.separator),
+						"");
 		bw = new BufferedWriter(new FileWriter(fileName));
 
 		Vertex last = this;

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
@@ -26,8 +27,8 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 		}
 
 		// create the directory
-		String relativeDirName = fullyQualifiedName.replaceAll("\\.", Matcher
-				.quoteReplacement(File.separator));
+		String relativeDirName = fullyQualifiedName.replaceAll(Pattern
+				.quote("."), Matcher.quoteReplacement(File.separator));
 		File pkg = new File(jcg.getBaseDirectory().getCanonicalPath()
 				+ File.separator + relativeDirName);
 		pkg.mkdirs();

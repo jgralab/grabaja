@@ -3,6 +3,7 @@ package de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
 
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
@@ -25,9 +26,8 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 		}
 
 		// create the directory
-		System.out.println("JavaPackage: " + fullyQualifiedName);
-		String relativeDirName = fullyQualifiedName.replaceAll("\\.",
-				File.separator);
+		String relativeDirName = fullyQualifiedName.replaceAll("\\.", Matcher
+				.quoteReplacement(File.separator));
 		File pkg = new File(jcg.getBaseDirectory().getCanonicalPath()
 				+ File.separator + relativeDirName);
 		pkg.mkdirs();

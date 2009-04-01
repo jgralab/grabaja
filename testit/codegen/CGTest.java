@@ -10,7 +10,6 @@ import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
 import de.uni_koblenz.jgralab.greql2.evaluator.GreqlEvaluator;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValue;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValueSet;
@@ -55,7 +54,7 @@ public class CGTest {
 
 		// markMBazMethod(jcg);
 		// markVarLenMethMethod(jcg);
-		markAll(jcg, Switch.class);
+		// markAll(jcg, Switch.class);
 		jcg.generateCode();
 
 		// Make a diff

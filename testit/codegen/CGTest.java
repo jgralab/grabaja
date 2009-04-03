@@ -38,13 +38,6 @@ public class CGTest {
 				"testit" + File.separator + "cginput" });
 		JavaCodeGenerator jcg = new JavaCodeGenerator(graphFile, outputDir);
 
-		// Dot
-		Tg2Dot t2d = new Tg2Dot();
-		t2d.setGraph(jcg.getJavaGraph());
-		t2d.setReversedEdges(true);
-		t2d.setOutputFile(dotFile);
-		t2d.printGraph();
-
 		// PDF
 		Runtime.getRuntime().exec(
 				"dot -Tpdf -o " + outputDir + File.separator + "cginput.pdf "
@@ -53,9 +46,18 @@ public class CGTest {
 		// Generate Code
 
 		// markMBazMethod(jcg);
-		// markVarLenMethMethod(jcg);
+		BooleanGraphMarker m = markVarLenMethMethod(jcg);
+		jcg.setCgElements(m);
 		// markAll(jcg, Switch.class);
 		jcg.generateCode();
+
+		// Dot
+		Tg2Dot t2d = new Tg2Dot();
+		t2d.setGraph(jcg.getJavaGraph());
+		t2d.setReversedEdges(true);
+		t2d.setOutputFile(dotFile);
+		t2d.setGraphMarker(m);
+		t2d.printGraph();
 
 		// Make a diff
 		Process proc = Runtime.getRuntime().exec(
@@ -76,7 +78,7 @@ public class CGTest {
 		System.out.println("Finito.");
 	}
 
-	private static void markVarLenMethMethod(JavaCodeGenerator jcg) {
+	private static BooleanGraphMarker markVarLenMethMethod(JavaCodeGenerator jcg) {
 		String query = "from md  : V{MethodDefinition}, "
 				+ "          idx : V{Identifier} "
 				+ "     with idx.name = \"varLenMeth\" and idx -->{IsNameOfMethod} md "
@@ -91,10 +93,10 @@ public class CGTest {
 		for (JValue md : result) {
 			marker.mark(md.toVertex());
 		}
-		jcg.setCgElements(marker);
+		return marker;
 	}
 
-	private static void markMBazMethod(JavaCodeGenerator jcg) {
+	private BooleanGraphMarker markMBazMethod(JavaCodeGenerator jcg) {
 		String query = "from md  : V{MethodDefinition}, "
 				+ "          idx : V{Identifier} "
 				+ "     with idx.name = \"mBaz\" and idx -->{IsNameOfMethod} md "
@@ -109,16 +111,16 @@ public class CGTest {
 		for (JValue md : result) {
 			marker.mark(md.toVertex());
 		}
-		jcg.setCgElements(marker);
+		return marker;
 	}
 
-	private static void markAll(JavaCodeGenerator jcg,
+	private BooleanGraphMarker markAll(JavaCodeGenerator jcg,
 			Class<? extends Vertex> clazz) {
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (Vertex v : jcg.getJavaGraph().vertices(clazz)) {
 			marker.mark(v);
 		}
-		jcg.setCgElements(marker);
+		return marker;
 	}
 
 	public static boolean deleteFile(File f) {

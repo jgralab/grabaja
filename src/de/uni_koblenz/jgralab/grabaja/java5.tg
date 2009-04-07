@@ -225,17 +225,19 @@ EdgeClass IsAnnotationDefinitionNameOf : AttributedEdge from Identifier( 1, 1 ) 
 EdgeClass IsMetaAnnotationOf : IsAnnotationOf from Annotation( 0, * ) to AnnotationDefinition( 1, 1 ) ;
 EdgeClass IsAnnotationBlockOf : IsBlockOf from Block( 1, 1 ) to AnnotationDefinition( 1, 1 ) ;
 
+abstract EdgeClass IsDeclarationOf from Vertex (0,*) to Vertex (0,*);
+
 VertexClass FieldAccess : Expression ;
 EdgeClass IsFieldContainerOf : AttributedEdge from Expression( 0, 1 ) to FieldAccess( 1, 1 ) ;
 EdgeClass IsFieldNameOf : AttributedEdge from Identifier( 1, 1 ) to FieldAccess( 1, 1 ) ;
 EdgeClass IsArrayElementIndexOf : AttributedEdge from Expression( 0, * ) to FieldAccess( 1, 1 ) ;
-EdgeClass IsDeclarationOfAccessedField from Vertex( 0, * ) to FieldAccess( 1, 1 ) ;
+EdgeClass IsDeclarationOfAccessedField: IsDeclarationOf from Vertex( 0, * ) to FieldAccess( 1, 1 ) ;
 
 VertexClass MethodInvocation : Expression { type : MethodInvocationTypes } ;
 EdgeClass IsMethodContainerOf : AttributedEdge from Expression( 0, 1 ) to MethodInvocation( 1, 1 ) ;
 EdgeClass IsNameOfInvokedMethod : AttributedEdge from Identifier( 1, 1 ) to MethodInvocation( 1, 1 ) ;
 EdgeClass IsArgumentOfMethodInvocation : IsArgumentOf from Expression( 0, * ) to MethodInvocation( 1, 1 ) ;
-EdgeClass IsDeclarationOfInvokedMethod from Member( 0, * ) to MethodInvocation( 1, 1 ) ;
+EdgeClass IsDeclarationOfInvokedMethod: IsDeclarationOf from Member( 0, * ) to MethodInvocation( 1, 1 ) ;
 
 VertexClass ConditionalExpression : Expression ;
 EdgeClass IsConditionOfExpression : IsConditionOf from Expression( 1, 1 ) to ConditionalExpression( 1, 1 ) ;

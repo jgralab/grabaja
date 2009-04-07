@@ -11,6 +11,8 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGExpression;
 
 public class TestClass<S, T> {
+	private TestClass2 testClassField2;
+
 	@SuppressWarnings("unused")
 	@Inti
 	private class LocalClass {

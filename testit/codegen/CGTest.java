@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import de.uni_koblenz.jgralab.BooleanGraphMarker;
+import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
+import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.greql2.evaluator.GreqlEvaluator;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValue;
 import de.uni_koblenz.jgralab.greql2.jvalue.JValueSet;
@@ -34,22 +36,21 @@ public class CGTest {
 		outDir.mkdir();
 
 		// Extract
-		JavaExtractor.main(new String[] { "-o", graphFile,
+		JavaExtractor.main(new String[] { "-o", graphFile, "-complete",
 				"testit" + File.separator + "cginput" });
 		JavaCodeGenerator jcg = new JavaCodeGenerator(graphFile, outputDir);
-
-		// PDF
-		Runtime.getRuntime().exec(
-				"dot -Tpdf -o " + outputDir + File.separator + "cginput.pdf "
-						+ dotFile).waitFor();
 
 		// Generate Code
 
 		// markMBazMethod(jcg);
-		BooleanGraphMarker m = markVarLenMethMethod(jcg);
+		BooleanGraphMarker m = null;
+		m = markClassDefinition(jcg, "TestClass");
+		// m = markVarLenMethMethod(jcg);
 		jcg.setCgElements(m);
 		// markAll(jcg, Switch.class);
 		jcg.generateCode();
+
+		markNeededEdges(jcg.getJavaGraph(), m);
 
 		// Dot
 		Tg2Dot t2d = new Tg2Dot();
@@ -57,7 +58,14 @@ public class CGTest {
 		t2d.setReversedEdges(true);
 		t2d.setOutputFile(dotFile);
 		t2d.setGraphMarker(m);
+		System.out.println("Creating dot file...");
 		t2d.printGraph();
+		System.out.println("Creating dot file... DONE");
+
+		// PDF
+		Runtime.getRuntime().exec(
+				"dot -Tpdf -o " + outputDir + File.separator + "cginput.pdf "
+						+ dotFile).waitFor();
 
 		// Make a diff
 		Process proc = Runtime.getRuntime().exec(
@@ -76,6 +84,37 @@ public class CGTest {
 		bw.close();
 
 		System.out.println("Finito.");
+	}
+
+	private static BooleanGraphMarker markClassDefinition(
+			JavaCodeGenerator jcg, String name) {
+		String query = "from cd  : V{ClassDefinition} "
+				+ "     with cd.name = \""
+				+ name
+				+ "\" "
+				+ "     reportSet cd                                           "
+				+ "     end";
+		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
+				null);
+		eval.startEvaluation();
+		JValueSet result = (JValueSet) eval.getEvaluationResult();
+
+		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
+		for (JValue md : result) {
+			marker.mark(md.toVertex());
+		}
+		return marker;
+	}
+
+	private static void markNeededEdges(Java5 graph, BooleanGraphMarker m) {
+		if (m == null) {
+			return;
+		}
+		for (Edge e : graph.edges()) {
+			if (m.isMarked(e.getAlpha()) && m.isMarked(e.getOmega())) {
+				m.mark(e);
+			}
+		}
 	}
 
 	private static BooleanGraphMarker markVarLenMethMethod(JavaCodeGenerator jcg) {

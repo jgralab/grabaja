@@ -1,7 +1,10 @@
 package bar;
 
+import bar.baz.TestClass;
+
 public abstract class TestClass2 extends Object {
 	private static final float CONST_FLOAT = -16.4f;
+	private TestClass<Integer, Integer> tClass;
 
 	{
 		System.out.println("Static constructor.");

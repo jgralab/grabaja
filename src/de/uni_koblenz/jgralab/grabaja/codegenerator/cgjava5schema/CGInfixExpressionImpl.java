@@ -138,10 +138,17 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 
 		bw.append(" ");
 
-		// then the RHS (1,1)
-		Vertex last = ((CGExpression) getFirstIsRightHandSideOfInfixExpression(
-				EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		Vertex last = null;
+
+		// then the RHS (1,1), but do it conditinally, cause it seems the parser
+		// creates broken graphs...
+		if (getFirstIsRightHandSideOfInfixExpression(EdgeDirection.IN) != null) {
+			last = ((CGExpression) getFirstIsRightHandSideOfInfixExpression(
+					EdgeDirection.IN).getAlpha()).generateCode(jcg, bw,
+					indentLevel);
+		} else {
+			bw.append("/* Missing RHS */");
+		}
 
 		if (isNested) {
 			bw.append(')');

@@ -24,8 +24,12 @@ public class CGArrayTypeImpl extends ArrayTypeImpl implements
 		}
 
 		// the type spec (1,1)
-		((CGTypeSpecification) getFirstIsElementTypeOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (getFirstIsElementTypeOf(EdgeDirection.IN)!=null) {
+			((CGTypeSpecification) getFirstIsElementTypeOf(EdgeDirection.IN)
+					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		} else {
+			bw.append("/* Missing Type */ Object");
+		}
 
 		// the brackets for the dimensions
 		for (int i = 1; i <= dimensions; i++) {

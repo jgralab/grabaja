@@ -33,8 +33,12 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 		}
 
 		// then the type (exactly one)
-		((CGTypeSpecification) getFirstIsTypeOfVariable(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (getFirstIsTypeOfVariable(EdgeDirection.IN) != null) {
+			((CGTypeSpecification) getFirstIsTypeOfVariable(EdgeDirection.IN)
+					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		} else {
+			bw.append("/* Missing type */ Object");
+		}
 		bw.append(' ');
 
 		// then the name (exactly one)

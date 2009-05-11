@@ -33,8 +33,12 @@ public class CGParameterDeclarationImpl extends ParameterDeclarationImpl
 		}
 
 		// then the type spec (1,1)
-		((CGTypeSpecification) getFirstIsTypeOfParameter(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (getFirstIsTypeOfParameter(EdgeDirection.IN)!=null) {
+			((CGTypeSpecification) getFirstIsTypeOfParameter(EdgeDirection.IN)
+					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		} else {
+			bw.append("/* Missing Parameter Type */ Object");
+		}
 		bw.append(' ');
 
 		// then the name (1,1)

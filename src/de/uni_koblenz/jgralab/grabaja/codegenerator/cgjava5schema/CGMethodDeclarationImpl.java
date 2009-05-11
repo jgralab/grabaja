@@ -53,8 +53,12 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 		}
 
 		// then the return type (exactly one)
-		((CGTypeSpecification) md.getFirstIsReturnTypeOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (md.getFirstIsReturnTypeOf(EdgeDirection.IN) != null) {
+			((CGTypeSpecification) md.getFirstIsReturnTypeOf(EdgeDirection.IN)
+					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		} else {
+			bw.append("/*Missing return type */ Object");
+		}
 
 		// then the type parameters (0,*)
 		boolean first = true;

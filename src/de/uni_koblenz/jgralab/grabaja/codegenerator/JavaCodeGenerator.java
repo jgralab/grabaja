@@ -441,7 +441,8 @@ public class JavaCodeGenerator {
 
 	private boolean isNonTreeEdge(Edge e) {
 		return e instanceof IsBreakTargetOf || e instanceof IsContinueTargetOf
-				|| e instanceof IsTypeDefinitionOf;
+				|| e instanceof IsTypeDefinitionOf
+				|| e instanceof IsDeclarationOfAccessedField;
 	}
 
 	private void markTop(Vertex v) {
@@ -456,6 +457,7 @@ public class JavaCodeGenerator {
 			if (isNonTreeEdge(e)) {
 				continue;
 			}
+			// System.out.println("Marking omega of " + e);
 			markTop(e.getOmega());
 		}
 	}

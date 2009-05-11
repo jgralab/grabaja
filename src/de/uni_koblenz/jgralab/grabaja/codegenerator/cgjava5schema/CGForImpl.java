@@ -31,7 +31,7 @@ public class CGForImpl extends ForImpl implements CGStatement {
 		bw.append(") ");
 
 		// now the body (exactly one)
-		return ((CGBlockImpl) getFirstIsLoopBodyOfFor(EdgeDirection.IN)
+		return ((CGStatement) getFirstIsLoopBodyOfFor(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 

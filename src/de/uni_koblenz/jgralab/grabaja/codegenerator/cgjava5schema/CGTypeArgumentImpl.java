@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSimpleArgumentOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsWildcardArgumentOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.TypeArgumentImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.TypeArgumentImpl;
 
 public class CGTypeArgumentImpl extends TypeArgumentImpl implements
 		CGTypeSpecification {

@@ -12,7 +12,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfClass;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ClassDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.ClassDefinitionImpl;
 
 public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		CGType {

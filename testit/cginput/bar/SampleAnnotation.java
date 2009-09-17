@@ -1,5 +1,9 @@
 package bar;
 
+import java.lang.annotation.Annotation;
+
+import de.uni_koblenz.jgralab.WorkInProgress;
+
 @SampleAnnotation
 public @interface SampleAnnotation {
 	public long number() default -1l;

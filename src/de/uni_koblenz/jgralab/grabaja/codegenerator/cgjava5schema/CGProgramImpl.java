@@ -8,7 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsPackageOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ProgramImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.ProgramImpl;
 
 public class CGProgramImpl extends ProgramImpl implements CodeGenerator {
 

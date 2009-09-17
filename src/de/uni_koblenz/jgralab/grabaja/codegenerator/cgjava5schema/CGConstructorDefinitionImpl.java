@@ -11,7 +11,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsExceptionThrownByConstructor
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfConstructor;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsParameterOfConstructor;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfConstructor;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ConstructorDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.ConstructorDefinitionImpl;
 
 public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 		implements CGMember {

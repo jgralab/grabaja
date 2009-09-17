@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsCaseOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDefaultCaseOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.SwitchImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.SwitchImpl;
 
 public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 

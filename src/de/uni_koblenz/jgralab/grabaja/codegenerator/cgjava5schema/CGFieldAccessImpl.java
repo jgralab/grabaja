@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArrayElementIndexOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldContainerOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.FieldAccessImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.FieldAccessImpl;
 
 public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 

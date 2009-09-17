@@ -10,7 +10,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsContinueTargetOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Label;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ContinueImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.ContinueImpl;
 
 public class CGContinueImpl extends ContinueImpl implements CGStatement {
 

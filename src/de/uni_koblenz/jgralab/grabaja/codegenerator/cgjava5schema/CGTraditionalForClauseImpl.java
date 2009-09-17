@@ -10,7 +10,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsForConditionOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsIteratorOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsRunVariableInitializationOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.TraditionalForClauseImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.TraditionalForClauseImpl;
 
 public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 		implements CGForHead {

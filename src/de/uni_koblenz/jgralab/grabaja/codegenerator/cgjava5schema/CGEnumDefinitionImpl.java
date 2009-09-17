@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfEnum;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.EnumDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.EnumDefinitionImpl;
 
 public class CGEnumDefinitionImpl extends EnumDefinitionImpl implements CGType {
 

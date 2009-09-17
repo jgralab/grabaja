@@ -6,7 +6,7 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.NullImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.NullImpl;
 
 public class CGNullImpl extends NullImpl implements CGExpression {
 

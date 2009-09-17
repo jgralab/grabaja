@@ -7,7 +7,7 @@ import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.InfixExpressionImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.InfixExpressionImpl;
 
 public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 		CGExpression {

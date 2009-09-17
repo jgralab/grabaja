@@ -10,7 +10,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfEnumConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArgumentOfEnumConstant;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsEnumConstantBlockOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.EnumConstantImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.EnumConstantImpl;
 
 public class CGEnumConstantImpl extends EnumConstantImpl implements
 		CGFieldDeclaration, CGMember {

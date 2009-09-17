@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDefaultValueOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfAnnotationField;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.AnnotationFieldImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.AnnotationFieldImpl;
 
 public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 		CGMember {

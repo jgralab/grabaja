@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDimensionInitializerOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsElementTypeOfCreatedArray;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ArrayCreationImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.ArrayCreationImpl;
 
 public class CGArrayCreationImpl extends ArrayCreationImpl implements
 		CGExpression {

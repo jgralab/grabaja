@@ -13,7 +13,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfMethod;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsParameterOfMethod;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfMethod;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.MethodDeclarationImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.MethodDeclarationImpl;
 
 public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 		CGMember {

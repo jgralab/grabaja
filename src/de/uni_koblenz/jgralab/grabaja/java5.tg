@@ -201,7 +201,7 @@ VertexClass InterfaceDefinition : Type ;
 EdgeClass IsModifierOfInterface : IsModifierOf from Modifier( 0, * ) to InterfaceDefinition( 1, 1 ) ;
 EdgeClass IsInterfaceNameOf : AttributedEdge from Identifier( 1, 1 ) to InterfaceDefinition( 1, 1 ) ;
 EdgeClass IsTypeParameterOfInterface : IsTypeParameterOf from TypeParameterDeclaration( 0, * ) to InterfaceDefinition( 1, 1 ) ;
-EdgeClass IsSuperClassOfInterface : IsSuperClassOf from TypeSpecification( 0, * ) to InterfaceDefinition( 1, 1 ) ;
+EdgeClass IsSuperClassOfInterface : IsSuperClassOf from TypeSpecification( 0, 1 ) to InterfaceDefinition( 1, 1 ) ;
 EdgeClass IsInterfaceBlockOf : IsBlockOf from Block( 1, 1 ) to InterfaceDefinition( 1, 1 ) ;
 
 

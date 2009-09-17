@@ -8,7 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeArgumentOfTypeSpecification;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BuiltInTypeImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.BuiltInTypeImpl;
 
 public class CGBuiltInTypeImpl extends BuiltInTypeImpl implements
 		CGTypeSpecification {

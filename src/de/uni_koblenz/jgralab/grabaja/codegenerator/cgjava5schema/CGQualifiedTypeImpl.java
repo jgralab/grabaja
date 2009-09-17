@@ -8,7 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeArgumentOfTypeSpecification;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.QualifiedTypeImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.QualifiedTypeImpl;
 
 public class CGQualifiedTypeImpl extends QualifiedTypeImpl implements
 		CGExpression, CGQualifiedName {

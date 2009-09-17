@@ -12,7 +12,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSourceUsageIn;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.TranslationUnitImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.TranslationUnitImpl;
 
 public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 		CodeGenerator {

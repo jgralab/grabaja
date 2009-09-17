@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsInitializerOfVariable;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfVariable;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.VariableDeclarationImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.VariableDeclarationImpl;
 
 public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 		implements CGStatement, CGFieldDeclaration {

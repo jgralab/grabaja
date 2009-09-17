@@ -10,7 +10,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArgumentOfMethodInvocation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMethodContainerOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsNameOfInvokedMethod;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.MethodInvocationImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.MethodInvocationImpl;
 
 public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 		CGExpression {

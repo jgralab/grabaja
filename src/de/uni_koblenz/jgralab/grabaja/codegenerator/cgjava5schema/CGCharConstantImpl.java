@@ -6,7 +6,7 @@ import java.io.IOException;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.CharConstantImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.CharConstantImpl;
 
 public class CGCharConstantImpl extends CharConstantImpl implements
 		CGExpression {

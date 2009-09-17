@@ -8,7 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfParameter;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.VariableLengthDeclarationImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.VariableLengthDeclarationImpl;
 
 public class CGVariableLengthDeclarationImpl extends
 		VariableLengthDeclarationImpl implements CGParameterDeclaration {

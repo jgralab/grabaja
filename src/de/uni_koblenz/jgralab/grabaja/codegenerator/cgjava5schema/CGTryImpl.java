@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsBodyOfFinally;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsHandlerOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.TryImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.TryImpl;
 
 public class CGTryImpl extends TryImpl implements CGStatement {
 

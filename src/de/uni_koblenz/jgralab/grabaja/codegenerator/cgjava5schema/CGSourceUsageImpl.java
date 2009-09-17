@@ -10,7 +10,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExternalDeclarationIn;
 import de.uni_koblenz.jgralab.grabaja.java5schema.PackageDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Type;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.SourceUsageImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.SourceUsageImpl;
 
 public class CGSourceUsageImpl extends SourceUsageImpl implements
 		CGFoldGraphReference {

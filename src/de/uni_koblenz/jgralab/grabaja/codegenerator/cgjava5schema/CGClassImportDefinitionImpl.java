@@ -7,7 +7,7 @@ import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ClassImportDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.ClassImportDefinitionImpl;
 
 public class CGClassImportDefinitionImpl extends ClassImportDefinitionImpl
 		implements CGImportDefinition {

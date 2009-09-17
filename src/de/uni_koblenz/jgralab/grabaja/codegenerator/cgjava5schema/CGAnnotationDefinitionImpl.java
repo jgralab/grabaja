@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMetaAnnotationOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfAnnotation;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.AnnotationDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.AnnotationDefinitionImpl;
 
 public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 		implements CGType {

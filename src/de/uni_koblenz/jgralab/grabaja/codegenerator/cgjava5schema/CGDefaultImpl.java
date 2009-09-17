@@ -8,7 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfDefaultCase;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.DefaultImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.DefaultImpl;
 
 public class CGDefaultImpl extends DefaultImpl implements CGStatement {
 

@@ -8,7 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsReturnedBy;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.ReturnImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.ReturnImpl;
 
 public class CGReturnImpl extends ReturnImpl implements CGStatement {
 

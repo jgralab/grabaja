@@ -11,7 +11,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsAnnotationOfType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsModifierOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeParameterOfInterface;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.InterfaceDefinitionImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.InterfaceDefinitionImpl;
 
 public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 		implements CGType {

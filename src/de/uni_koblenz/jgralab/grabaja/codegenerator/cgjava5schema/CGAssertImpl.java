@@ -8,7 +8,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsMessageOf;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.AssertImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.AssertImpl;
 
 public class CGAssertImpl extends AssertImpl implements CGStatement {
 

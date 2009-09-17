@@ -10,7 +10,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsBreakTargetOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Label;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BreakImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.BreakImpl;
 
 public class CGBreakImpl extends BreakImpl implements CGStatement {
 

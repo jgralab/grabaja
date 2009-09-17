@@ -9,7 +9,7 @@ import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsLowerBoundOfWildcardArgument;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsUpperBoundOfWildcardArgument;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.WildcardArgumentImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.WildcardArgumentImpl;
 
 public class CGWildcardArgumentImpl extends WildcardArgumentImpl implements
 		CodeGenerator {

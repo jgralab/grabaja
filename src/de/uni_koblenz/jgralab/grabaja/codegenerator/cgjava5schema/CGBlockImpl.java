@@ -13,7 +13,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsMemberOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsStatementOfBody;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Switch;
-import de.uni_koblenz.jgralab.grabaja.java5schema.impl.BlockImpl;
+import de.uni_koblenz.jgralab.grabaja.java5schema.impl.std.BlockImpl;
 
 public class CGBlockImpl extends BlockImpl implements CGStatement {
 

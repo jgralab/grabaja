@@ -24,14 +24,14 @@ import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
  * Resolves type specifications through a global approach. Must be used after
  * parsing of files because only after this all types defined in the parsed
  * files are known to symbol table.
- *
+ * 
  * @author: ultbreit@uni-koblenz.de
  */
 public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 
 	/**
 	 * Creates an new TypeSpecificationResolver from given values.
-	 *
+	 * 
 	 * @param symbolTable
 	 *            Symbol table to be used for resolving.
 	 */
@@ -41,7 +41,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 
 	/**
 	 * Tries to resolve all type specifications stored in symbol table.
-	 *
+	 * 
 	 * @param mode
 	 *            Extraction mode to use.
 	 * @return true if all type specifications were succesfully resolved, false
@@ -81,7 +81,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	 * type specification could be resolved vertex representing type
 	 * specification is attached to vertex representing definition of according
 	 * type.
-	 *
+	 * 
 	 * @param scope
 	 *            Vertex representing scope in which type was specified.
 	 * @param qualifiedTypeVertex
@@ -97,7 +97,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 		String fullyQualifiedName = getSpecifiedTypeFromGraph(scope,
 				qualifiedTypeVertex);
 		if (fullyQualifiedName.isEmpty()
-				&& (mode == ExtractionMode.EAGER || mode == ExtractionMode.COMPLETE)) {
+				&& ((mode == ExtractionMode.EAGER) || (mode == ExtractionMode.COMPLETE))) {
 			// Not found in graph now search in CLASSPATH.
 			fullyQualifiedName = getSpecifiedTypeFromClassPath(scope,
 					qualifiedTypeVertex, mode);
@@ -118,7 +118,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	/**
 	 * Returns fully qualified name of type. Searches for type in graph. Type
 	 * was specified by a type specification represented by given vertex.
-	 *
+	 * 
 	 * @param scope
 	 *            Vertex representing scope in which type was specified.
 	 * @param qualifiedTypeVertex
@@ -127,7 +127,8 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	 */
 	private String getSpecifiedTypeFromGraph(Vertex scope,
 			QualifiedType qualifiedTypeVertex) {
-		String fullyQualifiedName = qualifiedTypeVertex.getFullyQualifiedName();
+		String fullyQualifiedName = qualifiedTypeVertex
+				.get_fullyQualifiedName();
 		// Search using it's fully qualified name.
 		if (symbolTable.hasTypeDefinition(fullyQualifiedName)) {
 			return fullyQualifiedName;
@@ -158,14 +159,14 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 					ImportDefinition importDefinitionVertex = (ImportDefinition) vertex;
 					String fullyQualifiedNameOfImport = ResolverUtilities
 							.getFullyQualifiedName(importDefinitionVertex);
-					if (vertex instanceof ClassImportDefinition
+					if ((vertex instanceof ClassImportDefinition)
 							&& fullyQualifiedNameOfImport
 									.endsWith(fullyQualifiedName)
 							&& symbolTable
 									.hasTypeDefinition(fullyQualifiedNameOfImport)) {
 						return fullyQualifiedNameOfImport;
 					}
-					if (vertex instanceof PackageImportDefinition
+					if ((vertex instanceof PackageImportDefinition)
 							&& symbolTable
 									.hasTypeDefinition(fullyQualifiedNameOfImport
 											+ "." + fullyQualifiedName)) {
@@ -211,7 +212,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	/**
 	 * Returns fully qualified name of type. Searches for type in graph. Type
 	 * was specified by a type specification represented by given vertex.
-	 *
+	 * 
 	 * @param scope
 	 *            Vertex representing scope in which type was specified.
 	 * @param qualifiedTypeVertex
@@ -223,7 +224,8 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	private String getSpecifiedTypeFromClassPath(Vertex scope,
 			QualifiedType qualifiedTypeVertex, ExtractionMode mode) {
 		// Search using it's fully qualified name.
-		String fullyQualifiedName = qualifiedTypeVertex.getFullyQualifiedName();
+		String fullyQualifiedName = qualifiedTypeVertex
+				.get_fullyQualifiedName();
 		if (ResolverUtilities.createTypeUsingReflection(fullyQualifiedName,
 				mode, symbolTable)) {
 			return fullyQualifiedName;
@@ -257,7 +259,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 					ImportDefinition importVertex = (ImportDefinition) vertex;
 					String fullyQualifiedNameOfImport = ResolverUtilities
 							.getFullyQualifiedName(importVertex);
-					if (vertex instanceof ClassImportDefinition
+					if ((vertex instanceof ClassImportDefinition)
 							&& fullyQualifiedNameOfImport
 									.endsWith(fullyQualifiedName)
 							&& ResolverUtilities.createTypeUsingReflection(
@@ -265,7 +267,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 									symbolTable)) {
 						return fullyQualifiedNameOfImport;
 					}
-					if (vertex instanceof PackageImportDefinition
+					if ((vertex instanceof PackageImportDefinition)
 							&& ResolverUtilities.createTypeUsingReflection(
 									fullyQualifiedNameOfImport + "."
 											+ fullyQualifiedName, mode,
@@ -317,7 +319,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	/**
 	 * Returns fully qualified name of package the file represented by given
 	 * vertex belongs to.
-	 *
+	 * 
 	 * @param sourceUsageVertex
 	 * @return Fully qualified name of package. Empty if file does not belong to
 	 *         a package.
@@ -328,11 +330,11 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 		IsPartOf isPartOfEdge = translationUnitVertex
 				.getFirstIsPartOf(EdgeDirection.OUT);
 		if (isPartOfEdge != null) { // Check for null because file could be part
-									// of no package.
+			// of no package.
 			JavaPackage javaPackageVertex = (JavaPackage) isPartOfEdge
 					.getOmega();
 			if (javaPackageVertex != null) {
-				return javaPackageVertex.getFullyQualifiedName();
+				return javaPackageVertex.get_fullyQualifiedName();
 			}
 		}
 		return "";

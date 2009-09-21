@@ -37,7 +37,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 
 /**
  * Provides functionality for creating identifier elements in graph.
- *
+ * 
  * @author: abaldauf@uni-koblenz.de
  * @author: ultbreit@uni-koblenz.de
  */
@@ -45,7 +45,7 @@ public class IdentifierFactory extends SubgraphFactory {
 
 	/**
 	 * Instantiates and initializes an instance.
-	 *
+	 * 
 	 * @param pg
 	 *            The graph to be used.
 	 */
@@ -55,20 +55,20 @@ public class IdentifierFactory extends SubgraphFactory {
 
 	/**
 	 * Creates a vertex for an identifier.
-	 *
+	 * 
 	 * @param ast
 	 *            The AST element representing the identifier.
 	 * @return The created vertex.
 	 */
 	public Identifier createIdentifier(AST ast) {
 		Identifier identifierVertex = programGraph.createIdentifier();
-		identifierVertex.setName(ast.getText());
+		identifierVertex.set_name(ast.getText());
 		return identifierVertex;
 	}
 
 	/**
 	 * Creates a vertex for an identifier and attaches it to a class definition.
-	 *
+	 * 
 	 * @param classDefinitionVertex
 	 *            The class definition.
 	 * @param ast
@@ -84,7 +84,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to an annotation
 	 * definition.
-	 *
+	 * 
 	 * @param annotationDefinitionVertex
 	 *            The annotation definition.
 	 * @param ast
@@ -103,7 +103,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to an interface
 	 * definition.
-	 *
+	 * 
 	 * @param interfaceDefinitionVertex
 	 *            The interface definition.
 	 * @param ast
@@ -120,7 +120,7 @@ public class IdentifierFactory extends SubgraphFactory {
 
 	/**
 	 * Creates a vertex for an identifier and attaches it to an enum definition.
-	 *
+	 * 
 	 * @param enumDefinitionVertex
 	 *            The enum definition.
 	 * @param ast
@@ -136,7 +136,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to a type parameter
 	 * declaration.
-	 *
+	 * 
 	 * @param typeParameterDeclarationVertex
 	 *            The type parameter declaration.
 	 * @param ast
@@ -154,7 +154,7 @@ public class IdentifierFactory extends SubgraphFactory {
 
 	/**
 	 * Creates a vertex for an identifier and attaches it to a field access.
-	 *
+	 * 
 	 * @param fieldAccessVertex
 	 *            The field access.
 	 * @param ast
@@ -173,7 +173,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * Creates a vertex for an identifier and attaches it to a field access.
 	 * Also creates the edge to the leading expression for a field access inside
 	 * a cascade.
-	 *
+	 * 
 	 * @param fieldAccessVertex
 	 *            The field access.
 	 * @param ast
@@ -197,7 +197,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to a parameter
 	 * declaration.
-	 *
+	 * 
 	 * @param parameterDeclarationVertex
 	 *            The parameter declaration.
 	 * @param ast
@@ -215,7 +215,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to an annotation
 	 * field.
-	 *
+	 * 
 	 * @param annotationFieldVertex
 	 *            The annotation field.
 	 * @param ast
@@ -232,7 +232,7 @@ public class IdentifierFactory extends SubgraphFactory {
 
 	/**
 	 * Creates a vertex for an identifier and attaches it to an enum constant.
-	 *
+	 * 
 	 * @param enumConstantVertex
 	 *            The enum constant.
 	 * @param ast
@@ -249,7 +249,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to a constructor
 	 * definition or a method declaration / definition.
-	 *
+	 * 
 	 * @param parentVertex
 	 *            The constructor definition or method declaration / definition.
 	 * @param ast
@@ -266,7 +266,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to a constructor
 	 * definition.
-	 *
+	 * 
 	 * @param constructorDefinitionVertex
 	 *            The constructor definition.
 	 * @param ast
@@ -284,7 +284,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	/**
 	 * Creates a vertex for an identifier and attaches it to a method
 	 * declaration / definition.
-	 *
+	 * 
 	 * @param methodDeclarationVertex
 	 *            The method declaration / definition.
 	 * @param ast
@@ -300,13 +300,14 @@ public class IdentifierFactory extends SubgraphFactory {
 
 	/**
 	 * Creates a vertex for an identifier and attaches it to an invocation.
-	 *
+	 * 
 	 * @param methodInvocationVertex
 	 *            The invocation.
 	 * @param ast
 	 *            The AST element representing the identifier.
 	 */
-	public void createIdentifier(MethodInvocation methodInvocationVertex, AST ast) {
+	public void createIdentifier(MethodInvocation methodInvocationVertex,
+			AST ast) {
 		Identifier identifierVertex = createIdentifier(ast);
 		IsNameOfInvokedMethod isNameOfInvokedMethodEdge = programGraph
 				.createIsNameOfInvokedMethod(identifierVertex,
@@ -318,7 +319,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * Creates a vertex for an identifier and attaches it to an invocation. Also
 	 * creates the edge to the leading expression for an invocation inside a
 	 * cascade.
-	 *
+	 * 
 	 * @param methodInvocationVertex
 	 *            The invocation.
 	 * @param expressionVertex
@@ -328,17 +329,22 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * @param beginAST
 	 *            AST element representing first element of leading expression.
 	 * @param endAST
-	 *            AST element representing last element of leading side expression.
+	 *            AST element representing last element of leading side
+	 *            expression.
 	 */
-	public void createIdentifier(MethodInvocation methodInvocationVertex, Expression expressionVertex, AST ast, AST beginAST, AST endAST) {
+	public void createIdentifier(MethodInvocation methodInvocationVertex,
+			Expression expressionVertex, AST ast, AST beginAST, AST endAST) {
 		createIdentifier(methodInvocationVertex, ast);
-		IsMethodContainerOf isMethodContainerOfEdge = programGraph.createIsMethodContainerOf(expressionVertex,methodInvocationVertex);
-		Utilities.fillEdgeAttributesFromASTDifference(isMethodContainerOfEdge,beginAST, endAST);
+		IsMethodContainerOf isMethodContainerOfEdge = programGraph
+				.createIsMethodContainerOf(expressionVertex,
+						methodInvocationVertex);
+		Utilities.fillEdgeAttributesFromASTDifference(isMethodContainerOfEdge,
+				beginAST, endAST);
 	}
 
 	/**
 	 * Creates an edge between an identifier vertex and a variable declaration.
-	 *
+	 * 
 	 * @param identifierVertex
 	 *            The identifier.
 	 * @param variableDeclarationVertex

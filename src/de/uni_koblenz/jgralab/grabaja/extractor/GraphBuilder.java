@@ -32,7 +32,7 @@ import de.uni_koblenz.jgralab.schema.exception.SchemaException;
 
 /**
  * Builds the TGraph for a program.
- *
+ * 
  * @author: abaldauf@uni-koblenz.de
  * @author: ultbreit@uni-koblenz.de
  */
@@ -66,7 +66,7 @@ public class GraphBuilder {
 
 	/**
 	 * Creates and initializes an instance of the GraphBuilder.
-	 *
+	 * 
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
 	 * @param loggerToUse
@@ -84,7 +84,7 @@ public class GraphBuilder {
 
 	/**
 	 * Creates and initializes an instance of the TGraph.
-	 *
+	 * 
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
 	 */
@@ -95,7 +95,7 @@ public class GraphBuilder {
 			logger.info("Created graph " + nameOfProgram);
 			// Create basic "head" of graph
 			programVertex = programGraph.createProgram();
-			programVertex.setName(nameOfProgram);
+			programVertex.set_name(nameOfProgram);
 			return true;
 		} catch (SchemaException exception) {
 			logger.severe(Utilities.stackTraceToString(exception));
@@ -108,7 +108,7 @@ public class GraphBuilder {
 	/**
 	 * Parses a list of files and triggers TGraph building after each parsed
 	 * file.
-	 *
+	 * 
 	 * @param fileList
 	 *            A Vector with the names of the files to be parsed, each can be
 	 *            relative or absolute.
@@ -156,7 +156,7 @@ public class GraphBuilder {
 
 	/**
 	 * Parses a file and returns it's AST representation.
-	 *
+	 * 
 	 * @param fileName
 	 *            Name of the file to parse, can be relative or absolute.
 	 * @return AST representation of given file, null if parsing failed.
@@ -215,7 +215,7 @@ public class GraphBuilder {
 
 	/**
 	 * Adds a new tranlation unit to the TGraph.
-	 *
+	 * 
 	 * @param sourcePath
 	 *            The path of the .java file the AST resulted from.
 	 * @param comments
@@ -237,12 +237,12 @@ public class GraphBuilder {
 						translationUnitVertex);
 			}
 			SourceUsage sourceUsageVertex = programGraph.createSourceUsage();
-			sourceUsageVertex.setLengthOfFile(0); // @TODO warum muss das 0
+			sourceUsageVertex.set_lengthOfFile(0); // @TODO warum muss das 0
 			// sein???
 			programGraph.createIsSourceUsageIn(sourceUsageVertex,
 					translationUnitVertex);
 			SourceFile sourceFileVertex = programGraph.createSourceFile();
-			sourceFileVertex.setName(sourcePath);
+			sourceFileVertex.set_name(sourcePath);
 			programGraph.createIsSourceFor(sourceFileVertex, sourceUsageVertex);
 			programGraph.createIsPrimarySourceFor(sourceFileVertex,
 					translationUnitVertex);
@@ -260,7 +260,7 @@ public class GraphBuilder {
 
 	/**
 	 * Executes all the global resolving mechanisms.
-	 *
+	 * 
 	 * @param mode
 	 *            The extraction mode to be used for resolving.
 	 */
@@ -314,7 +314,7 @@ public class GraphBuilder {
 
 	/**
 	 * Saves the generated TGraph to disk.
-	 *
+	 * 
 	 * @param targetPath
 	 *            The path of the file to write the graph to.
 	 */

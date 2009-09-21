@@ -293,7 +293,7 @@ typeDefinition{ Type typeVertex = null; }
         #(
             CLASS_DEF{
                 ClassDefinition classDefinitionVertex = programGraph.createClassDefinition();
-                classDefinitionVertex.setExternal( false );
+                classDefinitionVertex.set_external( false );
                 currentVertex = classDefinitionVertex;
                 // Check if this is the first type definition in the current file.
                 if( currentScope == null ) symbolTable.setSupremeTypeInFile( classDefinitionVertex );
@@ -309,10 +309,10 @@ typeDefinition{ Type typeVertex = null; }
 		    }
             className:IDENT{
 		    	identifierFactory.createIdentifier( classDefinitionVertex, className );
-		    	classDefinitionVertex.setName( className.getText() ); //@TODO obsolete, remove  from schema
+		    	classDefinitionVertex.set_name( className.getText() ); //@TODO obsolete, remove  from schema
 		    	if( fullyQualifiedNameOfCurrentType.equals( "" ) ) fullyQualifiedNameOfCurrentType = className.getText();
 		    	else fullyQualifiedNameOfCurrentType += "." + className.getText();
-		    	classDefinitionVertex.setFullyQualifiedName( fullyQualifiedNameOfCurrentType );
+		    	classDefinitionVertex.set_fullyQualifiedName( fullyQualifiedNameOfCurrentType );
                 // Check if it is a nested type.
                 if( parentScope != null ) symbolTable.addNestedClassDefinition( fullyQualifiedNameOfCurrentType, classDefinitionVertex );
 				else symbolTable.addTypeDefinition( fullyQualifiedNameOfCurrentType, classDefinitionVertex );
@@ -323,8 +323,8 @@ typeDefinition{ Type typeVertex = null; }
             implementsClause{ currentVertex = classDefinitionVertex; }
             objBlock{
                 typeDefinitionFactory.attachClassBlock( ( Block )currentVertex, classDefinitionVertex, currentBeginAST, currentEndAST );
-                if( fullyQualifiedNameOfCurrentType.length() > classDefinitionVertex.getName().length() )
-                	fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - classDefinitionVertex.getName().length() - 1 );
+                if( fullyQualifiedNameOfCurrentType.length() > classDefinitionVertex.get_name().length() )
+                	fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - classDefinitionVertex.get_name().length() - 1 );
                 typeVertex = classDefinitionVertex;
                 currentBeginAST = classBeginAST; // currentEndAST already set correctly
                 currentScope = parentScope;
@@ -334,7 +334,7 @@ typeDefinition{ Type typeVertex = null; }
         #(
             INTERFACE_DEF{
                 InterfaceDefinition interfaceDefinitionVertex = programGraph.createInterfaceDefinition();
-                interfaceDefinitionVertex.setExternal( false );
+                interfaceDefinitionVertex.set_external( false );
                 currentVertex = interfaceDefinitionVertex;
                 AST interfaceBeginAST = null;
                 // Check if this is the first type definition in the current file.
@@ -350,10 +350,10 @@ typeDefinition{ Type typeVertex = null; }
 		    }
             interfaceName:IDENT{
 		       	identifierFactory.createIdentifier( interfaceDefinitionVertex, interfaceName );
-                interfaceDefinitionVertex.setName( interfaceName.getText() ); //@TODO could be obsolete
+                interfaceDefinitionVertex.set_name( interfaceName.getText() ); //@TODO could be obsolete
 		    	if( fullyQualifiedNameOfCurrentType.equals( "" ) ) fullyQualifiedNameOfCurrentType = interfaceName.getText();
 		    	else fullyQualifiedNameOfCurrentType += "." + interfaceName.getText();
-		    	interfaceDefinitionVertex.setFullyQualifiedName( fullyQualifiedNameOfCurrentType );
+		    	interfaceDefinitionVertex.set_fullyQualifiedName( fullyQualifiedNameOfCurrentType );
 		    	if( parentScope != null ) symbolTable.addNestedInterfaceDefinition( fullyQualifiedNameOfCurrentType, interfaceDefinitionVertex );
                 else symbolTable.addTypeDefinition( fullyQualifiedNameOfCurrentType, interfaceDefinitionVertex );
                 currentVertex = interfaceDefinitionVertex;
@@ -362,8 +362,8 @@ typeDefinition{ Type typeVertex = null; }
             extendsClause{ currentVertex = interfaceDefinitionVertex; }
             interfaceBlock{
                 typeDefinitionFactory.attachInterfaceBlock( ( Block )currentVertex, interfaceDefinitionVertex, currentBeginAST, currentEndAST );
-                if( fullyQualifiedNameOfCurrentType.length() > interfaceDefinitionVertex.getName().length() )
-                	fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - interfaceDefinitionVertex.getName().length() - 1 );
+                if( fullyQualifiedNameOfCurrentType.length() > interfaceDefinitionVertex.get_name().length() )
+                	fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - interfaceDefinitionVertex.get_name().length() - 1 );
                 typeVertex = interfaceDefinitionVertex;
                 currentBeginAST = interfaceBeginAST;  // currentEndAST already set correctly
                 currentScope = parentScope;
@@ -373,7 +373,7 @@ typeDefinition{ Type typeVertex = null; }
         #(
             ENUM_DEF{
                 EnumDefinition enumDefinitionVertex = programGraph.createEnumDefinition();
-                enumDefinitionVertex.setExternal( false );
+                enumDefinitionVertex.set_external( false );
                 currentVertex = enumDefinitionVertex;
                 AST enumBeginAST = null;
                 // Check if this is the first type definition in the current file.
@@ -389,10 +389,10 @@ typeDefinition{ Type typeVertex = null; }
 		    }
             enumName:IDENT{
                 identifierFactory.createIdentifier( enumDefinitionVertex, enumName );
-                enumDefinitionVertex.setName( enumName.getText() ); //@TODO could be obsolete
+                enumDefinitionVertex.set_name( enumName.getText() ); //@TODO could be obsolete
 		    	if( fullyQualifiedNameOfCurrentType.equals( "" ) ) fullyQualifiedNameOfCurrentType = enumName.getText();
 		    	else fullyQualifiedNameOfCurrentType += "." + enumName.getText();
-		    	enumDefinitionVertex.setFullyQualifiedName( fullyQualifiedNameOfCurrentType );
+		    	enumDefinitionVertex.set_fullyQualifiedName( fullyQualifiedNameOfCurrentType );
                 if( parentScope != null ) symbolTable.addNestedEnumDefinition( fullyQualifiedNameOfCurrentType, enumDefinitionVertex );
                 else symbolTable.addTypeDefinition( fullyQualifiedNameOfCurrentType, enumDefinitionVertex );
                 currentVertex = enumDefinitionVertex;
@@ -400,8 +400,8 @@ typeDefinition{ Type typeVertex = null; }
             implementsClause{ currentVertex = enumDefinitionVertex; }
             enumBlock{
                 typeDefinitionFactory.attachEnumBlock( ( Block )currentVertex, enumDefinitionVertex, currentBeginAST, currentEndAST );
-                if( fullyQualifiedNameOfCurrentType.length() > enumDefinitionVertex.getName().length() )
-                	fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - enumDefinitionVertex.getName().length() - 1 );
+                if( fullyQualifiedNameOfCurrentType.length() > enumDefinitionVertex.get_name().length() )
+                	fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - enumDefinitionVertex.get_name().length() - 1 );
                 typeVertex = enumDefinitionVertex;
                 currentBeginAST = enumBeginAST; // currentEndAST already set correctly
                 currentScope = parentScope;
@@ -411,7 +411,7 @@ typeDefinition{ Type typeVertex = null; }
         #(
             ANNOTATION_DEF{
                 AnnotationDefinition annotationDefinitionVertex = programGraph.createAnnotationDefinition();
-                annotationDefinitionVertex.setExternal( false );
+                annotationDefinitionVertex.set_external( false );
                 currentVertex = annotationDefinitionVertex;
                 AST annotationBeginAST = null;
                 Vertex parentScope = currentScope;
@@ -425,18 +425,18 @@ typeDefinition{ Type typeVertex = null; }
 		    }
             annotationName:IDENT{
                 identifierFactory.createIdentifier( annotationDefinitionVertex, annotationName );
-                annotationDefinitionVertex.setName( annotationName.getText() );
+                annotationDefinitionVertex.set_name( annotationName.getText() );
                 if( fullyQualifiedNameOfCurrentType.equals( "" ) ) fullyQualifiedNameOfCurrentType = annotationName.getText();
                 else fullyQualifiedNameOfCurrentType += "." + annotationName.getText();
-                annotationDefinitionVertex.setFullyQualifiedName( fullyQualifiedNameOfCurrentType );
+                annotationDefinitionVertex.set_fullyQualifiedName( fullyQualifiedNameOfCurrentType );
                 if( parentScope != null) symbolTable.addNestedAnnotationDefinition( fullyQualifiedNameOfCurrentType, annotationDefinitionVertex );
                 else symbolTable.addTypeDefinition( fullyQualifiedNameOfCurrentType, annotationDefinitionVertex );
                 currentVertex = annotationDefinitionVertex;
             }
            annotationBlock{
                typeDefinitionFactory.attachAnnotationBlock( ( Block )currentVertex, annotationDefinitionVertex, currentBeginAST, currentEndAST );
-               if( fullyQualifiedNameOfCurrentType.length() > annotationDefinitionVertex.getName().length() )
-                   fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - annotationDefinitionVertex.getName().length() - 1 );
+               if( fullyQualifiedNameOfCurrentType.length() > annotationDefinitionVertex.get_name().length() )
+                   fullyQualifiedNameOfCurrentType = fullyQualifiedNameOfCurrentType.substring( 0, fullyQualifiedNameOfCurrentType.length() - annotationDefinitionVertex.get_name().length() - 1 );
                typeVertex = annotationDefinitionVertex;
                currentBeginAST = annotationBeginAST; // currentEndAST already set correctly
                currentScope = parentScope;
@@ -1550,7 +1550,7 @@ identifier // This rule is only used by package definitions, import definitions 
                 if( symbolTable.hasJavaPackage( currentFullyQualifiedName ) ) javaPackageVertex = symbolTable.getJavaPackage( currentFullyQualifiedName );
            	    else{
            	    	javaPackageVertex = programGraph.createJavaPackage();
-           	    	javaPackageVertex.setFullyQualifiedName( currentFullyQualifiedName );
+           	    	javaPackageVertex.set_fullyQualifiedName( currentFullyQualifiedName );
            	    	symbolTable.addJavaPackage( currentFullyQualifiedName, javaPackageVertex );
 				}
                 if( currentVertex instanceof JavaPackage && javaPackageVertex.getFirstIsSubPackageOf() == null ) packageFactory.attach( javaPackageVertex, ( JavaPackage )currentVertex );
@@ -1571,7 +1571,7 @@ identifier // This rule is only used by package definitions, import definitions 
 					if( symbolTable.hasJavaPackage( currentFullyQualifiedName ) ) javaPackageVertex = symbolTable.getJavaPackage( currentFullyQualifiedName );
 					else{
 						javaPackageVertex = programGraph.createJavaPackage();
-						javaPackageVertex.setFullyQualifiedName( currentFullyQualifiedName );
+						javaPackageVertex.set_fullyQualifiedName( currentFullyQualifiedName );
 						symbolTable.addJavaPackage( currentFullyQualifiedName, javaPackageVertex );
 					}
 					if( currentVertex instanceof JavaPackage && javaPackageVertex.getFirstIsSubPackageOf() == null ) packageFactory.attach( javaPackageVertex, ( JavaPackage )currentVertex );
@@ -2763,7 +2763,7 @@ newExpression{
                 if( isNameOfEdge != null ) {
                     Identifier ident = ( Identifier )isNameOfEdge.getAlpha();
                 	expressionFactory.attachNameOfInvokedMethod( ident, methodInvocationVertex, typeEndAST, typeEndAST );
-                    System.out.println("attached " + ident.getName());
+                    System.out.println("attached " + ident.get_name());
                 }
                 currentVertex = objectCreationVertex;
                 currentEndAST = ccallEnd;

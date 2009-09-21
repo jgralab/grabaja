@@ -58,7 +58,7 @@ import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
 
 /**
  * Resolves invocations of methods and constructors.
- *
+ * 
  * @author: abaldauf@uni-koblenz.de
  */
 public class MethodResolver extends Resolver {
@@ -78,7 +78,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Instantiates and initializes an instance.
-	 *
+	 * 
 	 * @param symbolTable
 	 *            The symbol table to be used for resolving.
 	 */
@@ -88,7 +88,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Sets the reference to the field resolver instance.
-	 *
+	 * 
 	 * @param resolver
 	 *            The instance of the field resolver.
 	 */
@@ -98,7 +98,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Resolves all the invocations stored in the symbol table.
-	 *
+	 * 
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @return true if all of the invoked methods / constructors could be
@@ -130,7 +130,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Resolves a singe invocation.
-	 *
+	 * 
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @param methodInvocation
@@ -200,14 +200,14 @@ public class MethodResolver extends Resolver {
 			}
 			Type containingCreationType = (Type) containingCreationSpecification
 					.getFirstIsTypeDefinitionOf(EdgeDirection.IN).getAlpha();
-			methodName = containingCreationType.getName();
+			methodName = containingCreationType.get_name();
 			Member methodDeclarationVertex = findMatchingDeclaration(
 					methodInvocation, methodInvocationArguments,
-					containingCreationType.getFullyQualifiedName(), methodName,
-					InvocationSearchMode.constructorsOnly, mode);
+					containingCreationType.get_fullyQualifiedName(),
+					methodName, InvocationSearchMode.constructorsOnly, mode);
 			if ((methodDeclarationVertex == null)
 					&& (mode == ExtractionMode.EAGER)
-					&& containingCreationType.isExternal()) {
+					&& containingCreationType.is_external()) {
 				methodDeclarationVertex = findMatchingDeclarationByReflection(
 						methodInvocation, methodInvocationArguments,
 						containingCreationType, methodName,
@@ -221,7 +221,7 @@ public class MethodResolver extends Resolver {
 		}
 		methodName = ((Identifier) methodInvocation
 				.getFirstIsNameOfInvokedMethod(EdgeDirection.IN).getAlpha())
-				.getName();
+				.get_name();
 		if (methodInvocation.getFirstIsMethodContainerOf(EdgeDirection.IN) == null) {
 			if (methodName.equals("this")) {
 				ClassDefinition enclosingClass = ResolverUtilities
@@ -231,8 +231,8 @@ public class MethodResolver extends Resolver {
 				}
 				Member methodDeclarationVertex = findMatchingDeclaration(
 						methodInvocation, methodInvocationArguments,
-						enclosingClass.getFullyQualifiedName(), enclosingClass
-								.getName(),
+						enclosingClass.get_fullyQualifiedName(), enclosingClass
+								.get_name(),
 						InvocationSearchMode.constructorsOnly, mode);
 				if (methodDeclarationVertex == null) {
 					return finishUnresolvedMethodInvocation(methodInvocation);
@@ -269,15 +269,15 @@ public class MethodResolver extends Resolver {
 				if (superClass != null) {
 					Member methodDeclarationVertex = findMatchingDeclaration(
 							methodInvocation, methodInvocationArguments,
-							superClass.getFullyQualifiedName(), superClass
-									.getName(),
+							superClass.get_fullyQualifiedName(), superClass
+									.get_name(),
 							InvocationSearchMode.constructorsOnly, mode);
 					if ((methodDeclarationVertex == null)
 							&& (mode == ExtractionMode.EAGER)
-							&& superClass.isExternal()) {
+							&& superClass.is_external()) {
 						methodDeclarationVertex = findMatchingDeclarationByReflection(
 								methodInvocation, methodInvocationArguments,
-								superClass, superClass.getName(),
+								superClass, superClass.get_name(),
 								InvocationSearchMode.constructorsOnly, mode);
 					}
 					if (methodDeclarationVertex == null) {
@@ -303,7 +303,7 @@ public class MethodResolver extends Resolver {
 					}
 					methodDeclarationVertex = findMatchingDeclaration(
 							methodInvocation, methodInvocationArguments,
-							currentEnclosingType.getFullyQualifiedName(),
+							currentEnclosingType.get_fullyQualifiedName(),
 							methodName, InvocationSearchMode.methodsOnly, mode);
 					if (methodDeclarationVertex != null) {
 						return linkMethodInvocationToDeclaration(
@@ -326,12 +326,12 @@ public class MethodResolver extends Resolver {
 										methodInvocation,
 										methodInvocationArguments,
 										currentSuperClass
-												.getFullyQualifiedName(),
+												.get_fullyQualifiedName(),
 										methodName,
 										InvocationSearchMode.methodsOnly, mode);
 								if ((methodDeclarationVertex == null)
 										&& (mode == ExtractionMode.EAGER)
-										&& currentSuperClass.isExternal()) {
+										&& currentSuperClass.is_external()) {
 									methodDeclarationVertex = findMatchingDeclarationByReflection(
 											methodInvocation,
 											methodInvocationArguments,
@@ -438,7 +438,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Resolves an invocation of a method / constructor (with a known containing
 	 * type).
-	 *
+	 * 
 	 * @param containingType
 	 *            The vertex of the type in which the field is assumed.
 	 * @param methodName
@@ -459,7 +459,7 @@ public class MethodResolver extends Resolver {
 			ExtractionMode mode, Vertex scope) {
 		Member invokedMethod = findMatchingDeclaration(methodInvocation,
 				methodInvocationArguments, containingType
-						.getFullyQualifiedName(), methodName,
+						.get_fullyQualifiedName(), methodName,
 				InvocationSearchMode.methodsOnly, mode);
 		if ((invokedMethod == null)
 				&& (containingType instanceof ClassDefinition)) {
@@ -476,12 +476,12 @@ public class MethodResolver extends Resolver {
 					invokedMethod = findMatchingDeclaration(methodInvocation,
 							methodInvocationArguments,
 							currentContainerTypeSuperClass
-									.getFullyQualifiedName(), methodName,
+									.get_fullyQualifiedName(), methodName,
 							InvocationSearchMode.methodsOnly, mode);
 				}
 				if ((invokedMethod == null)
 						&& (currentContainerTypeSuperClass != null)
-						&& currentContainerTypeSuperClass.isExternal()
+						&& currentContainerTypeSuperClass.is_external()
 						&& (mode == ExtractionMode.EAGER)) {
 					invokedMethod = findMatchingDeclarationByReflection(
 							methodInvocation, methodInvocationArguments,
@@ -490,9 +490,9 @@ public class MethodResolver extends Resolver {
 				}
 			} while ((invokedMethod == null)
 					&& (currentContainerTypeSuperClass != null)
-					&& !currentContainerTypeSuperClass.isExternal());
+					&& !currentContainerTypeSuperClass.is_external());
 		}
-		if ((invokedMethod == null) && containingType.isExternal()
+		if ((invokedMethod == null) && containingType.is_external()
 				&& (mode == ExtractionMode.EAGER)) {
 			invokedMethod = findMatchingDeclarationByReflection(
 					methodInvocation, methodInvocationArguments,
@@ -517,7 +517,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Gets the method / constructor definition that matches invocation.
 	 * Performs argument typechecking which is required due to overloading.
-	 *
+	 * 
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @param methodInvocationArguments
@@ -655,7 +655,7 @@ public class MethodResolver extends Resolver {
 	 * Gets the method / constructor definition that matches invocation by
 	 * reflection. Performs argument typechecking which is required due to
 	 * overloading.
-	 *
+	 * 
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @param methodInvocationArguments
@@ -691,7 +691,7 @@ public class MethodResolver extends Resolver {
 			Class<?> externalClass = null;
 			try {
 				externalClass = Class.forName(containingType
-						.getFullyQualifiedName());
+						.get_fullyQualifiedName());
 			} catch (Exception exception) {
 			}
 			if (externalClass != null) {
@@ -756,7 +756,7 @@ public class MethodResolver extends Resolver {
 			Class<?> externalClass = null;
 			try {
 				externalClass = Class.forName(containingType
-						.getFullyQualifiedName());
+						.get_fullyQualifiedName());
 			} catch (Exception exception) {
 			}
 			if (externalClass != null) {
@@ -824,7 +824,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Gets the list of parameters of a constructor.
-	 *
+	 * 
 	 * @param declaration
 	 *            The vertex of the constructor defintion.
 	 * @return The list of parameter declarations.
@@ -851,7 +851,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Gets the list of parameters of a method.
-	 *
+	 * 
 	 * @param declaration
 	 *            The vertex of the method defintion.
 	 * @return The list of parameter declarations.
@@ -876,7 +876,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an argument is valid for the defined parameter.
-	 *
+	 * 
 	 * @param argument
 	 *            The vertex of the argument.
 	 * @param parameter
@@ -894,7 +894,7 @@ public class MethodResolver extends Resolver {
 				.getFirstIsTypeOfParameter(EdgeDirection.IN).getAlpha();
 		if (parameterType instanceof BuiltInType) {
 			return isCompatibleToBuiltInType(argument,
-					((BuiltInType) parameterType).getType(), mode);
+					((BuiltInType) parameterType).get_type(), mode);
 		} else if (parameterType instanceof QualifiedType) {
 			return isCompatibleToQualifiedType(argument,
 					(QualifiedType) parameterType, mode);
@@ -910,7 +910,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified array type.
-	 *
+	 * 
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -1046,7 +1046,7 @@ public class MethodResolver extends Resolver {
 			// edgeIterator.next();
 			// arrayCreationDimensions++;
 			// }
-			if (arrayCreationDimensions != typeToMatch.getDimensions()) {
+			if (arrayCreationDimensions != typeToMatch.get_dimensions()) {
 				return false;
 			}
 			if ((elementTypeToMatch instanceof BuiltInType)
@@ -1057,7 +1057,7 @@ public class MethodResolver extends Resolver {
 						(BuiltInType) ((ArrayCreation) expression)
 								.getFirstIsElementTypeOfCreatedArray(
 										EdgeDirection.IN).getAlpha(),
-						((BuiltInType) elementTypeToMatch).getType());
+						((BuiltInType) elementTypeToMatch).get_type());
 			} else if ((elementTypeToMatch instanceof QualifiedType)
 					&& (((ArrayCreation) expression)
 							.getFirstIsElementTypeOfCreatedArray(
@@ -1076,7 +1076,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an array type is compatible to another specified array type.
-	 *
+	 * 
 	 * @param arrayType
 	 *            The vertex of the array type.
 	 * @param typeToMatch
@@ -1090,7 +1090,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an array type is compatible to another specified array type.
-	 *
+	 * 
 	 * @param arrayType
 	 *            The vertex of the array type.
 	 * @param typeToMatch
@@ -1102,7 +1102,7 @@ public class MethodResolver extends Resolver {
 	 */
 	private boolean isCompatibleArrayType(ArrayType arrayType,
 			ArrayType typeToMatch, int dimensionsSurplus) {
-		if (arrayType.getDimensions() != (typeToMatch.getDimensions() + dimensionsSurplus)) {
+		if (arrayType.get_dimensions() != (typeToMatch.get_dimensions() + dimensionsSurplus)) {
 			return false;
 		}
 		if ((arrayType.getFirstIsElementTypeOf(EdgeDirection.IN) != null)
@@ -1114,7 +1114,7 @@ public class MethodResolver extends Resolver {
 				return isCompatibleBuiltInType((BuiltInType) arrayType
 						.getFirstIsElementTypeOf(EdgeDirection.IN).getAlpha(),
 						((BuiltInType) typeToMatch.getFirstIsElementTypeOf(
-								EdgeDirection.IN).getAlpha()).getType());
+								EdgeDirection.IN).getAlpha()).get_type());
 			} else if ((typeToMatch.getFirstIsElementTypeOf(EdgeDirection.IN)
 					.getAlpha() instanceof QualifiedType)
 					&& (arrayType.getFirstIsElementTypeOf(EdgeDirection.IN)
@@ -1131,7 +1131,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified type parameter.
-	 *
+	 * 
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -1237,7 +1237,7 @@ public class MethodResolver extends Resolver {
 			}
 		}
 		if (expression instanceof InfixExpression) {
-			if ((((InfixExpression) expression).getOperator() == InfixOperators.PLUS)
+			if ((((InfixExpression) expression).get_operator() == InfixOperators.PLUS)
 					&& (((InfixExpression) expression)
 							.getFirstIsLeftHandSideOfInfixExpression() != null)
 					&& (((InfixExpression) expression)
@@ -1260,7 +1260,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified qualified type.
-	 *
+	 * 
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -1408,7 +1408,7 @@ public class MethodResolver extends Resolver {
 			}
 		}
 		if (expression instanceof InfixExpression) {
-			if ((((InfixExpression) expression).getOperator() == InfixOperators.PLUS)
+			if ((((InfixExpression) expression).get_operator() == InfixOperators.PLUS)
 					&& isStringType(typeToMatch)
 					&& (((InfixExpression) expression)
 							.getFirstIsLeftHandSideOfInfixExpression() != null)
@@ -1432,7 +1432,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if qualified type is compatible to another qualified type.
-	 *
+	 * 
 	 * @param arrayType
 	 *            The vertex of the first qualified type.
 	 * @param typeToMatch
@@ -1451,7 +1451,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if qualified type is compatible to another qualified type.
-	 *
+	 * 
 	 * @param arrayType
 	 *            The vertex of the first qualified type.
 	 * @param typeToMatch
@@ -1460,7 +1460,7 @@ public class MethodResolver extends Resolver {
 	 */
 	private boolean isCompatibleType(Type qualifiedTypeDefinition,
 			QualifiedType typeToMatch) {
-		if (typeToMatch.getFullyQualifiedName().equals("java.lang.Object")) {
+		if (typeToMatch.get_fullyQualifiedName().equals("java.lang.Object")) {
 			return true;
 		}
 		if (typeToMatch.getFirstIsTypeDefinitionOf(EdgeDirection.IN) == null) {
@@ -1468,13 +1468,13 @@ public class MethodResolver extends Resolver {
 		}
 		Type typeDefinitionToMatch = (Type) typeToMatch
 				.getFirstIsTypeDefinitionOf(EdgeDirection.IN).getAlpha();
-		if (typeDefinitionToMatch.getFullyQualifiedName().equals(
+		if (typeDefinitionToMatch.get_fullyQualifiedName().equals(
 				"java.lang.Object")) {
 			return true;
 		}
 		if ((qualifiedTypeDefinition == typeDefinitionToMatch)
-				|| qualifiedTypeDefinition.getFullyQualifiedName().equals(
-						typeDefinitionToMatch.getFullyQualifiedName())) {
+				|| qualifiedTypeDefinition.get_fullyQualifiedName().equals(
+						typeDefinitionToMatch.get_fullyQualifiedName())) {
 			return true;
 		}
 		if (qualifiedTypeDefinition instanceof ClassDefinition) {
@@ -1521,7 +1521,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a class implements any of the given interfaces (or one of the
 	 * interfaces' extensions).
-	 *
+	 * 
 	 * @param classDefinition
 	 *            The vertex of the class.
 	 * @param interfaceDefinitions
@@ -1580,7 +1580,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Adds the interfaces that extend a given interface to a given list.
-	 *
+	 * 
 	 * @param interfaceDefinition
 	 *            The vertex of the interface that is extended.
 	 * @param interfacesList
@@ -1626,7 +1626,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if a qualified type allows a string.
-	 *
+	 * 
 	 * @param typeToMatch
 	 *            The qualified type to check.
 	 * @return true if the type allows a string, false if not.
@@ -1637,7 +1637,7 @@ public class MethodResolver extends Resolver {
 		}
 		String fullyQualifiedName = ((Type) typeToMatch
 				.getFirstIsTypeDefinitionOf(EdgeDirection.IN).getAlpha())
-				.getFullyQualifiedName();
+				.get_fullyQualifiedName();
 		if (fullyQualifiedName.equals("java.lang.String")
 				|| fullyQualifiedName.equals("java.lang.Object")
 				|| fullyQualifiedName.equals("java.io.Serializable")
@@ -1650,7 +1650,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if a qualified type is a string.
-	 *
+	 * 
 	 * @param typeToMatch
 	 *            The qualified type to check.
 	 * @return true if the type is a string, false if not.
@@ -1661,7 +1661,7 @@ public class MethodResolver extends Resolver {
 		}
 		String fullyQualifiedName = ((Type) typeToMatch
 				.getFirstIsTypeDefinitionOf(EdgeDirection.IN).getAlpha())
-				.getFullyQualifiedName();
+				.get_fullyQualifiedName();
 		if (fullyQualifiedName.equals("java.lang.String")) {
 			return true;
 		}
@@ -1670,7 +1670,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified builtin type.
-	 *
+	 * 
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -2027,7 +2027,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an accessed field is compatible to a specified builtin type.
-	 *
+	 * 
 	 * @param fieldAccess
 	 *            The field access.
 	 * @param typeToMatch
@@ -2088,7 +2088,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a method's return type is compatible to a specified builtin
 	 * type.
-	 *
+	 * 
 	 * @param methodInvocation
 	 *            The method invocation.
 	 * @param typeToMatch
@@ -2124,7 +2124,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if a builtin type is compatible to another specified builtin type.
-	 *
+	 * 
 	 * @param type
 	 *            The first builtin type.
 	 * @param typeToMatch
@@ -2134,41 +2134,41 @@ public class MethodResolver extends Resolver {
 	private boolean isCompatibleBuiltInType(BuiltInType type,
 			BuiltInTypes typeToMatch) {
 		if (typeToMatch == BuiltInTypes.BOOLEAN) {
-			return type.getType() == BuiltInTypes.BOOLEAN;
+			return type.get_type() == BuiltInTypes.BOOLEAN;
 		} else if (typeToMatch == BuiltInTypes.BYTE) {
-			return type.getType() == BuiltInTypes.BYTE;
+			return type.get_type() == BuiltInTypes.BYTE;
 		} else if (typeToMatch == BuiltInTypes.CHAR) {
-			return (type.getType() == BuiltInTypes.CHAR)
-					|| (type.getType() == BuiltInTypes.BYTE);
+			return (type.get_type() == BuiltInTypes.CHAR)
+					|| (type.get_type() == BuiltInTypes.BYTE);
 		} else if (typeToMatch == BuiltInTypes.SHORT) {
-			return (type.getType() == BuiltInTypes.SHORT)
-					|| (type.getType() == BuiltInTypes.BYTE);
+			return (type.get_type() == BuiltInTypes.SHORT)
+					|| (type.get_type() == BuiltInTypes.BYTE);
 		} else if (typeToMatch == BuiltInTypes.INT) {
-			return (type.getType() == BuiltInTypes.INT)
-					|| (type.getType() == BuiltInTypes.BYTE)
-					|| (type.getType() == BuiltInTypes.CHAR)
-					|| (type.getType() == BuiltInTypes.SHORT);
+			return (type.get_type() == BuiltInTypes.INT)
+					|| (type.get_type() == BuiltInTypes.BYTE)
+					|| (type.get_type() == BuiltInTypes.CHAR)
+					|| (type.get_type() == BuiltInTypes.SHORT);
 		} else if (typeToMatch == BuiltInTypes.LONG) {
-			return (type.getType() == BuiltInTypes.LONG)
-					|| (type.getType() == BuiltInTypes.BYTE)
-					|| (type.getType() == BuiltInTypes.CHAR)
-					|| (type.getType() == BuiltInTypes.SHORT)
-					|| (type.getType() == BuiltInTypes.INT);
+			return (type.get_type() == BuiltInTypes.LONG)
+					|| (type.get_type() == BuiltInTypes.BYTE)
+					|| (type.get_type() == BuiltInTypes.CHAR)
+					|| (type.get_type() == BuiltInTypes.SHORT)
+					|| (type.get_type() == BuiltInTypes.INT);
 		} else if (typeToMatch == BuiltInTypes.FLOAT) {
-			return (type.getType() == BuiltInTypes.FLOAT)
-					|| (type.getType() == BuiltInTypes.BYTE)
-					|| (type.getType() == BuiltInTypes.CHAR)
-					|| (type.getType() == BuiltInTypes.SHORT)
-					|| (type.getType() == BuiltInTypes.INT)
-					|| (type.getType() == BuiltInTypes.LONG);
+			return (type.get_type() == BuiltInTypes.FLOAT)
+					|| (type.get_type() == BuiltInTypes.BYTE)
+					|| (type.get_type() == BuiltInTypes.CHAR)
+					|| (type.get_type() == BuiltInTypes.SHORT)
+					|| (type.get_type() == BuiltInTypes.INT)
+					|| (type.get_type() == BuiltInTypes.LONG);
 		} else if (typeToMatch == BuiltInTypes.DOUBLE) {
-			return (type.getType() == BuiltInTypes.DOUBLE)
-					|| (type.getType() == BuiltInTypes.BYTE)
-					|| (type.getType() == BuiltInTypes.CHAR)
-					|| (type.getType() == BuiltInTypes.SHORT)
-					|| (type.getType() == BuiltInTypes.INT)
-					|| (type.getType() == BuiltInTypes.LONG)
-					|| (type.getType() == BuiltInTypes.FLOAT);
+			return (type.get_type() == BuiltInTypes.DOUBLE)
+					|| (type.get_type() == BuiltInTypes.BYTE)
+					|| (type.get_type() == BuiltInTypes.CHAR)
+					|| (type.get_type() == BuiltInTypes.SHORT)
+					|| (type.get_type() == BuiltInTypes.INT)
+					|| (type.get_type() == BuiltInTypes.LONG)
+					|| (type.get_type() == BuiltInTypes.FLOAT);
 		}
 		return false;
 	}
@@ -2176,7 +2176,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if an infix expression's operator is compatible to a specified
 	 * builtin type.
-	 *
+	 * 
 	 * @param infixExpression
 	 *            The infix expression.
 	 * @param typeToMatch
@@ -2186,41 +2186,41 @@ public class MethodResolver extends Resolver {
 	private boolean isCompatibleOperatorToBuiltInType(
 			InfixExpression infixExpression, BuiltInTypes typeToMatch) {
 		if (typeToMatch == BuiltInTypes.BOOLEAN) {
-			return (infixExpression.getOperator() == InfixOperators.EQUALS)
-					|| (infixExpression.getOperator() == InfixOperators.AND)
-					|| (infixExpression.getOperator() == InfixOperators.SHORTCIRCUITAND)
-					|| (infixExpression.getOperator() == InfixOperators.OR)
-					|| (infixExpression.getOperator() == InfixOperators.SHORTCIRCUITOR)
-					|| (infixExpression.getOperator() == InfixOperators.UNEQUALS)
-					|| (infixExpression.getOperator() == InfixOperators.XOR)
-					|| (infixExpression.getOperator() == InfixOperators.GREATER)
-					|| (infixExpression.getOperator() == InfixOperators.GREATEREQUALS)
-					|| (infixExpression.getOperator() == InfixOperators.LESS)
-					|| (infixExpression.getOperator() == InfixOperators.LESSEQUALS)
-					|| (infixExpression.getOperator() == InfixOperators.INSTANCEOF);
+			return (infixExpression.get_operator() == InfixOperators.EQUALS)
+					|| (infixExpression.get_operator() == InfixOperators.AND)
+					|| (infixExpression.get_operator() == InfixOperators.SHORTCIRCUITAND)
+					|| (infixExpression.get_operator() == InfixOperators.OR)
+					|| (infixExpression.get_operator() == InfixOperators.SHORTCIRCUITOR)
+					|| (infixExpression.get_operator() == InfixOperators.UNEQUALS)
+					|| (infixExpression.get_operator() == InfixOperators.XOR)
+					|| (infixExpression.get_operator() == InfixOperators.GREATER)
+					|| (infixExpression.get_operator() == InfixOperators.GREATEREQUALS)
+					|| (infixExpression.get_operator() == InfixOperators.LESS)
+					|| (infixExpression.get_operator() == InfixOperators.LESSEQUALS)
+					|| (infixExpression.get_operator() == InfixOperators.INSTANCEOF);
 		} else if ((typeToMatch == BuiltInTypes.BYTE)
 				|| (typeToMatch == BuiltInTypes.CHAR)
 				|| (typeToMatch == BuiltInTypes.SHORT)
 				|| (typeToMatch == BuiltInTypes.INT)
 				|| (typeToMatch == BuiltInTypes.LONG)) {
-			return (infixExpression.getOperator() == InfixOperators.PLUS)
-					|| (infixExpression.getOperator() == InfixOperators.MINUS)
-					|| (infixExpression.getOperator() == InfixOperators.MULTIPLICATION)
-					|| (infixExpression.getOperator() == InfixOperators.DIVISION)
-					|| (infixExpression.getOperator() == InfixOperators.AND)
-					|| (infixExpression.getOperator() == InfixOperators.OR)
-					|| (infixExpression.getOperator() == InfixOperators.XOR)
-					|| (infixExpression.getOperator() == InfixOperators.MODULO)
-					|| (infixExpression.getOperator() == InfixOperators.LEFTSHIFT)
-					|| (infixExpression.getOperator() == InfixOperators.RIGHTSHIFT)
-					|| (infixExpression.getOperator() == InfixOperators.UNSIGNEDRIGHTSHIFT);
+			return (infixExpression.get_operator() == InfixOperators.PLUS)
+					|| (infixExpression.get_operator() == InfixOperators.MINUS)
+					|| (infixExpression.get_operator() == InfixOperators.MULTIPLICATION)
+					|| (infixExpression.get_operator() == InfixOperators.DIVISION)
+					|| (infixExpression.get_operator() == InfixOperators.AND)
+					|| (infixExpression.get_operator() == InfixOperators.OR)
+					|| (infixExpression.get_operator() == InfixOperators.XOR)
+					|| (infixExpression.get_operator() == InfixOperators.MODULO)
+					|| (infixExpression.get_operator() == InfixOperators.LEFTSHIFT)
+					|| (infixExpression.get_operator() == InfixOperators.RIGHTSHIFT)
+					|| (infixExpression.get_operator() == InfixOperators.UNSIGNEDRIGHTSHIFT);
 		} else if ((typeToMatch == BuiltInTypes.FLOAT)
 				|| (typeToMatch == BuiltInTypes.DOUBLE)) {
-			return (infixExpression.getOperator() == InfixOperators.PLUS)
-					|| (infixExpression.getOperator() == InfixOperators.MINUS)
-					|| (infixExpression.getOperator() == InfixOperators.MULTIPLICATION)
-					|| (infixExpression.getOperator() == InfixOperators.DIVISION)
-					|| (infixExpression.getOperator() == InfixOperators.MODULO);
+			return (infixExpression.get_operator() == InfixOperators.PLUS)
+					|| (infixExpression.get_operator() == InfixOperators.MINUS)
+					|| (infixExpression.get_operator() == InfixOperators.MULTIPLICATION)
+					|| (infixExpression.get_operator() == InfixOperators.DIVISION)
+					|| (infixExpression.get_operator() == InfixOperators.MODULO);
 		}
 		return false;
 	}
@@ -2228,7 +2228,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a prefix expression's operator is compatible to a specified
 	 * builtin type.
-	 *
+	 * 
 	 * @param prefixExpression
 	 *            The prefix expression.
 	 * @param typeToMatch
@@ -2238,23 +2238,23 @@ public class MethodResolver extends Resolver {
 	private boolean isCompatibleOperatorToBuiltInType(
 			PrefixExpression prefixExpression, BuiltInTypes typeToMatch) {
 		if (typeToMatch == BuiltInTypes.BOOLEAN) {
-			return (prefixExpression.getOperator() == PrefixOperators.NOT);
+			return (prefixExpression.get_operator() == PrefixOperators.NOT);
 		} else if ((typeToMatch == BuiltInTypes.BYTE)
 				|| (typeToMatch == BuiltInTypes.CHAR)
 				|| (typeToMatch == BuiltInTypes.SHORT)
 				|| (typeToMatch == BuiltInTypes.INT)
 				|| (typeToMatch == BuiltInTypes.LONG)) {
-			return (prefixExpression.getOperator() == PrefixOperators.PLUS)
-					|| (prefixExpression.getOperator() == PrefixOperators.MINUS)
-					|| (prefixExpression.getOperator() == PrefixOperators.BITWISECOMPLEMENT)
-					|| (prefixExpression.getOperator() == PrefixOperators.INCREMENT)
-					|| (prefixExpression.getOperator() == PrefixOperators.DECREMENT);
+			return (prefixExpression.get_operator() == PrefixOperators.PLUS)
+					|| (prefixExpression.get_operator() == PrefixOperators.MINUS)
+					|| (prefixExpression.get_operator() == PrefixOperators.BITWISECOMPLEMENT)
+					|| (prefixExpression.get_operator() == PrefixOperators.INCREMENT)
+					|| (prefixExpression.get_operator() == PrefixOperators.DECREMENT);
 		} else if ((typeToMatch == BuiltInTypes.FLOAT)
 				|| (typeToMatch == BuiltInTypes.DOUBLE)) {
-			return (prefixExpression.getOperator() == PrefixOperators.PLUS)
-					|| (prefixExpression.getOperator() == PrefixOperators.MINUS)
-					|| (prefixExpression.getOperator() == PrefixOperators.INCREMENT)
-					|| (prefixExpression.getOperator() == PrefixOperators.DECREMENT);
+			return (prefixExpression.get_operator() == PrefixOperators.PLUS)
+					|| (prefixExpression.get_operator() == PrefixOperators.MINUS)
+					|| (prefixExpression.get_operator() == PrefixOperators.INCREMENT)
+					|| (prefixExpression.get_operator() == PrefixOperators.DECREMENT);
 		}
 		return false;
 	}
@@ -2262,7 +2262,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a postfix expression's operator is compatible to a specified
 	 * builtin type.
-	 *
+	 * 
 	 * @param postfixExpression
 	 *            The postfix expression.
 	 * @param typeToMatch
@@ -2287,7 +2287,7 @@ public class MethodResolver extends Resolver {
 	 * Creates the semantic edge between an invocation and it's definition. Also
 	 * assures that identical identifiers for other accesses to this field exist
 	 * only once per file.
-	 *
+	 * 
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @param declaration
@@ -2321,7 +2321,7 @@ public class MethodResolver extends Resolver {
 						.getFirstIsNameOfInvokedMethod(EdgeDirection.IN) != null)
 						&& (((Identifier) currentMethodInvocation
 								.getFirstIsNameOfInvokedMethod(EdgeDirection.IN)
-								.getAlpha()).getName().equals(methodName))) {
+								.getAlpha()).get_name().equals(methodName))) {
 					supremeTypeOfCurrentMethodInvocation = ResolverUtilities
 							.getSupremeTypeFromScope(
 									symbolTable
@@ -2393,7 +2393,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Triggers all required actions if an invocation could not be resolved at
 	 * all.
-	 *
+	 * 
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @return false (always; this is for code reduction whereever this function

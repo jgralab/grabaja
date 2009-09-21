@@ -29,7 +29,7 @@ import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
 /**
  * Resolves fields accesses to fields, variables and enum constants which could
  * not be resolved locally.
- *
+ * 
  * @author: abaldauf@uni-koblenz.de
  */
 public class FieldResolver extends Resolver {
@@ -49,7 +49,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Instantiates and initializes an instance.
-	 *
+	 * 
 	 * @param symbolTable
 	 *            The symbol table to be used for resolving.
 	 */
@@ -59,7 +59,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Sets the reference to the method resolver instance.
-	 *
+	 * 
 	 * @param resolver
 	 *            The instance of the method resolver.
 	 */
@@ -69,7 +69,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Resolves all the field accesses stored in the symbol table.
-	 *
+	 * 
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @return true if all of the accessed fields could be resolved, false if at
@@ -97,7 +97,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Resolves a singe field accesses.
-	 *
+	 * 
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @param fieldAccess
@@ -115,7 +115,7 @@ public class FieldResolver extends Resolver {
 			return true;
 		}
 		String fieldName = ((Identifier) fieldAccess.getFirstIsFieldNameOf(
-				EdgeDirection.IN).getAlpha()).getName();
+				EdgeDirection.IN).getAlpha()).get_name();
 		Vertex scope = symbolTable.getScopeOfFieldAccess(fieldAccess);
 		if (fieldAccess.getFirstIsFieldContainerOf(EdgeDirection.IN) == null) {
 			if (fieldName.equals("this")) {
@@ -195,7 +195,7 @@ public class FieldResolver extends Resolver {
 								variableInSuperClass = symbolTable
 										.getVariableDeclaration(
 												currentSuperClass
-														.getFullyQualifiedName(),
+														.get_fullyQualifiedName(),
 												fieldName);
 							}
 						} while ((variableInSuperClass == null)
@@ -454,7 +454,7 @@ public class FieldResolver extends Resolver {
 	/**
 	 * Converts a chain of fieldAccesses
 	 * (fieldAccess.fieldAccess.fieldAccess...) to a qualified name.
-	 *
+	 * 
 	 * @param fieldAccess
 	 *            The last field access in the chain.
 	 * @return The qualified name; null if any of the leading field accesses has
@@ -465,7 +465,7 @@ public class FieldResolver extends Resolver {
 			return null;
 		}
 		String result = ((Identifier) fieldAccess.getFirstIsFieldNameOf(
-				EdgeDirection.IN).getAlpha()).getName();
+				EdgeDirection.IN).getAlpha()).get_name();
 		FieldAccess nextContainer = fieldAccess;
 		while (nextContainer.getFirstIsFieldContainerOf(EdgeDirection.IN) != null) {
 			if (nextContainer.getFirstIsFieldContainerOf(EdgeDirection.IN)
@@ -478,7 +478,7 @@ public class FieldResolver extends Resolver {
 					return null;
 				}
 				result = ((Identifier) nextContainer.getFirstIsFieldNameOf(
-						EdgeDirection.IN).getAlpha()).getName()
+						EdgeDirection.IN).getAlpha()).get_name()
 						+ "." + result;
 			} else {
 				return null;
@@ -489,7 +489,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Resolves a field access to a field (with a known containing type).
-	 *
+	 * 
 	 * @param containingType
 	 *            The vertex of the type in which the field is assumed.
 	 * @param fieldName
@@ -506,10 +506,10 @@ public class FieldResolver extends Resolver {
 			String fieldName, FieldAccess fieldAccess, ExtractionMode mode,
 			Vertex scope) {
 		FieldDeclaration accessedField = symbolTable.getVariableDeclaration(
-				containingType.getFullyQualifiedName(), fieldName);
+				containingType.get_fullyQualifiedName(), fieldName);
 		if (accessedField == null) {
 			accessedField = symbolTable.getEnumConstant(containingType
-					.getFullyQualifiedName(), fieldName);
+					.get_fullyQualifiedName(), fieldName);
 		}
 		if ((accessedField == null)
 				&& (containingType instanceof ClassDefinition)) {
@@ -525,17 +525,17 @@ public class FieldResolver extends Resolver {
 				if (currentContainerTypeSuperClass != null) {
 					accessedField = symbolTable.getVariableDeclaration(
 							currentContainerTypeSuperClass
-									.getFullyQualifiedName(), fieldName);
+									.get_fullyQualifiedName(), fieldName);
 				}
 			} while ((accessedField == null)
 					&& (currentContainerTypeSuperClass != null));
 		}
-		if ((accessedField == null) && containingType.isExternal()
+		if ((accessedField == null) && containingType.is_external()
 				&& (mode == ExtractionMode.EAGER)) {
 			Class<?> externalClass = null;
 			try {
 				externalClass = Class.forName(containingType
-						.getFullyQualifiedName());
+						.get_fullyQualifiedName());
 			} catch (Exception exception) {
 			}
 			if (externalClass != null) {
@@ -572,7 +572,7 @@ public class FieldResolver extends Resolver {
 	 * Creates the semantic edge between a field access and it's definition.
 	 * Also assures that identical identifiers for other accesses to this field
 	 * exist only once per file.
-	 *
+	 * 
 	 * @param fieldAccess
 	 *            The vertex of the field access.
 	 * @param declaration
@@ -602,7 +602,7 @@ public class FieldResolver extends Resolver {
 				if ((currentFieldAccess.getFirstIsFieldNameOf(EdgeDirection.IN) != null)
 						&& (((Identifier) currentFieldAccess
 								.getFirstIsFieldNameOf(EdgeDirection.IN)
-								.getAlpha()).getName().equals(fieldName))) {
+								.getAlpha()).get_name().equals(fieldName))) {
 					supremeTypeOfCurrentFieldAccess = ResolverUtilities
 							.getSupremeTypeFromScope(symbolTable
 									.getScopeOfFieldAccess(currentFieldAccess),
@@ -668,7 +668,7 @@ public class FieldResolver extends Resolver {
 	/**
 	 * Triggers all required actions if a field access could not be resolved at
 	 * all.
-	 *
+	 * 
 	 * @param fieldAccess
 	 *            The vertex of the field access.
 	 * @return false (always; this is for code reduction whereever this function

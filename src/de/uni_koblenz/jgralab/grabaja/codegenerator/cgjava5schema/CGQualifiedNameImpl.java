@@ -24,7 +24,7 @@ public class CGQualifiedNameImpl extends QualifiedNameImpl implements
 			return null;
 		}
 
-		bw.append(fullyQualifiedName);
+		bw.append(_fullyQualifiedName);
 		// type args (0,*)
 		boolean first = true;
 		for (IsTypeArgumentOfTypeSpecification itaots : getIsTypeArgumentOfTypeSpecificationIncidences(EdgeDirection.IN)) {

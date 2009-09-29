@@ -35,7 +35,7 @@ public class CGContinueImpl extends ContinueImpl implements CGStatement {
 			// produce an endless recursion
 			bw.append(((Identifier) ((Label) icto.getAlpha())
 					.getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
-					.getName());
+					.get_name());
 		}
 
 		return this;

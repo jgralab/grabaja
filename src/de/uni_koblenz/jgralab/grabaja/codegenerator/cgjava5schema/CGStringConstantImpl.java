@@ -22,7 +22,7 @@ public class CGStringConstantImpl extends StringConstantImpl implements
 			return null;
 		}
 
-		bw.append(value);
+		bw.append(_value);
 
 		return this;
 	}

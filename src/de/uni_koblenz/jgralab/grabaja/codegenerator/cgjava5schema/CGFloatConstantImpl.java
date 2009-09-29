@@ -22,7 +22,7 @@ public class CGFloatConstantImpl extends FloatConstantImpl implements
 			return null;
 		}
 
-		bw.append(literal);
+		bw.append(_literal);
 		return this;
 	}
 

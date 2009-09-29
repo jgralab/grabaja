@@ -35,7 +35,7 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 
 		bw.append(' ');
 
-		switch (operator) {
+		switch (_operator) {
 		case AND:
 			bw.append("&");
 			break;
@@ -133,7 +133,7 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 			bw.append("^=");
 			break;
 		default:
-			throw new RuntimeException("Unknown operator " + operator + "!!!");
+			throw new RuntimeException("Unknown operator " + _operator + "!!!");
 		}
 
 		bw.append(" ");

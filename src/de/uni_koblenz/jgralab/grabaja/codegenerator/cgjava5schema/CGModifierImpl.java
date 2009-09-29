@@ -21,7 +21,7 @@ public class CGModifierImpl extends ModifierImpl implements CodeGenerator {
 			return null;
 		}
 
-		bw.append(type.toString().toLowerCase());
+		bw.append(_type.toString().toLowerCase());
 
 		return this;
 	}

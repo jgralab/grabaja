@@ -39,8 +39,8 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 				EdgeDirection.IN).getAlpha();
 		String fileName = cg_tu_directory
 				+ File.separator
-				+ sf.getName().replaceAll(".*" + Pattern.quote(File.separator),
-						"");
+				+ sf.get_name().replaceAll(
+						".*" + Pattern.quote(File.separator), "");
 		bw = new BufferedWriter(new FileWriter(fileName));
 
 		Vertex last = this;

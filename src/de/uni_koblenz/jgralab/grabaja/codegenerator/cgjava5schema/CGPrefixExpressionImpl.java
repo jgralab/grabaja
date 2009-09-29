@@ -28,7 +28,7 @@ public class CGPrefixExpressionImpl extends PrefixExpressionImpl implements
 			bw.append('(');
 		}
 
-		switch (operator) {
+		switch (_operator) {
 		case BITWISECOMPLEMENT:
 			bw.append('~');
 			break;
@@ -48,7 +48,7 @@ public class CGPrefixExpressionImpl extends PrefixExpressionImpl implements
 			bw.append('+');
 			break;
 		default:
-			throw new RuntimeException("Unknown prefix operator " + operator
+			throw new RuntimeException("Unknown prefix operator " + _operator
 					+ ".");
 		}
 

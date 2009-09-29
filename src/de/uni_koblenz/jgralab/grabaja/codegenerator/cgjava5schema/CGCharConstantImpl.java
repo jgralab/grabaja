@@ -22,7 +22,7 @@ public class CGCharConstantImpl extends CharConstantImpl implements
 			return null;
 		}
 
-		bw.append(literal);
+		bw.append(_literal);
 		return this;
 	}
 

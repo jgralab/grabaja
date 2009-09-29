@@ -22,7 +22,7 @@ public class CGBooleanConstantImpl extends BooleanConstantImpl implements
 			return null;
 		}
 
-		bw.append(Boolean.toString(value));
+		bw.append(Boolean.toString(_value));
 		return this;
 	}
 

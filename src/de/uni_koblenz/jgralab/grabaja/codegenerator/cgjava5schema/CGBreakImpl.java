@@ -35,7 +35,7 @@ public class CGBreakImpl extends BreakImpl implements CGStatement {
 			// produce an endless recursion
 			bw.append(((Identifier) ((Label) ibto.getAlpha())
 					.getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
-					.getName());
+					.get_name());
 		}
 
 		return this;

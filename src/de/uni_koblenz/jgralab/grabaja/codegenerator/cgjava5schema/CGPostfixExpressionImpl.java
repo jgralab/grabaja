@@ -33,7 +33,7 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
-		switch (operator) {
+		switch (_operator) {
 		case DECREMENT:
 			bw.append("--");
 			break;
@@ -41,7 +41,7 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 			bw.append("++");
 			break;
 		default:
-			throw new RuntimeException("Unknown operator " + operator + "!!!");
+			throw new RuntimeException("Unknown operator " + _operator + "!!!");
 		}
 
 		if (isNested) {

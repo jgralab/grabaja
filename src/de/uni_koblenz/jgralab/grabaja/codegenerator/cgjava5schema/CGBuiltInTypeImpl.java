@@ -24,7 +24,7 @@ public class CGBuiltInTypeImpl extends BuiltInTypeImpl implements
 			return null;
 		}
 
-		bw.append(type.toString().toLowerCase());
+		bw.append(_type.toString().toLowerCase());
 
 		// type args (0,*)
 		boolean first = true;

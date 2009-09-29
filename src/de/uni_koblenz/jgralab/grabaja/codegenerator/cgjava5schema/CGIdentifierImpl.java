@@ -21,7 +21,7 @@ public class CGIdentifierImpl extends IdentifierImpl implements CodeGenerator {
 			return null;
 		}
 
-		bw.append(name);
+		bw.append(_name);
 		return this;
 	}
 

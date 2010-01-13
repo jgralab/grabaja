@@ -4,9 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import de.uni_koblenz.jgralab.AttributedElement;
-import de.uni_koblenz.jgralab.BooleanGraphMarker;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.GraphFactory;
@@ -88,6 +86,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGVariableLeng
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWhileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWildcardArgumentImpl;
 import de.uni_koblenz.jgralab.grabaja.java5schema.*;
+import de.uni_koblenz.jgralab.graphmarker.BooleanGraphMarker;
 
 public class JavaCodeGenerator {
 
@@ -327,7 +326,12 @@ public class JavaCodeGenerator {
 
 		Vertex v = null;
 		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
-		markedElems.addAll(cgElements.getMarkedElements());
+
+		// Walk over all marked elements and add them to the list (afuhr)
+		for(AttributedElement element : cgElements.getMarkedElements()) {
+			markedElems.add(element);
+		}
+		
 		for (AttributedElement ae : markedElems) {
 			if (!(ae instanceof Vertex)) {
 				continue;
@@ -346,7 +350,12 @@ public class JavaCodeGenerator {
 	 */
 	private void fixMarks() {
 		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
-		markedElems.addAll(cgElements.getMarkedElements());
+		
+		// Walk over all marked elements and add them to the list (afuhr)
+		for(AttributedElement element : cgElements.getMarkedElements()) {
+			markedElems.add(element);
+		}
+		
 		for (AttributedElement ae : markedElems) {
 
 			// Fix all Types (TypeParameterDeclarations don't need to be fixed

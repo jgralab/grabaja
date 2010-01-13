@@ -27,7 +27,7 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 		cg_tu_directory = dir;
 	}
 
-	@Override
+	//@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {

@@ -96,7 +96,8 @@ extends LexerSharedInputState
     /**
      * Resets all values of this instance.
      */
-    public void reset(){
+    @Override
+	public void reset(){
         super.reset();
         offset = 0;
     }

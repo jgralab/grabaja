@@ -47,7 +47,8 @@ public class CommonASTAdapter extends CommonAST {
      * (<code>""</code>), not <code>null</code>.
      * @return non-null; the token text
      */
-    public String getText(){
+    @Override
+	public String getText(){
         if( token == null ) return "";
         return token.getText();
     }
@@ -57,7 +58,8 @@ public class CommonASTAdapter extends CommonAST {
      * with this instance, then this returns {@link Token#INVALID_TYPE}.
      * @return the token type
      */
-    public int getType(){
+    @Override
+	public int getType(){
         if( token == null ) return Token.INVALID_TYPE;
         return token.getType ();
     }
@@ -84,7 +86,8 @@ public class CommonASTAdapter extends CommonAST {
      * Initialize this instance with the given token.
      * @param tok null-ok; the token to associate with this instance
      */
-    public void initialize( Token token ){
+    @Override
+	public void initialize( Token token ){
         this.token = token;
     }
 
@@ -95,7 +98,8 @@ public class CommonASTAdapter extends CommonAST {
      * @param type the token type
      * @param text null-ok; the token text
      */
-    public void initialize( int type, String text ){
+    @Override
+	public void initialize( int type, String text ){
         initialize( new CommonToken( type, text ) );
     }
 
@@ -108,7 +112,8 @@ public class CommonASTAdapter extends CommonAST {
      * as the given one.
      * @param ast non-null; the <code>AST</code> to base this instance on
      */
-    public void initialize( AST ast ){
+    @Override
+	public void initialize( AST ast ){
         if( ast instanceof CommonASTAdapter )
             initialize( ( ( CommonASTAdapter ) ast ).getToken () );
         else
@@ -122,7 +127,8 @@ public class CommonASTAdapter extends CommonAST {
      * the type {@link Token#INVALID_TYPE} and the given text.
      * @param text the new token text
      */
-    public void setText( String text ){
+    @Override
+	public void setText( String text ){
         if( token == null )
             initialize( Token.INVALID_TYPE, text );
         else
@@ -137,7 +143,8 @@ public class CommonASTAdapter extends CommonAST {
      * text string.
      * @param type the new token type
      */
-    public void setType( int type ){
+    @Override
+	public void setType( int type ){
         if( token == null )
             initialize( type, "" );
         else
@@ -161,7 +168,8 @@ public class CommonASTAdapter extends CommonAST {
     /**
      * @return The line position of the token's code in the source file.
      */
-    public int getLine(){
+    @Override
+	public int getLine(){
     	try{
     		return ( ( CommonTokenAdapter )token ).getLine();
 		}
@@ -174,7 +182,8 @@ public class CommonASTAdapter extends CommonAST {
     /**
      * @return The column position of the token's code in the source file.
      */
-    public int getColumn(){
+    @Override
+	public int getColumn(){
     	try{
     		return ( ( CommonTokenAdapter )token ).getColumn();
 		}

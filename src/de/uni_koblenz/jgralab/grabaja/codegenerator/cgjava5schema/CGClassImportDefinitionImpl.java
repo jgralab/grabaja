@@ -16,7 +16,7 @@ public class CGClassImportDefinitionImpl extends ClassImportDefinitionImpl
 		super(id, g);
 	}
 
-	@Override
+	//@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {

@@ -17,7 +17,7 @@ public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 		super(arg0, arg1);
 	}
 
-	@Override
+	//@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {

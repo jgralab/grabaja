@@ -15,7 +15,7 @@ public class CGFieldImpl extends FieldImpl implements CGMember {
 		super(id, g);
 	}
 
-	@Override
+	//@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {

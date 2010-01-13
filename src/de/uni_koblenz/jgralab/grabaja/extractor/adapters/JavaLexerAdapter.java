@@ -25,7 +25,8 @@ public class JavaLexerAdapter extends JavaLexer {
      * @param t The token type for the result.
      * @return The newly-constructed token (should not be null)
      */
-    protected Token makeToken( int t ){
+    @Override
+	protected Token makeToken( int t ){
         CommonTokenAdapter tok = ( CommonTokenAdapter )super.makeToken( t );
         ( ( LexerSharedInputStateAdapter ) inputState ).annotate( tok );
         return tok;
@@ -34,7 +35,8 @@ public class JavaLexerAdapter extends JavaLexer {
     /**
      * Adds the number of columns of the last line to the temporary offset.
      */
-    public void newline(){
+    @Override
+	public void newline(){
     	( ( LexerSharedInputStateAdapter ) inputState ).offset += inputState.getColumn() - 1;
         super.newline();
     }
@@ -42,7 +44,8 @@ public class JavaLexerAdapter extends JavaLexer {
     /**
      * Increases the number of columns by 1, because we do not need a greater tabsize.
      */
-    public void tab(){
+    @Override
+	public void tab(){
        int i = inputState.getColumn();
        i++;
        ( ( LexerSharedInputStateAdapter ) inputState ).setColumn( i );

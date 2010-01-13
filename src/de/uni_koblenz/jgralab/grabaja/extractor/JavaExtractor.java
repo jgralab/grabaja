@@ -1,8 +1,12 @@
 package de.uni_koblenz.jgralab.grabaja.extractor;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Vector;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * The main class of the javaextractor project.

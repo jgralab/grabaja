@@ -22,7 +22,7 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 		super(arg0, arg1);
 	}
 
-	@Override
+	//@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {

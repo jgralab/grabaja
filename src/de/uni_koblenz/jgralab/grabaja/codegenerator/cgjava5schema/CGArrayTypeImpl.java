@@ -16,7 +16,7 @@ public class CGArrayTypeImpl extends ArrayTypeImpl implements
 		super(id, g);
 	}
 
-	@Override
+	//@Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {

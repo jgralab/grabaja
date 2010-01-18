@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import de.uni_koblenz.jgralab.AttributedElement;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
@@ -328,10 +329,10 @@ public class JavaCodeGenerator {
 		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
 
 		// Walk over all marked elements and add them to the list (afuhr)
-		for(AttributedElement element : cgElements.getMarkedElements()) {
+		for (AttributedElement element : cgElements.getMarkedElements()) {
 			markedElems.add(element);
 		}
-		
+
 		for (AttributedElement ae : markedElems) {
 			if (!(ae instanceof Vertex)) {
 				continue;
@@ -350,12 +351,12 @@ public class JavaCodeGenerator {
 	 */
 	private void fixMarks() {
 		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
-		
+
 		// Walk over all marked elements and add them to the list (afuhr)
-		for(AttributedElement element : cgElements.getMarkedElements()) {
+		for (AttributedElement element : cgElements.getMarkedElements()) {
 			markedElems.add(element);
 		}
-		
+
 		for (AttributedElement ae : markedElems) {
 
 			// Fix all Types (TypeParameterDeclarations don't need to be fixed
@@ -449,9 +450,10 @@ public class JavaCodeGenerator {
 	}
 
 	private boolean isNonTreeEdge(Edge e) {
-		return e instanceof IsBreakTargetOf || e instanceof IsContinueTargetOf
-				|| e instanceof IsTypeDefinitionOf
-				|| e instanceof IsDeclarationOfAccessedField;
+		return (e instanceof IsBreakTargetOf)
+				|| (e instanceof IsContinueTargetOf)
+				|| (e instanceof IsTypeDefinitionOf)
+				|| (e instanceof IsDeclarationOfAccessedField);
 	}
 
 	private void markTop(Vertex v) {
@@ -482,7 +484,7 @@ public class JavaCodeGenerator {
 	}
 
 	public boolean generationWanted(AttributedElement v) {
-		return cgElements == null || cgElements.isMarked(v);
+		return (cgElements == null) || cgElements.isMarked(v);
 	}
 
 	public void generateCode() throws IOException {

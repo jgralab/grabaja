@@ -1,3 +1,4 @@
+TGraph 2;
 Schema de.uni_koblenz.jgralab.grabaja.java5schema.Java5Schema;
 
 /// The graph class /////////////////////////////////////////////////////////////////////////////////////
@@ -103,21 +104,22 @@ VertexClass ParameterDeclaration : FieldDeclaration ;
 VertexClass TypeArgument : TypeSpecification ;
 VertexClass MethodDeclaration : Member ;
 
+abstract EdgeClass IsExpressionOf : IsStatementOf from Expression (0,*) to Expression (0,1);
 abstract EdgeClass IsAnnotationOf : AttributedEdge from Annotation( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsArgumentOf : AttributedEdge from Vertex( 0, * ) to Vertex( 1, 1 ) ;
+abstract EdgeClass IsArgumentOf : AttributedEdge from Vertex( 0, * ) to Vertex( 0, 1 ) ;
 abstract EdgeClass IsConditionOf : AttributedEdge from Expression( 0, 1 ) to Vertex( 1, 1 ) ;
 abstract EdgeClass IsExceptionThrownBy : AttributedEdge from TypeSpecification( 0, * ) to Member( 1, 1 ) ;
 abstract EdgeClass IsInterfaceOf : AttributedEdge from TypeSpecification( 0, * ) to Type( 1, 1 ) ;
 abstract EdgeClass IsSuperClassOf : AttributedEdge from TypeSpecification( 0, 1 ) to Type( 1, 1 ) ;
-abstract EdgeClass IsLeftHandSideOf : AttributedEdge from Expression( 1, 1 ) to Expression( 1, 1 ) ;
-abstract EdgeClass IsRightHandSideOf : AttributedEdge from Expression( 1, 1 ) to Expression( 1, 1 ) ;
-abstract EdgeClass IsLoopBodyOf : AttributedEdge from Statement( 1, 1 ) to Statement( 1, 1 ) ;
+abstract EdgeClass IsLeftHandSideOf : IsExpressionOf from Expression( 1, 1 ) to Expression( 1, 1 ) ;
+abstract EdgeClass IsRightHandSideOf : IsExpressionOf from Expression( 1, 1 ) to Expression( 1, 1 ) ;
+abstract EdgeClass IsLoopBodyOf : IsStatementOf from Statement( 1, 1 ) to Statement( 1, 1 ) ;
 abstract EdgeClass IsModifierOf : AttributedEdge from Modifier( 0, * ) to Vertex( 1, 1 ) ;
 abstract EdgeClass IsParameterOf : AttributedEdge from ParameterDeclaration( 0, * ) to Vertex( 1, 1 ) ;
 abstract EdgeClass IsStatementOf : AttributedEdge from Statement( 0, * ) to Vertex( 1, 1 ) ;
 abstract EdgeClass IsTypeOf : AttributedEdge from Vertex( 0, * ) to Vertex( 1, 1 ) ;
 abstract EdgeClass IsTypeParameterOf : AttributedEdge from Vertex( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsBlockOf : AttributedEdge from Block( 1, 1 ) to Vertex( 1, 1  );
+abstract EdgeClass IsBlockOf : IsStatementOf from Block( 1, 1 ) to Vertex( 1, 1  );
 
 EdgeClass IsTypeArgumentOfTypeSpecification : AttributedEdge from TypeArgument( 0, * ) to TypeSpecification( 1, 1 ) ;
 
@@ -291,7 +293,7 @@ EdgeClass IsTypeOfObject : AttributedEdge from TypeSpecification( 1, 1 ) to Obje
 EdgeClass IsConstructorInvocationOf : AttributedEdge from MethodInvocation( 1, 1 ) to ObjectCreation( 1, 1 ) ;
 
 VertexClass VariableInitializer : Expression ;
-EdgeClass IsInitializerOf : AttributedEdge from Expression( 1, 1 ) to VariableInitializer( 1, 1 ) ;
+EdgeClass IsInitializerOf : IsExpressionOf from Expression( 1, 1 ) to VariableInitializer( 1, 1 ) ;
 
 EdgeClass IsAnnotationOfMember : IsAnnotationOf from Annotation( 0, * ) to Member( 1, 1 ) ;
 EdgeClass IsMemberOf : AttributedEdge from Member( 0, * ) to Block( 1, 1 ) ;
@@ -311,13 +313,13 @@ EdgeClass IsTypeParameterOfConstructor : IsTypeParameterOf from TypeParameterDec
 EdgeClass IsNameOfConstructor : AttributedEdge from Identifier( 1, 1 ) to ConstructorDefinition( 1, 1 ) ;
 EdgeClass IsParameterOfConstructor : IsParameterOf from ParameterDeclaration( 0, * ) to ConstructorDefinition( 1, 1 ) ;
 EdgeClass IsExceptionThrownByConstructor : IsExceptionThrownBy from TypeSpecification( 0, * ) to ConstructorDefinition( 1, 1 ) ;
-EdgeClass IsBodyOfConstructor : AttributedEdge from Block( 1, 1 ) to ConstructorDefinition( 1, 1 ) ;
+EdgeClass IsBodyOfConstructor : IsStatementOf from Block( 1, 1 ) to ConstructorDefinition( 1, 1 ) ;
 
 VertexClass StaticInitializerDefinition : Member ;
-EdgeClass IsBodyOfStaticInitializer : AttributedEdge from Block( 1, 1 ) to StaticInitializerDefinition( 1, 1 ) ;
+EdgeClass IsBodyOfStaticInitializer : IsStatementOf from Block( 1, 1 ) to StaticInitializerDefinition( 1, 1 ) ;
 
 VertexClass StaticConstructorDefinition : Member ;
-EdgeClass IsBodyOfStaticConstructor : AttributedEdge from Block( 1, 1 ) to StaticConstructorDefinition( 1, 1 ) ;
+EdgeClass IsBodyOfStaticConstructor : IsStatementOf from Block( 1, 1 ) to StaticConstructorDefinition( 1, 1 ) ;
 
 EdgeClass IsModifierOfMethod : IsModifierOf from Modifier( 0, * ) to MethodDeclaration( 1, 1 ) ;
 EdgeClass IsReturnTypeOf : IsTypeOf from TypeSpecification( 1, 1 ) to MethodDeclaration( 1, 1 ) ;
@@ -328,6 +330,9 @@ EdgeClass IsExceptionThrownByMethod : IsExceptionThrownBy from TypeSpecification
 
 VertexClass MethodDefinition : MethodDeclaration ;
 EdgeClass IsBodyOfMethod : AttributedEdge from Block( 1, 1 ) to MethodDefinition( 1, 1 ) ;
+EdgeClass IsCalledByMethod from MethodDeclaration (0,*) to MethodDeclaration(0, *);
+
+
 
 EdgeClass IsModifierOfParameter : IsModifierOf from Modifier( 0, 1 ) to ParameterDeclaration( 1, 1 ) ;
 EdgeClass IsTypeOfParameter : IsTypeOf from TypeSpecification( 1, 1 ) to ParameterDeclaration( 1, 1 ) ;
@@ -344,12 +349,12 @@ EdgeClass IsThenOf : IsStatementOf from Statement( 1, 1 ) to If( 1, 1 ) ;
 EdgeClass IsElseOf : IsStatementOf from Statement( 0, 1 ) to If( 1, 1 ) ;
 
 VertexClass For : Statement ;
-EdgeClass IsHeadOfFor : AttributedEdge from ForHead( 1, 1 ) to For( 1, 1 ) ;
+EdgeClass IsHeadOfFor :  AttributedEdge from ForHead( 1, 1 ) to For( 1, 1 ) ;
 EdgeClass IsLoopBodyOfFor : IsLoopBodyOf from Statement( 1, 1 ) to For( 1, 1 ) ;
 VertexClass TraditionalForClause : ForHead ;
 EdgeClass IsRunVariableInitializationOf : AttributedEdge from Statement( 0, * ) to TraditionalForClause( 1, 1 ) ;
 EdgeClass IsForConditionOf : IsConditionOf from Expression( 0, 1 ) to TraditionalForClause( 1, 1 ) ;
-EdgeClass IsIteratorOf : AttributedEdge from Expression( 0, * ) to TraditionalForClause( 1, 1 ) ;
+EdgeClass IsIteratorOf : IsStatementOf from Expression( 0, * ) to TraditionalForClause( 1, 1 ) ;
 VertexClass ForEachClause : ForHead;
 EdgeClass IsParameterOfForEachClause : IsParameterOf from ParameterDeclaration( 1, 1 ) to ForEachClause( 1, 1 ) ;
 EdgeClass IsEnumerableOf : AttributedEdge from Expression( 1, 1 ) to ForEachClause( 1, 1 ) ;
@@ -371,25 +376,26 @@ VertexClass Continue : Statement ;
 EdgeClass IsContinueTargetOf : AttributedEdge from Label( 0, 1 ) to Continue( 1, 1 ) ;
 
 VertexClass Return : Statement ;
-EdgeClass IsReturnedBy : AttributedEdge from Expression( 0, 1 ) to Return( 1, 1 ) ;
+EdgeClass IsReturnedBy : IsStatementOf from Expression( 0, 1 ) to Return( 1, 1 ) ;
 
 VertexClass Switch : Statement ;
 VertexClass Case : Statement ;
 VertexClass Default : Statement ;
 EdgeClass IsSwitchArgumentOf : IsArgumentOf from Expression( 1, 1 ) to Switch( 1, 1 ) ;
-EdgeClass IsCaseOf : AttributedEdge from Case( 0, * ) to Switch( 1, 1 ) ;
-EdgeClass IsDefaultCaseOf : AttributedEdge from Default( 0, 1 ) to Switch( 1, 1 ) ;
+EdgeClass IsCaseOf : IsStatementOf from Case( 0, * ) to Switch( 1, 1 ) ;
+EdgeClass IsDefaultCaseOf : IsStatementOf from Default( 0, 1 ) to Switch( 1, 1 ) ;
 EdgeClass IsCaseConditionOf : IsConditionOf from Expression( 1, 1 ) to Case( 1, 1 ) ;
 EdgeClass IsStatementOfCase : IsStatementOf from Statement( 0, * ) to Case( 1, 1 ) ;
 EdgeClass IsStatementOfDefaultCase : IsStatementOf from Statement( 0, * ) to Default( 1, 1 ) ;
 
 VertexClass Try : Statement ;
 VertexClass Catch : Statement ;
-EdgeClass IsBodyOfTry : AttributedEdge from Block( 1, 1 ) to Try( 1, 1 ) ;
-EdgeClass IsHandlerOf : AttributedEdge from Catch( 0, * ) to Try( 1, 1 ) ;
+
+EdgeClass IsBodyOfTry : IsStatementOf from Block( 1, 1 ) to Try( 1, 1 ) ;
+EdgeClass IsHandlerOf : IsStatementOf from Catch( 0, * ) to Try( 1, 1 ) ;
 EdgeClass IsCaughtExceptionOf : AttributedEdge from ParameterDeclaration( 1, 1 ) to Catch( 1, 1 ) ;
-EdgeClass IsBodyOfCatch : AttributedEdge from Block( 1, 1 ) to Catch( 1, 1 ) ;
-EdgeClass IsBodyOfFinally : AttributedEdge from Block( 0, 1 ) to Try( 1, 1 ) ;
+EdgeClass IsBodyOfCatch : IsStatementOf from Block( 1, 1 ) to Catch( 1, 1 ) ;
+EdgeClass IsBodyOfFinally : IsStatementOf from Block( 0, 1 ) to Try( 1, 1 ) ;
 
 VertexClass Throw : Statement ;
 EdgeClass IsThrownExceptionOf : AttributedEdge from Expression( 1, 1 ) to Throw( 1, 1 ) ;
@@ -406,4 +412,4 @@ EdgeClass IsAnnotationOfVariable : IsAnnotationOf from Annotation( 0, * ) to Var
 EdgeClass IsModifierOfVariable : IsModifierOf from Modifier( 0, * ) to VariableDeclaration( 1, 1 ) ;
 EdgeClass IsTypeOfVariable : IsTypeOf from TypeSpecification( 1, 1 ) to VariableDeclaration( 1, 1 ) ;
 EdgeClass IsVariableNameOf : AttributedEdge from Identifier( 1, * ) to VariableDeclaration( 1, 1 ) ;
-EdgeClass IsInitializerOfVariable : AttributedEdge from Expression ( 0, 1 ) to VariableDeclaration( 1, 1 ) ;
+EdgeClass IsInitializerOfVariable : IsStatementOf from Expression ( 0, 1 ) to VariableDeclaration( 1, 1 ) ;

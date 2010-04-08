@@ -1182,7 +1182,7 @@ methodDef{
             currentVertex = blockVertexOfMethod;
          }
          slist { // statement list
-                System.out.println("MethodDeclaration is a MethodDefinition!");
+             //   System.out.println("MethodDeclaration is a MethodDefinition!");
                 MethodDeclaration old = methodDefinitionVertex;
                 methodDefinitionVertex = programGraph.createMethodDefinition();
                 Edge curr = old.getFirstEdge();
@@ -2452,7 +2452,7 @@ conditionalExpr
     |   primaryExpression
     ;
 
-primaryExpression{ Vertex parentVertex = currentVertex; System.out.println("primaryExpression");}
+primaryExpression{ Vertex parentVertex = currentVertex; }
     :
     (
         ident:IDENT{

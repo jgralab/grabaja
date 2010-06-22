@@ -1,0 +1,1 @@
+- clean test cases and create one Suite that can be called by test target (also set property for this)

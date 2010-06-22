@@ -1,143 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="de.uni_koblenz.jgralab.grabaja" basedir="." default="build">
-  
-  
-  <!-- project name -->
-  <property name="projectname"			
-		    value="grabaja"/>
+<project name="grabaja" basedir="." default="build">
 
-  <!-- projects main class name -->
-  <property name="main"					
-		    value="JavaExtractor"/>
-  
-  <!-- project directory -->
-  <property name="project.dir"			
-		    value="../${projectname}"/>
-  
-  <!-- source directory -->
-  <property name="src.dir"				
-		    value="${project.dir}/src"/>
-  
-  <!-- classes directory -->
-  <property name="classes.dir"			
-		    value="${project.dir}/build/classes"/>
-  
-  <!-- directory of general ant file -->
-  <property name="common.dir"				
-		    value="../common"/>
-  
-  <property name="basePackage"
-		    value="de.uni_koblenz.jgralab.${projectname}"/>
-  
-  <property name="basePackagePath"
-		    value="de/uni_koblenz/jgralab/${projectname}"/>
-    
-  
-  <!-- build -->
-  <!-- main target - calls targets clean and jar -->	
-  <target name="build" depends="clean, jar"/>
-  
-  <!-- release -->
-  <!-- calls targets modify, clean, jar, test and document -->
-  <target name="release" depends="modify,cleanall,jar,document"/>
-  
-  <!-- clean -->
-  <!-- deletes all classes, the jar, the temporary files and all generated schema and parser files -->
-  <target name="clean">
-	<!-- calls target clean in general ant file ${ant}/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="clean"/>
-    <delete dir="${src.dir}/${basePackagePath}/java5schema" />
-    <delete dir="${src.dir}/${basePackagePath}/extractor/parser" />
-  </target>
-  
-  <!-- clean all -->
-  <!-- deletes all classes, the jar, the temporary files, the documentation, the testresults and all generated schema and grammar files -->
-  <target name="cleanall">
-	<!-- calls target clean all in general ant file ${ant}/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="cleanall"/>	
-  </target>
-  
-  <!-- modify -->
-  <!-- modifies the projects main class -->
-  <target name="modify">
-	<!-- calls target clean all in general ant file ${ant}/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="modify"/>
-  </target>
-  
-  <!-- compile -->
-  <!-- compiles all sources in ${src.dir} and puts classes into ${classes.dir}-->
-  <target name="compile" depends="jgralabjarfiletest,javaextractorsources">
-	<!-- calls target compile in general ant file ${ant}/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="compile"/>
-  </target>
-  
-  <!-- jgralab.jarfiletest -->
-  <!-- test existence of jgralab jar file and generates it if not existing -->
-  <target name="jgralabjarfiletest">
-	<!-- calls target jarfiletest in general ant file ${ant}/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="jarfiletest">
-	  <property name="projectname" value="jgralab"/>
-	</ant>
-  </target>
-  
-  <!-- rsleditor sources -->
-  <!-- generates schmema sources out of schema ${schemafile} and puts them into ${src.dir}-->
-  <!-- generates parser sources out of grammar ${grammarfile} and puts them into ${src.dir}-->
-  <target name="javaextractorsources" depends="jgralabjarfiletest">
-	<!-- calls target generateschema in general ant file ${ant}/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="generateschema">
-	  <property name="subprojectname" value=""/>
-	  <property name="schemafile" value="java5.tg"/>			
-	</ant>
+	<property name="projectname" value="grabaja" />
+	<property name="main" value="JavaExtractor" />
+	<property name="schema.file" value="java5.tg" />
+
+	<import file="../common/common.xml" />
 	
-    <!-- calls target generateparser in general ant file ${ant}/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="generateparser">
-	  <property name="subprojectname" value="extractor"/>
-	  <property name="grammarfile" value="java15.g"/>			
-	</ant>
-	<ant dir="${common.dir}" antfile="build.xml" target="generateparser">
-	  <property name="subprojectname" value="extractor"/>
-	  <property name="grammarfile" value="java15.tree.g"/>			
-	</ant>
-  </target>
-  
-  <!-- jar -->
-  <!-- makes executable jar file out of all classes in ${classes.dir} and puts jar file into /build/jar -->
-  <target name="jar" depends="compile">
-	<!-- calls target jar in general ant file ${ant}/build.xml -->	
-	<ant dir="${common.dir}" antfile="build.xml" target="jar"/>
-  </target>
-  
-  <!-- sourcejar -->
-  <!-- makes executable jar file out of all classes in ${classes.dir} and puts jar file into /build/jar -->
-  <target name="sourcejar">
-	<!-- calls target jar in general ant file ${ant}/build.xml -->	
-	<ant dir="${common.dir}" antfile="build.xml" target="sourcejar"/>
-  </target>
-  
-  <!-- run -->
-  <!-- test existence of javaextractor jar file and generates it if not existing -->
-  <!-- runs project with given arguments ${run.args} -->
-  <target name="run" >
-	<!-- calls target jarfiletest in general ant file ../common/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="jarfiletest"/>
-	<!-- calls target run in general ant file ../common/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="run"/>
-  </target>
-  
-  <!-- document -->
-  <!-- document all sources out of ${src.dir} and puts documentation into /build/doc -->
-  <target name="document" depends="javaextractorsources">
-	<!-- calls target document in general ant file ../common/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="document" />
-  </target>
-  
-  <!-- test -->
-  <!-- test all junit testcases und testsuites in /testit -->
-  <target name="test">
-	<!-- calls target test in general ant file ../common/build.xml -->
-	<ant dir="${common.dir}" antfile="build.xml" target="test"/>
-  </target>
-  
+	<property name="parser.dir" value="${src.dir}/de/uni_koblenz/jgralab/grabaja/extractor/parser" />
+	
+	<path id="classpathExtension">
+		<pathelement location="${comlib.dir}/antlr/org.antlr_2.7.6.jar" />
+	</path>
+
+	<target name="build" depends="jgralab,clean,javaextractorsources,compile,jar" />
+
+	<target name="clean" depends="common.clean">
+		<delete dir="${parser.dir}/parser" />
+	</target>
+
+	<target name="javaextractorsources">
+		<mkdir dir="${parser.dir}"/>
+		<java classname="antlr.Tool" classpathref="classpath">
+			<arg line="-o ${parser.dir} ${parser.dir}/../java15.g" />
+		</java>
+		<java classname="antlr.Tool" classpathref="classpath">
+			<arg line="-o ${parser.dir} ${parser.dir}/../java15.tree.g" />
+		</java>
+	</target>
+
 </project>

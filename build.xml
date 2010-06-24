@@ -4,10 +4,10 @@
 
 	<property name="projectname" value="grabaja" />
 	<property name="main" value="JavaExtractor" />
-	<property name="schema.file" value="java5.tg" />
 
 	<import file="../common/common.xml" />
 	
+	<property name="schema.file" value="${project.dir}/java5.tg" />
 	<property name="parser.dir" value="${src.dir}/de/uni_koblenz/jgralab/grabaja/extractor/parser" />
 	
 	<path id="classpathExtension">

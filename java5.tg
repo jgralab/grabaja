@@ -466,8 +466,12 @@ EdgeClass HasParameter from Activity (1,1) to Parameter (0,*) role parameter agg
 EdgeClass HasPartition from Activity (1,1) to Partition (0,*) role partition aggregation composite;
 EdgeClass HasSubPackage from Package (0,1) to Package (0,*) role subPackage aggregation composite;
 EdgeClass LocatedInPartition from Node (0,*) role activityNode to Partition (0,1) role partition;
-Comment processes.activity.RelatesTo "This&nbsp;relation&nbsp;is&nbsp;not&nbsp;implemented&nbsp;by the converter.<br /> It is rather meant to be used for traceability links.";
-EdgeClass RelatesTo from NamedElement (0,*) role namedElement to frontend.java.DataObject (0,*) role dataObject;
+
+// Uncommented, cause in grabaja there's no frontend.java.DataObject.
+//
+//Comment processes.activity.RelatesTo "This&nbsp;relation&nbsp;is&nbsp;not&nbsp;implemented&nbsp;by the converter.<br /> It is rather meant to be used for traceability links.";
+//EdgeClass RelatesTo from NamedElement (0,*) role namedElement to frontend.java.DataObject (0,*) role dataObject;
+
 EdgeClass To from Flow (0,*) role outgoing to Node (1,1) role source;
 abstract EdgeClass WorkflowEdge from WorkflowElement (0,*) to WorkflowElement (0,*) {traceId: Integer};
 EdgeClass WorkflowHasNext: WorkflowEdge from Activity (0,*) to Activity (0,*);

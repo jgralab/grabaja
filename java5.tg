@@ -481,6 +481,6 @@ EdgeClass WorkflowStartsAt: WorkflowEdge from Workflow (0,*) to Activity (1,1);
 ////////////// Trace-Part //////////////////////////////////////////////////////////////////////////////
 
 Package traceability;
-EdgeClass TLActivityCallsMethod: TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) to MethodDefinition (0,*) role traceCallsMethodTarget;
-EdgeClass TLActivityInstantiatesClass: TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) to Type (0,*) role traceInstatiatesClassTarget;
-abstract EdgeClass TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) role traceSource to Member (0,*) role traceTarget {count: Long, traceId: Integer};
+EdgeClass TLActivityCallsMethod: TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) to .MethodDefinition (0,*) role traceCallsMethodTarget;
+EdgeClass TLActivityInstantiatesClass: TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) to .Type (0,*) role traceInstatiatesClassTarget;
+abstract EdgeClass TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) role traceSource to .Member (0,*) role traceTarget {count: Long, traceId: Integer};

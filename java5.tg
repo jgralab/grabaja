@@ -451,7 +451,6 @@ Comment processes.activity.Process "A Process is a special Activity, which can b
 VertexClass Process: Activity;
 VertexClass SendSignalAction: Action;
 VertexClass Subsystem: Component;
-VertexClass Workflow: WorkflowElement {name: String};
 abstract VertexClass WorkflowElement;
 EdgeClass Calls from CallAction (0,*) to Activity (1,1) role behavior;
 EdgeClass From from Flow (0,*) role incoming to Node (1,1) role target;
@@ -466,13 +465,22 @@ EdgeClass HasParameter from Activity (1,1) to Parameter (0,*) role parameter agg
 EdgeClass HasPartition from Activity (1,1) to Partition (0,*) role partition aggregation composite;
 EdgeClass HasSubPackage from Package (0,1) to Package (0,*) role subPackage aggregation composite;
 EdgeClass LocatedInPartition from Node (0,*) role activityNode to Partition (0,1) role partition;
+EdgeClass To from Flow (0,*) role outgoing to Node (1,1) role source;
 
 // Uncommented, cause in grabaja there's no frontend.java.DataObject.
 //
 //Comment processes.activity.RelatesTo "This&nbsp;relation&nbsp;is&nbsp;not&nbsp;implemented&nbsp;by the converter.<br /> It is rather meant to be used for traceability links.";
 //EdgeClass RelatesTo from NamedElement (0,*) role namedElement to frontend.java.DataObject (0,*) role dataObject;
 
-EdgeClass To from Flow (0,*) role outgoing to Node (1,1) role source;
+VertexClass Workflow: WorkflowElement {name: String};
 abstract EdgeClass WorkflowEdge from WorkflowElement (0,*) to WorkflowElement (0,*) {traceId: Integer};
 EdgeClass WorkflowHasNext: WorkflowEdge from Activity (0,*) to Activity (0,*);
 EdgeClass WorkflowStartsAt: WorkflowEdge from Workflow (0,*) to Activity (1,1);
+
+
+////////////// Trace-Part //////////////////////////////////////////////////////////////////////////////
+
+Package traceability;
+EdgeClass TLActivityCallsMethod: TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) to MethodDefinition (0,*) role traceCallsMethodTarget;
+EdgeClass TLActivityInstantiatesClass: TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) to Type (0,*) role traceInstatiatesClassTarget;
+abstract EdgeClass TLActivityTracesToLanguageObject from processes.activity.Activity (0,*) role traceSource to Member (0,*) role traceTarget {count: Long, traceId: Integer};

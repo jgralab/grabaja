@@ -472,7 +472,7 @@ EdgeClass To from Flow (0,*) role outgoing to Node (1,1) role source;
 //Comment processes.activity.RelatesTo "This&nbsp;relation&nbsp;is&nbsp;not&nbsp;implemented&nbsp;by the converter.<br /> It is rather meant to be used for traceability links.";
 //EdgeClass RelatesTo from NamedElement (0,*) role namedElement to frontend.java.DataObject (0,*) role dataObject;
 
-VertexClass Workflow: WorkflowElement {name: String};
+VertexClass Workflow: WorkflowElement {name: String, traceId: Integer};
 abstract EdgeClass WorkflowEdge from WorkflowElement (0,*) to WorkflowElement (0,*) {traceId: Integer};
 EdgeClass WorkflowHasNext: WorkflowEdge from Activity (0,*) to Activity (0,*);
 EdgeClass WorkflowStartsAt: WorkflowEdge from Workflow (0,*) to Activity (1,1);

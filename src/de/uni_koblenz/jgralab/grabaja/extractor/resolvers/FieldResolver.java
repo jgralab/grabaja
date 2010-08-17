@@ -19,6 +19,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDeclarationOfAccessedField;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldNameOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.JavaVertex;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodInvocation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ObjectCreation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.PackageImportDefinition;
@@ -116,7 +117,7 @@ public class FieldResolver extends Resolver {
 		}
 		String fieldName = ((Identifier) fieldAccess.getFirstIsFieldNameOf(
 				EdgeDirection.IN).getAlpha()).get_name();
-		Vertex scope = symbolTable.getScopeOfFieldAccess(fieldAccess);
+		JavaVertex scope = (JavaVertex) symbolTable.getScopeOfFieldAccess(fieldAccess);
 		if (fieldAccess.getFirstIsFieldContainerOf(EdgeDirection.IN) == null) {
 			if (fieldName.equals("this")) {
 				Type enclosingType = ResolverUtilities
@@ -504,7 +505,7 @@ public class FieldResolver extends Resolver {
 	 */
 	private boolean resolveAccessedFieldFromContainingType(Type containingType,
 			String fieldName, FieldAccess fieldAccess, ExtractionMode mode,
-			Vertex scope) {
+			JavaVertex scope) {
 		FieldDeclaration accessedField = symbolTable.getVariableDeclaration(
 				containingType.get_fullyQualifiedName(), fieldName);
 		if (accessedField == null) {
@@ -586,7 +587,7 @@ public class FieldResolver extends Resolver {
 	 *         been resolved).
 	 */
 	private boolean linkFieldAccessToDeclaration(FieldAccess fieldAccess,
-			Vertex declaration, Vertex scope, String fieldName) {
+			JavaVertex declaration, JavaVertex scope, String fieldName) {
 		Type supremeTypeOfFieldAccess = ResolverUtilities
 				.getSupremeTypeFromScope(scope, symbolTable);
 		if (supremeTypeOfFieldAccess != null) {

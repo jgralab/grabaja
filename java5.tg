@@ -85,69 +85,72 @@ EnumDomain MethodInvocationTypes( METHOD,
                                   SUPERCONSTRUCTOR,
                                   EXPLICITCONSTRUCTOR ) ;
 
-abstract EdgeClass AttributedEdge from Vertex( 0, * ) to Vertex( 0, * ) { offset : Integer, length : Integer , line : Integer , column : Integer } ;
+// some abstract top-level vertex type.
+abstract VertexClass JavaVertex;
+
+abstract EdgeClass AttributedEdge from JavaVertex( 0, * ) to JavaVertex( 0, * ) { offset : Integer, length : Integer , line : Integer , column : Integer } ;
 
 abstract VertexClass Type : ExternalDeclaration, Member { name : String, fullyQualifiedName : String, external : Boolean } ;
-abstract VertexClass Member ;
-abstract VertexClass TypeSpecification ;
-abstract VertexClass Statement ;
+abstract VertexClass Member : JavaVertex;
+abstract VertexClass TypeSpecification : JavaVertex;
+abstract VertexClass Statement : JavaVertex;
 abstract VertexClass Expression : Statement ;
-abstract VertexClass ForHead ;
-abstract VertexClass FieldDeclaration ;
+abstract VertexClass ForHead : JavaVertex;
+abstract VertexClass FieldDeclaration : JavaVertex;
 
-VertexClass Annotation ;
+VertexClass Annotation : JavaVertex;
 VertexClass Block : Statement;
-VertexClass Identifier { name : String } ;
-VertexClass Modifier { type : Modifiers } ;
+VertexClass Identifier : JavaVertex { name : String };
+VertexClass Modifier : JavaVertex { type : Modifiers };
 VertexClass TypeParameterDeclaration : Type ;
 VertexClass ParameterDeclaration : FieldDeclaration ;
 VertexClass TypeArgument : TypeSpecification ;
 VertexClass MethodDeclaration : Member ;
 
 abstract EdgeClass IsExpressionOf : IsStatementOf from Expression (0,*) to Expression (0,1);
-abstract EdgeClass IsAnnotationOf : AttributedEdge from Annotation( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsArgumentOf : AttributedEdge from Vertex( 0, * ) to Vertex( 0, 1 ) ;
-abstract EdgeClass IsConditionOf : AttributedEdge from Expression( 0, 1 ) to Vertex( 1, 1 ) ;
+abstract EdgeClass IsAnnotationOf : AttributedEdge from Annotation( 0, * ) to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsArgumentOf : AttributedEdge from JavaVertex( 0, * ) to JavaVertex( 0, 1 ) ;
+abstract EdgeClass IsConditionOf : AttributedEdge from Expression( 0, 1 ) to JavaVertex( 1, 1 ) ;
 abstract EdgeClass IsExceptionThrownBy : AttributedEdge from TypeSpecification( 0, * ) to Member( 1, 1 ) ;
 abstract EdgeClass IsInterfaceOf : AttributedEdge from TypeSpecification( 0, * ) to Type( 1, 1 ) ;
 abstract EdgeClass IsSuperClassOf : AttributedEdge from TypeSpecification( 0, 1 ) to Type( 1, 1 ) ;
 abstract EdgeClass IsLeftHandSideOf : IsExpressionOf from Expression( 1, 1 ) to Expression( 1, 1 ) ;
 abstract EdgeClass IsRightHandSideOf : IsExpressionOf from Expression( 1, 1 ) to Expression( 1, 1 ) ;
 abstract EdgeClass IsLoopBodyOf : IsStatementOf from Statement( 1, 1 ) to Statement( 1, 1 ) ;
-abstract EdgeClass IsModifierOf : AttributedEdge from Modifier( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsParameterOf : AttributedEdge from ParameterDeclaration( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsStatementOf : AttributedEdge from Statement( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsTypeOf : AttributedEdge from Vertex( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsTypeParameterOf : AttributedEdge from Vertex( 0, * ) to Vertex( 1, 1 ) ;
-abstract EdgeClass IsBlockOf : IsStatementOf from Block( 1, 1 ) to Vertex( 1, 1  );
+abstract EdgeClass IsModifierOf : AttributedEdge from Modifier( 0, * ) to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsParameterOf : AttributedEdge from ParameterDeclaration( 0, * ) to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsStatementOf : AttributedEdge from Statement( 0, * ) to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsTypeOf : AttributedEdge from JavaVertex( 0, * ) to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsTypeParameterOf : AttributedEdge from JavaVertex( 0, * ) to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsBlockOf : IsStatementOf from Block( 1, 1 ) to JavaVertex( 1, 1  );
 
 EdgeClass IsTypeArgumentOfTypeSpecification : AttributedEdge from TypeArgument( 0, * ) to TypeSpecification( 1, 1 ) ;
 
-VertexClass Program { name : String } ;
-VertexClass TranslationUnit ;
+VertexClass Program : JavaVertex { name : String } ;
+VertexClass TranslationUnit : JavaVertex;
 EdgeClass IsTranslationUnitIn from TranslationUnit( 0, * ) to Program( 1, 1 ) ;
-abstract VertexClass FoldGraphReference { lengthOfFile : Integer } ;
+abstract VertexClass FoldGraphReference : JavaVertex { lengthOfFile : Integer } ;
 VertexClass SourceUsage : FoldGraphReference ;
 EdgeClass IsSourceUsageIn from SourceUsage( 1, 1 ) to TranslationUnit( 1, 1 );
-VertexClass SourceFile { name: String } ;
+VertexClass SourceFile : JavaVertex { name: String } ;
 EdgeClass IsPrimarySourceFor from SourceFile( 1, 1 ) to TranslationUnit( 1, 1 ) ;
 EdgeClass IsSourceFor from SourceFile( 1, 1 ) to SourceUsage( 1, 1 ) ;
 
-abstract VertexClass ExternalDeclaration ;
+abstract VertexClass ExternalDeclaration : JavaVertex;
 EdgeClass IsExternalDeclarationIn : AttributedEdge from ExternalDeclaration( 0, * ) to SourceUsage( 1, 1 ) ;
 
 abstract VertexClass ImportDefinition : ExternalDeclaration ;
 VertexClass ClassImportDefinition : ImportDefinition ;
 VertexClass PackageImportDefinition : ImportDefinition ;
 
-VertexClass JavaPackage { fullyQualifiedName : String } ;
+VertexClass JavaPackage : JavaVertex { fullyQualifiedName : String } ;
 VertexClass PackageDefinition : ExternalDeclaration;
 EdgeClass IsPackageNameOf : AttributedEdge from QualifiedName( 1, 1 ) to PackageDefinition( 1,* );
 EdgeClass IsPartOf from TranslationUnit( 0, * ) to JavaPackage( 1, 1 ) ;
 EdgeClass IsPackageOf from JavaPackage( 1, * ) to Program( 1, 1 ) ;
 EdgeClass IsSubPackageOf from JavaPackage( 0, 1 ) to JavaPackage( 1, 1 ) ;
 
-VertexClass Comment ;
+VertexClass Comment : JavaVertex;
 VertexClass SingleLineComment : Comment ;
 VertexClass MultiLineComment : Comment ;
 VertexClass JavaDocComment : Comment ;
@@ -161,8 +164,8 @@ EdgeClass IsAnnotationOfPackage : IsAnnotationOf from Annotation( 0, * ) to Pack
 EdgeClass IsStatementOfBody : IsStatementOf from Statement( 0, * ) to Block( 1, 1 ) ;
 EdgeClass IsTypeIn : AttributedEdge from Type( 0, * ) to Statement( 1, 1 ) ;
 
-VertexClass SimpleArgument ;
-VertexClass WildcardArgument ;
+VertexClass SimpleArgument : JavaVertex;
+VertexClass WildcardArgument : JavaVertex;
 EdgeClass IsSimpleArgumentOf : IsArgumentOf from SimpleArgument( 0, * ) to TypeArgument( 1, 1 ) ;
 EdgeClass IsWildcardArgumentOf : IsArgumentOf from WildcardArgument( 0, * ) to TypeArgument( 1, 1 ) ;
 
@@ -179,7 +182,7 @@ EdgeClass IsElementTypeOf : IsTypeOf from TypeSpecification( 1, 1 ) to ArrayType
 
 VertexClass QualifiedName : TypeSpecification { fullyQualifiedName : String } ;
 VertexClass QualifiedType : QualifiedName, Expression ;
-EdgeClass IsQualifiedNameOf : AttributedEdge from QualifiedName( 0, * ) to Vertex( 0, * ) ;
+EdgeClass IsQualifiedNameOf : AttributedEdge from QualifiedName( 0, * ) to JavaVertex( 0, * ) ;
 EdgeClass IsNameOf : AttributedEdge from Identifier( 0, * ) to QualifiedName( 0, * ) ;
 EdgeClass IsImportedTypeOf : AttributedEdge from QualifiedName( 1, 1 ) to ImportDefinition( 1, 1 ) ;
 EdgeClass IsTypeDefinitionOf from Type( 0, * ) to TypeSpecification( 1, 1 );
@@ -227,13 +230,13 @@ EdgeClass IsAnnotationDefinitionNameOf : AttributedEdge from Identifier( 1, 1 ) 
 EdgeClass IsMetaAnnotationOf : IsAnnotationOf from Annotation( 0, * ) to AnnotationDefinition( 1, 1 ) ;
 EdgeClass IsAnnotationBlockOf : IsBlockOf from Block( 1, 1 ) to AnnotationDefinition( 1, 1 ) ;
 
-abstract EdgeClass IsDeclarationOf from Vertex (0,*) to Vertex (0,*);
+abstract EdgeClass IsDeclarationOf from JavaVertex (0,*) to JavaVertex (0,*);
 
 VertexClass FieldAccess : Expression ;
 EdgeClass IsFieldContainerOf : AttributedEdge from Expression( 0, 1 ) to FieldAccess( 1, 1 ) ;
 EdgeClass IsFieldNameOf : AttributedEdge from Identifier( 1, 1 ) to FieldAccess( 1, 1 ) ;
 EdgeClass IsArrayElementIndexOf : AttributedEdge from Expression( 0, * ) to FieldAccess( 1, 1 ) ;
-EdgeClass IsDeclarationOfAccessedField: IsDeclarationOf from Vertex( 0, * ) to FieldAccess( 1, 1 ) ;
+EdgeClass IsDeclarationOfAccessedField: IsDeclarationOf from JavaVertex( 0, * ) to FieldAccess( 1, 1 ) ;
 
 VertexClass MethodInvocation : Expression { type : MethodInvocationTypes } ;
 EdgeClass IsMethodContainerOf : AttributedEdge from Expression( 0, 1 ) to MethodInvocation( 1, 1 ) ;

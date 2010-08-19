@@ -1,7 +1,7 @@
 package de.uni_koblenz.jgralab.grabaja.extractor;
 
 /**
- * Defines the extraction modes.
+ * Defines extraction modes.
  * @author: abaldauf@uni-koblenz.de
  */
 public enum ExtractionMode{

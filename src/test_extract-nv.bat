@@ -1,6 +1,6 @@
 @echo off
 echo --- Starting build --------------------------------
-echo Adding this directory to the classpath
+echo Adding this directory to classpath
 set CLASSPATH=.;jgralab\src\.;common\lib\getopt\java-getopt-1.0.13.jar;common\lib\antlr\org.antlr_2.7.6.jar;%CLASSPATH%
 echo ---------------------------------------------------
 echo Testing javaextractor with some stuff...

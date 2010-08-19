@@ -118,9 +118,8 @@ public class MethodResolver extends Resolver {
 			while (methodInvocationIterator.hasNext()) {
 				MethodInvocation currentMethodInvocation = methodInvocationIterator
 						.next();
-				if (!resolveSingleMethod(mode, currentMethodInvocation)) {
+				if (!resolveSingleMethod(mode, currentMethodInvocation))
 					result = false;
-				}
 			}
 			methodProgressBar.finished();
 			methodProgressBar = null;
@@ -137,8 +136,7 @@ public class MethodResolver extends Resolver {
 	 *            The invocation to be resolved.
 	 * @return true if the method / constructor could be resolved, false if not.
 	 */
-	protected boolean resolveSingleMethod(ExtractionMode mode,
-			MethodInvocation methodInvocation) {
+	protected boolean resolveSingleMethod(ExtractionMode mode, MethodInvocation methodInvocation) {
 		if (methodInvocation == null) {
 			return false;
 		}
@@ -223,32 +221,27 @@ public class MethodResolver extends Resolver {
 				.getFirstIsNameOfInvokedMethod(EdgeDirection.IN).getAlpha())
 				.get_name();
 		if (methodInvocation.getFirstIsMethodContainerOf(EdgeDirection.IN) == null) {
-			if (methodName.equals("this")) {
-				ClassDefinition enclosingClass = ResolverUtilities
-						.getEnclosingClassFromScope(scope, symbolTable);
-				if (enclosingClass == null) {
+			if (methodName != null && methodName.equals("this")) {
+				ClassDefinition enclosingClass = ResolverUtilities.getEnclosingClassFromScope(scope, symbolTable);
+				if (enclosingClass == null)
 					return finishUnresolvedMethodInvocation(methodInvocation);
-				}
 				Member methodDeclarationVertex = findMatchingDeclaration(
 						methodInvocation, methodInvocationArguments,
-						enclosingClass.get_fullyQualifiedName(), enclosingClass
-								.get_name(),
+						enclosingClass.get_fullyQualifiedName(), enclosingClass.get_name(),
 						InvocationSearchMode.constructorsOnly, mode);
-				if (methodDeclarationVertex == null) {
+				if (methodDeclarationVertex == null)
 					return finishUnresolvedMethodInvocation(methodInvocation);
-				}
 				return linkMethodInvocationToDeclaration(methodInvocation,
 						methodDeclarationVertex, scope, methodName);
-			} else if (methodName.equals("super")) {
+			}
+			else if(methodName != null && methodName.equals("super")) {
 				ClassDefinition enclosingClass = ResolverUtilities
 						.getEnclosingClassFromScope(scope, symbolTable);
-				if (enclosingClass == null) {
+				if (enclosingClass == null)
 					return finishUnresolvedMethodInvocation(methodInvocation);
-				}
 				ClassDefinition superClass = null;
 				try {
-					superClass = ResolverUtilities
-							.getSuperClass(enclosingClass);
+					superClass = ResolverUtilities.getSuperClass(enclosingClass);
 				} catch (Exception e) {
 					return finishUnresolvedMethodInvocation(methodInvocation);
 				} // a superclass has been defined, but could not be resolved,
@@ -280,15 +273,15 @@ public class MethodResolver extends Resolver {
 								superClass, superClass.get_name(),
 								InvocationSearchMode.constructorsOnly, mode);
 					}
-					if (methodDeclarationVertex == null) {
+					if (methodDeclarationVertex == null)
 						return finishUnresolvedMethodInvocation(methodInvocation);
-					}
 					return linkMethodInvocationToDeclaration(methodInvocation,
 							methodDeclarationVertex, scope, methodName);
-				} else {
-					return finishUnresolvedMethodInvocation(methodInvocation);
 				}
-			} else {
+				else
+					return finishUnresolvedMethodInvocation(methodInvocation);
+			}
+			else {
 				Vertex currentScope = scope;
 				Type currentEnclosingType = null;
 				Member methodDeclarationVertex = null;
@@ -325,8 +318,7 @@ public class MethodResolver extends Resolver {
 								methodDeclarationVertex = findMatchingDeclaration(
 										methodInvocation,
 										methodInvocationArguments,
-										currentSuperClass
-												.get_fullyQualifiedName(),
+										currentSuperClass.get_fullyQualifiedName(),
 										methodName,
 										InvocationSearchMode.methodsOnly, mode);
 								if ((methodDeclarationVertex == null)

@@ -28,6 +28,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
 import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
+import de.uni_koblenz.jgralab.impl.db.GraphDatabase;
 import de.uni_koblenz.jgralab.schema.exception.SchemaException;
 
 /**
@@ -53,6 +54,11 @@ public class GraphBuilder {
 	 * translation units.
 	 */
 	private Program programVertex;
+	
+	/**
+	 * Name that program vertex will have.
+	 */
+	private String nameOfProgram;
 
 	/**
 	 * Reference to the used logger.
@@ -63,23 +69,33 @@ public class GraphBuilder {
 	 * Tree walker used to build each translation unit's main structure.
 	 */
 	private JavaTreeParser treeWalker;
+	
+	private String url;
+	private String userName;
+	private String password;
 
 	/**
 	 * Creates and initializes an instance of the GraphBuilder.
 	 * 
 	 * @param nameOfProgram
-	 *            The name to be used for the extracted software system
-	 * @param loggerToUse
+	 *            Name to be used for the extracted software system
+	 * @param logger
 	 *            The logger instance to be used for the extraction process.
 	 */
-	public GraphBuilder(String nameOfProgram, Logger loggerToUse) {
-		logger = loggerToUse;
-		if (initializeGraph(nameOfProgram)) {
-			symbolTable = new SymbolTable(programGraph);
-			treeWalker = new JavaTreeParser(symbolTable);
-			treeWalker.setProgramGraph(programGraph);
-			treeWalker.setProgramVertex(programVertex);
-		}
+	public GraphBuilder(String nameOfProgram, Logger logger) {
+		this.nameOfProgram = nameOfProgram;
+		this.logger = logger;
+	}
+	
+	public GraphBuilder(String nameOfProgram, String url, String userName, String password, Logger logger){
+		this(nameOfProgram, logger);
+		this.url = url;
+		this.userName = userName;
+		this.password = password;
+	}
+	
+	private boolean useImplWithDatabaseSupport(){
+		return url != null;
 	}
 
 	/**
@@ -88,19 +104,29 @@ public class GraphBuilder {
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
 	 */
-	private boolean initializeGraph(String nameOfProgram) {
+	private boolean initializeGraph() {
 		try {
 			Java5Schema javaSchema = Java5Schema.instance();
-			programGraph = javaSchema.createJava5(nameOfProgram, 1000, 1000);
+			if(useImplWithDatabaseSupport()){
+				GraphDatabase db = GraphDatabase.openGraphDatabase(url, userName, password);
+				programGraph = javaSchema.createJava5WithDatabaseSupport(nameOfProgram, db);
+			}
+			else
+				programGraph = javaSchema.createJava5(nameOfProgram, 1000, 1000);
 			logger.info("Created graph " + nameOfProgram);
 			// Create basic "head" of graph
 			programVertex = programGraph.createProgram();
 			programVertex.set_name(nameOfProgram);
 			return true;
-		} catch (SchemaException exception) {
+		}
+		catch(SchemaException exception) {
 			logger.severe(Utilities.stackTraceToString(exception));
-		} catch (GraphException exception) {
+		}
+		catch(GraphException exception) {
 			logger.severe(Utilities.stackTraceToString(exception));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -114,44 +140,42 @@ public class GraphBuilder {
 	 *            relative or absolute.
 	 */
 	public void parseFiles(Vector<String> fileList) {
-		logger.info(fileList.size() + " file(s) to parse.");
-		Handler[] handlersOfLogger = logger.getHandlers();
-		handlersOfLogger[0].setLevel(Level.OFF);
-		System.out.println("----------------------> " + handlersOfLogger.length
-				+ " " + handlersOfLogger[0].getClass().getName());
-		ProgressFunctionImpl progressBar = new ProgressFunctionImpl(60);
-		progressBar.init(fileList.size());
-		int parsingSuccessCount = 0;
-		int parsingFailedCount = 0;
-		ArrayList<CommentClass> comments = new ArrayList<CommentClass>(); // Collects
-		// comments
-		// found
-		// in
-		// a
-		// file.
-		LocalTypeSpecificationResolver localResolver = new LocalTypeSpecificationResolver(
-				symbolTable);
-		for (int i = 0; i < fileList.size(); i++) {
-			CommonAST ast = parseFile(fileList.get(i), comments);
-			if (ast != null) {
-				parsingSuccessCount++;
-				// logger.info( "Adding " + fileList.get( i ) + " to graph" );
-				addTranslationUnit(fileList.get(i), comments, ast);
-				localResolver.resolveTypeSpecifications();
-				// logger.info( fileList.get( i ) + " added to graph" );
-			} else {
-				logger.warning(fileList.get(i)
-						+ " not added to graph, due to parse error");
-				parsingFailedCount++;
+		if (initializeGraph()) {
+			symbolTable = new SymbolTable(programGraph);
+			treeWalker = new JavaTreeParser(symbolTable);
+			treeWalker.setProgramGraph(programGraph);
+			treeWalker.setProgramVertex(programVertex);
+			logger.info(fileList.size() + " file(s) to parse.");
+			//TODO Next two lines only work id logger has a handler, this has to be outsourced 
+			//Handler[] handlersOfLogger = logger.getHandlers();
+			//handlersOfLogger[0].setLevel(Level.OFF);
+			ProgressFunctionImpl progressBar = new ProgressFunctionImpl(60);
+			progressBar.init(fileList.size());
+			int parsingSuccessCount = 0;
+			int parsingFailedCount = 0;
+			// Collect comments found in a file.
+			ArrayList<CommentClass> comments = new ArrayList<CommentClass>(); 
+			LocalTypeSpecificationResolver localResolver = new LocalTypeSpecificationResolver(symbolTable);
+			for (int i = 0; i < fileList.size(); i++) {
+				CommonAST ast = parseFile(fileList.get(i), comments);
+				if (ast != null){
+					parsingSuccessCount++;
+					// logger.info( "Adding " + fileList.get( i ) + " to graph" );
+					addTranslationUnit(fileList.get(i), comments, ast);
+					localResolver.resolveTypeSpecifications();
+					// logger.info( fileList.get( i ) + " added to graph" );
+				}
+				else {
+					logger.warning(fileList.get(i) + " not added to graph, due to parse error");
+					parsingFailedCount++;
+				}
+				comments.clear(); // Clear comments before parsing next file.
+				symbolTable.nextFile(); // Clear type information of just parsed file
+				if (i % progressBar.getUpdateInterval() == 0)
+					progressBar.progress(1);
 			}
-			comments.clear(); // Clear comments before parsing next file.
-			symbolTable.nextFile(); // Clear type information of just parsed
-			// file before parsing next one.
-			if (i % progressBar.getUpdateInterval() == 0) {
-				progressBar.progress(1);
-			}
+			progressBar.finished();
 		}
-		progressBar.finished();
 	}
 
 	/**
@@ -161,21 +185,19 @@ public class GraphBuilder {
 	 *            Name of the file to parse, can be relative or absolute.
 	 * @return AST representation of given file, null if parsing failed.
 	 */
-	private CommonAST parseFile(String fileName,
-			ArrayList<CommentClass> comments) {
+	private CommonAST parseFile(String fileName, ArrayList<CommentClass> comments) {
 		try {
 			// logger.info( "parsing file: " + fileName );
 			// Create the special shared input state that is needed in order to
 			// annotate tokens with offset.
 			// @TODO make it a singleton
-			LexerSharedInputStateAdapter inputState = new LexerSharedInputStateAdapter(
-					fileName);
+			LexerSharedInputStateAdapter inputState = new LexerSharedInputStateAdapter(fileName);
 			// Create a lexer which knows the lexer shared input state with
 			// offset .
 			// @TODO make it a singleton
 			JavaLexerAdapter javaLexer = new JavaLexerAdapter(inputState);
 			javaLexer
-					.setTokenObjectClass("de.uni_koblenz.jgralab.grabaja.extractor.adapters.CommonTokenAdapter"); // Tells
+				.setTokenObjectClass("de.uni_koblenz.jgralab.grabaja.extractor.adapters.CommonTokenAdapter"); // Tells
 			// lexer
 			// to
 			// use
@@ -202,12 +224,11 @@ public class GraphBuilder {
 			javaParser.setFilename(fileName);
 			javaParser.compilationUnit(); // Start parsing at the
 			// compilationUnit rule
-			// logger.info( "parsing was succesful" );
+			// logger.info( "parsing was successful" );
 			return (CommonAST) javaParser.getAST();
 		} catch (Exception exception) {
 			// errorCount++;
-			System.out.println("An exception occured while parsing file "
-					+ fileName);
+			System.out.println("An exception occured while parsing file " + fileName);
 			logger.warning(Utilities.stackTraceToString(exception));
 			return null;
 		}
@@ -223,22 +244,17 @@ public class GraphBuilder {
 	 * @param sourceAST
 	 *            The AST to be converted.
 	 */
-	private void addTranslationUnit(String sourcePath,
-			ArrayList<CommentClass> comments, AST sourceAST) {
+	private void addTranslationUnit(String sourcePath, ArrayList<CommentClass> comments, AST sourceAST) {
 		try {
 			// Create a new TranslationUnit with the according SourceUsage etc.
-			TranslationUnit translationUnitVertex = programGraph
-					.createTranslationUnit();
-			programGraph.createIsTranslationUnitIn(translationUnitVertex,
-					programVertex);
+			TranslationUnit translationUnitVertex = programGraph.createTranslationUnit();
+			programGraph.createIsTranslationUnitIn(translationUnitVertex, programVertex);
 			for (int i = 0; i < comments.size(); i++) {
 				CommentClass comment = comments.get(i);
-				comment.createTGraphElements(programGraph,
-						translationUnitVertex);
+				comment.createTGraphElements(programGraph,	translationUnitVertex);
 			}
 			SourceUsage sourceUsageVertex = programGraph.createSourceUsage();
-			sourceUsageVertex.set_lengthOfFile(0); // @TODO warum muss das 0
-			// sein???
+			sourceUsageVertex.set_lengthOfFile(0); // @TODO warum muss das 0 sein???
 			programGraph.createIsSourceUsageIn(sourceUsageVertex,
 					translationUnitVertex);
 			SourceFile sourceFileVertex = programGraph.createSourceFile();
@@ -265,8 +281,7 @@ public class GraphBuilder {
 	 *            The extraction mode to be used for resolving.
 	 */
 	public void finalizeGraph(ExtractionMode mode) {
-		GlobalTypeSpecificationResolver typeSpecificationResolver = new GlobalTypeSpecificationResolver(
-				symbolTable);
+		GlobalTypeSpecificationResolver typeSpecificationResolver = new GlobalTypeSpecificationResolver(symbolTable);
 		FieldResolver fieldResolver = new FieldResolver(symbolTable);
 		MethodResolver methodResolver = new MethodResolver(symbolTable);
 		fieldResolver.setMethodResolver(methodResolver);
@@ -320,16 +335,13 @@ public class GraphBuilder {
 	 */
 	public void saveGraphToDisk(String targetPath) {
 		try {
-			logger.info("Graph consists of " + programGraph.getVCount()
-					+ " vertices and " + programGraph.getECount() + " edges");
+			logger.info("Graph consists of " + programGraph.getVCount()	+ " vertices and " + programGraph.getECount() + " edges");
 			logger.info("Saving graph to " + targetPath);
-			GraphIO.saveGraphToFile(targetPath, programGraph,
-					new ProgressFunctionImpl());
+			GraphIO.saveGraphToFile(targetPath, programGraph, new ProgressFunctionImpl());
 			logger.info("Graph succesfully saved");
 		} catch (GraphIOException exception) {
 			logger.warning(Utilities.stackTraceToString(exception));
 			logger.severe("Graph could not be saved.");
 		}
 	}
-
 }

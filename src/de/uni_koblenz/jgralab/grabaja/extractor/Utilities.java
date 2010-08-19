@@ -19,19 +19,18 @@ public class Utilities {
 	public static String stackTraceToString(Exception exception) {
 		String stackTrace = "An exception occured:\n";
 		StackTraceElement trace[] = exception.getStackTrace();
-		for (StackTraceElement element : trace) {
+		for (StackTraceElement element : trace)
 			stackTrace += "@ " + element.toString() + "\n";
-		}
 		return stackTrace;
 	}
 
 	/**
-	 * Copys the values of attributes from an attributed edge to another.
+	 * Copies values of attributes from an attributed edge to another.
 	 * 
 	 * @param sourceEdge
-	 *            The source edge.
+	 *            Source edge.
 	 * @param targetEdge
-	 *            The target edge.
+	 *            Target edge.
 	 */
 	public static void copyEdgeAttributes(AttributedEdge sourceEdge,
 			AttributedEdge targetEdge) {
@@ -51,12 +50,9 @@ public class Utilities {
 	 * @param sourceAST
 	 *            The AST element to copy the attributes of.
 	 */
-	public static void fillEdgeAttributesFromAST(
-			AttributedEdge edgeWithAttributesToFill, AST sourceAST) {
-		if (sourceAST != null) {
-			fillEdgeAttributes(edgeWithAttributesToFill,
-					(CommonASTAdapter) sourceAST);
-		}
+	public static void fillEdgeAttributesFromAST(AttributedEdge edgeWithAttributesToFill, AST sourceAST) {
+		if (sourceAST != null)
+			fillEdgeAttributes(edgeWithAttributesToFill, (CommonASTAdapter)sourceAST);
 	}
 
 	/**
@@ -67,8 +63,7 @@ public class Utilities {
 	 * @param sourceAST
 	 *            The AST element to copy the attributes of.
 	 */
-	public static void fillEdgeAttributes(
-			AttributedEdge edgeWithAttributesToFill, CommonASTAdapter sourceAST) {
+	public static void fillEdgeAttributes(AttributedEdge edgeWithAttributesToFill, CommonASTAdapter sourceAST) {
 		if ((edgeWithAttributesToFill != null) && (sourceAST != null)) {
 			edgeWithAttributesToFill.set_offset(sourceAST.getOffset());
 			edgeWithAttributesToFill.set_line(sourceAST.getLine());
@@ -115,8 +110,7 @@ public class Utilities {
 	 * @param value
 	 *            The value to be set for all attributes.
 	 */
-	public static void fillEdgeAttributesWithGivenValue(
-			AttributedEdge edgeWithAttributesToFill, int value) {
+	public static void fillEdgeAttributesWithGivenValue(AttributedEdge edgeWithAttributesToFill, int value) {
 		edgeWithAttributesToFill.set_offset(value);
 		edgeWithAttributesToFill.set_line(value);
 		edgeWithAttributesToFill.set_column(value);
@@ -124,7 +118,7 @@ public class Utilities {
 	}
 
 	/**
-	 * Concatenates the next name element to a qualified name vertex.
+	 * Concatenates next name element to a qualified name vertex.
 	 * 
 	 * @param vertex
 	 *            The qualified name vertex.
@@ -134,16 +128,12 @@ public class Utilities {
 	public static void addToFullyQualifiedName(Vertex vertex, AST name) {
 		if (vertex instanceof QualifiedType) {
 			QualifiedType qualifiedTypeVertex = (QualifiedType) vertex;
-			String fullyQualifiedName = qualifiedTypeVertex
-					.get_fullyQualifiedName();
-			if (fullyQualifiedName == null) {
+			String fullyQualifiedName = qualifiedTypeVertex.get_fullyQualifiedName();
+			if (fullyQualifiedName == null)
 				fullyQualifiedName = "";
-			} else if (!fullyQualifiedName.isEmpty()) {
+			else if (!fullyQualifiedName.isEmpty())
 				fullyQualifiedName += ".";
-			}
-			qualifiedTypeVertex.set_fullyQualifiedName(fullyQualifiedName
-					+ name.getText());
+			qualifiedTypeVertex.set_fullyQualifiedName(fullyQualifiedName + name.getText());
 		}
 	}
-
 }

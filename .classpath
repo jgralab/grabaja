@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jgralab"/>
 	<classpathentry kind="lib" path="/common/lib/antlr/org.antlr_2.7.6.jar"/>
 	<classpathentry kind="lib" path="/common/lib/getopt/java-getopt-1.0.13.jar"/>
+	<classpathentry kind="lib" path="/jgralab/lib/jdbc/postgresql-8.4-701.jdbc4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

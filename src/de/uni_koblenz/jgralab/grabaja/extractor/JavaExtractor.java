@@ -9,49 +9,50 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * The main class of the javaextractor project.
+ * Main class of javaextractor project.
  * @author: abaldauf@uni-koblenz.de
  * @author: ultbreit@uni-koblenz.de
  */
 public class JavaExtractor{
 
     /**
-     * The name of the parsed program.
-     * Default value or setting will be set in commandline argument interpretation.
+     * Name of parsed program, can be set by command line argument.
      */
 	private static String programName = "";
 
     /**
-     * The name / path of the generated graph file.
-     * Default value or setting will be set in commandline argument interpretation.
+     * Path to file storing extracted graph, can be set by command line argument.
      */
 	private static String targetFilePath = "";
+	
+	/**
+	 * Implementation to use, can be set by command line argument (std or db).
+	 */
+	private static String implementation = "std";
 
     /**
-     * The name / path of the log file.
-     * Default value or setting will be set in commandline argument interpretation.
+     * Path to log file, can be set by command line argument.
      */
     private static String logFilePath = "";
 
 	/**
-	 * Flag indicates if command line argument <code>-eager</code> has been given.
-	 * Default behaviour is lazy.
+	 * Extraction mode, can be set by command line argument.
 	 */
 	private static ExtractionMode mode = ExtractionMode.LAZY;
 
 	/**
-	 * List of the files to parse.
+	 * List of files to parse.
 	 */
 	public static Vector< String > fileList = new Vector< String >();
 
 	/**
-	 * The logger which logs the messages to disk.
+	 * Logger to log events to disk.
 	 */
 	private static Logger logger;
 
 	/**
-	 * The main method.
-	 * @param args A string array of command line arguments.
+	 * Main method.
+	 * @param args Command line arguments.
 	 */
 	public static void main( String[] args ){
 
@@ -62,10 +63,10 @@ public class JavaExtractor{
 			parseCommandLineArguments( args ); // Checks arguments and collects files to extract graph from.
 			initializeLogging();
 			if( !fileList.isEmpty() ){
-				GraphBuilder graphBuilder = new GraphBuilder( programName, logger ); // Automatically builds graph from file list.
+				GraphBuilder graphBuilder = new GraphBuilder( programName, logger );
 				graphBuilder.parseFiles( fileList );
 				graphBuilder.finalizeGraph( mode );
-				graphBuilder.saveGraphToDisk( targetFilePath ); // Saves graph to disk.
+				graphBuilder.saveGraphToDisk( targetFilePath );
 			}
 		}
 		catch( Exception exception ){
@@ -92,16 +93,21 @@ public class JavaExtractor{
 			System.exit( 0 );
 		}
 	}
+	
+	private static void printHelpMessageAndExit(){
+		System.out.println(
+			"Usage:\n"+
+			"java javaextractor.JavaExtractor [-log <file name>] [-out <file name>] [-name <name>] <directory or file name> {directory or file name}" );
+		System.exit( 0 );
+	}
 
 	/**
 	 * Parses the commandline arguments passed over to the program and sets the according settings.
 	 * @param args A string array of command line arguments.
 	 */
 	private static void parseCommandLineArguments( String[] args ) throws Exception{
-		if( args.length <= 0 ){ // Check if we have at least one command-line argument
-			System.out.println( "Usage:\n java javaextractor.JavaExtractor [-log <file name>] [-out <file name>] [-name <name>] <directory or file name> {directory or file name}" );
-			System.exit( 0 );
-		}
+		if( args.length <= 0 ) // Check if we have at least one command-line argument
+			printHelpMessageAndExit();
 		boolean nextArgIsLog = false;
 		boolean nextArgIsOut = false;
 		boolean nextArgIsName = false;

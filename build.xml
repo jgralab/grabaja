@@ -29,5 +29,24 @@
 			<arg line="-o ${parser.dir} ${parser.dir}/../java15.tree.g" />
 		</java>
 	</target>
+	
+	<target name="testextract" depends="build">
+		<java classname="de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor" classpathref="classpath">
+			<arg line ="" />
+		</java>
+	</target>
+	
+	<target name="quicktest">
+		<java classname="de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor" classpathref="classpath">
+			<jvmarg line="-Xmx768M" />
+			<arg line ="testit -log GraBaJa_extract.log -out extractedtestgraph.tg -name GraBaJaTests" />
+		</java>
+	</target>
+
+	<target name="extract2db">
+		<java classname="de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor" classpathref="classpath">
+			<arg line ="src/de/uni_koblenz/jgralab/grabaja/codegenerator/ -log GraBaJa_extract.log -url postgresql://localhost:5432/graphdatabase/ -user postgres -pw energizer -name GraBaJaTests" />
+		</java>
+	</target>
 
 </project>

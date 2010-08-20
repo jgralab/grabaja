@@ -2,8 +2,6 @@ package de.uni_koblenz.jgralab.grabaja.extractor;
 
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import antlr.CommonAST;
@@ -28,7 +26,6 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.SourceFile;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
 import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
-import de.uni_koblenz.jgralab.impl.db.GraphDatabase;
 import de.uni_koblenz.jgralab.schema.exception.SchemaException;
 
 /**
@@ -42,7 +39,7 @@ public class GraphBuilder {
 	/**
 	 * Reference to TGraph for a complete program.
 	 */
-	private Java5 programGraph;
+	protected Java5 programGraph;
 
 	/**
 	 * Reference to symbol table of graph.
@@ -53,12 +50,12 @@ public class GraphBuilder {
 	 * Reference to the top program vertex. Required for easier creation of new
 	 * translation units.
 	 */
-	private Program programVertex;
+	protected Program programVertex;
 	
 	/**
 	 * Name that program vertex will have.
 	 */
-	private String nameOfProgram;
+	protected String nameOfProgram;
 
 	/**
 	 * Reference to the used logger.
@@ -70,10 +67,6 @@ public class GraphBuilder {
 	 */
 	private JavaTreeParser treeWalker;
 	
-	private String url;
-	private String userName;
-	private String password;
-
 	/**
 	 * Creates and initializes an instance of the GraphBuilder.
 	 * 
@@ -87,32 +80,16 @@ public class GraphBuilder {
 		this.logger = logger;
 	}
 	
-	public GraphBuilder(String nameOfProgram, String url, String userName, String password, Logger logger){
-		this(nameOfProgram, logger);
-		this.url = url;
-		this.userName = userName;
-		this.password = password;
-	}
-	
-	private boolean useImplWithDatabaseSupport(){
-		return url != null;
-	}
-
 	/**
 	 * Creates and initializes an instance of the TGraph.
 	 * 
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
 	 */
-	private boolean initializeGraph() {
+	protected boolean initializeGraph() {
 		try {
 			Java5Schema javaSchema = Java5Schema.instance();
-			if(useImplWithDatabaseSupport()){
-				GraphDatabase db = GraphDatabase.openGraphDatabase(url, userName, password);
-				programGraph = javaSchema.createJava5WithDatabaseSupport(nameOfProgram, db);
-			}
-			else
-				programGraph = javaSchema.createJava5(nameOfProgram, 1000, 1000);
+			programGraph = javaSchema.createJava5(nameOfProgram, 1000, 1000);
 			logger.info("Created graph " + nameOfProgram);
 			// Create basic "head" of graph
 			programVertex = programGraph.createProgram();
@@ -124,9 +101,6 @@ public class GraphBuilder {
 		}
 		catch(GraphException exception) {
 			logger.severe(Utilities.stackTraceToString(exception));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return false;
 	}
@@ -146,7 +120,7 @@ public class GraphBuilder {
 			treeWalker.setProgramGraph(programGraph);
 			treeWalker.setProgramVertex(programVertex);
 			logger.info(fileList.size() + " file(s) to parse.");
-			//TODO Next two lines only work id logger has a handler, this has to be outsourced 
+			//TODO Next two lines only work if logger has a handler, this has to be outsourced 
 			//Handler[] handlersOfLogger = logger.getHandlers();
 			//handlersOfLogger[0].setLevel(Level.OFF);
 			ProgressFunctionImpl progressBar = new ProgressFunctionImpl(60);
@@ -235,7 +209,7 @@ public class GraphBuilder {
 	}
 
 	/**
-	 * Adds a new tranlation unit to the TGraph.
+	 * Adds a new translation unit to TGraph.
 	 * 
 	 * @param sourcePath
 	 *            The path of the .java file the AST resulted from.

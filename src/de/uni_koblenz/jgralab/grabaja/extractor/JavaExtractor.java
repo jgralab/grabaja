@@ -26,11 +26,6 @@ public class JavaExtractor{
 	private static String targetFilePath = "";
 	
 	/**
-	 * Implementation to use, can be set by command line argument (std or db).
-	 */
-	private static String implementation = "std";
-
-    /**
      * Path to log file, can be set by command line argument.
      */
     private static String logFilePath = "";
@@ -244,5 +239,4 @@ public class JavaExtractor{
 									  + "ms)" );
 		System.out.println( "Log file written to " + logFilePath );
 	}
-
 }

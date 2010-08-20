@@ -124,7 +124,7 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * @param enumDefinitionVertex
 	 *            The enum definition.
 	 * @param ast
-	 *            The AST element representing the identifier.
+	 *            AST element representing identifier.
 	 */
 	public void createIdentifier(EnumDefinition enumDefinitionVertex, AST ast) {
 		Identifier identifierVertex = createIdentifier(ast);
@@ -290,11 +290,9 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * @param ast
 	 *            The AST element representing the identifier.
 	 */
-	public void createIdentifier(MethodDeclaration methodDeclarationVertex,
-			AST ast) {
+	public void createIdentifier(MethodDeclaration methodDeclarationVertex,	AST ast) {
 		Identifier identifierVertex = createIdentifier(ast);
-		IsNameOfMethod isNameOfMethodEdge = programGraph.createIsNameOfMethod(
-				identifierVertex, methodDeclarationVertex);
+		IsNameOfMethod isNameOfMethodEdge = programGraph.createIsNameOfMethod(identifierVertex, methodDeclarationVertex);
 		Utilities.fillEdgeAttributesFromAST(isNameOfMethodEdge, ast);
 	}
 

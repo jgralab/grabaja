@@ -85,8 +85,9 @@ public class GraphBuilder {
 	 * 
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
+	 * @throws Exception 
 	 */
-	protected boolean initializeGraph() {
+	protected void initializeGraph() throws Exception {
 		try {
 			Java5Schema javaSchema = Java5Schema.instance();
 			programGraph = javaSchema.createJava5(nameOfProgram, 1000, 1000);
@@ -94,7 +95,6 @@ public class GraphBuilder {
 			// Create basic "head" of graph
 			programVertex = programGraph.createProgram();
 			programVertex.set_name(nameOfProgram);
-			return true;
 		}
 		catch(SchemaException exception) {
 			logger.severe(Utilities.stackTraceToString(exception));
@@ -102,7 +102,6 @@ public class GraphBuilder {
 		catch(GraphException exception) {
 			logger.severe(Utilities.stackTraceToString(exception));
 		}
-		return false;
 	}
 
 	/**
@@ -112,44 +111,44 @@ public class GraphBuilder {
 	 * @param fileList
 	 *            A Vector with the names of the files to be parsed, each can be
 	 *            relative or absolute.
+	 * @throws Exception 
 	 */
-	public void parseFiles(Vector<String> fileList) {
-		if (initializeGraph()) {
-			symbolTable = new SymbolTable(programGraph);
-			treeWalker = new JavaTreeParser(symbolTable);
-			treeWalker.setProgramGraph(programGraph);
-			treeWalker.setProgramVertex(programVertex);
-			logger.info(fileList.size() + " file(s) to parse.");
-			//TODO Next two lines only work if logger has a handler, this has to be outsourced 
-			//Handler[] handlersOfLogger = logger.getHandlers();
-			//handlersOfLogger[0].setLevel(Level.OFF);
-			ProgressFunctionImpl progressBar = new ProgressFunctionImpl(60);
-			progressBar.init(fileList.size());
-			int parsingSuccessCount = 0;
-			int parsingFailedCount = 0;
-			// Collect comments found in a file.
-			ArrayList<CommentClass> comments = new ArrayList<CommentClass>(); 
-			LocalTypeSpecificationResolver localResolver = new LocalTypeSpecificationResolver(symbolTable);
-			for (int i = 0; i < fileList.size(); i++) {
-				CommonAST ast = parseFile(fileList.get(i), comments);
-				if (ast != null){
-					parsingSuccessCount++;
-					// logger.info( "Adding " + fileList.get( i ) + " to graph" );
-					addTranslationUnit(fileList.get(i), comments, ast);
-					localResolver.resolveTypeSpecifications();
-					// logger.info( fileList.get( i ) + " added to graph" );
-				}
-				else {
-					logger.warning(fileList.get(i) + " not added to graph, due to parse error");
-					parsingFailedCount++;
-				}
-				comments.clear(); // Clear comments before parsing next file.
-				symbolTable.nextFile(); // Clear type information of just parsed file
-				if (i % progressBar.getUpdateInterval() == 0)
-					progressBar.progress(1);
+	public void parseFiles(Vector<String> fileList) throws Exception {
+		initializeGraph();
+		symbolTable = new SymbolTable(programGraph);
+		treeWalker = new JavaTreeParser(symbolTable);
+		treeWalker.setProgramGraph(programGraph);
+		treeWalker.setProgramVertex(programVertex);
+		logger.info(fileList.size() + " file(s) to parse.");
+		//TODO Next two lines only work if logger has a handler, this has to be outsourced 
+		//Handler[] handlersOfLogger = logger.getHandlers();
+		//handlersOfLogger[0].setLevel(Level.OFF);
+		ProgressFunctionImpl progressBar = new ProgressFunctionImpl(60);
+		progressBar.init(fileList.size());
+		int parsingSuccessCount = 0;
+		int parsingFailedCount = 0;
+		// Collect comments found in a file.
+		ArrayList<CommentClass> comments = new ArrayList<CommentClass>(); 
+		LocalTypeSpecificationResolver localResolver = new LocalTypeSpecificationResolver(symbolTable);
+		for (int i = 0; i < fileList.size(); i++) {
+			CommonAST ast = parseFile(fileList.get(i), comments);
+			if (ast != null){
+				parsingSuccessCount++;
+				// logger.info( "Adding " + fileList.get( i ) + " to graph" );
+				addTranslationUnit(fileList.get(i), comments, ast);
+				localResolver.resolveTypeSpecifications();
+				// logger.info( fileList.get( i ) + " added to graph" );
 			}
-			progressBar.finished();
+			else {
+				logger.warning(fileList.get(i) + " not added to graph, due to parse error");
+				parsingFailedCount++;
+			}
+			comments.clear(); // Clear comments before parsing next file.
+			symbolTable.nextFile(); // Clear type information of just parsed file
+			if (i % progressBar.getUpdateInterval() == 0)
+				progressBar.progress(1);
 		}
+		progressBar.finished();
 	}
 
 	/**
@@ -261,31 +260,31 @@ public class GraphBuilder {
 		fieldResolver.setMethodResolver(methodResolver);
 		methodResolver.setFieldResolver(fieldResolver);
 		if (symbolTable.getAmountOfUnresolvedTypeSpecifications() > 0) {
-			System.out.println(symbolTable
-					.getAmountOfUnresolvedTypeSpecifications()
-					+ " type specification(s) to resolve.");
+			System.out.println(symbolTable.getAmountOfUnresolvedTypeSpecifications()
+				+ " type specification(s) to resolve.");
 			if (typeSpecificationResolver.resolveTypeSpecifications(mode) == false) {
-				logger.warning(symbolTable
-						.getAmountOfUnresolvedTypeSpecifications()
-						+ " type specification(s) could not be resolved.");
-			} else {
-				logger.info("Every type specification has been resolved.");
+				logger.warning(symbolTable.getAmountOfUnresolvedTypeSpecifications()
+					+ " type specification(s) could not be resolved.");
 			}
-		} else {
-			logger.info("No type specifications have to be resolved.");
+			else
+				logger.info("Every type specification has been resolved.");
 		}
+		else
+			logger.info("No type specifications have to be resolved.");
+
 		if (symbolTable.amountOfFieldAccesses() > 0) {
 			System.out.println(symbolTable.amountOfFieldAccesses()
 					+ " field accesses to resolve.");
 			if (fieldResolver.resolveFields(mode) == false) {
 				logger.warning(symbolTable.getAmountOfUnresolvedFieldAccesses()
 						+ " field access(es) could not be resolved.");
-			} else {
-				logger.info("Every field access has been resolved.");
 			}
-		} else {
-			logger.info("No field accesses have to be resolved.");
+			else
+				logger.info("Every field access has been resolved.");
 		}
+		else
+			logger.info("No field accesses have to be resolved.");
+
 		if (symbolTable.amountOfMethodInvocations() > 0) {
 			System.out.println(symbolTable.amountOfMethodInvocations()
 					+ " method invocations to resolve.");
@@ -293,12 +292,12 @@ public class GraphBuilder {
 				logger.warning(symbolTable
 						.getAmountOfUnresolvedMethodInvocations()
 						+ " method invocation(s) could not be resolved.");
-			} else {
-				logger.info("Every method invocation has been resolved.");
 			}
-		} else {
-			logger.info("No method invocations have to be resolved.");
+			else
+				logger.info("Every method invocation has been resolved.");
 		}
+		else
+			logger.info("No method invocations have to be resolved.");
 	}
 
 	/**
@@ -313,7 +312,8 @@ public class GraphBuilder {
 			logger.info("Saving graph to " + targetPath);
 			GraphIO.saveGraphToFile(targetPath, programGraph, new ProgressFunctionImpl());
 			logger.info("Graph succesfully saved");
-		} catch (GraphIOException exception) {
+		}
+		catch (GraphIOException exception) {
 			logger.warning(Utilities.stackTraceToString(exception));
 			logger.severe("Graph could not be saved.");
 		}

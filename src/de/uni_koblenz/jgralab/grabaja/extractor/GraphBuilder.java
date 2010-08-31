@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import antlr.CommonAST;
 import antlr.RecognitionException;
 import antlr.collections.AST;
+import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphException;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
@@ -317,5 +318,17 @@ public class GraphBuilder {
 			logger.warning(Utilities.stackTraceToString(exception));
 			logger.severe("Graph could not be saved.");
 		}
+	}
+
+	/**
+	 * Gets extracted graph.
+	 * @return Extracted graph.
+	 * @throws Exception TODO
+	 */
+	public Graph getGraph() throws Exception{
+		if(this.programGraph != null)
+			return this.programGraph;
+		else
+			throw new Exception("Run parseFiles() first.");
 	}
 }

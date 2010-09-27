@@ -58,7 +58,7 @@
 	
 	<target name="generatedbimpl" depends="tgtools">
 		
-		<tgschema2java sourcePath="${src.dir}" implementationMode="database">
+		<tgschema2java sourcePath="${src.dir}" implementationMode="standard,database">
 			<fileset dir="." includes="*.tg" />
 		</tgschema2java>
 	</target>	

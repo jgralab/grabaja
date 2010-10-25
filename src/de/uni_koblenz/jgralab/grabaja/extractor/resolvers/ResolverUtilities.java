@@ -551,21 +551,21 @@ public class ResolverUtilities {
 			Block typeBlock = symbolTable.getGraph().createBlock();
 			symbolTable.addScopeInfo(typeBlock, type);
 			if (type instanceof ClassDefinition) {
-				Utilities.fillEdgeAttributesWithGivenValue(symbolTable
-						.getGraph().createIsClassBlockOf(typeBlock,
+				Utilities.fillEdgeAttributesWithGivenValue(
+						symbolTable.getGraph().createIsClassBlockOf(typeBlock,
 								(ClassDefinition) type), -1);
 			} else if (type instanceof InterfaceDefinition) {
-				Utilities.fillEdgeAttributesWithGivenValue(symbolTable
-						.getGraph().createIsInterfaceBlockOf(typeBlock,
-								(InterfaceDefinition) type), -1);
+				Utilities.fillEdgeAttributesWithGivenValue(
+						symbolTable.getGraph().createIsInterfaceBlockOf(
+								typeBlock, (InterfaceDefinition) type), -1);
 			} else if (type instanceof EnumDefinition) {
-				Utilities.fillEdgeAttributesWithGivenValue(symbolTable
-						.getGraph().createIsEnumBlockOf(typeBlock,
+				Utilities.fillEdgeAttributesWithGivenValue(
+						symbolTable.getGraph().createIsEnumBlockOf(typeBlock,
 								(EnumDefinition) type), -1);
 			} else if (type instanceof AnnotationDefinition) {
-				Utilities.fillEdgeAttributesWithGivenValue(symbolTable
-						.getGraph().createIsAnnotationBlockOf(typeBlock,
-								(AnnotationDefinition) type), -1);
+				Utilities.fillEdgeAttributesWithGivenValue(
+						symbolTable.getGraph().createIsAnnotationBlockOf(
+								typeBlock, (AnnotationDefinition) type), -1);
 			}
 			return typeBlock;
 		}
@@ -655,7 +655,8 @@ public class ResolverUtilities {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Type createType(java.lang.Class classNotInGraph,
+	public static Type createType(
+			@SuppressWarnings("rawtypes") java.lang.Class classNotInGraph,
 			ExtractionMode mode, SymbolTable symbolTable) {
 		Type typeVertex = null;
 		Java5 programGraph = symbolTable.getGraph();
@@ -799,8 +800,8 @@ public class ResolverUtilities {
 	}
 
 	private static void createAndAttachTypeParameters(
-			java.lang.reflect.TypeVariable<java.lang.Class<?>>[] typeParameters,
-			Type typeVertex, SymbolTable symbolTable) {
+			TypeVariable<Class<?>>[] typeParameters, Type typeVertex,
+			SymbolTable symbolTable) {
 		if (typeParameters.length < 0) {
 			return;
 		}
@@ -858,8 +859,8 @@ public class ResolverUtilities {
 			return;
 		}
 		for (Class<?> interface1 : interfaces) {
-			QualifiedType qualifiedTypeVertex = getQualifiedType(interface1
-					.getName(), ExtractionMode.COMPLETE, symbolTable);
+			QualifiedType qualifiedTypeVertex = getQualifiedType(
+					interface1.getName(), ExtractionMode.COMPLETE, symbolTable);
 			AttributedEdge edgeWithAttributesToFill = null;
 			if (typeVertex instanceof ClassDefinition) {
 				edgeWithAttributesToFill = symbolTable.getGraph()
@@ -886,8 +887,8 @@ public class ResolverUtilities {
 		if ((superType == null) || (typeVertex instanceof InterfaceDefinition)) {
 			return;
 		}
-		QualifiedType qualifiedTypeVertex = getQualifiedType(superType
-				.getName(), ExtractionMode.COMPLETE, symbolTable);
+		QualifiedType qualifiedTypeVertex = getQualifiedType(
+				superType.getName(), ExtractionMode.COMPLETE, symbolTable);
 		IsSuperClassOf isSuperClassOfEdge = null;
 		if (typeVertex instanceof ClassDefinition) {
 			isSuperClassOfEdge = symbolTable.getGraph()
@@ -977,8 +978,9 @@ public class ResolverUtilities {
 							constructorDefinitionVertex), -1);
 		}
 		// @TODO: Annotations, TypeParameters
-		symbolTable.addConstructorDefinition(containingType
-				.get_fullyQualifiedName(), constructorDefinitionVertex);
+		symbolTable.addConstructorDefinition(
+				containingType.get_fullyQualifiedName(),
+				constructorDefinitionVertex);
 		return constructorDefinitionVertex;
 	}
 
@@ -1033,8 +1035,8 @@ public class ResolverUtilities {
 				symbolTable);
 		createAndAttachModifiers(method.getModifiers(),
 				methodDeclarationVertex, symbolTable);
-		TypeSpecification returnType = createTypeSpecification(method
-				.getReturnType(), symbolTable, mode);
+		TypeSpecification returnType = createTypeSpecification(
+				method.getReturnType(), symbolTable, mode);
 		Utilities.fillEdgeAttributesWithGivenValue(programGraph
 				.createIsReturnTypeOf(returnType, methodDeclarationVertex), -1);
 		TypeSpecification currentExceptionType = null;
@@ -1068,8 +1070,9 @@ public class ResolverUtilities {
 							methodDeclarationVertex), -1);
 		}
 		// @TODO: Annotations, TypeParameters
-		symbolTable.addMethodDeclaration(containingType
-				.get_fullyQualifiedName(), methodDeclarationVertex);
+		symbolTable.addMethodDeclaration(
+				containingType.get_fullyQualifiedName(),
+				methodDeclarationVertex);
 		return methodDeclarationVertex;
 	}
 
@@ -1107,8 +1110,9 @@ public class ResolverUtilities {
 		EnumConstant enumConstantVertex = programGraph.createEnumConstant();
 		createAndAttachIdentifier(enumConstant.toString(), enumConstantVertex,
 				symbolTable);
-		Utilities.fillEdgeAttributesWithGivenValue(programGraph
-				.createIsMemberOf(enumConstantVertex, typeBlock), -1);
+		Utilities.fillEdgeAttributesWithGivenValue(
+				programGraph.createIsMemberOf(enumConstantVertex, typeBlock),
+				-1);
 		symbolTable.addEnumConstant(containingType.get_fullyQualifiedName(),
 				enumConstantVertex);
 		return enumConstantVertex;
@@ -1165,14 +1169,15 @@ public class ResolverUtilities {
 						variableDeclarationVertex), -1);
 		createAndAttachModifiers(field.getModifiers(),
 				variableDeclarationVertex, symbolTable);
-		TypeSpecification variableType = createTypeSpecification(field
-				.getType(), symbolTable, mode);
+		TypeSpecification variableType = createTypeSpecification(
+				field.getType(), symbolTable, mode);
 		Utilities.fillEdgeAttributesWithGivenValue(
 				programGraph.createIsTypeOfVariable(variableType,
 						variableDeclarationVertex), -1);
 		// @TODO: Annotations
-		symbolTable.addVariableDeclaration(containingType
-				.get_fullyQualifiedName(), variableDeclarationVertex);
+		symbolTable.addVariableDeclaration(
+				containingType.get_fullyQualifiedName(),
+				variableDeclarationVertex);
 		return variableDeclarationVertex;
 	}
 

@@ -25,7 +25,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.ObjectCreation;
 import de.uni_koblenz.jgralab.grabaja.java5schema.PackageImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Type;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
-import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
+import de.uni_koblenz.jgralab.impl.ConsoleProgressFunction;
 
 /**
  * Resolves fields accesses to fields, variables and enum constants which could
@@ -46,7 +46,7 @@ public class FieldResolver extends Resolver {
 	 * field resolving is triggered during one of the other resolvers
 	 * execution).
 	 */
-	private ProgressFunctionImpl fieldProgressBar = null;
+	private ConsoleProgressFunction fieldProgressBar = null;
 
 	/**
 	 * Instantiates and initializes an instance.
@@ -78,14 +78,17 @@ public class FieldResolver extends Resolver {
 	 */
 	public boolean resolveFields(ExtractionMode mode) {
 		boolean result = true;
-		if ((symbolTable != null) && (symbolTable.getFieldAccessVertices() != null)) {
-			fieldProgressBar = new ProgressFunctionImpl(60);
+		if ((symbolTable != null)
+				&& (symbolTable.getFieldAccessVertices() != null)) {
+			fieldProgressBar = new ConsoleProgressFunction();
 			fieldProgressBar.init(symbolTable.amountOfFieldAccesses());
-			Iterator<FieldAccess> fieldAccessIterator = symbolTable.getFieldAccessVertices().iterator();
+			Iterator<FieldAccess> fieldAccessIterator = symbolTable
+					.getFieldAccessVertices().iterator();
 			while (fieldAccessIterator.hasNext()) {
 				FieldAccess currentFieldAccess = fieldAccessIterator.next();
-				if (!resolveSingleField(mode, currentFieldAccess))
+				if (!resolveSingleField(mode, currentFieldAccess)) {
 					result = false;
+				}
 			}
 			fieldProgressBar.finished();
 			fieldProgressBar = null;
@@ -114,7 +117,8 @@ public class FieldResolver extends Resolver {
 		}
 		String fieldName = ((Identifier) fieldAccess.getFirstIsFieldNameOf(
 				EdgeDirection.IN).getAlpha()).get_name();
-		JavaVertex scope = (JavaVertex) symbolTable.getScopeOfFieldAccess(fieldAccess);
+		JavaVertex scope = (JavaVertex) symbolTable
+				.getScopeOfFieldAccess(fieldAccess);
 		if (fieldAccess.getFirstIsFieldContainerOf(EdgeDirection.IN) == null) {
 			if (fieldName.equals("this")) {
 				Type enclosingType = ResolverUtilities
@@ -140,7 +144,7 @@ public class FieldResolver extends Resolver {
 					} catch (Exception e) {
 						return finishUnresolvedFieldAccess(fieldAccess);
 					} // a superclass has been defined, but could not be
-					// resolved, there is nothing left to be done here!
+						// resolved, there is nothing left to be done here!
 					if (superClass == null) {
 						// There is no explicit superclass, so set
 						// java.lang.Object as superClass by reflection (or
@@ -187,8 +191,8 @@ public class FieldResolver extends Resolver {
 							} catch (Exception e) {
 								currentSuperClass = null;
 							} // a superclass has been defined, but could not be
-							// resolved, there is nothing left to be done
-							// here!
+								// resolved, there is nothing left to be done
+								// here!
 							if (currentSuperClass != null) {
 								variableInSuperClass = symbolTable
 										.getVariableDeclaration(
@@ -506,8 +510,8 @@ public class FieldResolver extends Resolver {
 		FieldDeclaration accessedField = symbolTable.getVariableDeclaration(
 				containingType.get_fullyQualifiedName(), fieldName);
 		if (accessedField == null) {
-			accessedField = symbolTable.getEnumConstant(containingType
-					.get_fullyQualifiedName(), fieldName);
+			accessedField = symbolTable.getEnumConstant(
+					containingType.get_fullyQualifiedName(), fieldName);
 		}
 		if ((accessedField == null)
 				&& (containingType instanceof ClassDefinition)) {
@@ -519,7 +523,7 @@ public class FieldResolver extends Resolver {
 				} catch (Exception e) {
 					return finishUnresolvedFieldAccess(fieldAccess);
 				} // a superclass has been defined, but could not be resolved,
-				// there is nothing left to be done here!
+					// there is nothing left to be done here!
 				if (currentContainerTypeSuperClass != null) {
 					accessedField = symbolTable.getVariableDeclaration(
 							currentContainerTypeSuperClass

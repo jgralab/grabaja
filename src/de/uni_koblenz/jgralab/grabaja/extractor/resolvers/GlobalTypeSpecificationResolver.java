@@ -18,7 +18,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.QualifiedType;
 import de.uni_koblenz.jgralab.grabaja.java5schema.SourceUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TranslationUnit;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Type;
-import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
+import de.uni_koblenz.jgralab.impl.ConsoleProgressFunction;
 
 /**
  * Resolves type specifications through a global approach. Must be used after
@@ -55,7 +55,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 				.getScopesOfUnresolvedTypeSpecifications();
 		Iterator<Vertex> iterator = keySet.iterator();
 		int counter = 0;
-		ProgressFunctionImpl progressBar = new ProgressFunctionImpl(60);
+		ConsoleProgressFunction progressBar = new ConsoleProgressFunction();
 		progressBar.init(symbolTable.getAmountOfUnresolvedTypeSpecifications());
 		while (iterator.hasNext()) {
 			Vertex scope = iterator.next();
@@ -107,8 +107,8 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 			return false;
 		}
 		if (symbolTable.hasTypeDefinition(fullyQualifiedName)) {
-			attachToType(qualifiedTypeVertex, symbolTable
-					.getTypeDefinition(fullyQualifiedName));
+			attachToType(qualifiedTypeVertex,
+					symbolTable.getTypeDefinition(fullyQualifiedName));
 			symbolTable.decreaseAmountOfUnresolvedTypeSpecificationsBy(1);
 			return true;
 		}

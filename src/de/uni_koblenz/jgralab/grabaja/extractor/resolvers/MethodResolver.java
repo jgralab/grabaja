@@ -54,7 +54,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.TypeParameterUsage;
 import de.uni_koblenz.jgralab.grabaja.java5schema.TypeSpecification;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.VariableLengthDeclaration;
-import de.uni_koblenz.jgralab.impl.ProgressFunctionImpl;
+import de.uni_koblenz.jgralab.impl.ConsoleProgressFunction;
 
 /**
  * Resolves invocations of methods and constructors.
@@ -74,7 +74,7 @@ public class MethodResolver extends Resolver {
 	 * invocation resolving is triggered during one of the other resolvers
 	 * execution).
 	 */
-	private ProgressFunctionImpl methodProgressBar = null;
+	private ConsoleProgressFunction methodProgressBar = null;
 
 	/**
 	 * Instantiates and initializes an instance.
@@ -108,7 +108,7 @@ public class MethodResolver extends Resolver {
 		boolean result = true;
 		if ((symbolTable != null)
 				&& (symbolTable.getMethodInvocations() != null)) {
-			methodProgressBar = new ProgressFunctionImpl(60);
+			methodProgressBar = new ConsoleProgressFunction();
 			methodProgressBar.init(symbolTable.amountOfMethodInvocations());
 			methodProgressBar.progress(symbolTable
 					.getAmountOfMethodInvocationsTreatedByResolver()
@@ -118,8 +118,9 @@ public class MethodResolver extends Resolver {
 			while (methodInvocationIterator.hasNext()) {
 				MethodInvocation currentMethodInvocation = methodInvocationIterator
 						.next();
-				if (!resolveSingleMethod(mode, currentMethodInvocation))
+				if (!resolveSingleMethod(mode, currentMethodInvocation)) {
 					result = false;
+				}
 			}
 			methodProgressBar.finished();
 			methodProgressBar = null;
@@ -136,7 +137,8 @@ public class MethodResolver extends Resolver {
 	 *            The invocation to be resolved.
 	 * @return true if the method / constructor could be resolved, false if not.
 	 */
-	protected boolean resolveSingleMethod(ExtractionMode mode, MethodInvocation methodInvocation) {
+	protected boolean resolveSingleMethod(ExtractionMode mode,
+			MethodInvocation methodInvocation) {
 		if (methodInvocation == null) {
 			return false;
 		}
@@ -221,31 +223,36 @@ public class MethodResolver extends Resolver {
 				.getFirstIsNameOfInvokedMethod(EdgeDirection.IN).getAlpha())
 				.get_name();
 		if (methodInvocation.getFirstIsMethodContainerOf(EdgeDirection.IN) == null) {
-			if (methodName != null && methodName.equals("this")) {
-				ClassDefinition enclosingClass = ResolverUtilities.getEnclosingClassFromScope(scope, symbolTable);
-				if (enclosingClass == null)
-					return finishUnresolvedMethodInvocation(methodInvocation);
-				Member methodDeclarationVertex = findMatchingDeclaration(
-						methodInvocation, methodInvocationArguments,
-						enclosingClass.get_fullyQualifiedName(), enclosingClass.get_name(),
-						InvocationSearchMode.constructorsOnly, mode);
-				if (methodDeclarationVertex == null)
-					return finishUnresolvedMethodInvocation(methodInvocation);
-				return linkMethodInvocationToDeclaration(methodInvocation,
-						methodDeclarationVertex, scope, methodName);
-			}
-			else if(methodName != null && methodName.equals("super")) {
+			if ((methodName != null) && methodName.equals("this")) {
 				ClassDefinition enclosingClass = ResolverUtilities
 						.getEnclosingClassFromScope(scope, symbolTable);
-				if (enclosingClass == null)
+				if (enclosingClass == null) {
 					return finishUnresolvedMethodInvocation(methodInvocation);
+				}
+				Member methodDeclarationVertex = findMatchingDeclaration(
+						methodInvocation, methodInvocationArguments,
+						enclosingClass.get_fullyQualifiedName(),
+						enclosingClass.get_name(),
+						InvocationSearchMode.constructorsOnly, mode);
+				if (methodDeclarationVertex == null) {
+					return finishUnresolvedMethodInvocation(methodInvocation);
+				}
+				return linkMethodInvocationToDeclaration(methodInvocation,
+						methodDeclarationVertex, scope, methodName);
+			} else if ((methodName != null) && methodName.equals("super")) {
+				ClassDefinition enclosingClass = ResolverUtilities
+						.getEnclosingClassFromScope(scope, symbolTable);
+				if (enclosingClass == null) {
+					return finishUnresolvedMethodInvocation(methodInvocation);
+				}
 				ClassDefinition superClass = null;
 				try {
-					superClass = ResolverUtilities.getSuperClass(enclosingClass);
+					superClass = ResolverUtilities
+							.getSuperClass(enclosingClass);
 				} catch (Exception e) {
 					return finishUnresolvedMethodInvocation(methodInvocation);
 				} // a superclass has been defined, but could not be resolved,
-				// there is nothing left to be done here!
+					// there is nothing left to be done here!
 				if (superClass == null) {
 					// There is no explicit superclass, so set java.lang.Object
 					// as superClass by reflection (or existing vertex)...
@@ -262,8 +269,8 @@ public class MethodResolver extends Resolver {
 				if (superClass != null) {
 					Member methodDeclarationVertex = findMatchingDeclaration(
 							methodInvocation, methodInvocationArguments,
-							superClass.get_fullyQualifiedName(), superClass
-									.get_name(),
+							superClass.get_fullyQualifiedName(),
+							superClass.get_name(),
 							InvocationSearchMode.constructorsOnly, mode);
 					if ((methodDeclarationVertex == null)
 							&& (mode == ExtractionMode.EAGER)
@@ -273,15 +280,15 @@ public class MethodResolver extends Resolver {
 								superClass, superClass.get_name(),
 								InvocationSearchMode.constructorsOnly, mode);
 					}
-					if (methodDeclarationVertex == null)
+					if (methodDeclarationVertex == null) {
 						return finishUnresolvedMethodInvocation(methodInvocation);
+					}
 					return linkMethodInvocationToDeclaration(methodInvocation,
 							methodDeclarationVertex, scope, methodName);
-				}
-				else
+				} else {
 					return finishUnresolvedMethodInvocation(methodInvocation);
-			}
-			else {
+				}
+			} else {
 				Vertex currentScope = scope;
 				Type currentEnclosingType = null;
 				Member methodDeclarationVertex = null;
@@ -312,13 +319,14 @@ public class MethodResolver extends Resolver {
 							} catch (Exception e) {
 								currentSuperClass = null;
 							} // a superclass has been defined, but could not be
-							// resolved, there is nothing left to be done
-							// here!
+								// resolved, there is nothing left to be done
+								// here!
 							if (currentSuperClass != null) {
 								methodDeclarationVertex = findMatchingDeclaration(
 										methodInvocation,
 										methodInvocationArguments,
-										currentSuperClass.get_fullyQualifiedName(),
+										currentSuperClass
+												.get_fullyQualifiedName(),
 										methodName,
 										InvocationSearchMode.methodsOnly, mode);
 								if ((methodDeclarationVertex == null)
@@ -450,8 +458,8 @@ public class MethodResolver extends Resolver {
 			ArrayList<Expression> methodInvocationArguments,
 			ExtractionMode mode, Vertex scope) {
 		Member invokedMethod = findMatchingDeclaration(methodInvocation,
-				methodInvocationArguments, containingType
-						.get_fullyQualifiedName(), methodName,
+				methodInvocationArguments,
+				containingType.get_fullyQualifiedName(), methodName,
 				InvocationSearchMode.methodsOnly, mode);
 		if ((invokedMethod == null)
 				&& (containingType instanceof ClassDefinition)) {
@@ -463,7 +471,7 @@ public class MethodResolver extends Resolver {
 				} catch (Exception e) {
 					return finishUnresolvedMethodInvocation(methodInvocation);
 				} // a superclass has been defined, but could not be resolved,
-				// there is nothing left to be done here!
+					// there is nothing left to be done here!
 				if (currentContainerTypeSuperClass != null) {
 					invokedMethod = findMatchingDeclaration(methodInvocation,
 							methodInvocationArguments,
@@ -1103,16 +1111,18 @@ public class MethodResolver extends Resolver {
 					.getAlpha() instanceof BuiltInType)
 					&& (arrayType.getFirstIsElementTypeOf(EdgeDirection.IN)
 							.getAlpha() instanceof BuiltInType)) {
-				return isCompatibleBuiltInType((BuiltInType) arrayType
-						.getFirstIsElementTypeOf(EdgeDirection.IN).getAlpha(),
+				return isCompatibleBuiltInType(
+						(BuiltInType) arrayType.getFirstIsElementTypeOf(
+								EdgeDirection.IN).getAlpha(),
 						((BuiltInType) typeToMatch.getFirstIsElementTypeOf(
 								EdgeDirection.IN).getAlpha()).get_type());
 			} else if ((typeToMatch.getFirstIsElementTypeOf(EdgeDirection.IN)
 					.getAlpha() instanceof QualifiedType)
 					&& (arrayType.getFirstIsElementTypeOf(EdgeDirection.IN)
 							.getAlpha() instanceof QualifiedType)) {
-				return isCompatibleQualifiedType((QualifiedType) arrayType
-						.getFirstIsElementTypeOf(EdgeDirection.IN).getAlpha(),
+				return isCompatibleQualifiedType(
+						(QualifiedType) arrayType.getFirstIsElementTypeOf(
+								EdgeDirection.IN).getAlpha(),
 						(QualifiedType) typeToMatch.getFirstIsElementTypeOf(
 								EdgeDirection.IN).getAlpha());
 			}
@@ -1493,7 +1503,7 @@ public class MethodResolver extends Resolver {
 					} catch (Exception e) {
 						return false;
 					} // a superclass has been defined, but could not be
-					// resolved, there is nothing left to be done here!
+						// resolved, there is nothing left to be done here!
 					if (currentSuperClass != null) {
 						if (currentSuperClass == typeDefinitionToMatch) {
 							return true;

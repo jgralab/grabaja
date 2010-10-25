@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import antlr.CommonAST;
 import antlr.RecognitionException;
 import antlr.collections.AST;
-import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphException;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
@@ -342,7 +341,7 @@ public class GraphBuilder {
 	 * @throws Exception
 	 *             TODO
 	 */
-	public Graph getGraph() throws Exception {
+	public Java5 getGraph() throws Exception {
 		if (this.programGraph != null) {
 			return this.programGraph;
 		} else {

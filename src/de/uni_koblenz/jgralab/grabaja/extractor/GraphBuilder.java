@@ -86,7 +86,7 @@ public class GraphBuilder {
 	 * 
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected void initializeGraph() throws Exception {
 		try {
@@ -112,7 +112,7 @@ public class GraphBuilder {
 	 * @param fileList
 	 *            A Vector with the names of the files to be parsed, each can be
 	 *            relative or absolute.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void parseFiles(Vector<String> fileList) throws Exception {
 		initializeGraph();
@@ -121,7 +121,7 @@ public class GraphBuilder {
 		treeWalker.setProgramGraph(programGraph);
 		treeWalker.setProgramVertex(programVertex);
 		logger.info(fileList.size() + " file(s) to parse.");
-		//TODO Next two lines only work if logger has a handler, this has to be outsourced 
+		//TODO Next two lines only work if logger has a handler, this has to be outsourced
 		//Handler[] handlersOfLogger = logger.getHandlers();
 		//handlersOfLogger[0].setLevel(Level.OFF);
 		ProgressFunctionImpl progressBar = new ProgressFunctionImpl(60);
@@ -129,7 +129,7 @@ public class GraphBuilder {
 		int parsingSuccessCount = 0;
 		int parsingFailedCount = 0;
 		// Collect comments found in a file.
-		ArrayList<CommentClass> comments = new ArrayList<CommentClass>(); 
+		ArrayList<CommentClass> comments = new ArrayList<CommentClass>();
 		LocalTypeSpecificationResolver localResolver = new LocalTypeSpecificationResolver(symbolTable);
 		for (int i = 0; i < fileList.size(); i++) {
 			CommonAST ast = parseFile(fileList.get(i), comments);
@@ -146,8 +146,9 @@ public class GraphBuilder {
 			}
 			comments.clear(); // Clear comments before parsing next file.
 			symbolTable.nextFile(); // Clear type information of just parsed file
-			if (i % progressBar.getUpdateInterval() == 0)
+			if (i % progressBar.getUpdateInterval() == 0) {
 				progressBar.progress(1);
+			}
 		}
 		progressBar.finished();
 	}
@@ -165,6 +166,7 @@ public class GraphBuilder {
 			// Create the special shared input state that is needed in order to
 			// annotate tokens with offset.
 			// @TODO make it a singleton
+			System.out.println("Parsing "+fileName);
 			LexerSharedInputStateAdapter inputState = new LexerSharedInputStateAdapter(fileName);
 			// Create a lexer which knows the lexer shared input state with
 			// offset .
@@ -266,12 +268,12 @@ public class GraphBuilder {
 			if (typeSpecificationResolver.resolveTypeSpecifications(mode) == false) {
 				logger.warning(symbolTable.getAmountOfUnresolvedTypeSpecifications()
 					+ " type specification(s) could not be resolved.");
-			}
-			else
+			} else {
 				logger.info("Every type specification has been resolved.");
-		}
-		else
+			}
+		} else {
 			logger.info("No type specifications have to be resolved.");
+		}
 
 		if (symbolTable.amountOfFieldAccesses() > 0) {
 			System.out.println(symbolTable.amountOfFieldAccesses()
@@ -279,12 +281,12 @@ public class GraphBuilder {
 			if (fieldResolver.resolveFields(mode) == false) {
 				logger.warning(symbolTable.getAmountOfUnresolvedFieldAccesses()
 						+ " field access(es) could not be resolved.");
-			}
-			else
+			} else {
 				logger.info("Every field access has been resolved.");
-		}
-		else
+			}
+		} else {
 			logger.info("No field accesses have to be resolved.");
+		}
 
 		if (symbolTable.amountOfMethodInvocations() > 0) {
 			System.out.println(symbolTable.amountOfMethodInvocations()
@@ -293,12 +295,12 @@ public class GraphBuilder {
 				logger.warning(symbolTable
 						.getAmountOfUnresolvedMethodInvocations()
 						+ " method invocation(s) could not be resolved.");
-			}
-			else
+			} else {
 				logger.info("Every method invocation has been resolved.");
-		}
-		else
+			}
+		} else {
 			logger.info("No method invocations have to be resolved.");
+		}
 	}
 
 	/**
@@ -326,9 +328,10 @@ public class GraphBuilder {
 	 * @throws Exception TODO
 	 */
 	public Graph getGraph() throws Exception{
-		if(this.programGraph != null)
+		if(this.programGraph != null) {
 			return this.programGraph;
-		else
+		} else {
 			throw new Exception("Run parseFiles() first.");
+		}
 	}
 }

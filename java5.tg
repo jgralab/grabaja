@@ -417,6 +417,10 @@ EdgeClass IsTypeOfVariable : IsTypeOf from TypeSpecification( 1, 1 ) to Variable
 EdgeClass IsVariableNameOf : AttributedEdge from Identifier( 1, * ) to VariableDeclaration( 1, 1 ) ;
 EdgeClass IsInitializerOfVariable : IsStatementOf from Expression ( 0, 1 ) to VariableDeclaration( 1, 1 ) ;
 
+VertexClass ClassLiteral : Expression;
+EdgeClass IsSpecifiedTypeOf : AttributedEdge from TypeSpecification( 0, 1 ) to ClassLiteral( 0, 1 ) ;
+
+
 
 ////////////// Activity-Part //////////////////////////////////////////////////////////////////////////////
 

@@ -2498,7 +2498,7 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                     |
                     accessToMetaClass:"class"{
                         if( parentVertex instanceof MethodInvocation ){
-							// quick fix 2009-03-05 by ultbreit: replaced accesToMetaClass by currentVertex on cast to Expression anf fieldName with accessToMetaClass in next line as it seems to be consistent with all other productions
+							// quick fix 2009-03-05 by ultbreit: replaced accesToMetaClass by currentVertex on cast to Expression and fieldName with accessToMetaClass in next line as it seems to be consistent with all other productions
                             identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST );
                             currentVertex = parentVertex;
                         }
@@ -2530,7 +2530,17 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                 )
                 |
                 builtInType
-                ( "class" )?
+                ( accessToMetaClass2:"class" )?{
+					ClassLiteral classLiteralVertex = this.programGraph.createClassLiteral();
+					IsSpecifiedTypeOf edge = this.programGraph.createIsSpecifiedTypeOf((BuiltInType)currentVertex, classLiteralVertex);
+					
+					Utilities.fillEdgeAttributesFromASTDifference(edge,	currentBeginAST, currentEndAST);
+                    //identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass2, currentBeginAST, currentEndAST );
+					
+                    //currentVertex = parentVertex;
+					currentEndAST = accessToMetaClass;
+					currentVertex = classLiteralVertex;
+				}
             )
         )
         |

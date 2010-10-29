@@ -2538,7 +2538,7 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                     //identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass2, currentBeginAST, currentEndAST );
 					
                     //currentVertex = parentVertex;
-					currentEndAST = accessToMetaClass;
+					currentEndAST = accessToMetaClass2;
 					currentVertex = classLiteralVertex;
 				}
             )

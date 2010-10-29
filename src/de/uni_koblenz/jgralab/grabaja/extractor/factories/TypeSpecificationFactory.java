@@ -29,7 +29,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 public class TypeSpecificationFactory extends SubgraphFactory {
 
 	/**
-	 * Stores builtin type vertices already used.
+	 * Stores builtin type vertices already in use.
 	 */
 	HashMap<BuiltInTypes, BuiltInType> builtInTypes;
 

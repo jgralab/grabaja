@@ -308,10 +308,7 @@ public class SymbolTable {
 	private Null nullVertex;
 
 	public boolean hasNull() {
-		if (nullVertex == null) {
-			return false;
-		}
-		return true;
+		return nullVertex != null;
 	}
 
 	public void setNull(Null nullVertex) {
@@ -755,6 +752,11 @@ public class SymbolTable {
 	public void addFieldAccess(FieldAccess fieldAccess) {
 		fieldAccessMap.put(fieldAccess, Boolean.valueOf(false));
 	}
+	
+	public void removeFieldAccess(FieldAccess fieldAccess){
+		this.fieldAccessMap.remove(fieldAccess);
+		this.scopesOfFieldAccessVertices.remove(fieldAccess);
+	}
 
 	/**
 	 * @return All field accesses that have not been resolved locally.
@@ -790,6 +792,8 @@ public class SymbolTable {
 		}
 		return null;
 	}
+	
+	
 
 	/**
 	 * A structure holding references to the scopes of field access vertices.
@@ -1434,10 +1438,8 @@ public class SymbolTable {
 	 * @param qualifiedTypeVertex
 	 *            A vertex representing a type specification.
 	 */
-	public void addUnresolvedTypeSpecification(Vertex scope,
-			QualifiedType qualifiedTypeVertex) {
-		if (!unresolvedTypeSpecificationsInCurrentlyParsedFile
-				.containsKey(scope)) {
+	public void addUnresolvedTypeSpecification(Vertex scope,QualifiedType qualifiedTypeVertex) {
+		if (!unresolvedTypeSpecificationsInCurrentlyParsedFile.containsKey(scope)) {
 			ArrayList<QualifiedType> qualifiedTypes = new ArrayList<QualifiedType>();
 			qualifiedTypes.add(qualifiedTypeVertex);
 			unresolvedTypeSpecificationsInCurrentlyParsedFile.put(scope,

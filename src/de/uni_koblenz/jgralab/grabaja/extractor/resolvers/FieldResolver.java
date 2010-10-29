@@ -78,12 +78,10 @@ public class FieldResolver extends Resolver {
 	 */
 	public boolean resolveFields(ExtractionMode mode) {
 		boolean result = true;
-		if ((symbolTable != null)
-				&& (symbolTable.getFieldAccessVertices() != null)) {
+		if ((symbolTable != null) && (symbolTable.getFieldAccessVertices() != null)) {
 			fieldProgressBar = new ConsoleProgressFunction();
 			fieldProgressBar.init(symbolTable.amountOfFieldAccesses());
-			Iterator<FieldAccess> fieldAccessIterator = symbolTable
-					.getFieldAccessVertices().iterator();
+			Iterator<FieldAccess> fieldAccessIterator = symbolTable.getFieldAccessVertices().iterator();
 			while (fieldAccessIterator.hasNext()) {
 				FieldAccess currentFieldAccess = fieldAccessIterator.next();
 				if (!resolveSingleField(mode, currentFieldAccess)) {

@@ -2497,12 +2497,33 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                     }
                     |
                     accessToMetaClass:"class"{
+                    System.out.println(currentVertex.getClass().toString());
+                    	if( currentVertex instanceof FieldAccess ){
+                    		FieldAccess fieldAccessVertex = (FieldAccess)currentVertex;
+                    		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex.getFirstIsFieldNameOf(EdgeDirection.IN);
+                    		Identifier identifierVertex = (Identifier)isFieldNameOfEdge.getAlpha();
+                    		String name = identifierVertex.get_name();
+                    		System.out.println("Name of identifier that will be deleted: " + name);
+                    		//identifierVertex.delete();
+                    		//this.symbolTable.removeFieldAccess(fieldAccessVertex);
+                    		//fieldAccessVertex.delete();
+                    		QualifiedType qualifiedTypeVertex = this.programGraph.createQualifiedType();
+                    		qualifiedTypeVertex.set_fullyQualifiedName(name);
+                    		this.symbolTable.addUnresolvedTypeSpecification(currentScope, qualifiedTypeVertex);
+                    		ClassLiteral classLiteralVertex = this.programGraph.createClassLiteral();
+                    		IsSpecifiedTypeOf edge = this.programGraph.createIsSpecifiedTypeOf(qualifiedTypeVertex, classLiteralVertex);
+                    		Utilities.fillEdgeAttributesFromASTDifference(edge,	currentBeginAST, currentEndAST);
+							currentVertex = classLiteralVertex;
+                    	}
+                    	/*
                         if( parentVertex instanceof MethodInvocation ){
 							// quick fix 2009-03-05 by ultbreit: replaced accesToMetaClass by currentVertex on cast to Expression and fieldName with accessToMetaClass in next line as it seems to be consistent with all other productions
                             identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST );
                             currentVertex = parentVertex;
                         }
-                        else currentVertex = fieldFactory.createFieldAccess( ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST, currentScope );
+                        else 
+                        	currentVertex = fieldFactory.createFieldAccess( ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST, currentScope );
+                        */
                         currentEndAST = accessToMetaClass;
                     }
                     |

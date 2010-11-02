@@ -44,7 +44,7 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	 * 
 	 * @param mode
 	 *            Extraction mode to use.
-	 * @return true if all type specifications were succesfully resolved, false
+	 * @return true if all type specifications were successfully resolved, false
 	 *         otherwise.
 	 */
 	public boolean resolveTypeSpecifications(ExtractionMode mode) {

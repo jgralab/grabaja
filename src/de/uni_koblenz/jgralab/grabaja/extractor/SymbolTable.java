@@ -535,10 +535,8 @@ public class SymbolTable {
 	 *            The field access element to be added.
 	 */
 	public void addAccessOfUndeclaredInternalVariable(FieldAccess accessOfVariable) {
-		System.out.println("ADDING: " + accessOfVariable);
-		if (accessOfVariable != null) {
+		if (accessOfVariable != null)
 			accessOfUndeclaredInternalVariables.add(accessOfVariable);
-		}
 	}
 
 	/**
@@ -750,14 +748,22 @@ public class SymbolTable {
 	 *            The field access vertex.
 	 */
 	public void addFieldAccess(FieldAccess fieldAccess) {
-		System.out.println("Adding FieldAccess " + fieldAccess.toString());
-		fieldAccessMap.put(fieldAccess, Boolean.valueOf(false));
+		this.fieldAccessMap.put(fieldAccess, Boolean.valueOf(false));
 	}
 	
+	/**
+	 * Removes a field access from symbol table.
+	 *
+	 * @param fieldAccess
+	 *			  Field access vertex to remove.
+	 */
 	public void removeFieldAccess(FieldAccess fieldAccess){
-		System.out.println("Removing FieldAccess " + fieldAccess.toString());
 		this.fieldAccessMap.remove(fieldAccess);
 		this.scopesOfFieldAccessVertices.remove(fieldAccess);
+		this.removeFromUndeclaredInternalVariables(fieldAccess);
+	}
+	
+	private void removeFromUndeclaredInternalVariables(FieldAccess fieldAccess){
 		if(this.accessOfUndeclaredInternalVariables.contains(fieldAccess)){
 			int index = this.accessOfUndeclaredInternalVariables.indexOf(fieldAccess);
 			this.accessOfUndeclaredInternalVariables.remove(index);

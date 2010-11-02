@@ -526,22 +526,13 @@ type{ Vertex parentVertex = currentVertex; }
 			symbolTable.addUnresolvedTypeSpecification( currentScope, qualifiedTypeVertex );
            	if( !typeSpecificationFactory.attachTypeSpecification( qualifiedTypeVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = classType;
             currentVertex = qualifiedTypeVertex;
-            // System.out.println("classType");
         }
         |
         primitiveType:builtInType{
-            /*
-            if(currentDimensionCount > 0 )
-            	System.out.println("type is an array with " + currentDimensionCount + " dimensions" );
-            else
-            	System.out.println("type is no array");
-            */
-            //
             // added on 2009-03-03 as quick fix by ultbreit
             if(currentDimensionCount == 0) //check if it is an array type specification or else it is attached twice as IsReturnTypeOf
             // end of quick fix
             	if( !typeSpecificationFactory.attachTypeSpecification( ( TypeSpecification )currentVertex, parentVertex, currentBeginAST, currentEndAST ) ) currentAST = primitiveType;
-			//System.out.println("builtInType");
         }
     )
     ;
@@ -1186,7 +1177,6 @@ methodDef{
             currentVertex = blockVertexOfMethod;
          }
          slist { // statement list
-             //   System.out.println("MethodDeclaration is a MethodDefinition!");
                 MethodDeclaration old = methodDefinitionVertex;
                 methodDefinitionVertex = programGraph.createMethodDefinition();
                 Edge curr = old.getFirstEdge();
@@ -2478,7 +2468,6 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                         if( parentVertex instanceof MethodInvocation &&
                         	((( MethodInvocation )parentVertex).getFirstIsNameOfInvokedMethod() == null) //2009-03-17 quick fix by ultbreit: added check for edge existence
                           ){
-                            //System.out.println("Identifier --> MethodInvocation");
                             identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, fieldName, currentBeginAST, currentEndAST );
                             currentVertex = parentVertex;
                         }
@@ -2570,11 +2559,7 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                 ( accessToMetaClass2:"class" )?{
 					ClassLiteral classLiteralVertex = this.programGraph.createClassLiteral();
 					IsSpecifiedTypeOf edge = this.programGraph.createIsSpecifiedTypeOf((BuiltInType)currentVertex, classLiteralVertex);
-
 					Utilities.fillEdgeAttributesFromASTDifference(edge,	currentBeginAST, currentEndAST);
-                    //identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass2, currentBeginAST, currentEndAST );
-
-                    //currentVertex = parentVertex;
 					currentEndAST = accessToMetaClass2;
 					currentVertex = classLiteralVertex;
 				}
@@ -2810,7 +2795,6 @@ newExpression{
                 if( isNameOfEdge != null ) {
                     Identifier ident = ( Identifier )isNameOfEdge.getAlpha();
                 	expressionFactory.attachNameOfInvokedMethod( ident, methodInvocationVertex, typeEndAST, typeEndAST );
-                    System.out.println("attached " + ident.get_name());
                 }
                 currentVertex = objectCreationVertex;
                 currentEndAST = ccallEnd;

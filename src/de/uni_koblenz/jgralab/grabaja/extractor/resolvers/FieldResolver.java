@@ -84,7 +84,6 @@ public class FieldResolver extends Resolver {
 			Iterator<FieldAccess> fieldAccessIterator = symbolTable.getFieldAccessVertices().iterator();
 			while (fieldAccessIterator.hasNext()) {
 				FieldAccess currentFieldAccess = fieldAccessIterator.next();
-				System.out.println("RESOLVING: " + currentFieldAccess.toString());
 				if (!resolveSingleField(mode, currentFieldAccess)) {
 					result = false;
 				}

@@ -167,7 +167,6 @@ public class GraphBuilder {
 			// Create the special shared input state that is needed in order to
 			// annotate tokens with offset.
 			// @TODO make it a singleton
-			System.out.println("Parsing " + fileName);
 			LexerSharedInputStateAdapter inputState = new LexerSharedInputStateAdapter(
 					fileName);
 			// Create a lexer which knows the lexer shared input state with

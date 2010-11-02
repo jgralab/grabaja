@@ -2,9 +2,13 @@ header{
 package de.uni_koblenz.jgralab.grabaja.extractor.parser;
 
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Iterator;
 import de.uni_koblenz.jgralab.grabaja.java5schema.*;
+import de.uni_koblenz.jgralab.grabaja.extractor.resolvers.ResolverUtilities;
 import de.uni_koblenz.jgralab.grabaja.extractor.factories.*;
 import de.uni_koblenz.jgralab.grabaja.extractor.*;
+
 import de.uni_koblenz.jgralab.*;
 import antlr.*;
 }
@@ -2497,20 +2501,32 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                     }
                     |
                     accessToMetaClass:"class"{
-                    System.out.println(currentVertex.getClass().toString());
                     	if( currentVertex instanceof FieldAccess ){
+							ArrayList<FieldAccess> verticesToDelete = new ArrayList<FieldAccess>();
                     		FieldAccess fieldAccessVertex = (FieldAccess)currentVertex;
-                    		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex.getFirstIsFieldNameOf(EdgeDirection.IN);
-                    		Identifier identifierVertex = (Identifier)isFieldNameOfEdge.getAlpha();
-                    		String name = identifierVertex.get_name();
-                    		System.out.println("Name of identifier that will be deleted: " + name);
-                    		//identifierVertex.delete();
-                    		//this.symbolTable.removeFieldAccess(fieldAccessVertex);
-                    		//fieldAccessVertex.delete();
+                    		verticesToDelete.add(fieldAccessVertex);
+                    		String name = ResolverUtilities.getNameOfAccessedField(fieldAccessVertex);
+                    		this.symbolTable.removeFieldAccess(fieldAccessVertex);
+                    		IsFieldContainerOf isFieldContainerOfEdge = fieldAccessVertex.getFirstIsFieldContainerOf(EdgeDirection.IN);
+
+                    		while(isFieldContainerOfEdge != null){
+								FieldAccess containerVertex = (FieldAccess)isFieldContainerOfEdge.getAlpha();
+								name = ResolverUtilities.getNameOfAccessedField(containerVertex) + "." + name;
+								this.symbolTable.removeFieldAccess(containerVertex);
+								isFieldContainerOfEdge = containerVertex.getFirstIsFieldContainerOf(EdgeDirection.IN);
+								verticesToDelete.add(containerVertex);
+							}
+
+							for(int i = 0; i < verticesToDelete.size(); i++){
+								ResolverUtilities.deleteWithIdentifier(verticesToDelete.get(i));
+								verticesToDelete.remove(i);
+								i--;
+							}
+
+                    		ClassLiteral classLiteralVertex = this.programGraph.createClassLiteral();
                     		QualifiedType qualifiedTypeVertex = this.programGraph.createQualifiedType();
                     		qualifiedTypeVertex.set_fullyQualifiedName(name);
                     		this.symbolTable.addUnresolvedTypeSpecification(currentScope, qualifiedTypeVertex);
-                    		ClassLiteral classLiteralVertex = this.programGraph.createClassLiteral();
                     		IsSpecifiedTypeOf edge = this.programGraph.createIsSpecifiedTypeOf(qualifiedTypeVertex, classLiteralVertex);
                     		Utilities.fillEdgeAttributesFromASTDifference(edge,	currentBeginAST, currentEndAST);
 							currentVertex = classLiteralVertex;
@@ -2521,7 +2537,7 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                             identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST );
                             currentVertex = parentVertex;
                         }
-                        else 
+                        else
                         	currentVertex = fieldFactory.createFieldAccess( ( Expression )currentVertex, accessToMetaClass, currentBeginAST, currentEndAST, currentScope );
                         */
                         currentEndAST = accessToMetaClass;
@@ -2554,10 +2570,10 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                 ( accessToMetaClass2:"class" )?{
 					ClassLiteral classLiteralVertex = this.programGraph.createClassLiteral();
 					IsSpecifiedTypeOf edge = this.programGraph.createIsSpecifiedTypeOf((BuiltInType)currentVertex, classLiteralVertex);
-					
+
 					Utilities.fillEdgeAttributesFromASTDifference(edge,	currentBeginAST, currentEndAST);
                     //identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, accessToMetaClass2, currentBeginAST, currentEndAST );
-					
+
                     //currentVertex = parentVertex;
 					currentEndAST = accessToMetaClass2;
 					currentVertex = classLiteralVertex;

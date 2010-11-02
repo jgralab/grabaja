@@ -31,7 +31,7 @@ public class LocalTypeSpecificationResolver extends TypeSpecificationResolver {
 
 	/**
 	 * Indicates if the current vertex representing a type specification can be
-	 * deleted after being succesfully resolved.
+	 * deleted after being successfully resolved.
 	 */
 	private boolean deleteCurrentQualifiedTypeVertex = false;
 
@@ -39,10 +39,10 @@ public class LocalTypeSpecificationResolver extends TypeSpecificationResolver {
 	 * Tries to resolve all type specifications in a file to locally defined
 	 * types. If a type specification could be resolved vertex representing type
 	 * specification is attached to vertex representing definition of according
-	 * type. If a type could not be resolved it is marked in symbol table for a
+	 * type. If a type could not be resolved, it is marked in symbol table for a
 	 * (later) global approach.
 	 * 
-	 * @return true if all vertices were succesfully attached, false otherwise.
+	 * @return true if all vertices were successfully attached, false otherwise.
 	 */
 	public boolean resolveTypeSpecifications() {
 		if (!symbolTable.hasUnresolvedTypeSpecificationsInCurrentlyParsedFile()) {

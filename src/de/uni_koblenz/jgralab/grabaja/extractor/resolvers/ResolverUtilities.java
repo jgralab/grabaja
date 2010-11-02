@@ -28,6 +28,8 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.ImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArrayElementIndexOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExternalDeclarationIn;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldContainerOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldNameOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsImportedTypeOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsPartOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOf;
@@ -475,6 +477,25 @@ public class ResolverUtilities {
 			return qualifiedNameVertex.get_fullyQualifiedName();
 		}
 		return "";
+	}
+	
+	public static String getNameOfAccessedField(FieldAccess fieldAccessVertex){
+		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex.getFirstIsFieldNameOf(EdgeDirection.IN);
+		if(isFieldNameOfEdge != null){
+			Identifier identifierVertex = (Identifier)isFieldNameOfEdge.getAlpha();
+			return identifierVertex.get_name();
+		}
+		else
+			return "";
+	}
+	
+	public static void deleteWithIdentifier(FieldAccess fieldAccessVertex){
+		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex.getFirstIsFieldNameOf(EdgeDirection.IN);
+		if(isFieldNameOfEdge != null){
+			Identifier identifierVertex = (Identifier)isFieldNameOfEdge.getAlpha();
+			identifierVertex.delete();
+		}
+		fieldAccessVertex.delete();
 	}
 
 	/**

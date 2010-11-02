@@ -86,11 +86,8 @@ public class FieldFactory extends SubgraphFactory {
 		FieldAccess fieldAccessVertex;
 		fieldAccessVertex = programGraph.createFieldAccess();
 		createIdentifier(fieldAccessVertex, fieldNameAST);
-		IsFieldContainerOf isFieldContainerOfEdge = programGraph
-				.createIsFieldContainerOf(fieldContainerVertex,
-						fieldAccessVertex);
-		Utilities.fillEdgeAttributesFromASTDifference(isFieldContainerOfEdge,
-				fieldContainerBeginAST, fieldContainerEndAST);
+		IsFieldContainerOf isFieldContainerOfEdge = programGraph.createIsFieldContainerOf(fieldContainerVertex,	fieldAccessVertex);
+		Utilities.fillEdgeAttributesFromASTDifference(isFieldContainerOfEdge, fieldContainerBeginAST, fieldContainerEndAST);
 		addFieldAccess(fieldAccessVertex, scopeOfFieldAccess);
 		return fieldAccessVertex;
 	}
@@ -213,44 +210,29 @@ public class FieldFactory extends SubgraphFactory {
 	 * @param scopeOfFieldAccess
 	 *            The vertex of the field access' scope.
 	 */
-	private void addFieldAccess(FieldAccess fieldAccessVertex,
-			Vertex scopeOfFieldAccess) {
+	private void addFieldAccess(FieldAccess fieldAccessVertex, Vertex scopeOfFieldAccess) {
 		if (fieldAccessVertex != null) {
 			FieldDeclaration declarationOfField = null;
-			Identifier identifierVertexOfAccess = (Identifier) fieldAccessVertex
-					.getFirstIsFieldNameOf(EdgeDirection.IN).getAlpha();
+			Identifier identifierVertexOfAccess = (Identifier) fieldAccessVertex.getFirstIsFieldNameOf(EdgeDirection.IN).getAlpha();
 			if (identifierVertexOfAccess != null) {
-				if (fieldAccessVertex
-						.getFirstIsFieldContainerOf(EdgeDirection.IN) == null) {
-					// this definitely has to be a local or global (here or
-					// inherited) variable.
-					declarationOfField = symbolTable
-							.getFieldDeclarationFromScope(
-									identifierVertexOfAccess.get_name(),
-									scopeOfFieldAccess);
+				if (fieldAccessVertex.getFirstIsFieldContainerOf(EdgeDirection.IN) == null) {
+					// this definitely has to be a local or global (here or inherited) variable
+					declarationOfField = symbolTable.getFieldDeclarationFromScope(identifierVertexOfAccess.get_name(), scopeOfFieldAccess);
 					if (declarationOfField == null) {
-						declarationOfField = symbolTable
-								.getGlobalVariableDeclaration(identifierVertexOfAccess
-										.get_name());
+						declarationOfField = symbolTable.getGlobalVariableDeclaration(identifierVertexOfAccess.get_name());
 					}
 					if (declarationOfField == null) {
-						declarationOfField = symbolTable
-								.getEnumConstantFromCurrent(identifierVertexOfAccess
-										.get_name());
+						declarationOfField = symbolTable.getEnumConstantFromCurrent(identifierVertexOfAccess.get_name());
 					}
 					if (declarationOfField == null) {
-						symbolTable
-								.addAccessOfUndeclaredInternalVariable(fieldAccessVertex);
-						symbolTable.addScopeOfFieldAccess(fieldAccessVertex,
-								scopeOfFieldAccess);
+						symbolTable.addAccessOfUndeclaredInternalVariable(fieldAccessVertex);
+						symbolTable.addScopeOfFieldAccess(fieldAccessVertex, scopeOfFieldAccess);
 					}
 				} else {
 					symbolTable.addFieldAccess(fieldAccessVertex);
-					symbolTable.addScopeOfFieldAccess(fieldAccessVertex,
-							scopeOfFieldAccess);
+					symbolTable.addScopeOfFieldAccess(fieldAccessVertex, scopeOfFieldAccess);
 				}
-				linkFieldAccessToDeclaration(fieldAccessVertex,
-						identifierVertexOfAccess, declarationOfField);
+				linkFieldAccessToDeclaration(fieldAccessVertex,	identifierVertexOfAccess, declarationOfField);
 			}
 		}
 	}

@@ -11,6 +11,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsInterfaceOfEnum;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsLowerBoundOfWildcardArgument;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsReturnTypeOf;
+import de.uni_koblenz.jgralab.grabaja.java5schema.IsSpecifiedTypeOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfClass;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsSuperClassOfInterface;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsTypeOfAnnotationField;
@@ -55,7 +56,7 @@ public abstract class TypeSpecificationResolver extends Resolver {
 	/**
 	 * Attaches vertex representing type specification to vertex representing
 	 * it's type definition. Creates structure: Type --- [IsTypeDefinitionOf]
-	 * ---> QualifiedType and sets the edges attributes.
+	 * ---> QualifiedType and sets edge's attributes.
 	 * 
 	 * @param typeVertex
 	 *            A vertex representing a type definition.
@@ -100,15 +101,12 @@ public abstract class TypeSpecificationResolver extends Resolver {
 	 * @param typeSpecificationVertex
 	 *            Vertex to take the place of the other one.
 	 */
-	protected void replaceBy(QualifiedType qualifiedTypeVertex,
-			TypeSpecification typeSpecificationVertex) {
-		IsTypeOfVariable isTypeOfVariableEdge = qualifiedTypeVertex
-				.getFirstIsTypeOfVariable();
+	protected void replaceBy(QualifiedType qualifiedTypeVertex,	TypeSpecification typeSpecificationVertex) {
+		IsTypeOfVariable isTypeOfVariableEdge = qualifiedTypeVertex.getFirstIsTypeOfVariable();
 		if (isTypeOfVariableEdge != null) {
 			isTypeOfVariableEdge.setAlpha(typeSpecificationVertex);
 		}
-		IsCastedTypeOf isCastedTypeOfEdge = qualifiedTypeVertex
-				.getFirstIsCastedTypeOf();
+		IsCastedTypeOf isCastedTypeOfEdge = qualifiedTypeVertex.getFirstIsCastedTypeOf();
 		if (isCastedTypeOfEdge != null) {
 			isCastedTypeOfEdge.setAlpha(typeSpecificationVertex);
 		}
@@ -200,10 +198,14 @@ public abstract class TypeSpecificationResolver extends Resolver {
 		if (isExceptionThrownByMethodEdge != null) {
 			isExceptionThrownByMethodEdge.setAlpha(typeSpecificationVertex);
 		}
-		IsTypeOfParameter isTypeOfParameterEdge = qualifiedTypeVertex
-				.getFirstIsTypeOfParameter();
+		IsTypeOfParameter isTypeOfParameterEdge = qualifiedTypeVertex.getFirstIsTypeOfParameter();
 		if (isTypeOfParameterEdge != null) {
 			isTypeOfParameterEdge.setAlpha(typeSpecificationVertex);
 		}
+		IsSpecifiedTypeOf isSpecifiedTypeOfEdge = qualifiedTypeVertex.getFirstIsSpecifiedTypeOf();
+		if(isSpecifiedTypeOfEdge != null){
+			isSpecifiedTypeOfEdge.setAlpha(typeSpecificationVertex);
+		}
+		
 	}
 }

@@ -4,7 +4,8 @@
 
 	<property name="projectname" value="grabaja" />
 	<property name="main" value="JavaExtractor" />
-	
+	<property name="license.file" value="../jgralab/license/header/gpl-3.0-header.txt" />
+
 	<!-- import the common build file -->
 	<import file="../common/common.xml" />
 	

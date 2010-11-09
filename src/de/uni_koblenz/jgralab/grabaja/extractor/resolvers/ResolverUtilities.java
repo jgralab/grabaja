@@ -58,7 +58,6 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.ImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InterfaceDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsArrayElementIndexOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsExternalDeclarationIn;
-import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldContainerOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldNameOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsImportedTypeOf;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsPartOf;
@@ -163,13 +162,15 @@ public class ResolverUtilities {
 	public static ClassDefinition getSuperClass(ClassDefinition classDefinition)
 			throws Exception {
 		if (classDefinition != null) {
-			if (classDefinition.getFirstIsSuperClassOfClass(EdgeDirection.IN) == null) {
+			if (classDefinition
+					.getFirstIsSuperClassOfClassIncidence(EdgeDirection.IN) == null) {
 				return null;
 			}
 			TypeSpecification superTypeSpecificationVertex = (TypeSpecification) classDefinition
-					.getFirstIsSuperClassOfClass(EdgeDirection.IN).getAlpha();
+					.getFirstIsSuperClassOfClassIncidence(EdgeDirection.IN)
+					.getAlpha();
 			IsTypeDefinitionOf isTypeDefinitionOfEdge = superTypeSpecificationVertex
-					.getFirstIsTypeDefinitionOf(EdgeDirection.IN);
+					.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN);
 			if (isTypeDefinitionOfEdge != null) {
 				Type superTypeDefinitionVertex = (Type) isTypeDefinitionOfEdge
 						.getAlpha();
@@ -226,16 +227,17 @@ public class ResolverUtilities {
 	 */
 	public static String getPackageNameFromSupremeType(Type type) {
 		if (type != null) {
-			if (type.getFirstIsExternalDeclarationIn(EdgeDirection.OUT) == null) {
+			if (type.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT) == null) {
 				return null; // @TODO throw an exception instead
 			}
 			SourceUsage sourceUsageVertex = (SourceUsage) type
-					.getFirstIsExternalDeclarationIn(EdgeDirection.OUT)
+					.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT)
 					.getOmega();
 			TranslationUnit translationUnitVertex = (TranslationUnit) sourceUsageVertex
-					.getFirstIsSourceUsageIn(EdgeDirection.OUT).getOmega();
+					.getFirstIsSourceUsageInIncidence(EdgeDirection.OUT)
+					.getOmega();
 			IsPartOf isPartOfEdge = translationUnitVertex
-					.getFirstIsPartOf(EdgeDirection.OUT);
+					.getFirstIsPartOfIncidence(EdgeDirection.OUT);
 			if (isPartOfEdge != null) {
 				JavaPackage javaPackageVertex = (JavaPackage) isPartOfEdge
 						.getOmega();
@@ -258,12 +260,12 @@ public class ResolverUtilities {
 	public static ArrayList<ImportDefinition> getImportsFromSupremeType(
 			Type type) {
 		if (type != null) {
-			if (type.getFirstIsExternalDeclarationIn(EdgeDirection.OUT) == null) {
+			if (type.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT) == null) {
 				return null; // @TODO throw an exception instead
 			}
 			ArrayList<ImportDefinition> result = new ArrayList<ImportDefinition>();
 			SourceUsage sourceUsageVertex = (SourceUsage) type
-					.getFirstIsExternalDeclarationIn(EdgeDirection.OUT)
+					.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT)
 					.getOmega();
 			for (IsExternalDeclarationIn edge : sourceUsageVertex
 					.getIsExternalDeclarationInIncidences(EdgeDirection.IN)) {
@@ -310,18 +312,20 @@ public class ResolverUtilities {
 		TypeSpecification fieldTypeSpecification = null;
 		if (fieldDeclaration instanceof ParameterDeclaration) {
 			if (((ParameterDeclaration) fieldDeclaration)
-					.getFirstIsTypeOfParameter(EdgeDirection.IN) == null) {
+					.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN) == null) {
 				return null;
 			}
 			fieldTypeSpecification = (TypeSpecification) ((ParameterDeclaration) fieldDeclaration)
-					.getFirstIsTypeOfParameter(EdgeDirection.IN).getAlpha();
+					.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN)
+					.getAlpha();
 		} else if (fieldDeclaration instanceof VariableDeclaration) {
 			if (((VariableDeclaration) fieldDeclaration)
-					.getFirstIsTypeOfVariable(EdgeDirection.IN) == null) {
+					.getFirstIsTypeOfVariableIncidence(EdgeDirection.IN) == null) {
 				return null;
 			}
 			fieldTypeSpecification = (TypeSpecification) ((VariableDeclaration) fieldDeclaration)
-					.getFirstIsTypeOfVariable(EdgeDirection.IN).getAlpha();
+					.getFirstIsTypeOfVariableIncidence(EdgeDirection.IN)
+					.getAlpha();
 		} else {
 			// As this obviously is a enum constant declaration, there is
 			// nothing to be resolved here as enum constants cannot contain
@@ -343,9 +347,10 @@ public class ResolverUtilities {
 				return null;
 			}
 			if (((ArrayType) fieldTypeSpecification)
-					.getFirstIsElementTypeOf(EdgeDirection.IN) != null) {
+					.getFirstIsElementTypeOfIncidence(EdgeDirection.IN) != null) {
 				fieldTypeSpecification = (TypeSpecification) ((ArrayType) fieldTypeSpecification)
-						.getFirstIsElementTypeOf(EdgeDirection.IN).getAlpha();
+						.getFirstIsElementTypeOfIncidence(EdgeDirection.IN)
+						.getAlpha();
 			} else {
 				return null; // unlikely but nevertheless for stability
 				// reasons...
@@ -354,11 +359,13 @@ public class ResolverUtilities {
 		if (fieldTypeSpecification instanceof BuiltInType) {
 			return null;
 		}
-		if (fieldTypeSpecification.getFirstIsTypeDefinitionOf(EdgeDirection.IN) == null) {
+		if (fieldTypeSpecification
+				.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN) == null) {
 			return null;
 		}
-		return (Type) fieldTypeSpecification.getFirstIsTypeDefinitionOf(
-				EdgeDirection.IN).getAlpha();
+		return (Type) fieldTypeSpecification
+				.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN)
+				.getAlpha();
 	}
 
 	/**
@@ -379,29 +386,31 @@ public class ResolverUtilities {
 			MethodResolver methodResolver) {
 		methodResolver.resolveSingleMethod(mode, methodInvocation);
 		if (methodInvocation
-				.getFirstIsDeclarationOfInvokedMethod(EdgeDirection.IN) == null) {
+				.getFirstIsDeclarationOfInvokedMethodIncidence(EdgeDirection.IN) == null) {
 			return null;
 		}
 		Vertex methodInvocationDeclaration = methodInvocation
-				.getFirstIsDeclarationOfInvokedMethod(EdgeDirection.IN)
+				.getFirstIsDeclarationOfInvokedMethodIncidence(EdgeDirection.IN)
 				.getAlpha();
 		if (methodInvocationDeclaration instanceof MethodDeclaration) {
 			if (((MethodDeclaration) methodInvocationDeclaration)
-					.getFirstIsReturnTypeOf(EdgeDirection.IN) == null) {
+					.getFirstIsReturnTypeOfIncidence(EdgeDirection.IN) == null) {
 				return null;
 			}
 			TypeSpecification methodInvocationDeclarationReturnTypeSpec = (TypeSpecification) ((MethodDeclaration) methodInvocationDeclaration)
-					.getFirstIsReturnTypeOf(EdgeDirection.IN).getAlpha();
+					.getFirstIsReturnTypeOfIncidence(EdgeDirection.IN)
+					.getAlpha();
 			if ((methodInvocationDeclarationReturnTypeSpec instanceof ArrayType)
 					|| (methodInvocationDeclarationReturnTypeSpec instanceof BuiltInType)) {
 				return null;
 			}
 			if (methodInvocationDeclarationReturnTypeSpec
-					.getFirstIsTypeDefinitionOf(EdgeDirection.IN) == null) {
+					.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN) == null) {
 				return null;
 			}
 			return (Type) methodInvocationDeclarationReturnTypeSpec
-					.getFirstIsTypeDefinitionOf(EdgeDirection.IN).getAlpha();
+					.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN)
+					.getAlpha();
 		}
 		return null;
 	}
@@ -418,21 +427,22 @@ public class ResolverUtilities {
 		if (classCast == null) {
 			return null;
 		}
-		if (classCast.getFirstIsCastedTypeOf(EdgeDirection.IN) == null) {
+		if (classCast.getFirstIsCastedTypeOfIncidence(EdgeDirection.IN) == null) {
 			return null;
 		}
 		TypeSpecification classCastTypeSpecification = (TypeSpecification) classCast
-				.getFirstIsCastedTypeOf(EdgeDirection.IN).getAlpha();
+				.getFirstIsCastedTypeOfIncidence(EdgeDirection.IN).getAlpha();
 		if ((classCastTypeSpecification instanceof ArrayType)
 				|| (classCastTypeSpecification instanceof BuiltInType)) {
 			return null;
 		}
 		if (classCastTypeSpecification
-				.getFirstIsTypeDefinitionOf(EdgeDirection.IN) == null) {
+				.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN) == null) {
 			return null;
 		}
-		return (Type) classCastTypeSpecification.getFirstIsTypeDefinitionOf(
-				EdgeDirection.IN).getAlpha();
+		return (Type) classCastTypeSpecification
+				.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN)
+				.getAlpha();
 	}
 
 	/**
@@ -447,17 +457,18 @@ public class ResolverUtilities {
 		if (objectCreation == null) {
 			return null;
 		}
-		if (objectCreation.getFirstIsTypeOfObject(EdgeDirection.IN) == null) {
+		if (objectCreation.getFirstIsTypeOfObjectIncidence(EdgeDirection.IN) == null) {
 			return null;
 		}
 		TypeSpecification objectCreationTypeSpecification = (TypeSpecification) objectCreation
-				.getFirstIsTypeOfObject(EdgeDirection.IN).getAlpha();
+				.getFirstIsTypeOfObjectIncidence(EdgeDirection.IN).getAlpha();
 		if (objectCreationTypeSpecification
-				.getFirstIsTypeDefinitionOf(EdgeDirection.IN) == null) {
+				.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN) == null) {
 			return null;
 		}
 		return (Type) objectCreationTypeSpecification
-				.getFirstIsTypeDefinitionOf(EdgeDirection.IN).getAlpha();
+				.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN)
+				.getAlpha();
 	}
 
 	/**
@@ -500,7 +511,7 @@ public class ResolverUtilities {
 	public static String getFullyQualifiedName(
 			ImportDefinition importDefinitionVertex) {
 		IsImportedTypeOf isImportedTypeOfEdge = importDefinitionVertex
-				.getFirstIsImportedTypeOf();
+				.getFirstIsImportedTypeOfIncidence();
 		if (isImportedTypeOfEdge != null) {
 			QualifiedName qualifiedNameVertex = (QualifiedName) isImportedTypeOfEdge
 					.getAlpha();
@@ -508,21 +519,25 @@ public class ResolverUtilities {
 		}
 		return "";
 	}
-	
-	public static String getNameOfAccessedField(FieldAccess fieldAccessVertex){
-		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex.getFirstIsFieldNameOf(EdgeDirection.IN);
-		if(isFieldNameOfEdge != null){
-			Identifier identifierVertex = (Identifier)isFieldNameOfEdge.getAlpha();
+
+	public static String getNameOfAccessedField(FieldAccess fieldAccessVertex) {
+		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex
+				.getFirstIsFieldNameOfIncidence(EdgeDirection.IN);
+		if (isFieldNameOfEdge != null) {
+			Identifier identifierVertex = (Identifier) isFieldNameOfEdge
+					.getAlpha();
 			return identifierVertex.get_name();
-		}
-		else
+		} else {
 			return "";
+		}
 	}
-	
-	public static void deleteWithIdentifier(FieldAccess fieldAccessVertex){
-		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex.getFirstIsFieldNameOf(EdgeDirection.IN);
-		if(isFieldNameOfEdge != null){
-			Identifier identifierVertex = (Identifier)isFieldNameOfEdge.getAlpha();
+
+	public static void deleteWithIdentifier(FieldAccess fieldAccessVertex) {
+		IsFieldNameOf isFieldNameOfEdge = fieldAccessVertex
+				.getFirstIsFieldNameOfIncidence(EdgeDirection.IN);
+		if (isFieldNameOfEdge != null) {
+			Identifier identifierVertex = (Identifier) isFieldNameOfEdge
+					.getAlpha();
 			identifierVertex.delete();
 		}
 		fieldAccessVertex.delete();
@@ -596,8 +611,9 @@ public class ResolverUtilities {
 	 * @return The vertex of the block.
 	 */
 	public static Block getOrCreateTypeBlock(Type type, SymbolTable symbolTable) {
-		if (type.getFirstIsBlockOf(EdgeDirection.IN) != null) {
-			return (Block) type.getFirstIsBlockOf(EdgeDirection.IN).getAlpha();
+		if (type.getFirstIsBlockOfIncidence(EdgeDirection.IN) != null) {
+			return (Block) type.getFirstIsBlockOfIncidence(EdgeDirection.IN)
+					.getAlpha();
 		} else {
 			Block typeBlock = symbolTable.getGraph().createBlock();
 			symbolTable.addScopeInfo(typeBlock, type);

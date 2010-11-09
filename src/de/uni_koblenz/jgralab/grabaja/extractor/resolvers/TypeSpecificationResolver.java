@@ -99,7 +99,7 @@ public abstract class TypeSpecificationResolver extends Resolver {
 		qualifiedTypeVertex.set_fullyQualifiedName(typeVertex
 				.get_fullyQualifiedName());
 		/* IsExternalDeclarationIn isExternalDeclarationInEdge = */typeVertex
-				.getFirstIsExternalDeclarationIn();
+				.getFirstIsExternalDeclarationInIncidence();
 	}
 
 	/**
@@ -131,111 +131,116 @@ public abstract class TypeSpecificationResolver extends Resolver {
 	 * @param typeSpecificationVertex
 	 *            Vertex to take the place of the other one.
 	 */
-	protected void replaceBy(QualifiedType qualifiedTypeVertex,	TypeSpecification typeSpecificationVertex) {
-		IsTypeOfVariable isTypeOfVariableEdge = qualifiedTypeVertex.getFirstIsTypeOfVariable();
+	protected void replaceBy(QualifiedType qualifiedTypeVertex,
+			TypeSpecification typeSpecificationVertex) {
+		IsTypeOfVariable isTypeOfVariableEdge = qualifiedTypeVertex
+				.getFirstIsTypeOfVariableIncidence();
 		if (isTypeOfVariableEdge != null) {
 			isTypeOfVariableEdge.setAlpha(typeSpecificationVertex);
 		}
-		IsCastedTypeOf isCastedTypeOfEdge = qualifiedTypeVertex.getFirstIsCastedTypeOf();
+		IsCastedTypeOf isCastedTypeOfEdge = qualifiedTypeVertex
+				.getFirstIsCastedTypeOfIncidence();
 		if (isCastedTypeOfEdge != null) {
 			isCastedTypeOfEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsReturnTypeOf isReturnTypeOfEdge = qualifiedTypeVertex
-				.getFirstIsReturnTypeOf();
+				.getFirstIsReturnTypeOfIncidence();
 		if (isReturnTypeOfEdge != null) {
 			isReturnTypeOfEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsImportedTypeOf isImportedTypeOfEdge = qualifiedTypeVertex
-				.getFirstIsImportedTypeOf();
+				.getFirstIsImportedTypeOfIncidence();
 		if (isImportedTypeOfEdge != null) {
 			isImportedTypeOfEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsAnnotationNameOf isAnnotationNameOfEdge = qualifiedTypeVertex
-				.getFirstIsAnnotationNameOf();
+				.getFirstIsAnnotationNameOfIncidence();
 		if (isAnnotationNameOfEdge != null) {
 			isAnnotationNameOfEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsTypeOfSimpleArgument isTypeOfSimpleArgumentEdge = qualifiedTypeVertex
-				.getFirstIsTypeOfSimpleArgument();
+				.getFirstIsTypeOfSimpleArgumentIncidence();
 		if (isTypeOfSimpleArgumentEdge != null) {
 			isTypeOfSimpleArgumentEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsLowerBoundOfWildcardArgument isLowerBoundOfWildcardArgumentEdge = qualifiedTypeVertex
-				.getFirstIsLowerBoundOfWildcardArgument();
+				.getFirstIsLowerBoundOfWildcardArgumentIncidence();
 		if (isLowerBoundOfWildcardArgumentEdge != null) {
 			isLowerBoundOfWildcardArgumentEdge
 					.setAlpha(typeSpecificationVertex);
 		}
 		IsUpperBoundOfWildcardArgument isUpperBoundOfWildcardArgumentEdge = qualifiedTypeVertex
-				.getFirstIsUpperBoundOfWildcardArgument();
+				.getFirstIsUpperBoundOfWildcardArgumentIncidence();
 		if (isUpperBoundOfWildcardArgumentEdge != null) {
 			isUpperBoundOfWildcardArgumentEdge
 					.setAlpha(typeSpecificationVertex);
 		}
 		IsElementTypeOf isElementTypeOfEdge = qualifiedTypeVertex
-				.getFirstIsElementTypeOf();
+				.getFirstIsElementTypeOfIncidence();
 		if (isElementTypeOfEdge != null) {
 			isElementTypeOfEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsUpperBoundOfTypeParameter isUpperBoundOfTypeParameterEdge = qualifiedTypeVertex
-				.getFirstIsUpperBoundOfTypeParameter();
+				.getFirstIsUpperBoundOfTypeParameterIncidence();
 		if (isUpperBoundOfTypeParameterEdge != null) {
 			isUpperBoundOfTypeParameterEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsSuperClassOfClass isSuperClassOfClassEdge = qualifiedTypeVertex
-				.getFirstIsSuperClassOfClass();
+				.getFirstIsSuperClassOfClassIncidence();
 		if (isSuperClassOfClassEdge != null) {
 			isSuperClassOfClassEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsSuperClassOfInterface isSuperClassOfInterfaceEdge = qualifiedTypeVertex
-				.getFirstIsSuperClassOfInterface();
+				.getFirstIsSuperClassOfInterfaceIncidence();
 		if (isSuperClassOfInterfaceEdge != null) {
 			isSuperClassOfInterfaceEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsInterfaceOfClass isInterfaceOfClassEdge = qualifiedTypeVertex
-				.getFirstIsInterfaceOfClass();
+				.getFirstIsInterfaceOfClassIncidence();
 		if (isInterfaceOfClassEdge != null) {
 			isInterfaceOfClassEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsInterfaceOfEnum isInterfaceOfEnumEdge = qualifiedTypeVertex
-				.getFirstIsInterfaceOfEnum();
+				.getFirstIsInterfaceOfEnumIncidence();
 		if (isInterfaceOfEnumEdge != null) {
 			isInterfaceOfEnumEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsElementTypeOfCreatedArray isElementTypeOfCreatedArrayEdge = qualifiedTypeVertex
-				.getFirstIsElementTypeOfCreatedArray();
+				.getFirstIsElementTypeOfCreatedArrayIncidence();
 		if (isElementTypeOfCreatedArrayEdge != null) {
 			isElementTypeOfCreatedArrayEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsTypeOfObject isTypeOfObjectEdge = qualifiedTypeVertex
-				.getFirstIsTypeOfObject();
+				.getFirstIsTypeOfObjectIncidence();
 		if (isTypeOfObjectEdge != null) {
 			isTypeOfObjectEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsTypeOfAnnotationField isTypeOfAnnotationFieldEdge = qualifiedTypeVertex
-				.getFirstIsTypeOfAnnotationField();
+				.getFirstIsTypeOfAnnotationFieldIncidence();
 		if (isTypeOfAnnotationFieldEdge != null) {
 			isTypeOfAnnotationFieldEdge.setAlpha(typeSpecificationVertex);
 		}
 		IsExceptionThrownByConstructor isExceptionThrownByConstructorEdge = qualifiedTypeVertex
-				.getFirstIsExceptionThrownByConstructor();
+				.getFirstIsExceptionThrownByConstructorIncidence();
 		if (isExceptionThrownByConstructorEdge != null) {
 			isExceptionThrownByConstructorEdge
 					.setAlpha(typeSpecificationVertex);
 		}
 		IsExceptionThrownByMethod isExceptionThrownByMethodEdge = qualifiedTypeVertex
-				.getFirstIsExceptionThrownByMethod();
+				.getFirstIsExceptionThrownByMethodIncidence();
 		if (isExceptionThrownByMethodEdge != null) {
 			isExceptionThrownByMethodEdge.setAlpha(typeSpecificationVertex);
 		}
-		IsTypeOfParameter isTypeOfParameterEdge = qualifiedTypeVertex.getFirstIsTypeOfParameter();
+		IsTypeOfParameter isTypeOfParameterEdge = qualifiedTypeVertex
+				.getFirstIsTypeOfParameterIncidence();
 		if (isTypeOfParameterEdge != null) {
 			isTypeOfParameterEdge.setAlpha(typeSpecificationVertex);
 		}
-		IsSpecifiedTypeOf isSpecifiedTypeOfEdge = qualifiedTypeVertex.getFirstIsSpecifiedTypeOf();
-		if(isSpecifiedTypeOfEdge != null){
+		IsSpecifiedTypeOf isSpecifiedTypeOfEdge = qualifiedTypeVertex
+				.getFirstIsSpecifiedTypeOfIncidence();
+		if (isSpecifiedTypeOfEdge != null) {
 			isSpecifiedTypeOfEdge.setAlpha(typeSpecificationVertex);
 		}
-		
+
 	}
 }

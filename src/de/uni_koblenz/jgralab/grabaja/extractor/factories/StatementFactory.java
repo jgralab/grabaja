@@ -841,10 +841,11 @@ public class StatementFactory extends SubgraphFactory {
 		Label labelVertex = createLabel(ast.getText(), ast);
 		IsBreakTargetOf isBreakTargetOfEdge = programGraph
 				.createIsBreakTargetOf(labelVertex, breakVertex);
-		Utilities.copyEdgeAttributes(labelVertex.getFirstIsStatementOf(),
+		Utilities.copyEdgeAttributes(
+				labelVertex.getFirstIsStatementOfIncidence(),
 				isBreakTargetOfEdge);
 		Identifier identifierVertex = (Identifier) labelVertex
-				.getFirstIsLabelNameOf().getAlpha();
+				.getFirstIsLabelNameOfIncidence().getAlpha();
 		IsLabelNameOf isLabelNameOfEdge = programGraph.createIsLabelNameOf(
 				identifierVertex, labelVertex);
 		Utilities.fillEdgeAttributesFromAST(isLabelNameOfEdge, ast);
@@ -866,10 +867,11 @@ public class StatementFactory extends SubgraphFactory {
 		Label labelVertex = createLabel(ast.getText(), ast);
 		IsContinueTargetOf isContinueTargetOfEdge = programGraph
 				.createIsContinueTargetOf(labelVertex, continueVertex);
-		Utilities.copyEdgeAttributes(labelVertex.getFirstIsStatementOf(),
+		Utilities.copyEdgeAttributes(
+				labelVertex.getFirstIsStatementOfIncidence(),
 				isContinueTargetOfEdge);
 		Identifier identifierVertex = (Identifier) labelVertex
-				.getFirstIsLabelNameOf().getAlpha();
+				.getFirstIsLabelNameOfIncidence().getAlpha();
 		IsLabelNameOf isLabelNameOfEdge = programGraph.createIsLabelNameOf(
 				identifierVertex, labelVertex);
 		Utilities.fillEdgeAttributesFromAST(isLabelNameOfEdge, ast);

@@ -169,9 +169,9 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 		Type supremeTypeVertex = (Type) scope;
 		if ((supremeTypeVertex != null)
 				&& (supremeTypeVertex
-						.getFirstIsExternalDeclarationIn(EdgeDirection.OUT) != null)) {
+						.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT) != null)) {
 			SourceUsage sourceUsageVertex = (SourceUsage) supremeTypeVertex
-					.getFirstIsExternalDeclarationIn(EdgeDirection.OUT)
+					.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT)
 					.getOmega();
 			// Search in package of file.
 			String fullyQualifiedNameOfPackage = getPackageName(sourceUsageVertex);
@@ -267,9 +267,9 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 		Type supremeTypeVertex = (Type) scope;
 		if ((supremeTypeVertex != null)
 				&& (supremeTypeVertex
-						.getFirstIsExternalDeclarationIn(EdgeDirection.OUT) != null)) {
+						.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT) != null)) {
 			SourceUsage sourceUsageVertex = (SourceUsage) supremeTypeVertex
-					.getFirstIsExternalDeclarationIn(EdgeDirection.OUT)
+					.getFirstIsExternalDeclarationInIncidence(EdgeDirection.OUT)
 					.getOmega();
 			// Search in package of file.
 			String fullyQualifiedNameOfPackage = getPackageName(sourceUsageVertex);
@@ -356,9 +356,9 @@ public class GlobalTypeSpecificationResolver extends TypeSpecificationResolver {
 	 */
 	private String getPackageName(SourceUsage sourceUsageVertex) {
 		TranslationUnit translationUnitVertex = (TranslationUnit) sourceUsageVertex
-				.getFirstIsSourceUsageIn(EdgeDirection.OUT).getOmega();
+				.getFirstIsSourceUsageInIncidence(EdgeDirection.OUT).getOmega();
 		IsPartOf isPartOfEdge = translationUnitVertex
-				.getFirstIsPartOf(EdgeDirection.OUT);
+				.getFirstIsPartOfIncidence(EdgeDirection.OUT);
 		if (isPartOfEdge != null) { // Check for null because file could be part
 			// of no package.
 			JavaPackage javaPackageVertex = (JavaPackage) isPartOfEdge

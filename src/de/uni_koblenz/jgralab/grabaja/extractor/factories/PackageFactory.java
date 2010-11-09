@@ -89,7 +89,8 @@ public class PackageFactory extends SubgraphFactory {
 			TranslationUnit translationUnitVertex) {
 		/* IsPartOf isPartOfEdge = */programGraph.createIsPartOf(
 				translationUnitVertex, javaPackageVertex);
-		IsPackageOf isPackageOfEdge = javaPackageVertex.getFirstIsPackageOf();
+		IsPackageOf isPackageOfEdge = javaPackageVertex
+				.getFirstIsPackageOfIncidence();
 		if (isPackageOfEdge == null) {
 			Program programVertex = programGraph.getFirstProgram();
 			programGraph.createIsPackageOf(javaPackageVertex, programVertex);
@@ -171,7 +172,8 @@ public class PackageFactory extends SubgraphFactory {
 			SourceUsage sourceUsageVertex, TranslationUnit translationUnitVertex) {
 		/* IsPartOf isPartOfEdge = */programGraph.createIsPartOf(
 				translationUnitVertex, javaPackageVertex);
-		IsPackageOf isPackageOfEdge = javaPackageVertex.getFirstIsPackageOf();
+		IsPackageOf isPackageOfEdge = javaPackageVertex
+				.getFirstIsPackageOfIncidence();
 		if (isPackageOfEdge == null) {
 			Program programVertex = programGraph.getFirstProgram();
 			programGraph.createIsPackageOf(javaPackageVertex, programVertex);

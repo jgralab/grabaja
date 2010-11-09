@@ -108,10 +108,12 @@ public class FieldResolver extends Resolver {
 	 */
 	public boolean resolveFields(ExtractionMode mode) {
 		boolean result = true;
-		if ((symbolTable != null) && (symbolTable.getFieldAccessVertices() != null)) {
+		if ((symbolTable != null)
+				&& (symbolTable.getFieldAccessVertices() != null)) {
 			fieldProgressBar = new ConsoleProgressFunction();
 			fieldProgressBar.init(symbolTable.amountOfFieldAccesses());
-			Iterator<FieldAccess> fieldAccessIterator = symbolTable.getFieldAccessVertices().iterator();
+			Iterator<FieldAccess> fieldAccessIterator = symbolTable
+					.getFieldAccessVertices().iterator();
 			while (fieldAccessIterator.hasNext()) {
 				FieldAccess currentFieldAccess = fieldAccessIterator.next();
 				if (!resolveSingleField(mode, currentFieldAccess)) {
@@ -133,7 +135,8 @@ public class FieldResolver extends Resolver {
 	 *            The field access to be resolved.
 	 * @return true if the field could be resolved, false if not.
 	 */
-	protected boolean resolveSingleField(ExtractionMode mode, FieldAccess fieldAccess) {
+	protected boolean resolveSingleField(ExtractionMode mode,
+			FieldAccess fieldAccess) {
 		if (fieldAccess == null) {
 			return false;
 		}
@@ -142,11 +145,12 @@ public class FieldResolver extends Resolver {
 						.booleanValue()) {
 			return true;
 		}
-		String fieldName = ((Identifier) fieldAccess.getFirstIsFieldNameOf(
-				EdgeDirection.IN).getAlpha()).get_name();
+		String fieldName = ((Identifier) fieldAccess
+				.getFirstIsFieldNameOfIncidence(EdgeDirection.IN).getAlpha())
+				.get_name();
 		JavaVertex scope = (JavaVertex) symbolTable
 				.getScopeOfFieldAccess(fieldAccess);
-		if (fieldAccess.getFirstIsFieldContainerOf(EdgeDirection.IN) == null) {
+		if (fieldAccess.getFirstIsFieldContainerOfIncidence(EdgeDirection.IN) == null) {
 			if (fieldName.equals("this")) {
 				Type enclosingType = ResolverUtilities
 						.getEnclosingTypeFromScope(scope, symbolTable);
@@ -328,7 +332,8 @@ public class FieldResolver extends Resolver {
 			}
 		} else {
 			Expression fieldContainer = (Expression) fieldAccess
-					.getFirstIsFieldContainerOf(EdgeDirection.IN).getAlpha();
+					.getFirstIsFieldContainerOfIncidence(EdgeDirection.IN)
+					.getAlpha();
 			if (fieldContainer instanceof FieldAccess) {
 				FieldAccess containerAccess = (FieldAccess) fieldContainer;
 				// try to resolve the container field first, as it might not
@@ -336,12 +341,12 @@ public class FieldResolver extends Resolver {
 				// returns at once so there are no infinite loops).
 				resolveSingleField(mode, containerAccess);
 				if ((containerAccess
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) != null)
+						.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) != null)
 						&& (containerAccess
-								.getFirstIsDeclarationOfAccessedField(
+								.getFirstIsDeclarationOfAccessedFieldIncidence(
 										EdgeDirection.IN).getAlpha() instanceof Type)) {
 					Type containerType = (Type) containerAccess
-							.getFirstIsDeclarationOfAccessedField(
+							.getFirstIsDeclarationOfAccessedFieldIncidence(
 									EdgeDirection.IN).getAlpha();
 					if (fieldName.equals("this")) {
 						return linkFieldAccessToDeclaration(fieldAccess,
@@ -371,12 +376,12 @@ public class FieldResolver extends Resolver {
 					return resolveAccessedFieldFromContainingType(
 							containerType, fieldName, fieldAccess, mode, scope);
 				} else if ((containerAccess
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) != null)
+						.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) != null)
 						&& (containerAccess
-								.getFirstIsDeclarationOfAccessedField(
+								.getFirstIsDeclarationOfAccessedFieldIncidence(
 										EdgeDirection.IN).getAlpha() instanceof FieldDeclaration)) {
 					FieldDeclaration containerDeclaration = (FieldDeclaration) containerAccess
-							.getFirstIsDeclarationOfAccessedField(
+							.getFirstIsDeclarationOfAccessedFieldIncidence(
 									EdgeDirection.IN).getAlpha();
 					if (fieldName.equals("this")) {
 						return linkFieldAccessToDeclaration(fieldAccess,
@@ -414,7 +419,7 @@ public class FieldResolver extends Resolver {
 						return finishUnresolvedFieldAccess(fieldAccess);
 					}
 				} else if (containerAccess
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) == null) {
+						.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) == null) {
 					String possibleFullyQualifiedNameToCheck = getQualifiedNameFromFieldContainers(fieldAccess);
 					if (possibleFullyQualifiedNameToCheck == null) {
 						return finishUnresolvedFieldAccess(fieldAccess);
@@ -493,21 +498,24 @@ public class FieldResolver extends Resolver {
 		if (fieldAccess == null) {
 			return null;
 		}
-		String result = ((Identifier) fieldAccess.getFirstIsFieldNameOf(
-				EdgeDirection.IN).getAlpha()).get_name();
+		String result = ((Identifier) fieldAccess
+				.getFirstIsFieldNameOfIncidence(EdgeDirection.IN).getAlpha())
+				.get_name();
 		FieldAccess nextContainer = fieldAccess;
-		while (nextContainer.getFirstIsFieldContainerOf(EdgeDirection.IN) != null) {
-			if (nextContainer.getFirstIsFieldContainerOf(EdgeDirection.IN)
-					.getAlpha() instanceof FieldAccess) {
+		while (nextContainer
+				.getFirstIsFieldContainerOfIncidence(EdgeDirection.IN) != null) {
+			if (nextContainer.getFirstIsFieldContainerOfIncidence(
+					EdgeDirection.IN).getAlpha() instanceof FieldAccess) {
 				nextContainer = (FieldAccess) nextContainer
-						.getFirstIsFieldContainerOf(EdgeDirection.IN)
+						.getFirstIsFieldContainerOfIncidence(EdgeDirection.IN)
 						.getAlpha();
 				if (nextContainer
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) != null) {
+						.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) != null) {
 					return null;
 				}
-				result = ((Identifier) nextContainer.getFirstIsFieldNameOf(
-						EdgeDirection.IN).getAlpha()).get_name()
+				result = ((Identifier) nextContainer
+						.getFirstIsFieldNameOfIncidence(EdgeDirection.IN)
+						.getAlpha()).get_name()
 						+ "." + result;
 			} else {
 				return null;
@@ -628,10 +636,12 @@ public class FieldResolver extends Resolver {
 					break;
 				}
 				currentFieldAccess = (FieldAccess) edge.getThat();
-				if ((currentFieldAccess.getFirstIsFieldNameOf(EdgeDirection.IN) != null)
+				if ((currentFieldAccess
+						.getFirstIsFieldNameOfIncidence(EdgeDirection.IN) != null)
 						&& (((Identifier) currentFieldAccess
-								.getFirstIsFieldNameOf(EdgeDirection.IN)
-								.getAlpha()).get_name().equals(fieldName))) {
+								.getFirstIsFieldNameOfIncidence(
+										EdgeDirection.IN).getAlpha())
+								.get_name().equals(fieldName))) {
 					supremeTypeOfCurrentFieldAccess = ResolverUtilities
 							.getSupremeTypeFromScope(symbolTable
 									.getScopeOfFieldAccess(currentFieldAccess),
@@ -639,11 +649,11 @@ public class FieldResolver extends Resolver {
 					if ((supremeTypeOfCurrentFieldAccess != null)
 							&& (supremeTypeOfCurrentFieldAccess == supremeTypeOfFieldAccess)) {
 						IsFieldNameOf edgeToReattach = fieldAccess
-								.getFirstIsFieldNameOf(EdgeDirection.IN);
+								.getFirstIsFieldNameOfIncidence(EdgeDirection.IN);
 						Vertex identifierToDelete = edgeToReattach.getAlpha();
 						edgeToReattach.setAlpha(currentFieldAccess
-								.getFirstIsFieldNameOf(EdgeDirection.IN)
-								.getAlpha());
+								.getFirstIsFieldNameOfIncidence(
+										EdgeDirection.IN).getAlpha());
 						identifierToDelete.delete();
 						foundIdenticalIdentifier = true;
 					}

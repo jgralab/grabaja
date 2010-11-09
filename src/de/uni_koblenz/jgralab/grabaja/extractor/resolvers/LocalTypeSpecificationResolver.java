@@ -136,8 +136,10 @@ public class LocalTypeSpecificationResolver extends TypeSpecificationResolver {
 					// name as type parameter
 					if (symbolTable.hasNestedType(prefix + fullyQualifiedName)) {
 						// yes: so it hides type parameter
-						attachToType(qualifiedTypeVertex, symbolTable
-								.getNestedType(prefix + fullyQualifiedName));
+						attachToType(
+								qualifiedTypeVertex,
+								symbolTable.getNestedType(prefix
+										+ fullyQualifiedName));
 					}
 					// no: replace QualifiedType by TypeParameterUsage in graph
 					else {
@@ -151,15 +153,15 @@ public class LocalTypeSpecificationResolver extends TypeSpecificationResolver {
 		// Then compare to the first type definition in same file the type was
 		// specified.
 		if (specifiesSupremeTypeInFile(fullyQualifiedName)) {
-			attachToType(qualifiedTypeVertex, symbolTable
-					.getSupremeTypeInFile());
+			attachToType(qualifiedTypeVertex,
+					symbolTable.getSupremeTypeInFile());
 			return true;
 		}
 		// At last compare to nested types in same file the type was specified.
 		fullyQualifiedName = getSpecifiedNestedType(scope, fullyQualifiedName);
 		if (!fullyQualifiedName.isEmpty()) {
-			attachToType(qualifiedTypeVertex, symbolTable
-					.getNestedType(fullyQualifiedName));
+			attachToType(qualifiedTypeVertex,
+					symbolTable.getNestedType(fullyQualifiedName));
 			return true;
 		}
 		return false;
@@ -177,12 +179,12 @@ public class LocalTypeSpecificationResolver extends TypeSpecificationResolver {
 	private void replaceByTypeParameterUsage(Vertex scope,
 			QualifiedType qualifiedTypeVertex) {
 		TypeParameterDeclaration typeParameterDeclarationVertex = symbolTable
-				.getTypeParameter(scope, qualifiedTypeVertex
-						.get_fullyQualifiedName());
+				.getTypeParameter(scope,
+						qualifiedTypeVertex.get_fullyQualifiedName());
 		// Determine if a TypeParameterUsage for this file already exists
 		TypeParameterUsage typeParameterUsageVertex = null;
 		IsTypeDefinitionOf isTypeDefinitionOfEdge = typeParameterDeclarationVertex
-				.getFirstIsTypeDefinitionOf();
+				.getFirstIsTypeDefinitionOfIncidence();
 		if (isTypeDefinitionOfEdge != null) {
 			// yes: do not create a new one and use existing one instead
 			typeParameterUsageVertex = (TypeParameterUsage) isTypeDefinitionOfEdge

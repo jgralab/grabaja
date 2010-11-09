@@ -224,9 +224,9 @@ public class FieldFactory extends SubgraphFactory {
 			}
 		}
 		symbolTable.addGlobalVariableDeclaration(
-				((Identifier) declaredVariable.getFirstIsVariableNameOf(
-						EdgeDirection.IN).getAlpha()).get_name(),
-				declaredVariable);
+				((Identifier) declaredVariable
+						.getFirstIsVariableNameOfIncidence(EdgeDirection.IN)
+						.getAlpha()).get_name(), declaredVariable);
 		checkYetUndeclaredVariables(declaredVariable);
 		if ((isPublic) || (!isPrivate)) {
 			symbolTable.addVariableDeclaration(
@@ -249,10 +249,11 @@ public class FieldFactory extends SubgraphFactory {
 		if (fieldAccessVertex != null) {
 			FieldDeclaration declarationOfField = null;
 			Identifier identifierVertexOfAccess = (Identifier) fieldAccessVertex
-					.getFirstIsFieldNameOf(EdgeDirection.IN).getAlpha();
+					.getFirstIsFieldNameOfIncidence(EdgeDirection.IN)
+					.getAlpha();
 			if (identifierVertexOfAccess != null) {
 				if (fieldAccessVertex
-						.getFirstIsFieldContainerOf(EdgeDirection.IN) == null) {
+						.getFirstIsFieldContainerOfIncidence(EdgeDirection.IN) == null) {
 					// this definitely has to be a local or global (here or
 					// inherited) variable
 					declarationOfField = symbolTable
@@ -307,17 +308,19 @@ public class FieldFactory extends SubgraphFactory {
 			Identifier identifierVertexOfDeclaration;
 			if (fieldDeclarationVertex instanceof VariableDeclaration) {
 				identifierVertexOfDeclaration = (Identifier) ((VariableDeclaration) fieldDeclarationVertex)
-						.getFirstIsVariableNameOf(EdgeDirection.IN).getAlpha();
+						.getFirstIsVariableNameOfIncidence(EdgeDirection.IN)
+						.getAlpha();
 			} else if (fieldDeclarationVertex instanceof ParameterDeclaration) {
 				identifierVertexOfDeclaration = (Identifier) ((ParameterDeclaration) fieldDeclarationVertex)
-						.getFirstIsParameterNameOf(EdgeDirection.IN).getAlpha();
+						.getFirstIsParameterNameOfIncidence(EdgeDirection.IN)
+						.getAlpha();
 			} else {
 				identifierVertexOfDeclaration = (Identifier) ((EnumConstant) fieldDeclarationVertex)
-						.getFirstIsEnumConstantNameOf(EdgeDirection.IN)
+						.getFirstIsEnumConstantNameOfIncidence(EdgeDirection.IN)
 						.getAlpha();
 			}
 			AttributedEdge edgeToReattach = identifierVertexOfAccess
-					.getFirstIsFieldNameOf(EdgeDirection.OUT);
+					.getFirstIsFieldNameOfIncidence(EdgeDirection.OUT);
 			if ((identifierVertexOfDeclaration != null)
 					&& (edgeToReattach != null)) {
 				edgeToReattach.setAlpha(identifierVertexOfDeclaration);
@@ -338,14 +341,15 @@ public class FieldFactory extends SubgraphFactory {
 			VariableDeclaration declaredVariable) {
 		if (declaredVariable != null) {
 			String declaredVariableName = ((Identifier) declaredVariable
-					.getFirstIsVariableNameOf(EdgeDirection.IN).getAlpha())
-					.get_name();
+					.getFirstIsVariableNameOfIncidence(EdgeDirection.IN)
+					.getAlpha()).get_name();
 			for (int counter = 0; counter < symbolTable
 					.getAmountOfAccessesOfUndeclaredInternalVariables(); counter++) {
 				FieldAccess fieldAccessVertex = symbolTable
 						.getAccessOfUndeclaredInternalVariable(counter);
 				Identifier identifierVertexOfAccess = (Identifier) fieldAccessVertex
-						.getFirstIsFieldNameOf(EdgeDirection.IN).getAlpha();
+						.getFirstIsFieldNameOfIncidence(EdgeDirection.IN)
+						.getAlpha();
 				if (identifierVertexOfAccess.get_name().equals(
 						declaredVariableName)) {
 					linkFieldAccessToDeclaration(fieldAccessVertex,

@@ -457,12 +457,12 @@ public class SymbolTable {
 		String nameOfField;
 		if (declaredField instanceof VariableDeclaration) {
 			nameOfField = ((Identifier) ((VariableDeclaration) declaredField)
-					.getFirstIsVariableNameOf(EdgeDirection.IN).getAlpha())
-					.get_name();
+					.getFirstIsVariableNameOfIncidence(EdgeDirection.IN)
+					.getAlpha()).get_name();
 		} else {
 			nameOfField = ((Identifier) ((ParameterDeclaration) declaredField)
-					.getFirstIsParameterNameOf(EdgeDirection.IN).getAlpha())
-					.get_name();
+					.getFirstIsParameterNameOfIncidence(EdgeDirection.IN)
+					.getAlpha()).get_name();
 		}
 		if (declaredLocalFieldsInScopes.containsKey(scopeOfField)) {
 			declaredLocalFieldsInScopes.get(scopeOfField).put(nameOfField,
@@ -564,9 +564,11 @@ public class SymbolTable {
 	 * @param accessOfVariable
 	 *            The field access element to be added.
 	 */
-	public void addAccessOfUndeclaredInternalVariable(FieldAccess accessOfVariable) {
-		if (accessOfVariable != null)
+	public void addAccessOfUndeclaredInternalVariable(
+			FieldAccess accessOfVariable) {
+		if (accessOfVariable != null) {
 			accessOfUndeclaredInternalVariables.add(accessOfVariable);
+		}
 	}
 
 	/**
@@ -630,8 +632,8 @@ public class SymbolTable {
 		if ((fullyQualifiedNameOfContainingType != null)
 				&& (variableDeclaration != null)) {
 			String variableName = ((Identifier) variableDeclaration
-					.getFirstIsVariableNameOf(EdgeDirection.IN).getAlpha())
-					.get_name();
+					.getFirstIsVariableNameOfIncidence(EdgeDirection.IN)
+					.getAlpha()).get_name();
 			if (declaredVariablesInClasses
 					.containsKey(fullyQualifiedNameOfContainingType)) {
 				declaredVariablesInClasses.get(
@@ -703,8 +705,8 @@ public class SymbolTable {
 		if ((fullyQualifiedNameOfContainingType != null)
 				&& (enumConstantToAdd != null)) {
 			String constantName = ((Identifier) (enumConstantToAdd
-					.getFirstIsEnumConstantNameOf(EdgeDirection.IN).getAlpha()))
-					.get_name();
+					.getFirstIsEnumConstantNameOfIncidence(EdgeDirection.IN)
+					.getAlpha())).get_name();
 			currentEnumConstants.put(constantName, enumConstantToAdd);
 			if (enumConstants.containsKey(fullyQualifiedNameOfContainingType)) {
 				enumConstants.get(fullyQualifiedNameOfContainingType).put(
@@ -780,22 +782,23 @@ public class SymbolTable {
 	public void addFieldAccess(FieldAccess fieldAccess) {
 		this.fieldAccessMap.put(fieldAccess, Boolean.valueOf(false));
 	}
-	
+
 	/**
 	 * Removes a field access from symbol table.
-	 *
+	 * 
 	 * @param fieldAccess
-	 *			  Field access vertex to remove.
+	 *            Field access vertex to remove.
 	 */
-	public void removeFieldAccess(FieldAccess fieldAccess){
+	public void removeFieldAccess(FieldAccess fieldAccess) {
 		this.fieldAccessMap.remove(fieldAccess);
 		this.scopesOfFieldAccessVertices.remove(fieldAccess);
 		this.removeFromUndeclaredInternalVariables(fieldAccess);
 	}
-	
-	private void removeFromUndeclaredInternalVariables(FieldAccess fieldAccess){
-		if(this.accessOfUndeclaredInternalVariables.contains(fieldAccess)){
-			int index = this.accessOfUndeclaredInternalVariables.indexOf(fieldAccess);
+
+	private void removeFromUndeclaredInternalVariables(FieldAccess fieldAccess) {
+		if (this.accessOfUndeclaredInternalVariables.contains(fieldAccess)) {
+			int index = this.accessOfUndeclaredInternalVariables
+					.indexOf(fieldAccess);
 			this.accessOfUndeclaredInternalVariables.remove(index);
 		}
 	}
@@ -834,8 +837,6 @@ public class SymbolTable {
 		}
 		return null;
 	}
-	
-	
 
 	/**
 	 * A structure holding references to the scopes of field access vertices.
@@ -852,13 +853,15 @@ public class SymbolTable {
 	 * @param scopeOfFieldAccess
 	 *            The scope of the field access.
 	 */
-	public void addScopeOfFieldAccess(FieldAccess fieldAccessVertex, Vertex scopeOfFieldAccess) {
+	public void addScopeOfFieldAccess(FieldAccess fieldAccessVertex,
+			Vertex scopeOfFieldAccess) {
 		if ((fieldAccessVertex != null) && (scopeOfFieldAccess != null)) {
-			scopesOfFieldAccessVertices.put(fieldAccessVertex,	scopeOfFieldAccess);
+			scopesOfFieldAccessVertices.put(fieldAccessVertex,
+					scopeOfFieldAccess);
 		}
 	}
-	
-	public void removeScopeOfFieldAccess(FieldAccess fieldAccessVertex){
+
+	public void removeScopeOfFieldAccess(FieldAccess fieldAccessVertex) {
 		this.scopesOfFieldAccessVertices.remove(fieldAccessVertex);
 	}
 
@@ -944,16 +947,16 @@ public class SymbolTable {
 		if ((fullyQualifiedNameOfContainingType != null)
 				&& (methodDeclaration != null)) {
 			String methodName = ((Identifier) methodDeclaration
-					.getFirstIsNameOfMethod(EdgeDirection.IN).getAlpha())
-					.get_name();
+					.getFirstIsNameOfMethodIncidence(EdgeDirection.IN)
+					.getAlpha()).get_name();
 			if (declaredMethodsInClasses
 					.containsKey(fullyQualifiedNameOfContainingType)) {
 				if (declaredMethodsInClasses.get(
 						fullyQualifiedNameOfContainingType).containsKey(
 						methodName)) {
-					declaredMethodsInClasses.get(
-							fullyQualifiedNameOfContainingType).get(methodName)
-							.add(methodDeclaration);
+					declaredMethodsInClasses
+							.get(fullyQualifiedNameOfContainingType)
+							.get(methodName).add(methodDeclaration);
 				} else {
 					ArrayList<MethodDeclaration> methodsList = new ArrayList<MethodDeclaration>();
 					methodsList.add(methodDeclaration);
@@ -1482,8 +1485,10 @@ public class SymbolTable {
 	 * @param qualifiedTypeVertex
 	 *            A vertex representing a type specification.
 	 */
-	public void addUnresolvedTypeSpecification(Vertex scope,QualifiedType qualifiedTypeVertex) {
-		if (!unresolvedTypeSpecificationsInCurrentlyParsedFile.containsKey(scope)) {
+	public void addUnresolvedTypeSpecification(Vertex scope,
+			QualifiedType qualifiedTypeVertex) {
+		if (!unresolvedTypeSpecificationsInCurrentlyParsedFile
+				.containsKey(scope)) {
 			ArrayList<QualifiedType> qualifiedTypes = new ArrayList<QualifiedType>();
 			qualifiedTypes.add(qualifiedTypeVertex);
 			unresolvedTypeSpecificationsInCurrentlyParsedFile.put(scope,
@@ -1613,8 +1618,9 @@ public class SymbolTable {
 	}
 
 	public void addResolvedTypeSpecification(QualifiedType qualifiedTypeVertex) {
-		resolvedTypeSpecifications.put(qualifiedTypeVertex
-				.get_fullyQualifiedName(), qualifiedTypeVertex);
+		resolvedTypeSpecifications.put(
+				qualifiedTypeVertex.get_fullyQualifiedName(),
+				qualifiedTypeVertex);
 	}
 
 	public QualifiedType getResolvedTypeSpecification(String fullyQualifiedName) {
@@ -1692,8 +1698,8 @@ public class SymbolTable {
 		for (int counter = 0; counter < accessOfUndeclaredInternalVariables
 				.size(); counter++) {
 			fieldAccessMap.put(
-					accessOfUndeclaredInternalVariables.get(counter), Boolean
-							.valueOf(false));
+					accessOfUndeclaredInternalVariables.get(counter),
+					Boolean.valueOf(false));
 		}
 		accessOfUndeclaredInternalVariables.clear();
 		if (nestedTypes != null) {

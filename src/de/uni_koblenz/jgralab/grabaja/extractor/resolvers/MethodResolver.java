@@ -211,25 +211,29 @@ public class MethodResolver extends Resolver {
 		// }
 		Vertex scope = symbolTable.getScopeOfMethodInvocation(methodInvocation);
 		String methodName = null;
-		if (methodInvocation.getFirstIsNameOfInvokedMethod(EdgeDirection.IN) == null) {
+		if (methodInvocation
+				.getFirstIsNameOfInvokedMethodIncidence(EdgeDirection.IN) == null) {
 			if (methodInvocation
-					.getFirstIsConstructorInvocationOf(EdgeDirection.OUT) == null) {
+					.getFirstIsConstructorInvocationOfIncidence(EdgeDirection.OUT) == null) {
 				return finishUnresolvedMethodInvocation(methodInvocation);
 			}
 			ObjectCreation containingCreation = (ObjectCreation) methodInvocation
-					.getFirstIsConstructorInvocationOf(EdgeDirection.OUT)
-					.getOmega();
-			if (containingCreation.getFirstIsTypeOfObject(EdgeDirection.IN) == null) {
+					.getFirstIsConstructorInvocationOfIncidence(
+							EdgeDirection.OUT).getOmega();
+			if (containingCreation
+					.getFirstIsTypeOfObjectIncidence(EdgeDirection.IN) == null) {
 				return finishUnresolvedMethodInvocation(methodInvocation);
 			}
 			TypeSpecification containingCreationSpecification = (TypeSpecification) containingCreation
-					.getFirstIsTypeOfObject(EdgeDirection.IN).getAlpha();
+					.getFirstIsTypeOfObjectIncidence(EdgeDirection.IN)
+					.getAlpha();
 			if (containingCreationSpecification
-					.getFirstIsTypeDefinitionOf(EdgeDirection.IN) == null) {
+					.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN) == null) {
 				return finishUnresolvedMethodInvocation(methodInvocation);
 			}
 			Type containingCreationType = (Type) containingCreationSpecification
-					.getFirstIsTypeDefinitionOf(EdgeDirection.IN).getAlpha();
+					.getFirstIsTypeDefinitionOfIncidence(EdgeDirection.IN)
+					.getAlpha();
 			methodName = containingCreationType.get_name();
 			Member methodDeclarationVertex = findMatchingDeclaration(
 					methodInvocation, methodInvocationArguments,
@@ -250,9 +254,10 @@ public class MethodResolver extends Resolver {
 					methodDeclarationVertex, scope, methodName);
 		}
 		methodName = ((Identifier) methodInvocation
-				.getFirstIsNameOfInvokedMethod(EdgeDirection.IN).getAlpha())
-				.get_name();
-		if (methodInvocation.getFirstIsMethodContainerOf(EdgeDirection.IN) == null) {
+				.getFirstIsNameOfInvokedMethodIncidence(EdgeDirection.IN)
+				.getAlpha()).get_name();
+		if (methodInvocation
+				.getFirstIsMethodContainerOfIncidence(EdgeDirection.IN) == null) {
 			if ((methodName != null) && methodName.equals("this")) {
 				ClassDefinition enclosingClass = ResolverUtilities
 						.getEnclosingClassFromScope(scope, symbolTable);
@@ -382,7 +387,8 @@ public class MethodResolver extends Resolver {
 			}
 		} else {
 			Expression methodContainer = (Expression) methodInvocation
-					.getFirstIsMethodContainerOf(EdgeDirection.IN).getAlpha();
+					.getFirstIsMethodContainerOfIncidence(EdgeDirection.IN)
+					.getAlpha();
 			if (methodContainer instanceof FieldAccess) {
 				FieldAccess containerAccess = (FieldAccess) methodContainer;
 				// try to resolve the container field first, as it might not
@@ -390,25 +396,25 @@ public class MethodResolver extends Resolver {
 				// returns at once so there are no infinite loops).
 				fieldResolver.resolveSingleField(mode, containerAccess);
 				if ((containerAccess
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) != null)
+						.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) != null)
 						&& (containerAccess
-								.getFirstIsDeclarationOfAccessedField(
+								.getFirstIsDeclarationOfAccessedFieldIncidence(
 										EdgeDirection.IN).getAlpha() instanceof Type)) {
 					Type containerType = (Type) containerAccess
-							.getFirstIsDeclarationOfAccessedField(
+							.getFirstIsDeclarationOfAccessedFieldIncidence(
 									EdgeDirection.IN).getAlpha();
 					return resolveInvokedMethodFromContainingType(
 							containerType, methodName, methodInvocation,
 							methodInvocationArguments, mode, scope);
 				} else if ((containerAccess
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) != null)
+						.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) != null)
 						&& (containerAccess
-								.getFirstIsDeclarationOfAccessedField(
+								.getFirstIsDeclarationOfAccessedFieldIncidence(
 										EdgeDirection.IN).getAlpha() instanceof FieldDeclaration)) {
 					Type containerType = ResolverUtilities
 							.getTypeFromFieldDeclaration(
 									(FieldDeclaration) containerAccess
-											.getFirstIsDeclarationOfAccessedField(
+											.getFirstIsDeclarationOfAccessedFieldIncidence(
 													EdgeDirection.IN)
 											.getAlpha(), containerAccess);
 					if (containerType != null) {
@@ -917,11 +923,12 @@ public class MethodResolver extends Resolver {
 	 */
 	private boolean argumentIsValidParameter(Expression argument,
 			ParameterDeclaration parameter, ExtractionMode mode) {
-		if (parameter.getFirstIsTypeOfParameter(EdgeDirection.IN) == null) {
+		if (parameter.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN) == null) {
 			return false;
 		}
 		TypeSpecification parameterType = (TypeSpecification) parameter
-				.getFirstIsTypeOfParameter(EdgeDirection.IN).getAlpha();
+				.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN)
+				.getAlpha();
 		if (parameterType instanceof BuiltInType) {
 			return isCompatibleToBuiltInType(argument,
 					((BuiltInType) parameterType).get_type(), mode);
@@ -951,46 +958,49 @@ public class MethodResolver extends Resolver {
 	 */
 	private boolean isCompatibleToArrayType(Expression expression,
 			ArrayType typeToMatch, ExtractionMode mode) {
-		if (typeToMatch.getFirstIsElementTypeOf() == null) {
+		if (typeToMatch.getFirstIsElementTypeOfIncidence() == null) {
 			return false;
 		}
 		TypeSpecification elementTypeToMatch = (TypeSpecification) typeToMatch
-				.getFirstIsElementTypeOf().getAlpha();
+				.getFirstIsElementTypeOfIncidence().getAlpha();
 		if (expression instanceof Null) {
 			return true;
 		}
 		if (expression instanceof FieldAccess) {
 			fieldResolver.resolveSingleField(mode, (FieldAccess) expression);
 			if (((FieldAccess) expression)
-					.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) == null) {
+					.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) == null) {
 				return false;
 			}
 			TypeSpecification fieldType = null;
 			if (((FieldAccess) expression)
-					.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-					.getAlpha() instanceof VariableDeclaration) {
+					.getFirstIsDeclarationOfAccessedFieldIncidence(
+							EdgeDirection.IN).getAlpha() instanceof VariableDeclaration) {
 				if (((VariableDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha()).getFirstIsTypeOfVariable(EdgeDirection.IN) == null) {
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfVariableIncidence(EdgeDirection.IN) == null) {
 					return false;
 				}
 				fieldType = (TypeSpecification) ((VariableDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha()).getFirstIsTypeOfVariable(EdgeDirection.IN)
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfVariableIncidence(EdgeDirection.IN)
 						.getAlpha();
 			} else if (((FieldAccess) expression)
-					.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-					.getAlpha() instanceof ParameterDeclaration) {
+					.getFirstIsDeclarationOfAccessedFieldIncidence(
+							EdgeDirection.IN).getAlpha() instanceof ParameterDeclaration) {
 				if (((ParameterDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha())
-						.getFirstIsTypeOfParameter(EdgeDirection.IN) == null) {
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN) == null) {
 					return false;
 				}
 				fieldType = (TypeSpecification) ((ParameterDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha())
-						.getFirstIsTypeOfParameter(EdgeDirection.IN).getAlpha();
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN)
+						.getAlpha();
 			} else {
 				return false;
 			}
@@ -1022,45 +1032,48 @@ public class MethodResolver extends Resolver {
 		if (expression instanceof MethodInvocation) {
 			resolveSingleMethod(mode, (MethodInvocation) expression);
 			if ((((MethodInvocation) expression)
-					.getFirstIsDeclarationOfInvokedMethod(EdgeDirection.IN) != null)
+					.getFirstIsDeclarationOfInvokedMethodIncidence(EdgeDirection.IN) != null)
 					&& (((MethodInvocation) expression)
-							.getFirstIsDeclarationOfInvokedMethod(
+							.getFirstIsDeclarationOfInvokedMethodIncidence(
 									EdgeDirection.IN).getAlpha() instanceof MethodDeclaration)
 					&& (((MethodDeclaration) ((MethodInvocation) expression)
-							.getFirstIsDeclarationOfInvokedMethod(
+							.getFirstIsDeclarationOfInvokedMethodIncidence(
 									EdgeDirection.IN).getAlpha())
-							.getFirstIsReturnTypeOf(EdgeDirection.IN) != null)
+							.getFirstIsReturnTypeOfIncidence(EdgeDirection.IN) != null)
 					&& (((MethodDeclaration) ((MethodInvocation) expression)
-							.getFirstIsDeclarationOfInvokedMethod(
+							.getFirstIsDeclarationOfInvokedMethodIncidence(
 									EdgeDirection.IN).getAlpha())
-							.getFirstIsReturnTypeOf(EdgeDirection.IN)
+							.getFirstIsReturnTypeOfIncidence(EdgeDirection.IN)
 							.getAlpha() instanceof ArrayType)) {
 				return isCompatibleArrayType(
 						(ArrayType) ((MethodDeclaration) ((MethodInvocation) expression)
-								.getFirstIsDeclarationOfInvokedMethod(
+								.getFirstIsDeclarationOfInvokedMethodIncidence(
 										EdgeDirection.IN).getAlpha())
-								.getFirstIsReturnTypeOf(EdgeDirection.IN)
-								.getAlpha(), typeToMatch);
+								.getFirstIsReturnTypeOfIncidence(
+										EdgeDirection.IN).getAlpha(),
+						typeToMatch);
 			} else {
 				return false;
 			}
 		}
 		if (expression instanceof ClassCast) {
 			if ((((ClassCast) expression)
-					.getFirstIsCastedTypeOf(EdgeDirection.IN) != null)
-					&& (((ClassCast) expression).getFirstIsCastedTypeOf(
-							EdgeDirection.IN).getAlpha() instanceof ArrayType)) {
+					.getFirstIsCastedTypeOfIncidence(EdgeDirection.IN) != null)
+					&& (((ClassCast) expression)
+							.getFirstIsCastedTypeOfIncidence(EdgeDirection.IN)
+							.getAlpha() instanceof ArrayType)) {
 				return isCompatibleArrayType(
 						(ArrayType) ((ClassCast) expression)
-								.getFirstIsCastedTypeOf(EdgeDirection.IN)
-								.getAlpha(), typeToMatch);
+								.getFirstIsCastedTypeOfIncidence(
+										EdgeDirection.IN).getAlpha(),
+						typeToMatch);
 			} else {
 				return false;
 			}
 		}
 		if (expression instanceof ArrayCreation) {
 			if (((ArrayCreation) expression)
-					.getFirstIsElementTypeOfCreatedArray(EdgeDirection.IN) == null) {
+					.getFirstIsElementTypeOfCreatedArrayIncidence(EdgeDirection.IN) == null) {
 				return false;
 			}
 			int arrayCreationDimensions = expression.getDegree(
@@ -1081,20 +1094,20 @@ public class MethodResolver extends Resolver {
 			}
 			if ((elementTypeToMatch instanceof BuiltInType)
 					&& (((ArrayCreation) expression)
-							.getFirstIsElementTypeOfCreatedArray(
+							.getFirstIsElementTypeOfCreatedArrayIncidence(
 									EdgeDirection.IN).getAlpha() instanceof BuiltInType)) {
 				return isCompatibleBuiltInType(
 						(BuiltInType) ((ArrayCreation) expression)
-								.getFirstIsElementTypeOfCreatedArray(
+								.getFirstIsElementTypeOfCreatedArrayIncidence(
 										EdgeDirection.IN).getAlpha(),
 						((BuiltInType) elementTypeToMatch).get_type());
 			} else if ((elementTypeToMatch instanceof QualifiedType)
 					&& (((ArrayCreation) expression)
-							.getFirstIsElementTypeOfCreatedArray(
+							.getFirstIsElementTypeOfCreatedArrayIncidence(
 									EdgeDirection.IN).getAlpha() instanceof QualifiedType)) {
 				return isCompatibleQualifiedType(
 						(QualifiedType) ((ArrayCreation) expression)
-								.getFirstIsElementTypeOfCreatedArray(
+								.getFirstIsElementTypeOfCreatedArrayIncidence(
 										EdgeDirection.IN).getAlpha(),
 						(QualifiedType) elementTypeToMatch);
 			} else {
@@ -1135,26 +1148,27 @@ public class MethodResolver extends Resolver {
 		if (arrayType.get_dimensions() != (typeToMatch.get_dimensions() + dimensionsSurplus)) {
 			return false;
 		}
-		if ((arrayType.getFirstIsElementTypeOf(EdgeDirection.IN) != null)
-				&& (typeToMatch.getFirstIsElementTypeOf(EdgeDirection.IN) != null)) {
-			if ((typeToMatch.getFirstIsElementTypeOf(EdgeDirection.IN)
+		if ((arrayType.getFirstIsElementTypeOfIncidence(EdgeDirection.IN) != null)
+				&& (typeToMatch
+						.getFirstIsElementTypeOfIncidence(EdgeDirection.IN) != null)) {
+			if ((typeToMatch.getFirstIsElementTypeOfIncidence(EdgeDirection.IN)
 					.getAlpha() instanceof BuiltInType)
-					&& (arrayType.getFirstIsElementTypeOf(EdgeDirection.IN)
-							.getAlpha() instanceof BuiltInType)) {
-				return isCompatibleBuiltInType(
-						(BuiltInType) arrayType.getFirstIsElementTypeOf(
-								EdgeDirection.IN).getAlpha(),
-						((BuiltInType) typeToMatch.getFirstIsElementTypeOf(
-								EdgeDirection.IN).getAlpha()).get_type());
-			} else if ((typeToMatch.getFirstIsElementTypeOf(EdgeDirection.IN)
-					.getAlpha() instanceof QualifiedType)
-					&& (arrayType.getFirstIsElementTypeOf(EdgeDirection.IN)
-							.getAlpha() instanceof QualifiedType)) {
-				return isCompatibleQualifiedType(
-						(QualifiedType) arrayType.getFirstIsElementTypeOf(
-								EdgeDirection.IN).getAlpha(),
-						(QualifiedType) typeToMatch.getFirstIsElementTypeOf(
-								EdgeDirection.IN).getAlpha());
+					&& (arrayType.getFirstIsElementTypeOfIncidence(
+							EdgeDirection.IN).getAlpha() instanceof BuiltInType)) {
+				return isCompatibleBuiltInType((BuiltInType) arrayType
+						.getFirstIsElementTypeOfIncidence(EdgeDirection.IN)
+						.getAlpha(), ((BuiltInType) typeToMatch
+						.getFirstIsElementTypeOfIncidence(EdgeDirection.IN)
+						.getAlpha()).get_type());
+			} else if ((typeToMatch.getFirstIsElementTypeOfIncidence(
+					EdgeDirection.IN).getAlpha() instanceof QualifiedType)
+					&& (arrayType.getFirstIsElementTypeOfIncidence(
+							EdgeDirection.IN).getAlpha() instanceof QualifiedType)) {
+				return isCompatibleQualifiedType((QualifiedType) arrayType
+						.getFirstIsElementTypeOfIncidence(EdgeDirection.IN)
+						.getAlpha(), (QualifiedType) typeToMatch
+						.getFirstIsElementTypeOfIncidence(EdgeDirection.IN)
+						.getAlpha());
 			}
 			return false;
 		}
@@ -1183,35 +1197,38 @@ public class MethodResolver extends Resolver {
 		if (expression instanceof FieldAccess) {
 			fieldResolver.resolveSingleField(mode, (FieldAccess) expression);
 			if (((FieldAccess) expression)
-					.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN) == null) {
+					.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) == null) {
 				return false;
 			}
 			TypeSpecification fieldType = null;
 			if (((FieldAccess) expression)
-					.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-					.getAlpha() instanceof VariableDeclaration) {
+					.getFirstIsDeclarationOfAccessedFieldIncidence(
+							EdgeDirection.IN).getAlpha() instanceof VariableDeclaration) {
 				if (((VariableDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha()).getFirstIsTypeOfVariable(EdgeDirection.IN) == null) {
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfVariableIncidence(EdgeDirection.IN) == null) {
 					return false;
 				}
 				fieldType = (TypeSpecification) ((VariableDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha()).getFirstIsTypeOfVariable(EdgeDirection.IN)
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfVariableIncidence(EdgeDirection.IN)
 						.getAlpha();
 			} else if (((FieldAccess) expression)
-					.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-					.getAlpha() instanceof ParameterDeclaration) {
+					.getFirstIsDeclarationOfAccessedFieldIncidence(
+							EdgeDirection.IN).getAlpha() instanceof ParameterDeclaration) {
 				if (((ParameterDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha())
-						.getFirstIsTypeOfParameter(EdgeDirection.IN) == null) {
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN) == null) {
 					return false;
 				}
 				fieldType = (TypeSpecification) ((ParameterDeclaration) ((FieldAccess) expression)
-						.getFirstIsDeclarationOfAccessedField(EdgeDirection.IN)
-						.getAlpha())
-						.getFirstIsTypeOfParameter(EdgeDirection.IN).getAlpha();
+						.getFirstIsDeclarationOfAccessedFieldIncidence(
+								EdgeDirection.IN).getAlpha())
+						.getFirstIsTypeOfParameterIncidence(EdgeDirection.IN)
+						.getAlpha();
 			} else {
 				return false;
 			}
@@ -1230,18 +1247,18 @@ public class MethodResolver extends Resolver {
 		if (expression instanceof MethodInvocation) {
 			resolveSingleMethod(mode, (MethodInvocation) expression);
 			if ((((MethodInvocation) expression)
-					.getFirstIsDeclarationOfInvokedMethod(EdgeDirection.IN) != null)
+					.getFirstIsDeclarationOfInvokedMethodIncidence(EdgeDirection.IN) != null)
 					&& (((MethodInvocation) expression)
-							.getFirstIsDeclarationOfInvokedMethod(
+							.getFirstIsDeclarationOfInvokedMethodIncidence(
 									EdgeDirection.IN).getAlpha() instanceof MethodDeclaration)
 					&& (((MethodDeclaration) ((MethodInvocation) expression)
-							.getFirstIsDeclarationOfInvokedMethod(
+							.getFirstIsDeclarationOfInvokedMethodIncidence(
 									EdgeDirection.IN).getAlpha())
-							.getFirstIsReturnTypeOf(EdgeDirection.IN) != null)
+							.getFirstIsReturnTypeOfIncidence(EdgeDirection.IN) != null)
 					&& (((MethodDeclaration) ((MethodInvocation) expression)
-							.getFirstIsDeclarationOfInvokedMethod(
+							.getFirstIsDeclarationOfInvokedMethodIncidence(
 									EdgeDirection.IN).getAlpha())
-							.getFirstIsReturnTypeOf(EdgeDirection.IN)
+							.getFirstIsReturnTypeOfIncidence(EdgeDirection.IN)
 							.getAlpha() instanceof QualifiedType)) {
 				return true;
 			} else {

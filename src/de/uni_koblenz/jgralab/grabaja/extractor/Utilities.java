@@ -80,9 +80,11 @@ public class Utilities {
 	 * @param sourceAST
 	 *            The AST element to copy the attributes of.
 	 */
-	public static void fillEdgeAttributesFromAST(AttributedEdge edgeWithAttributesToFill, AST sourceAST) {
+	public static void fillEdgeAttributesFromAST(
+			AttributedEdge edgeWithAttributesToFill, AST sourceAST) {
 		if (sourceAST != null)
-			fillEdgeAttributes(edgeWithAttributesToFill, (CommonASTAdapter)sourceAST);
+			fillEdgeAttributes(edgeWithAttributesToFill,
+					(CommonASTAdapter) sourceAST);
 	}
 
 	/**
@@ -93,7 +95,8 @@ public class Utilities {
 	 * @param sourceAST
 	 *            The AST element to copy the attributes of.
 	 */
-	public static void fillEdgeAttributes(AttributedEdge edgeWithAttributesToFill, CommonASTAdapter sourceAST) {
+	public static void fillEdgeAttributes(
+			AttributedEdge edgeWithAttributesToFill, CommonASTAdapter sourceAST) {
 		if ((edgeWithAttributesToFill != null) && (sourceAST != null)) {
 			edgeWithAttributesToFill.set_offset(sourceAST.getOffset());
 			edgeWithAttributesToFill.set_line(sourceAST.getLine());
@@ -126,8 +129,7 @@ public class Utilities {
 			edgeWithAttributesToFill.set_column(beginASTElement.getColumn());
 			edgeWithAttributesToFill
 					.set_length((endASTElement.getOffset() - beginASTElement
-							.getOffset())
-							+ endASTElement.getText().length());
+							.getOffset()) + endASTElement.getText().length());
 		}
 	}
 
@@ -140,7 +142,8 @@ public class Utilities {
 	 * @param value
 	 *            The value to be set for all attributes.
 	 */
-	public static void fillEdgeAttributesWithGivenValue(AttributedEdge edgeWithAttributesToFill, int value) {
+	public static void fillEdgeAttributesWithGivenValue(
+			AttributedEdge edgeWithAttributesToFill, int value) {
 		edgeWithAttributesToFill.set_offset(value);
 		edgeWithAttributesToFill.set_line(value);
 		edgeWithAttributesToFill.set_column(value);
@@ -158,12 +161,14 @@ public class Utilities {
 	public static void addToFullyQualifiedName(Vertex vertex, AST name) {
 		if (vertex instanceof QualifiedType) {
 			QualifiedType qualifiedTypeVertex = (QualifiedType) vertex;
-			String fullyQualifiedName = qualifiedTypeVertex.get_fullyQualifiedName();
+			String fullyQualifiedName = qualifiedTypeVertex
+					.get_fullyQualifiedName();
 			if (fullyQualifiedName == null)
 				fullyQualifiedName = "";
 			else if (!fullyQualifiedName.isEmpty())
 				fullyQualifiedName += ".";
-			qualifiedTypeVertex.set_fullyQualifiedName(fullyQualifiedName + name.getText());
+			qualifiedTypeVertex.set_fullyQualifiedName(fullyQualifiedName
+					+ name.getText());
 		}
 	}
 }

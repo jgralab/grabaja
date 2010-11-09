@@ -48,7 +48,7 @@ public class CGWildcardArgumentImpl extends WildcardArgumentImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -60,7 +60,7 @@ public class CGWildcardArgumentImpl extends WildcardArgumentImpl implements
 		Vertex last = this;
 
 		// lower bound (0,1)
-		IsLowerBoundOfWildcardArgument ilbowa = getFirstIsLowerBoundOfWildcardArgument(EdgeDirection.IN);
+		IsLowerBoundOfWildcardArgument ilbowa = getFirstIsLowerBoundOfWildcardArgumentIncidence(EdgeDirection.IN);
 		if (ilbowa != null) {
 			bw.append(" super ");
 			last = ((CGTypeSpecification) ilbowa.getAlpha()).generateCode(jcg,
@@ -68,7 +68,7 @@ public class CGWildcardArgumentImpl extends WildcardArgumentImpl implements
 		}
 
 		// upper bound (0,1)
-		IsUpperBoundOfWildcardArgument iubowa = getFirstIsUpperBoundOfWildcardArgument(EdgeDirection.IN);
+		IsUpperBoundOfWildcardArgument iubowa = getFirstIsUpperBoundOfWildcardArgumentIncidence(EdgeDirection.IN);
 		if (iubowa != null) {
 			bw.append(" extends ");
 			last = ((CGTypeSpecification) iubowa.getAlpha()).generateCode(jcg,

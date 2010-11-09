@@ -45,7 +45,7 @@ public class CGLabelImpl extends LabelImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -53,14 +53,14 @@ public class CGLabelImpl extends LabelImpl implements CGStatement {
 		}
 
 		// the name (1,1)
-		((CGIdentifierImpl) getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGIdentifierImpl) getFirstIsLabelNameOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(": ");
 
 		// the statement (1,1)
-		return ((CGStatement) getFirstIsAttachedTo(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		return ((CGStatement) getFirstIsAttachedToIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 
 }

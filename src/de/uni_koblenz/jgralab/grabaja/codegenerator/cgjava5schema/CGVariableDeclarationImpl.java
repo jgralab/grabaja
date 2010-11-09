@@ -48,7 +48,7 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -63,21 +63,22 @@ public class CGVariableDeclarationImpl extends VariableDeclarationImpl
 		}
 
 		// then the type (exactly one)
-		if (getFirstIsTypeOfVariable(EdgeDirection.IN) != null) {
-			((CGTypeSpecification) getFirstIsTypeOfVariable(EdgeDirection.IN)
-					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (getFirstIsTypeOfVariableIncidence(EdgeDirection.IN) != null) {
+			((CGTypeSpecification) getFirstIsTypeOfVariableIncidence(
+					EdgeDirection.IN).getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		} else {
 			bw.append("/* Missing type */ Object");
 		}
 		bw.append(' ');
 
 		// then the name (exactly one)
-		Vertex last = ((CGIdentifierImpl) getFirstIsVariableNameOf(
+		Vertex last = ((CGIdentifierImpl) getFirstIsVariableNameOfIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
 		// then the initializer (0 or 1)
-		IsInitializerOfVariable iiov = getFirstIsInitializerOfVariable(EdgeDirection.IN);
+		IsInitializerOfVariable iiov = getFirstIsInitializerOfVariableIncidence(EdgeDirection.IN);
 		if (iiov != null) {
 			bw.append(" = ");
 			last = ((CGExpression) iiov.getAlpha()).generateCode(jcg, bw,

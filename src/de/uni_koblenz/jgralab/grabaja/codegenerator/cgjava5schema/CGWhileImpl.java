@@ -45,7 +45,7 @@ public class CGWhileImpl extends WhileImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -54,13 +54,14 @@ public class CGWhileImpl extends WhileImpl implements CGStatement {
 
 		bw.append("while (");
 
-		((CGExpression) getFirstIsConditionOfWhile(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGExpression) getFirstIsConditionOfWhileIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(") ");
 
-		return ((CGStatement) getFirstIsLoopBodyOfWhile(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGStatement) getFirstIsLoopBodyOfWhileIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

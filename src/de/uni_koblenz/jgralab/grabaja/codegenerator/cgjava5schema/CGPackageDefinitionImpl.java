@@ -46,7 +46,7 @@ public class CGPackageDefinitionImpl extends PackageDefinitionImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -56,8 +56,8 @@ public class CGPackageDefinitionImpl extends PackageDefinitionImpl implements
 		bw.append("package ");
 
 		// the pkg def (1,1)
-		((CGQualifiedName) getFirstIsPackageNameOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGQualifiedName) getFirstIsPackageNameOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		return this;
 	}

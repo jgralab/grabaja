@@ -46,7 +46,7 @@ public class CGProgramImpl extends ProgramImpl implements CodeGenerator {
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {

@@ -48,7 +48,7 @@ public class CGArrayCreationImpl extends ArrayCreationImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -58,7 +58,7 @@ public class CGArrayCreationImpl extends ArrayCreationImpl implements
 		Vertex last = this;
 
 		// the type (0,1)
-		IsElementTypeOfCreatedArray ietoca = getFirstIsElementTypeOfCreatedArray(EdgeDirection.IN);
+		IsElementTypeOfCreatedArray ietoca = getFirstIsElementTypeOfCreatedArrayIncidence(EdgeDirection.IN);
 		if (ietoca != null) {
 			bw.append("new ");
 			// this array creation has the form: new Foo[1][2][38]

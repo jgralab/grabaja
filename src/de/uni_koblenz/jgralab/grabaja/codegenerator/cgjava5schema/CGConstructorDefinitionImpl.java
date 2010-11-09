@@ -50,7 +50,7 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -65,8 +65,9 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 		}
 
 		// the name (1,1)
-		((CGIdentifierImpl) getFirstIsNameOfConstructor(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGIdentifierImpl) getFirstIsNameOfConstructorIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		// the type parameters (0,*)
 		boolean first = true;
@@ -109,8 +110,9 @@ public class CGConstructorDefinitionImpl extends ConstructorDefinitionImpl
 		}
 
 		// the block (1,1)
-		return ((CGBlockImpl) getFirstIsBodyOfConstructor(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsBodyOfConstructorIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

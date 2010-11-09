@@ -46,7 +46,7 @@ public class CGIfImpl extends IfImpl implements CGStatement {
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -56,17 +56,17 @@ public class CGIfImpl extends IfImpl implements CGStatement {
 		bw.append("if (");
 
 		// here comes the condition (exactly one)
-		((CGExpression) getFirstIsConditionOfIf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGExpression) getFirstIsConditionOfIfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(") ");
 
 		// now the then (exactly one)
-		Vertex last = ((CGStatement) getFirstIsThenOf(EdgeDirection.IN)
+		Vertex last = ((CGStatement) getFirstIsThenOfIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// now the else (0 or 1)
-		IsElseOf ieo = getFirstIsElseOf(EdgeDirection.IN);
+		IsElseOf ieo = getFirstIsElseOfIncidence(EdgeDirection.IN);
 		if (ieo != null) {
 			bw.append(" else ");
 			last = ((CGStatement) ieo.getAlpha()).generateCode(jcg, bw,

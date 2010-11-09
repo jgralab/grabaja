@@ -49,7 +49,7 @@ public class CGEnumConstantImpl extends EnumConstantImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -63,7 +63,7 @@ public class CGEnumConstantImpl extends EnumConstantImpl implements
 		}
 
 		// the name (1,1)
-		Vertex last = ((CGIdentifierImpl) getFirstIsEnumConstantNameOf(
+		Vertex last = ((CGIdentifierImpl) getFirstIsEnumConstantNameOfIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
@@ -84,7 +84,7 @@ public class CGEnumConstantImpl extends EnumConstantImpl implements
 		}
 
 		// the block (0,1)
-		IsEnumConstantBlockOf iecbo = getFirstIsEnumConstantBlockOf(EdgeDirection.IN);
+		IsEnumConstantBlockOf iecbo = getFirstIsEnumConstantBlockOfIncidence(EdgeDirection.IN);
 		if (iecbo != null) {
 			bw.append(' ');
 			last = ((CGBlockImpl) iecbo.getAlpha()).generateCode(jcg, bw,

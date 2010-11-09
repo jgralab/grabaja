@@ -46,7 +46,7 @@ public class CGObjectCreationImpl extends ObjectCreationImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -56,11 +56,11 @@ public class CGObjectCreationImpl extends ObjectCreationImpl implements
 		bw.append("new ");
 
 		// the type (1,1)
-		((CGTypeSpecification) getFirstIsTypeOfObject(EdgeDirection.IN)
+		((CGTypeSpecification) getFirstIsTypeOfObjectIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// the constructor method invocation (1,1)
-		return ((CGMethodInvocationImpl) getFirstIsConstructorInvocationOf(
+		return ((CGMethodInvocationImpl) getFirstIsConstructorInvocationOfIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 	}

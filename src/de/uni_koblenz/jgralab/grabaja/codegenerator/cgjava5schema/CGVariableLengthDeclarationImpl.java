@@ -47,7 +47,7 @@ public class CGVariableLengthDeclarationImpl extends
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -55,7 +55,7 @@ public class CGVariableLengthDeclarationImpl extends
 		}
 
 		// first the modifier (0,1)
-		IsModifierOfParameter imop = getFirstIsModifierOfParameter(EdgeDirection.IN);
+		IsModifierOfParameter imop = getFirstIsModifierOfParameterIncidence(EdgeDirection.IN);
 		if (imop != null) {
 			((CGModifierImpl) imop.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
@@ -63,13 +63,15 @@ public class CGVariableLengthDeclarationImpl extends
 		}
 
 		// then the type spec (1,1)
-		((CGTypeSpecification) getFirstIsTypeOfParameter(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGTypeSpecification) getFirstIsTypeOfParameterIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 		bw.append("... ");
 
 		// then the name (1,1)
-		return ((CGIdentifierImpl) getFirstIsParameterNameOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGIdentifierImpl) getFirstIsParameterNameOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

@@ -49,7 +49,7 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -57,7 +57,7 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 		}
 
 		// first the container (0,1)
-		IsMethodContainerOf imco = getFirstIsMethodContainerOf(EdgeDirection.IN);
+		IsMethodContainerOf imco = getFirstIsMethodContainerOfIncidence(EdgeDirection.IN);
 		if (imco != null) {
 			((CGExpression) imco.getAlpha()).generateCode(jcg, bw, indentLevel);
 			bw.append('.');
@@ -66,7 +66,7 @@ public class CGMethodInvocationImpl extends MethodInvocationImpl implements
 		// TODO: Do I need to do something with the `type' attribute?
 
 		// then the method name (0,1), 0 in the case of constructors
-		IsNameOfInvokedMethod inoim = getFirstIsNameOfInvokedMethod(EdgeDirection.IN);
+		IsNameOfInvokedMethod inoim = getFirstIsNameOfInvokedMethodIncidence(EdgeDirection.IN);
 		if (inoim != null) {
 			((CGIdentifierImpl) inoim.getAlpha()).generateCode(jcg, bw,
 					indentLevel);

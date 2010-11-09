@@ -45,7 +45,7 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -55,13 +55,13 @@ public class CGDoWhileImpl extends DoWhileImpl implements CGStatement {
 		bw.append("do ");
 
 		// the block (1,1)
-		((CGStatement) getFirstIsLoopBodyOfDoWhile(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGStatement) getFirstIsLoopBodyOfDoWhileIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(" while (");
 
 		// the condition (1,1)
-		((CGExpression) getFirstIsConditionOfDoWhile(EdgeDirection.IN)
+		((CGExpression) getFirstIsConditionOfDoWhileIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 		bw.append(")");
 

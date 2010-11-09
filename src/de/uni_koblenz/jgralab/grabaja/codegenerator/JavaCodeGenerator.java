@@ -177,9 +177,7 @@ public class JavaCodeGenerator {
 	// "CommentImpl"
 	static {
 		GraphFactory f = Java5Schema.instance().getGraphFactory();
-		f
-				.setVertexImplementationClass(Annotation.class,
-						CGAnnotationImpl.class);
+		f.setVertexImplementationClass(Annotation.class, CGAnnotationImpl.class);
 		f.setVertexImplementationClass(AnnotationDefinition.class,
 				CGAnnotationDefinitionImpl.class);
 		f.setVertexImplementationClass(AnnotationField.class,
@@ -230,9 +228,7 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(For.class, CGForImpl.class);
 		f.setVertexImplementationClass(ForEachClause.class,
 				CGForEachClauseImpl.class);
-		f
-				.setVertexImplementationClass(Identifier.class,
-						CGIdentifierImpl.class);
+		f.setVertexImplementationClass(Identifier.class, CGIdentifierImpl.class);
 		f.setVertexImplementationClass(If.class, CGIfImpl.class);
 		f.setVertexImplementationClass(InfixExpression.class,
 				CGInfixExpressionImpl.class);
@@ -273,9 +269,7 @@ public class JavaCodeGenerator {
 		f.setVertexImplementationClass(Return.class, CGReturnImpl.class);
 		f.setVertexImplementationClass(SimpleArgument.class,
 				CGSimpleArgumentImpl.class);
-		f
-				.setVertexImplementationClass(SourceFile.class,
-						CGSourceFileImpl.class);
+		f.setVertexImplementationClass(SourceFile.class, CGSourceFileImpl.class);
 		f.setVertexImplementationClass(SourceUsage.class,
 				CGSourceUsageImpl.class);
 		f.setVertexImplementationClass(StaticConstructorDefinition.class,

@@ -39,7 +39,7 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 public interface CodeGenerator extends Vertex {
 	/**
 	 * Generate code for this java5 vertex.
-	 *
+	 * 
 	 * @param jcg
 	 *            the {@link JavaCodeGenerator}
 	 * @param bw

@@ -46,7 +46,7 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -59,7 +59,7 @@ public class CGPostfixExpressionImpl extends PostfixExpressionImpl implements
 		}
 
 		// the LHS (1,1)
-		((CGExpression) getFirstIsLeftHandSideOfPostfixExpression(
+		((CGExpression) getFirstIsLeftHandSideOfPostfixExpressionIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 

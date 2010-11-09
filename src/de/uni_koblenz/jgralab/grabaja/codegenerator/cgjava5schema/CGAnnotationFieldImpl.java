@@ -48,7 +48,7 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -63,19 +63,21 @@ public class CGAnnotationFieldImpl extends AnnotationFieldImpl implements
 		}
 
 		// the type (1,1)
-		((CGTypeSpecification) getFirstIsTypeOfAnnotationField(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGTypeSpecification) getFirstIsTypeOfAnnotationFieldIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(' ');
 
 		// the name (1,1)
-		((CGIdentifierImpl) getFirstIsAnnotationFieldNameOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGIdentifierImpl) getFirstIsAnnotationFieldNameOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 		bw.append("()");
 
 		// the default value (TODO: Currently it's (1,1), but (0,1) would be
 		// correct)
-		IsDefaultValueOf idvo = getFirstIsDefaultValueOf(EdgeDirection.IN);
+		IsDefaultValueOf idvo = getFirstIsDefaultValueOfIncidence(EdgeDirection.IN);
 		if (idvo != null) {
 			bw.append(" default ");
 			return ((CGExpression) idvo.getAlpha()).generateCode(jcg, bw,

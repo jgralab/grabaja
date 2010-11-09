@@ -46,7 +46,7 @@ public class CGArrayTypeImpl extends ArrayTypeImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -54,9 +54,10 @@ public class CGArrayTypeImpl extends ArrayTypeImpl implements
 		}
 
 		// the type spec (1,1)
-		if (getFirstIsElementTypeOf(EdgeDirection.IN) != null) {
-			((CGTypeSpecification) getFirstIsElementTypeOf(EdgeDirection.IN)
-					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (getFirstIsElementTypeOfIncidence(EdgeDirection.IN) != null) {
+			((CGTypeSpecification) getFirstIsElementTypeOfIncidence(
+					EdgeDirection.IN).getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		} else {
 			bw.append("/* Missing Type */ Object");
 		}

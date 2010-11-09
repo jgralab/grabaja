@@ -52,7 +52,7 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -83,9 +83,10 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 		}
 
 		// then the return type (exactly one)
-		if (md.getFirstIsReturnTypeOf(EdgeDirection.IN) != null) {
-			((CGTypeSpecification) md.getFirstIsReturnTypeOf(EdgeDirection.IN)
-					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (md.getFirstIsReturnTypeOfIncidence(EdgeDirection.IN) != null) {
+			((CGTypeSpecification) md.getFirstIsReturnTypeOfIncidence(
+					EdgeDirection.IN).getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		} else {
 			bw.append("/*Missing return type */ Object");
 		}
@@ -110,8 +111,9 @@ public class CGMethodDeclarationImpl extends MethodDeclarationImpl implements
 		bw.append(' ');
 
 		// then the name (exactly one)
-		((CGIdentifierImpl) md.getFirstIsNameOfMethod(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGIdentifierImpl) md
+				.getFirstIsNameOfMethodIncidence(EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		// now comes the parameter list as many ParameterDeclarations
 		bw.append('(');

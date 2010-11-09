@@ -48,7 +48,7 @@ public class CGBreakImpl extends BreakImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -58,14 +58,14 @@ public class CGBreakImpl extends BreakImpl implements CGStatement {
 		bw.append("break");
 
 		// the label (0,1)
-		IsBreakTargetOf ibto = getFirstIsBreakTargetOf(EdgeDirection.IN);
+		IsBreakTargetOf ibto = getFirstIsBreakTargetOfIncidence(EdgeDirection.IN);
 		if (ibto != null) {
 			bw.append(' ');
 			// We need to write the identifier on our own here, else we'd
 			// produce an endless recursion
 			bw.append(((Identifier) ((Label) ibto.getAlpha())
-					.getFirstIsLabelNameOf(EdgeDirection.IN).getAlpha())
-					.get_name());
+					.getFirstIsLabelNameOfIncidence(EdgeDirection.IN)
+					.getAlpha()).get_name());
 		}
 
 		return this;

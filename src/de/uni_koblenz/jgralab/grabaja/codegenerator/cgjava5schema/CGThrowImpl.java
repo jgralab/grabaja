@@ -45,7 +45,7 @@ public class CGThrowImpl extends ThrowImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -55,8 +55,9 @@ public class CGThrowImpl extends ThrowImpl implements CGStatement {
 		bw.append("throw ");
 
 		// the exception (1,1)
-		return ((CGExpression) getFirstIsThrownExceptionOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGExpression) getFirstIsThrownExceptionOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

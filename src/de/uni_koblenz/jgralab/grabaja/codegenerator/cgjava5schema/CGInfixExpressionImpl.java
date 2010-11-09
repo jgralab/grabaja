@@ -46,7 +46,7 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -59,7 +59,7 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 		}
 
 		// first the LHS (1,1)
-		((CGExpression) getFirstIsLeftHandSideOfInfixExpression(
+		((CGExpression) getFirstIsLeftHandSideOfInfixExpressionIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
@@ -172,8 +172,8 @@ public class CGInfixExpressionImpl extends InfixExpressionImpl implements
 
 		// then the RHS (1,1), but do it conditinally, cause it seems the parser
 		// creates broken graphs...
-		if (getFirstIsRightHandSideOfInfixExpression(EdgeDirection.IN) != null) {
-			last = ((CGExpression) getFirstIsRightHandSideOfInfixExpression(
+		if (getFirstIsRightHandSideOfInfixExpressionIncidence(EdgeDirection.IN) != null) {
+			last = ((CGExpression) getFirstIsRightHandSideOfInfixExpressionIncidence(
 					EdgeDirection.IN).getAlpha()).generateCode(jcg, bw,
 					indentLevel);
 		} else {

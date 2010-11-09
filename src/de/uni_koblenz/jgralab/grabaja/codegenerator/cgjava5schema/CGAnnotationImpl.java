@@ -46,7 +46,7 @@ public class CGAnnotationImpl extends AnnotationImpl implements CodeGenerator {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -56,7 +56,7 @@ public class CGAnnotationImpl extends AnnotationImpl implements CodeGenerator {
 		bw.append('@');
 
 		// the name (1,1)
-		((CGQualifiedName) getFirstIsAnnotationNameOf(EdgeDirection.IN)
+		((CGQualifiedName) getFirstIsAnnotationNameOfIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// the args (0,*)

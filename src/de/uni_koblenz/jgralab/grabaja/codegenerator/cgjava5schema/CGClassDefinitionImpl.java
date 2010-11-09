@@ -51,7 +51,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -73,8 +73,8 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		bw.append("class ");
 
 		// write the class name
-		((CGIdentifierImpl) getFirstIsClassNameOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGIdentifierImpl) getFirstIsClassNameOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// now the type parameters (0,*)
 		boolean first = true;
@@ -93,7 +93,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		}
 
 		// the superclass (0,1)
-		IsSuperClassOfClass iscoc = getFirstIsSuperClassOfClass(EdgeDirection.IN);
+		IsSuperClassOfClass iscoc = getFirstIsSuperClassOfClassIncidence(EdgeDirection.IN);
 		if (iscoc != null) {
 			bw.append(" extends ");
 			((CGTypeSpecification) iscoc.getAlpha()).generateCode(jcg, bw,
@@ -116,7 +116,7 @@ public class CGClassDefinitionImpl extends ClassDefinitionImpl implements
 		bw.append(' ');
 
 		// write the class block (there's exactly one)
-		return ((CGBlockImpl) getFirstIsClassBlockOf(EdgeDirection.IN)
+		return ((CGBlockImpl) getFirstIsClassBlockOfIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 

@@ -45,7 +45,7 @@ public class CGBuiltInCastImpl extends BuiltInCastImpl implements CGExpression {
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -55,13 +55,15 @@ public class CGBuiltInCastImpl extends BuiltInCastImpl implements CGExpression {
 		bw.append('(');
 
 		// now the type (1,1)
-		((CGBuiltInTypeImpl) getFirstIsCastedBuiltInTypeOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGBuiltInTypeImpl) getFirstIsCastedBuiltInTypeOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(") ");
 
 		// now the casted expression (1,1)
-		return ((CGExpression) getFirstIsCastedValueOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGExpression) getFirstIsCastedValueOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 }

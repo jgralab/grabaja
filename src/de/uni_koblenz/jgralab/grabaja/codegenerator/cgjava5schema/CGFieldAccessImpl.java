@@ -47,7 +47,7 @@ public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -55,15 +55,15 @@ public class CGFieldAccessImpl extends FieldAccessImpl implements CGExpression {
 		}
 
 		// First the container (0,1)
-		IsFieldContainerOf ifco = getFirstIsFieldContainerOf(EdgeDirection.IN);
+		IsFieldContainerOf ifco = getFirstIsFieldContainerOfIncidence(EdgeDirection.IN);
 		if (ifco != null) {
 			((CGExpression) ifco.getAlpha()).generateCode(jcg, bw, indentLevel);
 			bw.append('.');
 		}
 
 		// now the field name (1,1)
-		((CGIdentifierImpl) getFirstIsFieldNameOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGIdentifierImpl) getFirstIsFieldNameOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// now the array element indexes (0,*)
 		for (IsArrayElementIndexOf iaeio : getIsArrayElementIndexOfIncidences(EdgeDirection.IN)) {

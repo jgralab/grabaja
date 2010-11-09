@@ -45,7 +45,7 @@ public class CGCatchImpl extends CatchImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -55,13 +55,14 @@ public class CGCatchImpl extends CatchImpl implements CGStatement {
 		bw.append(" catch (");
 
 		// the caught exception (1,1)
-		((CGParameterDeclaration) getFirstIsCaughtExceptionOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGParameterDeclaration) getFirstIsCaughtExceptionOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(") ");
 
 		// the catch body (1,1)
-		return ((CGBlockImpl) getFirstIsBodyOfCatch(EdgeDirection.IN)
+		return ((CGBlockImpl) getFirstIsBodyOfCatchIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 

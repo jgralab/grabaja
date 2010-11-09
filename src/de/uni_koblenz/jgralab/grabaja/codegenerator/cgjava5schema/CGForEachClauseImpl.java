@@ -45,7 +45,7 @@ public class CGForEachClauseImpl extends ForEachClauseImpl implements CGForHead 
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -53,14 +53,14 @@ public class CGForEachClauseImpl extends ForEachClauseImpl implements CGForHead 
 		}
 
 		// the parameter decl (1,1)
-		((CGParameterDeclarationImpl) getFirstIsParameterOfForEachClause(
+		((CGParameterDeclarationImpl) getFirstIsParameterOfForEachClauseIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(" : ");
 
 		// the enumerable (1,1)
-		return ((CGExpression) getFirstIsEnumerableOf(EdgeDirection.IN)
+		return ((CGExpression) getFirstIsEnumerableOfIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 

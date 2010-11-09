@@ -39,7 +39,7 @@ import antlr.LexerSharedInputState;
 /**
  * Adapts <code>antlr.CharScanner</code> by adding needed methods to it. These
  * methods have absolutely to be known by the lexer at compile time.
- *
+ * 
  * @author: ultbreit@uni-koblenz.de
  */
 public abstract class CharScannerAdapter extends CharScanner {
@@ -56,7 +56,7 @@ public abstract class CharScannerAdapter extends CharScanner {
 
 	/**
 	 * Creates a <code>CharScannerAdapter</code> from given values.
-	 *
+	 * 
 	 * @param cb
 	 *            The <code>InpuBuffer</code> to use.
 	 */
@@ -67,7 +67,7 @@ public abstract class CharScannerAdapter extends CharScanner {
 
 	/**
 	 * Creates a <code>CharScannerAdapter</code> from given values.
-	 *
+	 * 
 	 * @param sharedInpuState
 	 *            The <code>LexerSharedInputState</code> to use.
 	 */

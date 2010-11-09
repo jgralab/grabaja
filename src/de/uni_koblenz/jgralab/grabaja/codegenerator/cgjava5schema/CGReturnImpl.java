@@ -46,7 +46,7 @@ public class CGReturnImpl extends ReturnImpl implements CGStatement {
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -58,7 +58,7 @@ public class CGReturnImpl extends ReturnImpl implements CGStatement {
 		Vertex last = this;
 
 		// now the returned exp (0 or 1)
-		IsReturnedBy irb = getFirstIsReturnedBy(EdgeDirection.IN);
+		IsReturnedBy irb = getFirstIsReturnedByIncidence(EdgeDirection.IN);
 		if (irb != null) {
 			bw.append(' ');
 			last = ((CGExpression) irb.getAlpha()).generateCode(jcg, bw,

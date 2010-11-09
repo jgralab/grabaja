@@ -57,7 +57,7 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 		cg_tu_directory = dir;
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -65,7 +65,7 @@ public class CGTranslationUnitImpl extends TranslationUnitImpl implements
 		}
 
 		// each TU has exactly one SourceFile
-		SourceFile sf = (SourceFile) getFirstIsPrimarySourceFor(
+		SourceFile sf = (SourceFile) getFirstIsPrimarySourceForIncidence(
 				EdgeDirection.IN).getAlpha();
 		String fileName = cg_tu_directory
 				+ File.separator

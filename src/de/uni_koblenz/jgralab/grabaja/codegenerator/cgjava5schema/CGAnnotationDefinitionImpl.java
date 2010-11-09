@@ -48,7 +48,7 @@ public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -71,15 +71,16 @@ public class CGAnnotationDefinitionImpl extends AnnotationDefinitionImpl
 		bw.append("@interface ");
 
 		// write the annotation name (1,1)
-		((CGIdentifierImpl) getFirstIsAnnotationDefinitionNameOf(
+		((CGIdentifierImpl) getFirstIsAnnotationDefinitionNameOfIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(' ');
 
 		// the body block (1,1)
-		return ((CGBlockImpl) getFirstIsAnnotationBlockOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsAnnotationBlockOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

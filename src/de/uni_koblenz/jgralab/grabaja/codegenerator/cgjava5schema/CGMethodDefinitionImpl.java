@@ -46,7 +46,7 @@ public class CGMethodDefinitionImpl extends MethodDefinitionImpl implements
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -58,7 +58,7 @@ public class CGMethodDefinitionImpl extends MethodDefinitionImpl implements
 		bw.append(' ');
 
 		// the last part is the method's body (exactly one)
-		return ((CGBlockImpl) getFirstIsBodyOfMethod(EdgeDirection.IN)
+		return ((CGBlockImpl) getFirstIsBodyOfMethodIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 }

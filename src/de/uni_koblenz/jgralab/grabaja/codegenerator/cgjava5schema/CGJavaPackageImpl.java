@@ -49,7 +49,7 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -57,8 +57,8 @@ public class CGJavaPackageImpl extends JavaPackageImpl implements CodeGenerator 
 		}
 
 		// create the directory
-		String relativeDirName = _fullyQualifiedName.replaceAll(Pattern
-				.quote("."), Matcher.quoteReplacement(File.separator));
+		String relativeDirName = _fullyQualifiedName.replaceAll(
+				Pattern.quote("."), Matcher.quoteReplacement(File.separator));
 		File pkg = new File(jcg.getBaseDirectory().getCanonicalPath()
 				+ File.separator + relativeDirName);
 		pkg.mkdirs();

@@ -46,7 +46,7 @@ public class CGPackageImportDefinitionImpl extends PackageImportDefinitionImpl
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -56,7 +56,7 @@ public class CGPackageImportDefinitionImpl extends PackageImportDefinitionImpl
 		bw.append("import ");
 
 		// the qualified name (1,1)
-		((CGQualifiedName) getFirstIsImportedTypeOf(EdgeDirection.IN)
+		((CGQualifiedName) getFirstIsImportedTypeOfIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(".*");

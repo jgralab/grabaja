@@ -50,7 +50,7 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -72,7 +72,7 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 		bw.append("interface ");
 
 		// write the iface name (1,1)
-		((CGIdentifierImpl) getFirstIsInterfaceNameOf(EdgeDirection.IN)
+		((CGIdentifierImpl) getFirstIsInterfaceNameOfIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		// now the type parameters (0,*)
@@ -107,8 +107,9 @@ public class CGInterfaceDefinitionImpl extends InterfaceDefinitionImpl
 		bw.append(' ');
 
 		// the body block (1,1)
-		return ((CGBlockImpl) getFirstIsInterfaceBlockOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsInterfaceBlockOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

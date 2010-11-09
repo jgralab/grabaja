@@ -45,7 +45,7 @@ public class CGSynchronizedImpl extends SynchronizedImpl implements CGStatement 
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -54,12 +54,13 @@ public class CGSynchronizedImpl extends SynchronizedImpl implements CGStatement 
 
 		bw.append("synchronized (");
 		// the monitor (1,1)
-		((CGExpression) getFirstIsMonitorOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGExpression) getFirstIsMonitorOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 		bw.append(") ");
 
 		// the block (1,1)
-		return ((CGBlockImpl) getFirstIsSynchronizedBodyOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGBlockImpl) getFirstIsSynchronizedBodyOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 }

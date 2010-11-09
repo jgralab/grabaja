@@ -49,7 +49,7 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -71,7 +71,7 @@ public class CGTraditionalForClauseImpl extends TraditionalForClauseImpl
 		bw.append("; ");
 
 		// now the condition (0 or 1)
-		IsForConditionOf ifco = getFirstIsForConditionOf(EdgeDirection.IN);
+		IsForConditionOf ifco = getFirstIsForConditionOfIncidence(EdgeDirection.IN);
 		if (ifco != null) {
 			last = ((CGExpression) ifco.getAlpha()).generateCode(jcg, bw, 0);
 		}

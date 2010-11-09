@@ -47,7 +47,7 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -57,8 +57,8 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 		bw.append("switch (");
 
 		// the argument condition (1,1)
-		((CGExpression) getFirstIsSwitchArgumentOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGExpression) getFirstIsSwitchArgumentOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(") {\n");
 
@@ -70,7 +70,7 @@ public class CGSwitchImpl extends SwitchImpl implements CGStatement {
 		}
 
 		// the default case (0,1)
-		IsDefaultCaseOf idco = getFirstIsDefaultCaseOf(EdgeDirection.IN);
+		IsDefaultCaseOf idco = getFirstIsDefaultCaseOfIncidence(EdgeDirection.IN);
 		if (idco != null) {
 			JavaCodeGenerator.indent(bw, indentLevel);
 			((CGDefaultImpl) idco.getAlpha()).generateCode(jcg, bw,

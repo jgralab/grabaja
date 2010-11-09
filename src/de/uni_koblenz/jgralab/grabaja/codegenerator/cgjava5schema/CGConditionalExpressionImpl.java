@@ -46,7 +46,7 @@ public class CGConditionalExpressionImpl extends ConditionalExpressionImpl
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -60,20 +60,21 @@ public class CGConditionalExpressionImpl extends ConditionalExpressionImpl
 		bw.append("(");
 
 		// new the condition (1,1)
-		((CGExpression) getFirstIsConditionOfExpression(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		((CGExpression) getFirstIsConditionOfExpressionIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(") ? ");
 
 		// now the match (1,1)
-		((CGExpression) getFirstIsMatchOf(EdgeDirection.IN).getAlpha())
+		((CGExpression) getFirstIsMatchOfIncidence(EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
 		bw.append(" : ");
 
 		// now the mismatch (1,1)
-		((CGExpression) getFirstIsMismatchOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGExpression) getFirstIsMismatchOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		if (isNested) {
 			bw.append(')');

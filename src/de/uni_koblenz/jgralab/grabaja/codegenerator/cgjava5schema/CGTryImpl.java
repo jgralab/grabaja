@@ -47,7 +47,7 @@ public class CGTryImpl extends TryImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -57,8 +57,9 @@ public class CGTryImpl extends TryImpl implements CGStatement {
 		bw.append("try ");
 
 		// the body (1,1)
-		Vertex last = ((CGBlockImpl) getFirstIsBodyOfTry(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		Vertex last = ((CGBlockImpl) getFirstIsBodyOfTryIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 
 		// the handlers (0,*)
 		for (IsHandlerOf iho : getIsHandlerOfIncidences(EdgeDirection.IN)) {
@@ -67,7 +68,7 @@ public class CGTryImpl extends TryImpl implements CGStatement {
 		}
 
 		// the finally block (0,1)
-		IsBodyOfFinally ibof = getFirstIsBodyOfFinally(EdgeDirection.IN);
+		IsBodyOfFinally ibof = getFirstIsBodyOfFinallyIncidence(EdgeDirection.IN);
 		if (ibof != null) {
 			bw.append(" finally ");
 			last = ((CGBlockImpl) ibof.getAlpha()).generateCode(jcg, bw,

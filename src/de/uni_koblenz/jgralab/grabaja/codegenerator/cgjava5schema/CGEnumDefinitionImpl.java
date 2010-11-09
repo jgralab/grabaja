@@ -47,7 +47,7 @@ public class CGEnumDefinitionImpl extends EnumDefinitionImpl implements CGType {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -69,13 +69,13 @@ public class CGEnumDefinitionImpl extends EnumDefinitionImpl implements CGType {
 		bw.append(" enum ");
 
 		// the name (1,1)
-		((CGIdentifierImpl) getFirstIsEnumNameOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGIdentifierImpl) getFirstIsEnumNameOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(' ');
 
 		// the block (1,1)
-		return ((CGBlockImpl) getFirstIsEnumBlockOf(EdgeDirection.IN)
+		return ((CGBlockImpl) getFirstIsEnumBlockOfIncidence(EdgeDirection.IN)
 				.getAlpha()).generateCode(jcg, bw, indentLevel);
 	}
 

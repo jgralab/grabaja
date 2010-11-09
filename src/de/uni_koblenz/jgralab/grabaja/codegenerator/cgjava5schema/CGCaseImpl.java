@@ -46,7 +46,7 @@ public class CGCaseImpl extends CaseImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -56,8 +56,8 @@ public class CGCaseImpl extends CaseImpl implements CGStatement {
 		bw.append("case ");
 
 		// the condition (1,1)
-		((CGExpression) getFirstIsCaseConditionOf(EdgeDirection.IN).getAlpha())
-				.generateCode(jcg, bw, indentLevel);
+		((CGExpression) getFirstIsCaseConditionOfIncidence(EdgeDirection.IN)
+				.getAlpha()).generateCode(jcg, bw, indentLevel);
 
 		bw.append(":\n");
 

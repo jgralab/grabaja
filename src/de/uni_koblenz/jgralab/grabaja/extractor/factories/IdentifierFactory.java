@@ -320,9 +320,11 @@ public class IdentifierFactory extends SubgraphFactory {
 	 * @param ast
 	 *            The AST element representing the identifier.
 	 */
-	public void createIdentifier(MethodDeclaration methodDeclarationVertex,	AST ast) {
+	public void createIdentifier(MethodDeclaration methodDeclarationVertex,
+			AST ast) {
 		Identifier identifierVertex = createIdentifier(ast);
-		IsNameOfMethod isNameOfMethodEdge = programGraph.createIsNameOfMethod(identifierVertex, methodDeclarationVertex);
+		IsNameOfMethod isNameOfMethodEdge = programGraph.createIsNameOfMethod(
+				identifierVertex, methodDeclarationVertex);
 		Utilities.fillEdgeAttributesFromAST(isNameOfMethodEdge, ast);
 	}
 

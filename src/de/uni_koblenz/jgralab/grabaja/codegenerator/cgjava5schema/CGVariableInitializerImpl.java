@@ -46,7 +46,7 @@ public class CGVariableInitializerImpl extends VariableInitializerImpl
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -54,8 +54,9 @@ public class CGVariableInitializerImpl extends VariableInitializerImpl
 		}
 
 		try {
-			return ((CGExpression) getFirstIsInitializerOf(EdgeDirection.IN)
-					.getAlpha()).generateCode(jcg, bw, indentLevel);
+			return ((CGExpression) getFirstIsInitializerOfIncidence(
+					EdgeDirection.IN).getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		} catch (NullPointerException e) {
 			System.err
 					.println("Found VariableInitializer without Expression vertex!");

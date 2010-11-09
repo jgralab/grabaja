@@ -45,7 +45,7 @@ public class CGFieldImpl extends FieldImpl implements CGMember {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -53,8 +53,9 @@ public class CGFieldImpl extends FieldImpl implements CGMember {
 		}
 
 		// field creation var decl (1,1)
-		return ((CGStatement) getFirstIsFieldCreationOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGStatement) getFirstIsFieldCreationOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

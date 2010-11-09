@@ -46,7 +46,7 @@ public class CGPrefixExpressionImpl extends PrefixExpressionImpl implements
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -83,7 +83,7 @@ public class CGPrefixExpressionImpl extends PrefixExpressionImpl implements
 		}
 
 		// the RHS (1,1)
-		((CGExpression) getFirstIsRightHandSideOfPrefixExpression(
+		((CGExpression) getFirstIsRightHandSideOfPrefixExpressionIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 

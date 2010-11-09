@@ -46,7 +46,7 @@ public class CGAssertImpl extends AssertImpl implements CGStatement {
 		super(id, g);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -56,12 +56,12 @@ public class CGAssertImpl extends AssertImpl implements CGStatement {
 		bw.append("assert ");
 
 		// the condition (1,1)
-		Vertex last = ((CGExpression) getFirstIsConditionOfAssert(
+		Vertex last = ((CGExpression) getFirstIsConditionOfAssertIncidence(
 				EdgeDirection.IN).getAlpha())
 				.generateCode(jcg, bw, indentLevel);
 
 		// the message (0,1)
-		IsMessageOf imo = getFirstIsMessageOf(EdgeDirection.IN);
+		IsMessageOf imo = getFirstIsMessageOfIncidence(EdgeDirection.IN);
 		if (imo != null) {
 			bw.append(" : ");
 			last = ((CGExpression) imo.getAlpha()).generateCode(jcg, bw,

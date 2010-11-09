@@ -47,7 +47,7 @@ public class CGParameterDeclarationImpl extends ParameterDeclarationImpl
 		super(arg0, arg1);
 	}
 
-	//@Override
+	// @Override
 	public Vertex generateCode(JavaCodeGenerator jcg, BufferedWriter bw,
 			int indentLevel) throws IOException {
 		if (!jcg.generationWanted(this)) {
@@ -55,7 +55,7 @@ public class CGParameterDeclarationImpl extends ParameterDeclarationImpl
 		}
 
 		// first the modifier (0,1)
-		IsModifierOfParameter imop = getFirstIsModifierOfParameter(EdgeDirection.IN);
+		IsModifierOfParameter imop = getFirstIsModifierOfParameterIncidence(EdgeDirection.IN);
 		if (imop != null) {
 			((CGModifierImpl) imop.getAlpha()).generateCode(jcg, bw,
 					indentLevel);
@@ -63,17 +63,19 @@ public class CGParameterDeclarationImpl extends ParameterDeclarationImpl
 		}
 
 		// then the type spec (1,1)
-		if (getFirstIsTypeOfParameter(EdgeDirection.IN)!=null) {
-			((CGTypeSpecification) getFirstIsTypeOfParameter(EdgeDirection.IN)
-					.getAlpha()).generateCode(jcg, bw, indentLevel);
+		if (getFirstIsTypeOfParameterIncidence(EdgeDirection.IN) != null) {
+			((CGTypeSpecification) getFirstIsTypeOfParameterIncidence(
+					EdgeDirection.IN).getAlpha()).generateCode(jcg, bw,
+					indentLevel);
 		} else {
 			bw.append("/* Missing Parameter Type */ Object");
 		}
 		bw.append(' ');
 
 		// then the name (1,1)
-		return ((CGIdentifierImpl) getFirstIsParameterNameOf(EdgeDirection.IN)
-				.getAlpha()).generateCode(jcg, bw, indentLevel);
+		return ((CGIdentifierImpl) getFirstIsParameterNameOfIncidence(
+				EdgeDirection.IN).getAlpha())
+				.generateCode(jcg, bw, indentLevel);
 	}
 
 }

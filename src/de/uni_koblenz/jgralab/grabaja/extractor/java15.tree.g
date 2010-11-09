@@ -593,7 +593,7 @@ typeArgument{ Vertex parentVertex = currentVertex; }
             // Determine if current type argument is part of a list of type arguments (e. g. SomeClass< String, File, Object >)
             if( parentVertex instanceof TypeArgument ){
                 // yes: so get the only QualifiedType and attach list element to it
-                QualifiedName qualifiedNameVertex = ( ( QualifiedName )( ( TypeArgument )parentVertex ).getFirstIsTypeArgumentOfTypeSpecification().getOmega() );
+                QualifiedName qualifiedNameVertex = ( ( QualifiedName )( ( TypeArgument )parentVertex ).getFirstIsTypeArgumentOfTypeSpecificationIncidence().getOmega() );
             }
             currentVertex = typeArgumentVertex;
         }
@@ -1159,8 +1159,8 @@ methodDef{
             //end of quickfix
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
-                if (typeSpecificationVertex.getLastEdge() != null) {
-                    typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                if (typeSpecificationVertex.getLastIncidence() != null) {
+                    typeSpecificationVertex.getLastIncidence().delete(); // this one is not needed anymore...
                 }
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, methodDefinitionVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
@@ -1179,9 +1179,9 @@ methodDef{
          slist { // statement list
                 MethodDeclaration old = methodDefinitionVertex;
                 methodDefinitionVertex = programGraph.createMethodDefinition();
-                Edge curr = old.getFirstEdge();
+                Edge curr = old.getFirstIncidence();
                     while (curr != null) {
-                        Edge next = curr.getNextEdge();
+                        Edge next = curr.getNextIncidence();
                         curr.setThis(methodDefinitionVertex);
                         curr = next;
                 }
@@ -1278,8 +1278,8 @@ parameterDef{
         parameterName:IDENT{
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
-                if (typeSpecificationVertex.getLastEdge() != null) {
-                    typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                if (typeSpecificationVertex.getLastIncidence() != null) {
+                    typeSpecificationVertex.getLastIncidence().delete(); // this one is not needed anymore...
                 }
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, parameterDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
@@ -1324,8 +1324,8 @@ variableLengthParameterDef{
         parameterName:IDENT{
             // added on 2009-03-03 as quick fix by ultbreit
             if( currentDimensionCount > 0 ){
-                if (typeSpecificationVertex.getLastEdge() != null) {
-                    typeSpecificationVertex.getLastEdge().delete(); // this one is not needed anymore...
+                if (typeSpecificationVertex.getLastIncidence() != null) {
+                    typeSpecificationVertex.getLastIncidence().delete(); // this one is not needed anymore...
                 }
                 ArrayType arrayTypeVertex = typeSpecificationFactory.createArrayType( currentDimensionCount, typeSpecificationVertex, typeSpecificationBeginAST, typeSpecificationEndAST );
                 typeSpecificationFactory.attachTypeSpecification( arrayTypeVertex, variableLengthDeclarationVertex, typeSpecificationBeginAST, currentArrayTypeEndAST );
@@ -1547,7 +1547,7 @@ identifier // This rule is only used by package definitions, import definitions 
            	    	javaPackageVertex.set_fullyQualifiedName( currentFullyQualifiedName );
            	    	symbolTable.addJavaPackage( currentFullyQualifiedName, javaPackageVertex );
 				}
-                if( currentVertex instanceof JavaPackage && javaPackageVertex.getFirstIsSubPackageOf() == null ) packageFactory.attach( javaPackageVertex, ( JavaPackage )currentVertex );
+                if( currentVertex instanceof JavaPackage && javaPackageVertex.getFirstIsSubPackageOfIncidence() == null ) packageFactory.attach( javaPackageVertex, ( JavaPackage )currentVertex );
                 currentVertex = javaPackageVertex;
             }
 			currentVertex = javaPackageVertex;
@@ -1568,7 +1568,7 @@ identifier // This rule is only used by package definitions, import definitions 
 						javaPackageVertex.set_fullyQualifiedName( currentFullyQualifiedName );
 						symbolTable.addJavaPackage( currentFullyQualifiedName, javaPackageVertex );
 					}
-					if( currentVertex instanceof JavaPackage && javaPackageVertex.getFirstIsSubPackageOf() == null ) packageFactory.attach( javaPackageVertex, ( JavaPackage )currentVertex );
+					if( currentVertex instanceof JavaPackage && javaPackageVertex.getFirstIsSubPackageOfIncidence() == null ) packageFactory.attach( javaPackageVertex, ( JavaPackage )currentVertex );
                 	currentVertex = javaPackageVertex;
 				}
                 currentEndAST = nameWithDot; // currentBeginAST already set correctly
@@ -2466,7 +2466,7 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                 (
                     fieldName:IDENT{
                         if( parentVertex instanceof MethodInvocation &&
-                        	((( MethodInvocation )parentVertex).getFirstIsNameOfInvokedMethod() == null) //2009-03-17 quick fix by ultbreit: added check for edge existence
+                        	((( MethodInvocation )parentVertex).getFirstIsNameOfInvokedMethodIncidence() == null) //2009-03-17 quick fix by ultbreit: added check for edge existence
                           ){
                             identifierFactory.createIdentifier( ( MethodInvocation )parentVertex, ( Expression )currentVertex, fieldName, currentBeginAST, currentEndAST );
                             currentVertex = parentVertex;
@@ -2496,13 +2496,13 @@ primaryExpression{ Vertex parentVertex = currentVertex; }
                     		verticesToDelete.add(fieldAccessVertex);
                     		String name = ResolverUtilities.getNameOfAccessedField(fieldAccessVertex);
                     		this.symbolTable.removeFieldAccess(fieldAccessVertex);
-                    		IsFieldContainerOf isFieldContainerOfEdge = fieldAccessVertex.getFirstIsFieldContainerOf(EdgeDirection.IN);
+                    		IsFieldContainerOf isFieldContainerOfEdge = fieldAccessVertex.getFirstIsFieldContainerOfIncidence(EdgeDirection.IN);
 
                     		while(isFieldContainerOfEdge != null){
 								FieldAccess containerVertex = (FieldAccess)isFieldContainerOfEdge.getAlpha();
 								name = ResolverUtilities.getNameOfAccessedField(containerVertex) + "." + name;
 								this.symbolTable.removeFieldAccess(containerVertex);
-								isFieldContainerOfEdge = containerVertex.getFirstIsFieldContainerOf(EdgeDirection.IN);
+								isFieldContainerOfEdge = containerVertex.getFirstIsFieldContainerOfIncidence(EdgeDirection.IN);
 								verticesToDelete.add(containerVertex);
 							}
 
@@ -2790,7 +2790,7 @@ newExpression{
                     expressionFactory.attachObjectCreationType( objectCreationVertex, typeSpecificationVertex, typeBeginAST, typeEndAST );
                 else
                     expressionFactory.attachObjectCreationType( objectCreationVertex, qualifiedNameVertex, typeBeginAST, typeEndAST );
-                IsNameOf isNameOfEdge = qualifiedNameVertex.getFirstIsNameOf();
+                IsNameOf isNameOfEdge = qualifiedNameVertex.getFirstIsNameOfIncidence();
                 //@TODO this should be a qualified name not an identifier
                 if( isNameOfEdge != null ) {
                     Identifier ident = ( Identifier )isNameOfEdge.getAlpha();

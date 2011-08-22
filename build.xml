@@ -13,7 +13,7 @@
 	<property name="parser.dir" value="${src.dir}/de/uni_koblenz/jgralab/grabaja/extractor/parser" />
 	
 	<path id="classpathExtension">
-		<pathelement location="${comlib.dir}/antlr/org.antlr_2.7.6.jar" />
+		<pathelement location="${lib.dir}/antlr/org.antlr_2.7.6.jar" />
 	</path>
 
 	<target name="build" depends="jgralab,clean,javaextractorsources,compile,jar" />

@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="testit/codegen"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jgralab"/>
-	<classpathentry kind="lib" path="/common/lib/antlr/org.antlr_2.7.6.jar"/>
 	<classpathentry kind="lib" path="/common/lib/getopt/java-getopt-1.0.13.jar"/>
+	<classpathentry kind="lib" path="lib/antlr/org.antlr_2.7.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

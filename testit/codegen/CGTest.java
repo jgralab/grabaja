@@ -89,7 +89,7 @@ public class CGTest {
 		t2d.setOutputFile(dotFile);
 		t2d.setGraphMarker(m);
 		System.out.println("Creating dot file...");
-		t2d.printGraph();
+		t2d.convert();
 		System.out.println("Creating dot file... DONE");
 
 		// PDF

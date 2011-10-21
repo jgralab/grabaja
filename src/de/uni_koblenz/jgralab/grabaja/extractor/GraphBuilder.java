@@ -1,25 +1,25 @@
 /*
  * JGraLab - The Java Graph Laboratory
- * 
+ *
  * Copyright (C) 2006-2010 Institute for Software Technology
  *                         University of Koblenz-Landau, Germany
  *                         ist@uni-koblenz.de
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, see <http://www.gnu.org/licenses>.
- * 
+ *
  * Additional permission under GNU GPL version 3 section 7
- * 
+ *
  * If you modify this Program, or any covered work, by linking or combining
  * it with Eclipse (or a modified version of that program or an Eclipse
  * plugin), containing parts covered by the terms of the Eclipse Public
@@ -60,7 +60,7 @@ import de.uni_koblenz.jgralab.schema.exception.SchemaException;
 
 /**
  * Builds the TGraph for a program.
- * 
+ *
  * @author: abaldauf@uni-koblenz.de
  * @author: ultbreit@uni-koblenz.de
  */
@@ -99,7 +99,7 @@ public class GraphBuilder {
 
 	/**
 	 * Creates and initializes an instance of the GraphBuilder.
-	 * 
+	 *
 	 * @param nameOfProgram
 	 *            Name to be used for the extracted software system
 	 * @param logger
@@ -112,7 +112,7 @@ public class GraphBuilder {
 
 	/**
 	 * Creates and initializes an instance of the TGraph.
-	 * 
+	 *
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
 	 * @throws Exception
@@ -135,7 +135,7 @@ public class GraphBuilder {
 	/**
 	 * Parses a list of files and triggers TGraph building after each parsed
 	 * file.
-	 * 
+	 *
 	 * @param fileList
 	 *            A Vector with the names of the files to be parsed, each can be
 	 *            relative or absolute.
@@ -176,7 +176,7 @@ public class GraphBuilder {
 			comments.clear(); // Clear comments before parsing next file.
 			symbolTable.nextFile(); // Clear type information of just parsed
 									// file
-			if (i % progressBar.getUpdateInterval() == 0) {
+			if ((i % progressBar.getUpdateInterval()) == 0) {
 				progressBar.progress(1);
 			}
 		}
@@ -185,7 +185,7 @@ public class GraphBuilder {
 
 	/**
 	 * Parses a file and returns it's AST representation.
-	 * 
+	 *
 	 * @param fileName
 	 *            Name of the file to parse, can be relative or absolute.
 	 * @return AST representation of given file, null if parsing failed.
@@ -244,7 +244,7 @@ public class GraphBuilder {
 
 	/**
 	 * Adds a new translation unit to TGraph.
-	 * 
+	 *
 	 * @param sourcePath
 	 *            The path of the .java file the AST resulted from.
 	 * @param comments
@@ -289,7 +289,7 @@ public class GraphBuilder {
 
 	/**
 	 * Executes all the global resolving mechanisms.
-	 * 
+	 *
 	 * @param mode
 	 *            The extraction mode to be used for resolving.
 	 */
@@ -345,7 +345,7 @@ public class GraphBuilder {
 
 	/**
 	 * Saves the generated TGraph to disk.
-	 * 
+	 *
 	 * @param targetPath
 	 *            The path of the file to write the graph to.
 	 */
@@ -354,7 +354,7 @@ public class GraphBuilder {
 			logger.info("Graph consists of " + programGraph.getVCount()
 					+ " vertices and " + programGraph.getECount() + " edges");
 			logger.info("Saving graph to " + targetPath);
-			GraphIO.saveGraphToFile(targetPath, programGraph,
+			GraphIO.saveGraphToFile(programGraph, targetPath,
 					new ConsoleProgressFunction());
 			logger.info("Graph succesfully saved");
 		} catch (GraphIOException exception) {
@@ -365,7 +365,7 @@ public class GraphBuilder {
 
 	/**
 	 * Gets extracted graph.
-	 * 
+	 *
 	 * @return Extracted graph.
 	 * @throws Exception
 	 *             TODO

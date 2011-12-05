@@ -7,6 +7,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jgralab"/>
 	<classpathentry kind="lib" path="/common/lib/getopt/java-getopt-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/antlr/org.antlr_2.7.6.jar"/>
-	<classpathentry kind="lib" path="/jgralab/lib/pcollections/pcollections-2.1.0-SNAPSHOT.jar" sourcepath="/pcollections/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

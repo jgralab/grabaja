@@ -299,7 +299,7 @@ VertexClass VariableInitializer : Expression ;
 EdgeClass IsInitializerOf : IsExpressionOf from Expression( 1, 1 ) aggregation composite to VariableInitializer( 1, 1 ) ;
 
 EdgeClass IsAnnotationOfMember : IsAnnotationOf from Annotation( 0, * ) to Member( 1, 1 ) ;
-EdgeClass IsMemberOf : AttributedEdge from Member( 0, * ) aggregation composite to Block( 1, 1 ) ;
+EdgeClass IsMemberOf : AttributedEdge from Member( 0, * ) role members aggregation composite to Block( 1, 1 ) ;
 
 VertexClass Field : Member ;
 EdgeClass IsFieldCreationOf : AttributedEdge from Statement( 1, 1 ) to Field( 1, 1 ) ;

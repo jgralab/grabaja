@@ -107,22 +107,22 @@ VertexClass ParameterDeclaration : FieldDeclaration ;
 VertexClass TypeArgument : TypeSpecification ;
 VertexClass MethodDeclaration : Member ;
 
-abstract EdgeClass IsExpressionOf : IsStatementOf from Expression (0,*) aggregation composite to Expression (0,1);
+abstract EdgeClass IsExpressionOf : IsStatementOf from Expression (0,*) role expressions aggregation composite to Expression (0,1);
 abstract EdgeClass IsAnnotationOf : AttributedEdge from Annotation( 0, * ) to JavaVertex( 1, 1 ) ;
-abstract EdgeClass IsArgumentOf : AttributedEdge from JavaVertex( 0, * ) aggregation composite to JavaVertex( 0, 1 ) ;
+abstract EdgeClass IsArgumentOf : AttributedEdge from JavaVertex( 0, * ) role args aggregation composite to JavaVertex( 0, 1 ) ;
 abstract EdgeClass IsConditionOf : AttributedEdge from Expression( 0, 1 ) aggregation composite to JavaVertex( 1, 1 ) ;
 abstract EdgeClass IsExceptionThrownBy : AttributedEdge from TypeSpecification( 0, * ) aggregation composite to Member( 1, 1 ) ;
-abstract EdgeClass IsInterfaceOf : AttributedEdge from TypeSpecification( 0, * ) to Type( 1, 1 ) ;
-abstract EdgeClass IsSuperClassOf : AttributedEdge from TypeSpecification( 0, 1 ) to Type( 1, 1 ) ;
-abstract EdgeClass IsLeftHandSideOf : IsExpressionOf from Expression( 1, 1 ) aggregation composite to Expression( 1, 1 ) ;
-abstract EdgeClass IsRightHandSideOf : IsExpressionOf from Expression( 1, 1 ) aggregation composite to Expression( 1, 1 ) ;
-abstract EdgeClass IsLoopBodyOf : IsStatementOf from Statement( 1, 1 ) aggregation composite to Statement( 1, 1 ) ;
-abstract EdgeClass IsModifierOf : AttributedEdge from Modifier( 0, * ) to JavaVertex( 1, 1 ) ;
-abstract EdgeClass IsParameterOf : AttributedEdge from ParameterDeclaration( 0, * ) aggregation composite to JavaVertex( 1, 1 ) ;
-abstract EdgeClass IsStatementOf : AttributedEdge from Statement( 0, * ) aggregation composite to JavaVertex( 1, 1 ) ;
-abstract EdgeClass IsTypeOf : AttributedEdge from JavaVertex( 0, * ) to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsInterfaceOf : AttributedEdge from TypeSpecification( 0, * ) role interfaces to Type( 1, 1 ) ;
+abstract EdgeClass IsSuperClassOf : AttributedEdge from TypeSpecification( 0, 1 ) role superClass to Type( 1, 1 ) ;
+abstract EdgeClass IsLeftHandSideOf : IsExpressionOf from Expression( 1, 1 ) role lhs aggregation composite to Expression( 1, 1 ) ;
+abstract EdgeClass IsRightHandSideOf : IsExpressionOf from Expression( 1, 1 ) role rhs aggregation composite to Expression( 1, 1 ) ;
+abstract EdgeClass IsLoopBodyOf : IsStatementOf from Statement( 1, 1 ) role loopBody aggregation composite to Statement( 1, 1 ) ;
+abstract EdgeClass IsModifierOf : AttributedEdge from Modifier( 0, * ) role modifiers to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsParameterOf : AttributedEdge from ParameterDeclaration (0,*) role params aggregation composite to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsStatementOf : AttributedEdge from Statement( 0, * ) role statements aggregation composite to JavaVertex( 1, 1 ) ;
+abstract EdgeClass IsTypeOf : AttributedEdge from JavaVertex(1,1) role type to JavaVertex( 1, 1 ) ;
 abstract EdgeClass IsTypeParameterOf : AttributedEdge from JavaVertex( 0, * ) to JavaVertex( 1, 1 ) ;
-abstract EdgeClass IsBlockOf : IsStatementOf from Block( 1, 1 ) aggregation composite to JavaVertex( 1, 1  );
+abstract EdgeClass IsBlockOf : IsStatementOf from Block( 1, 1 ) role block aggregation composite to JavaVertex( 1, 1  );
 
 EdgeClass IsTypeArgumentOfTypeSpecification : AttributedEdge from TypeArgument( 0, * ) to TypeSpecification( 1, 1 ) ;
 
@@ -148,7 +148,7 @@ VertexClass PackageDefinition : ExternalDeclaration;
 EdgeClass IsPackageNameOf : AttributedEdge from QualifiedName( 1, 1 ) to PackageDefinition( 1,* );
 EdgeClass IsPartOf from TranslationUnit( 0, * ) aggregation composite to JavaPackage( 1, 1 ) ;
 EdgeClass IsPackageOf from JavaPackage( 1, * ) aggregation composite to Program( 1, 1 ) ;
-EdgeClass IsSubPackageOf from JavaPackage( 0, 1 ) aggregation composite to JavaPackage( 1, 1 ) ;
+EdgeClass IsSubPackageOf from JavaPackage( 0, * ) role subPackages aggregation composite to JavaPackage( 1, 1 ) ;
 
 VertexClass Comment : JavaVertex;
 VertexClass SingleLineComment : Comment ;
@@ -196,7 +196,7 @@ EdgeClass IsAnnotationOfType : IsAnnotationOf from Annotation( 0, * ) to Type( 1
 
 VertexClass ClassDefinition : Type ;
 EdgeClass IsModifierOfClass : IsModifierOf from Modifier( 0, * ) to ClassDefinition( 1, 1 ) ;
-EdgeClass IsClassNameOf : AttributedEdge from Identifier( 1, 1 ) to ClassDefinition( 1, 1 ) ;
+EdgeClass IsClassNameOf : AttributedEdge from Identifier( 1, 1 ) role className to ClassDefinition( 1, 1 ) ;
 EdgeClass IsTypeParameterOfClass : IsTypeParameterOf from TypeParameterDeclaration( 0, * ) to ClassDefinition( 1, 1 ) ;
 EdgeClass IsSuperClassOfClass : IsSuperClassOf from TypeSpecification( 0, 1 ) to ClassDefinition( 1, 1 ) ;
 EdgeClass IsInterfaceOfClass : IsInterfaceOf from TypeSpecification( 0, * ) to ClassDefinition( 1, 1 ) ;
@@ -204,7 +204,7 @@ EdgeClass IsClassBlockOf : IsBlockOf from Block( 1, 1 ) aggregation composite to
 
 VertexClass InterfaceDefinition : Type ;
 EdgeClass IsModifierOfInterface : IsModifierOf from Modifier( 0, * ) to InterfaceDefinition( 1, 1 ) ;
-EdgeClass IsInterfaceNameOf : AttributedEdge from Identifier( 1, 1 ) to InterfaceDefinition( 1, 1 ) ;
+EdgeClass IsInterfaceNameOf : AttributedEdge from Identifier( 1, 1 ) role interfaceName to InterfaceDefinition( 1, 1 ) ;
 EdgeClass IsTypeParameterOfInterface : IsTypeParameterOf from TypeParameterDeclaration( 0, * ) to InterfaceDefinition( 1, 1 ) ;
 EdgeClass IsSuperClassOfInterface : IsSuperClassOf from TypeSpecification( 0, 1 ) to InterfaceDefinition( 1, 1 ) ;
 EdgeClass IsInterfaceBlockOf : IsBlockOf from Block( 1, 1 ) aggregation composite to InterfaceDefinition( 1, 1 ) ;
@@ -214,19 +214,19 @@ VertexClass VariableDeclaration : FieldDeclaration, Statement ;
 
 VertexClass EnumConstant : Member, FieldDeclaration ;
 EdgeClass IsAnnotationOfEnumConstant : IsAnnotationOf from Annotation( 1, 1 ) to EnumConstant( 1, 1 ) ;
-EdgeClass IsEnumConstantNameOf : AttributedEdge from Identifier( 1, 1 ) to EnumConstant( 1, 1 ) ;
+EdgeClass IsEnumConstantNameOf : AttributedEdge from Identifier( 1, 1 ) role enumConstantName to EnumConstant( 1, 1 ) ;
 EdgeClass IsArgumentOfEnumConstant : IsArgumentOf from Expression( 0, * ) aggregation composite to EnumConstant( 1, 1 ) ;
 EdgeClass IsEnumConstantBlockOf : IsBlockOf from Block( 1, 1 ) aggregation composite to EnumConstant( 1, 1 );
 
 VertexClass EnumDefinition : Type ;
 EdgeClass IsModifierOfEnum : IsModifierOf from Modifier( 0, * ) to EnumDefinition( 1, 1 ) ;
-EdgeClass IsEnumNameOf : AttributedEdge from Identifier( 1, 1 ) to EnumDefinition( 1, 1 ) ;
+EdgeClass IsEnumNameOf : AttributedEdge from Identifier( 1, 1 ) role enumName to EnumDefinition( 1, 1 ) ;
 EdgeClass IsInterfaceOfEnum : IsInterfaceOf from TypeSpecification( 0, * ) to EnumDefinition( 1, 1 ) ;
 EdgeClass IsEnumBlockOf : IsBlockOf from Block( 1, 1 ) aggregation composite to EnumDefinition( 1, 1 ) ;
 
 VertexClass AnnotationDefinition : Type ;
 EdgeClass IsModifierOfAnnotation : IsModifierOf from Modifier( 0, * ) to AnnotationDefinition( 1, 1 ) ;
-EdgeClass IsAnnotationDefinitionNameOf : AttributedEdge from Identifier( 1, 1 ) to AnnotationDefinition( 1, 1 ) ;
+EdgeClass IsAnnotationDefinitionNameOf : AttributedEdge from Identifier( 1, 1 ) role annotationName to AnnotationDefinition( 1, 1 ) ;
 EdgeClass IsMetaAnnotationOf : IsAnnotationOf from Annotation( 0, * ) to AnnotationDefinition( 1, 1 ) ;
 EdgeClass IsAnnotationBlockOf : IsBlockOf from Block( 1, 1 ) to AnnotationDefinition( 1, 1 ) ;
 
@@ -234,20 +234,20 @@ abstract EdgeClass IsDeclarationOf from JavaVertex (0,*) to JavaVertex (0,*);
 
 VertexClass FieldAccess : Expression ;
 EdgeClass IsFieldContainerOf : AttributedEdge from Expression( 0, 1 ) to FieldAccess( 1, 1 ) ;
-EdgeClass IsFieldNameOf : AttributedEdge from Identifier( 1, 1 ) to FieldAccess( 1, 1 ) ;
+EdgeClass IsFieldNameOf : AttributedEdge from Identifier( 1, 1 ) role fieldName to FieldAccess( 1, 1 ) ;
 EdgeClass IsArrayElementIndexOf : AttributedEdge from Expression( 0, * ) to FieldAccess( 1, 1 ) ;
 EdgeClass IsDeclarationOfAccessedField: IsDeclarationOf from JavaVertex( 0, * ) to FieldAccess( 1, 1 ) ;
 
 VertexClass MethodInvocation : Expression { type : MethodInvocationTypes } ;
 EdgeClass IsMethodContainerOf : AttributedEdge from Expression( 0, 1 ) to MethodInvocation( 1, 1 ) ;
-EdgeClass IsNameOfInvokedMethod : AttributedEdge from Identifier( 1, 1 ) to MethodInvocation( 1, 1 ) ;
+EdgeClass IsNameOfInvokedMethod : AttributedEdge from Identifier( 1, 1 ) role invokedMethodName to MethodInvocation( 1, 1 ) ;
 EdgeClass IsArgumentOfMethodInvocation : IsArgumentOf from Expression( 0, * ) aggregation composite to MethodInvocation( 1, 1 ) ;
 EdgeClass IsDeclarationOfInvokedMethod: IsDeclarationOf from Member( 0, * ) to MethodInvocation( 1, 1 ) ;
 
 VertexClass ConditionalExpression : Expression ;
 EdgeClass IsConditionOfExpression : IsConditionOf from Expression( 1, 1 ) aggregation composite to ConditionalExpression( 1, 1 ) ;
-EdgeClass IsMatchOf : AttributedEdge from Expression( 1, 1 ) aggregation composite to ConditionalExpression( 1, 1 ) ;
-EdgeClass IsMismatchOf : AttributedEdge from Expression( 1, 1 ) aggregation composite to ConditionalExpression( 1, 1 ) ;
+EdgeClass IsMatchOf : AttributedEdge from Expression( 1, 1 ) role match aggregation composite to ConditionalExpression( 1, 1 ) ;
+EdgeClass IsMismatchOf : AttributedEdge from Expression( 1, 1 ) role mismatch aggregation composite to ConditionalExpression( 1, 1 ) ;
 
 VertexClass BuiltInCast : Expression ;
 EdgeClass IsCastedBuiltInTypeOf : IsTypeOf from BuiltInType( 1, 1 ) to BuiltInCast( 1, 1 ) ;
@@ -313,7 +313,7 @@ EdgeClass IsDefaultValueOf : AttributedEdge from Expression( 1, 1 ) to Annotatio
 VertexClass ConstructorDefinition : Member ;
 EdgeClass IsModifierOfConstructor : IsModifierOf from Modifier( 0, * ) to ConstructorDefinition( 1, 1 ) ;
 EdgeClass IsTypeParameterOfConstructor : IsTypeParameterOf from TypeParameterDeclaration( 0, * ) to ConstructorDefinition( 1, 1 ) ;
-EdgeClass IsNameOfConstructor : AttributedEdge from Identifier( 1, 1 ) to ConstructorDefinition( 1, 1 ) ;
+EdgeClass IsNameOfConstructor : AttributedEdge from Identifier( 1, 1 ) role constructorName to ConstructorDefinition( 1, 1 ) ;
 EdgeClass IsParameterOfConstructor : IsParameterOf from ParameterDeclaration( 0, * ) aggregation composite to ConstructorDefinition( 1, 1 ) ;
 EdgeClass IsExceptionThrownByConstructor : IsExceptionThrownBy from TypeSpecification( 0, * ) aggregation composite to ConstructorDefinition( 1, 1 ) ;
 EdgeClass IsBodyOfConstructor : IsStatementOf from Block( 1, 1 ) aggregation composite to ConstructorDefinition( 1, 1 ) ;
@@ -327,23 +327,23 @@ EdgeClass IsBodyOfStaticConstructor : IsStatementOf from Block( 1, 1 ) aggregati
 EdgeClass IsModifierOfMethod : IsModifierOf from Modifier( 0, * ) to MethodDeclaration( 1, 1 ) ;
 EdgeClass IsReturnTypeOf : IsTypeOf from TypeSpecification( 1, 1 ) to MethodDeclaration( 1, 1 ) ;
 EdgeClass IsTypeParameterOfMethod : IsTypeParameterOf from TypeParameterDeclaration( 0, * ) to MethodDeclaration( 1, 1 ) ;
-EdgeClass IsNameOfMethod : AttributedEdge from Identifier( 1, 1 ) to MethodDeclaration( 1, 1 ) ;
-EdgeClass IsParameterOfMethod : IsParameterOf from ParameterDeclaration( 0, * ) to MethodDeclaration( 1, 1 ) ;
+EdgeClass IsNameOfMethod : AttributedEdge from Identifier( 1, 1 ) role methodName to MethodDeclaration( 1, 1 ) ;
+EdgeClass IsParameterOfMethod : IsParameterOf from ParameterDeclaration( 0, * ) role parameters to MethodDeclaration( 1, 1 ) ;
 EdgeClass IsExceptionThrownByMethod : IsExceptionThrownBy from TypeSpecification( 0, * ) aggregation composite to MethodDeclaration( 1, 1 ) ;
 
 VertexClass MethodDefinition : MethodDeclaration ;
-EdgeClass IsBodyOfMethod : AttributedEdge from Block( 1, 1 ) aggregation composite to MethodDefinition( 1, 1 ) ;
+EdgeClass IsBodyOfMethod : AttributedEdge from Block( 1, 1 ) role body aggregation composite to MethodDefinition( 1, 1 ) ;
 EdgeClass IsCalledByMethod from MethodDeclaration (0,*) to MethodDeclaration(0, *);
 
 
 
 EdgeClass IsModifierOfParameter : IsModifierOf from Modifier( 0, 1 ) to ParameterDeclaration( 1, 1 ) ;
 EdgeClass IsTypeOfParameter : IsTypeOf from TypeSpecification( 1, 1 ) to ParameterDeclaration( 1, 1 ) ;
-EdgeClass IsParameterNameOf : AttributedEdge from Identifier( 1, 1 ) to ParameterDeclaration( 1, 1 ) ;
+EdgeClass IsParameterNameOf : AttributedEdge from Identifier( 1, 1 ) role parameterName to ParameterDeclaration( 1, 1 ) ;
 VertexClass VariableLengthDeclaration :  ParameterDeclaration ;
 
 VertexClass Label : Statement ;
-EdgeClass IsLabelNameOf : AttributedEdge from Identifier( 1, 1 ) to Label( 1, 1 ) ;
+EdgeClass IsLabelNameOf : AttributedEdge from Identifier( 1, 1 ) role labelName to Label( 1, 1 ) ;
 EdgeClass IsAttachedTo : IsStatementOf from Statement( 1, 1 ) to Label( 1, 1 ) ;
 
 VertexClass If : Statement ;
@@ -373,10 +373,10 @@ EdgeClass IsLoopBodyOfDoWhile : IsLoopBodyOf from Statement( 1, 1 ) aggregation 
 EdgeClass IsConditionOfDoWhile : IsConditionOf from Expression( 1, 1 ) aggregation composite to DoWhile( 1, 1 ) ;
 
 VertexClass Break : Statement ;
-EdgeClass IsBreakTargetOf : AttributedEdge from Label( 0, 1 ) to Break( 1, 1 ) ;
+EdgeClass IsBreakTargetOf : AttributedEdge from Label( 0, 1 ) role breakTarget to Break( 1, 1 ) ;
 
 VertexClass Continue : Statement ;
-EdgeClass IsContinueTargetOf : AttributedEdge from Label( 0, 1 ) to Continue( 1, 1 ) ;
+EdgeClass IsContinueTargetOf : AttributedEdge from Label( 0, 1 ) role continueTarget to Continue( 1, 1 ) ;
 
 VertexClass Return : Statement ;
 EdgeClass IsReturnedBy : IsStatementOf from Expression( 0, 1 ) aggregation composite to Return( 1, 1 ) ;

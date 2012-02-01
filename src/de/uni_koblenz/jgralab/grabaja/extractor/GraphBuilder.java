@@ -40,6 +40,7 @@ import antlr.collections.AST;
 import de.uni_koblenz.jgralab.GraphException;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
+import de.uni_koblenz.jgralab.ImplementationType;
 import de.uni_koblenz.jgralab.grabaja.extractor.adapters.JavaLexerAdapter;
 import de.uni_koblenz.jgralab.grabaja.extractor.adapters.LexerSharedInputStateAdapter;
 import de.uni_koblenz.jgralab.grabaja.extractor.comments.CommentClass;
@@ -120,7 +121,8 @@ public class GraphBuilder {
 	protected void initializeGraph() throws Exception {
 		try {
 			Java5Schema javaSchema = Java5Schema.instance();
-			programGraph = javaSchema.createJava5(nameOfProgram, 1000, 1000);
+			programGraph = javaSchema.createJava5(ImplementationType.STANDARD,
+					nameOfProgram, 1000, 1000);
 			logger.info("Created graph " + nameOfProgram);
 			// Create basic "head" of graph
 			programVertex = programGraph.createProgram();
@@ -154,8 +156,7 @@ public class GraphBuilder {
 		// handlersOfLogger[0].setLevel(Level.OFF);
 		ConsoleProgressFunction progressBar = new ConsoleProgressFunction();
 		progressBar.init(fileList.size());
-		int parsingSuccessCount = 0;
-		int parsingFailedCount = 0;
+
 		// Collect comments found in a file.
 		ArrayList<CommentClass> comments = new ArrayList<CommentClass>();
 		LocalTypeSpecificationResolver localResolver = new LocalTypeSpecificationResolver(
@@ -163,7 +164,6 @@ public class GraphBuilder {
 		for (int i = 0; i < fileList.size(); i++) {
 			CommonAST ast = parseFile(fileList.get(i), comments);
 			if (ast != null) {
-				parsingSuccessCount++;
 				// logger.info( "Adding " + fileList.get( i ) + " to graph" );
 				addTranslationUnit(fileList.get(i), comments, ast);
 				localResolver.resolveTypeSpecifications();
@@ -171,7 +171,6 @@ public class GraphBuilder {
 			} else {
 				logger.warning(fileList.get(i)
 						+ " not added to graph, due to parse error");
-				parsingFailedCount++;
 			}
 			comments.clear(); // Clear comments before parsing next file.
 			symbolTable.nextFile(); // Clear type information of just parsed

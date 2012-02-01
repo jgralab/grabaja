@@ -128,7 +128,7 @@ public class CGTest {
 		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
 				null);
 		eval.startEvaluation();
-		Set<ClassDefinition> result = eval.getResultSet(ClassDefinition.class);
+		Set<ClassDefinition> result = eval.getResultSet();
 
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (ClassDefinition md : result) {
@@ -157,8 +157,7 @@ public class CGTest {
 		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
 				null);
 		eval.startEvaluation();
-		Set<MethodDefinition> result = eval
-				.getResultSet(MethodDefinition.class);
+		Set<MethodDefinition> result = eval.getResultSet();
 
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (MethodDefinition md : result) {
@@ -176,8 +175,7 @@ public class CGTest {
 		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
 				null);
 		eval.startEvaluation();
-		Set<MethodDefinition> result = eval
-				.getResultSet(MethodDefinition.class);
+		Set<MethodDefinition> result = eval.getResultSet();
 
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (MethodDefinition md : result) {

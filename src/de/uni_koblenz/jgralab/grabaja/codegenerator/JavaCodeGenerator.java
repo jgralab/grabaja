@@ -40,6 +40,7 @@ import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.GraphFactory;
 import de.uni_koblenz.jgralab.GraphIOException;
+import de.uni_koblenz.jgralab.ImplementationType;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGAnnotationDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGAnnotationFieldImpl;
@@ -175,133 +176,128 @@ public class JavaCodeGenerator {
 	// "SingleLineCommentImpl" "MultiLineCommentImpl"
 	// "JavaDocCommentImpl"
 	// "CommentImpl"
-	static {
-		GraphFactory f = Java5Schema.instance().getGraphFactory();
-		f.setVertexImplementationClass(Annotation.class, CGAnnotationImpl.class);
-		f.setVertexImplementationClass(AnnotationDefinition.class,
+	public static GraphFactory initImpls(GraphFactory f) {
+		f.setVertexImplementationClass(Annotation.VC, CGAnnotationImpl.class);
+		f.setVertexImplementationClass(AnnotationDefinition.VC,
 				CGAnnotationDefinitionImpl.class);
-		f.setVertexImplementationClass(AnnotationField.class,
+		f.setVertexImplementationClass(AnnotationField.VC,
 				CGAnnotationFieldImpl.class);
-		f.setVertexImplementationClass(ArrayCreation.class,
+		f.setVertexImplementationClass(ArrayCreation.VC,
 				CGArrayCreationImpl.class);
-		f.setVertexImplementationClass(ArrayInitializer.class,
+		f.setVertexImplementationClass(ArrayInitializer.VC,
 				CGArrayInitializerImpl.class);
-		f.setVertexImplementationClass(ArrayType.class, CGArrayTypeImpl.class);
-		f.setVertexImplementationClass(Assert.class, CGAssertImpl.class);
-		f.setVertexImplementationClass(Block.class, CGBlockImpl.class);
-		f.setVertexImplementationClass(BooleanConstant.class,
+		f.setVertexImplementationClass(ArrayType.VC, CGArrayTypeImpl.class);
+		f.setVertexImplementationClass(Assert.VC, CGAssertImpl.class);
+		f.setVertexImplementationClass(Block.VC, CGBlockImpl.class);
+		f.setVertexImplementationClass(BooleanConstant.VC,
 				CGBooleanConstantImpl.class);
-		f.setVertexImplementationClass(Break.class, CGBreakImpl.class);
-		f.setVertexImplementationClass(BuiltInCast.class,
-				CGBuiltInCastImpl.class);
-		f.setVertexImplementationClass(BuiltInType.class,
-				CGBuiltInTypeImpl.class);
-		f.setVertexImplementationClass(Case.class, CGCaseImpl.class);
-		f.setVertexImplementationClass(Catch.class, CGCatchImpl.class);
-		f.setVertexImplementationClass(CharConstant.class,
+		f.setVertexImplementationClass(Break.VC, CGBreakImpl.class);
+		f.setVertexImplementationClass(BuiltInCast.VC, CGBuiltInCastImpl.class);
+		f.setVertexImplementationClass(BuiltInType.VC, CGBuiltInTypeImpl.class);
+		f.setVertexImplementationClass(Case.VC, CGCaseImpl.class);
+		f.setVertexImplementationClass(Catch.VC, CGCatchImpl.class);
+		f.setVertexImplementationClass(CharConstant.VC,
 				CGCharConstantImpl.class);
-		f.setVertexImplementationClass(ClassCast.class, CGClassCastImpl.class);
-		f.setVertexImplementationClass(ClassDefinition.class,
+		f.setVertexImplementationClass(ClassCast.VC, CGClassCastImpl.class);
+		f.setVertexImplementationClass(ClassDefinition.VC,
 				CGClassDefinitionImpl.class);
-		f.setVertexImplementationClass(ClassImportDefinition.class,
+		f.setVertexImplementationClass(ClassImportDefinition.VC,
 				CGClassImportDefinitionImpl.class);
-		f.setVertexImplementationClass(ConditionalExpression.class,
+		f.setVertexImplementationClass(ConditionalExpression.VC,
 				CGConditionalExpressionImpl.class);
-		f.setVertexImplementationClass(ConstructorDefinition.class,
+		f.setVertexImplementationClass(ConstructorDefinition.VC,
 				CGConstructorDefinitionImpl.class);
-		f.setVertexImplementationClass(Continue.class, CGContinueImpl.class);
-		f.setVertexImplementationClass(Default.class, CGDefaultImpl.class);
-		f.setVertexImplementationClass(DoubleConstant.class,
+		f.setVertexImplementationClass(Continue.VC, CGContinueImpl.class);
+		f.setVertexImplementationClass(Default.VC, CGDefaultImpl.class);
+		f.setVertexImplementationClass(DoubleConstant.VC,
 				CGDoubleConstantImpl.class);
-		f.setVertexImplementationClass(DoWhile.class, CGDoWhileImpl.class);
-		f.setVertexImplementationClass(EmptyStatement.class,
+		f.setVertexImplementationClass(DoWhile.VC, CGDoWhileImpl.class);
+		f.setVertexImplementationClass(EmptyStatement.VC,
 				CGEmptyStatementImpl.class);
-		f.setVertexImplementationClass(EnumConstant.class,
+		f.setVertexImplementationClass(EnumConstant.VC,
 				CGEnumConstantImpl.class);
-		f.setVertexImplementationClass(EnumDefinition.class,
+		f.setVertexImplementationClass(EnumDefinition.VC,
 				CGEnumDefinitionImpl.class);
-		f.setVertexImplementationClass(Field.class, CGFieldImpl.class);
-		f.setVertexImplementationClass(FieldAccess.class,
-				CGFieldAccessImpl.class);
-		f.setVertexImplementationClass(FloatConstant.class,
+		f.setVertexImplementationClass(Field.VC, CGFieldImpl.class);
+		f.setVertexImplementationClass(FieldAccess.VC, CGFieldAccessImpl.class);
+		f.setVertexImplementationClass(FloatConstant.VC,
 				CGFloatConstantImpl.class);
-		f.setVertexImplementationClass(For.class, CGForImpl.class);
-		f.setVertexImplementationClass(ForEachClause.class,
+		f.setVertexImplementationClass(For.VC, CGForImpl.class);
+		f.setVertexImplementationClass(ForEachClause.VC,
 				CGForEachClauseImpl.class);
-		f.setVertexImplementationClass(Identifier.class, CGIdentifierImpl.class);
-		f.setVertexImplementationClass(If.class, CGIfImpl.class);
-		f.setVertexImplementationClass(InfixExpression.class,
+		f.setVertexImplementationClass(Identifier.VC, CGIdentifierImpl.class);
+		f.setVertexImplementationClass(If.VC, CGIfImpl.class);
+		f.setVertexImplementationClass(InfixExpression.VC,
 				CGInfixExpressionImpl.class);
-		f.setVertexImplementationClass(InterfaceDefinition.class,
+		f.setVertexImplementationClass(InterfaceDefinition.VC,
 				CGInterfaceDefinitionImpl.class);
-		f.setVertexImplementationClass(IntegerConstant.class,
+		f.setVertexImplementationClass(IntegerConstant.VC,
 				CGIntegerConstantImpl.class);
-		f.setVertexImplementationClass(JavaPackage.class,
-				CGJavaPackageImpl.class);
-		f.setVertexImplementationClass(Label.class, CGLabelImpl.class);
-		f.setVertexImplementationClass(LongConstant.class,
+		f.setVertexImplementationClass(JavaPackage.VC, CGJavaPackageImpl.class);
+		f.setVertexImplementationClass(Label.VC, CGLabelImpl.class);
+		f.setVertexImplementationClass(LongConstant.VC,
 				CGLongConstantImpl.class);
-		f.setVertexImplementationClass(MethodDeclaration.class,
+		f.setVertexImplementationClass(MethodDeclaration.VC,
 				CGMethodDeclarationImpl.class);
-		f.setVertexImplementationClass(MethodDefinition.class,
+		f.setVertexImplementationClass(MethodDefinition.VC,
 				CGMethodDefinitionImpl.class);
-		f.setVertexImplementationClass(MethodInvocation.class,
+		f.setVertexImplementationClass(MethodInvocation.VC,
 				CGMethodInvocationImpl.class);
-		f.setVertexImplementationClass(Modifier.class, CGModifierImpl.class);
-		f.setVertexImplementationClass(Null.class, CGNullImpl.class);
-		f.setVertexImplementationClass(ObjectCreation.class,
+		f.setVertexImplementationClass(Modifier.VC, CGModifierImpl.class);
+		f.setVertexImplementationClass(Null.VC, CGNullImpl.class);
+		f.setVertexImplementationClass(ObjectCreation.VC,
 				CGObjectCreationImpl.class);
-		f.setVertexImplementationClass(PackageDefinition.class,
+		f.setVertexImplementationClass(PackageDefinition.VC,
 				CGPackageDefinitionImpl.class);
-		f.setVertexImplementationClass(PackageImportDefinition.class,
+		f.setVertexImplementationClass(PackageImportDefinition.VC,
 				CGPackageImportDefinitionImpl.class);
-		f.setVertexImplementationClass(ParameterDeclaration.class,
+		f.setVertexImplementationClass(ParameterDeclaration.VC,
 				CGParameterDeclarationImpl.class);
-		f.setVertexImplementationClass(PostfixExpression.class,
+		f.setVertexImplementationClass(PostfixExpression.VC,
 				CGPostfixExpressionImpl.class);
-		f.setVertexImplementationClass(PrefixExpression.class,
+		f.setVertexImplementationClass(PrefixExpression.VC,
 				CGPrefixExpressionImpl.class);
-		f.setVertexImplementationClass(Program.class, CGProgramImpl.class);
-		f.setVertexImplementationClass(QualifiedName.class,
+		f.setVertexImplementationClass(Program.VC, CGProgramImpl.class);
+		f.setVertexImplementationClass(QualifiedName.VC,
 				CGQualifiedNameImpl.class);
-		f.setVertexImplementationClass(QualifiedType.class,
+		f.setVertexImplementationClass(QualifiedType.VC,
 				CGQualifiedTypeImpl.class);
-		f.setVertexImplementationClass(Return.class, CGReturnImpl.class);
-		f.setVertexImplementationClass(SimpleArgument.class,
+		f.setVertexImplementationClass(Return.VC, CGReturnImpl.class);
+		f.setVertexImplementationClass(SimpleArgument.VC,
 				CGSimpleArgumentImpl.class);
-		f.setVertexImplementationClass(SourceFile.class, CGSourceFileImpl.class);
-		f.setVertexImplementationClass(SourceUsage.class,
-				CGSourceUsageImpl.class);
-		f.setVertexImplementationClass(StaticConstructorDefinition.class,
+		f.setVertexImplementationClass(SourceFile.VC, CGSourceFileImpl.class);
+		f.setVertexImplementationClass(SourceUsage.VC, CGSourceUsageImpl.class);
+		f.setVertexImplementationClass(StaticConstructorDefinition.VC,
 				CGStaticConstructorDefinitionImpl.class);
-		f.setVertexImplementationClass(StaticInitializerDefinition.class,
+		f.setVertexImplementationClass(StaticInitializerDefinition.VC,
 				CGStaticInitializerDefinitionImpl.class);
-		f.setVertexImplementationClass(StringConstant.class,
+		f.setVertexImplementationClass(StringConstant.VC,
 				CGStringConstantImpl.class);
-		f.setVertexImplementationClass(Switch.class, CGSwitchImpl.class);
-		f.setVertexImplementationClass(Synchronized.class,
+		f.setVertexImplementationClass(Switch.VC, CGSwitchImpl.class);
+		f.setVertexImplementationClass(Synchronized.VC,
 				CGSynchronizedImpl.class);
-		f.setVertexImplementationClass(Throw.class, CGThrowImpl.class);
-		f.setVertexImplementationClass(TraditionalForClause.class,
+		f.setVertexImplementationClass(Throw.VC, CGThrowImpl.class);
+		f.setVertexImplementationClass(TraditionalForClause.VC,
 				CGTraditionalForClauseImpl.class);
-		f.setVertexImplementationClass(TranslationUnit.class,
+		f.setVertexImplementationClass(TranslationUnit.VC,
 				CGTranslationUnitImpl.class);
-		f.setVertexImplementationClass(Try.class, CGTryImpl.class);
-		f.setVertexImplementationClass(TypeArgument.class,
+		f.setVertexImplementationClass(Try.VC, CGTryImpl.class);
+		f.setVertexImplementationClass(TypeArgument.VC,
 				CGTypeArgumentImpl.class);
-		f.setVertexImplementationClass(TypeParameterDeclaration.class,
+		f.setVertexImplementationClass(TypeParameterDeclaration.VC,
 				CGTypeParameterDeclarationImpl.class);
-		f.setVertexImplementationClass(TypeParameterUsage.class,
+		f.setVertexImplementationClass(TypeParameterUsage.VC,
 				CGTypeParameterUsageImpl.class);
-		f.setVertexImplementationClass(VariableDeclaration.class,
+		f.setVertexImplementationClass(VariableDeclaration.VC,
 				CGVariableDeclarationImpl.class);
-		f.setVertexImplementationClass(VariableInitializer.class,
+		f.setVertexImplementationClass(VariableInitializer.VC,
 				CGVariableInitializerImpl.class);
-		f.setVertexImplementationClass(VariableLengthDeclaration.class,
+		f.setVertexImplementationClass(VariableLengthDeclaration.VC,
 				CGVariableLengthDeclarationImpl.class);
-		f.setVertexImplementationClass(While.class, CGWhileImpl.class);
-		f.setVertexImplementationClass(WildcardArgument.class,
+		f.setVertexImplementationClass(While.VC, CGWhileImpl.class);
+		f.setVertexImplementationClass(WildcardArgument.VC,
 				CGWildcardArgumentImpl.class);
+		return f;
 	}
 
 	private void setOutputDirectory(String sourcesDir) throws IOException {
@@ -328,7 +324,10 @@ public class JavaCodeGenerator {
 
 	public JavaCodeGenerator(String graphFile, String outputDir)
 			throws IOException, GraphIOException {
-		this(Java5Schema.instance().loadJava5(graphFile), outputDir);
+		this(Java5Schema.instance().loadJava5(
+				graphFile,
+				initImpls(Java5Schema.instance().createDefaultGraphFactory(
+						ImplementationType.STANDARD))), outputDir);
 	}
 
 	public JavaCodeGenerator(Java5 graph, String outputDir,

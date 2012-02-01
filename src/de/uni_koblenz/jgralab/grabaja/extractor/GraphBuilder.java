@@ -38,9 +38,11 @@ import antlr.CommonAST;
 import antlr.RecognitionException;
 import antlr.collections.AST;
 import de.uni_koblenz.jgralab.GraphException;
+import de.uni_koblenz.jgralab.GraphFactory;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.ImplementationType;
+import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.adapters.JavaLexerAdapter;
 import de.uni_koblenz.jgralab.grabaja.extractor.adapters.LexerSharedInputStateAdapter;
 import de.uni_koblenz.jgralab.grabaja.extractor.comments.CommentClass;
@@ -120,9 +122,10 @@ public class GraphBuilder {
 	 */
 	protected void initializeGraph() throws Exception {
 		try {
-			Java5Schema javaSchema = Java5Schema.instance();
-			programGraph = javaSchema.createJava5(ImplementationType.STANDARD,
-					nameOfProgram, 1000, 1000);
+			GraphFactory f = Java5Schema.instance().createDefaultGraphFactory(
+					ImplementationType.STANDARD);
+			programGraph = Java5Schema.instance().createJava5(
+					JavaCodeGenerator.initImpls(f), nameOfProgram, 1000, 1000);
 			logger.info("Created graph " + nameOfProgram);
 			// Create basic "head" of graph
 			programVertex = programGraph.createProgram();

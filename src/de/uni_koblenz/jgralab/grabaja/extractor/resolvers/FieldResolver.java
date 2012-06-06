@@ -1,25 +1,25 @@
 /*
  * JGraLab - The Java Graph Laboratory
- * 
+ *
  * Copyright (C) 2006-2010 Institute for Software Technology
  *                         University of Koblenz-Landau, Germany
  *                         ist@uni-koblenz.de
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, see <http://www.gnu.org/licenses>.
- * 
+ *
  * Additional permission under GNU GPL version 3 section 7
- * 
+ *
  * If you modify this Program, or any covered work, by linking or combining
  * it with Eclipse (or a modified version of that program or an Eclipse
  * plugin), containing parts covered by the terms of the Eclipse Public
@@ -45,7 +45,6 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.ClassImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Expression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldAccess;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldDeclaration;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ImportDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsDeclarationOfAccessedField;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsFieldNameOf;
@@ -60,7 +59,7 @@ import de.uni_koblenz.jgralab.impl.ConsoleProgressFunction;
 /**
  * Resolves fields accesses to fields, variables and enum constants which could
  * not be resolved locally.
- * 
+ *
  * @author: abaldauf@uni-koblenz.de
  */
 public class FieldResolver extends Resolver {
@@ -80,7 +79,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Instantiates and initializes an instance.
-	 * 
+	 *
 	 * @param symbolTable
 	 *            The symbol table to be used for resolving.
 	 */
@@ -90,7 +89,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Sets the reference to the method resolver instance.
-	 * 
+	 *
 	 * @param resolver
 	 *            The instance of the method resolver.
 	 */
@@ -100,7 +99,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Resolves all the field accesses stored in the symbol table.
-	 * 
+	 *
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @return true if all of the accessed fields could be resolved, false if at
@@ -128,7 +127,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Resolves a singe field accesses.
-	 * 
+	 *
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @param fieldAccess
@@ -145,7 +144,7 @@ public class FieldResolver extends Resolver {
 						.booleanValue()) {
 			return true;
 		}
-		String fieldName = ((Identifier) fieldAccess
+		String fieldName = ((Type) fieldAccess
 				.getFirstIsFieldNameOfIncidence(EdgeDirection.IN).getAlpha())
 				.get_name();
 		JavaVertex scope = (JavaVertex) symbolTable
@@ -488,7 +487,7 @@ public class FieldResolver extends Resolver {
 	/**
 	 * Converts a chain of fieldAccesses
 	 * (fieldAccess.fieldAccess.fieldAccess...) to a qualified name.
-	 * 
+	 *
 	 * @param fieldAccess
 	 *            The last field access in the chain.
 	 * @return The qualified name; null if any of the leading field accesses has
@@ -498,7 +497,7 @@ public class FieldResolver extends Resolver {
 		if (fieldAccess == null) {
 			return null;
 		}
-		String result = ((Identifier) fieldAccess
+		String result = ((Type) fieldAccess
 				.getFirstIsFieldNameOfIncidence(EdgeDirection.IN).getAlpha())
 				.get_name();
 		FieldAccess nextContainer = fieldAccess;
@@ -513,7 +512,7 @@ public class FieldResolver extends Resolver {
 						.getFirstIsDeclarationOfAccessedFieldIncidence(EdgeDirection.IN) != null) {
 					return null;
 				}
-				result = ((Identifier) nextContainer
+				result = ((Type) nextContainer
 						.getFirstIsFieldNameOfIncidence(EdgeDirection.IN)
 						.getAlpha()).get_name()
 						+ "." + result;
@@ -526,7 +525,7 @@ public class FieldResolver extends Resolver {
 
 	/**
 	 * Resolves a field access to a field (with a known containing type).
-	 * 
+	 *
 	 * @param containingType
 	 *            The vertex of the type in which the field is assumed.
 	 * @param fieldName
@@ -609,7 +608,7 @@ public class FieldResolver extends Resolver {
 	 * Creates the semantic edge between a field access and it's definition.
 	 * Also assures that identical identifiers for other accesses to this field
 	 * exist only once per file.
-	 * 
+	 *
 	 * @param fieldAccess
 	 *            The vertex of the field access.
 	 * @param declaration
@@ -631,14 +630,14 @@ public class FieldResolver extends Resolver {
 			FieldAccess currentFieldAccess = null;
 			boolean foundIdenticalIdentifier = false;
 			for (Edge edge : declaration.incidences(
-					IsDeclarationOfAccessedField.class, EdgeDirection.OUT)) {
+					IsDeclarationOfAccessedField.EC, EdgeDirection.OUT)) {
 				if (foundIdenticalIdentifier) {
 					break;
 				}
 				currentFieldAccess = (FieldAccess) edge.getThat();
 				if ((currentFieldAccess
 						.getFirstIsFieldNameOfIncidence(EdgeDirection.IN) != null)
-						&& (((Identifier) currentFieldAccess
+						&& (((Type) currentFieldAccess
 								.getFirstIsFieldNameOfIncidence(
 										EdgeDirection.IN).getAlpha())
 								.get_name().equals(fieldName))) {
@@ -697,8 +696,8 @@ public class FieldResolver extends Resolver {
 		symbolTable.setFieldAccessProcessed(fieldAccess);
 		symbolTable.increaseAmountOfFieldAccessesTreatedByResolver();
 		if ((fieldProgressBar != null)
-				&& (symbolTable.getAmountOfFieldAccessesTreatedByResolver()
-						% fieldProgressBar.getUpdateInterval() == 0)) {
+				&& ((symbolTable.getAmountOfFieldAccessesTreatedByResolver()
+						% fieldProgressBar.getUpdateInterval()) == 0)) {
 			fieldProgressBar.progress(1);
 		}
 		return true;
@@ -707,7 +706,7 @@ public class FieldResolver extends Resolver {
 	/**
 	 * Triggers all required actions if a field access could not be resolved at
 	 * all.
-	 * 
+	 *
 	 * @param fieldAccess
 	 *            The vertex of the field access.
 	 * @return false (always; this is for code reduction whereever this function
@@ -719,8 +718,8 @@ public class FieldResolver extends Resolver {
 		symbolTable.increaseAmountOfFieldAccessesTreatedByResolver();
 		symbolTable.increaseAmountOfUnresolvedFieldAccesses();
 		if ((fieldProgressBar != null)
-				&& (symbolTable.getAmountOfFieldAccessesTreatedByResolver()
-						% fieldProgressBar.getUpdateInterval() == 0)) {
+				&& ((symbolTable.getAmountOfFieldAccessesTreatedByResolver()
+						% fieldProgressBar.getUpdateInterval()) == 0)) {
 			fieldProgressBar.progress(1);
 		}
 		return false;

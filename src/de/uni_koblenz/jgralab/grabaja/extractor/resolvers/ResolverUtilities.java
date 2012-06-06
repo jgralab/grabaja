@@ -1,25 +1,25 @@
 /*
  * JGraLab - The Java Graph Laboratory
- * 
+ *
  * Copyright (C) 2006-2010 Institute for Software Technology
  *                         University of Koblenz-Landau, Germany
  *                         ist@uni-koblenz.de
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, see <http://www.gnu.org/licenses>.
- * 
+ *
  * Additional permission under GNU GPL version 3 section 7
- * 
+ *
  * If you modify this Program, or any covered work, by linking or combining
  * it with Eclipse (or a modified version of that program or an Eclipse
  * plugin), containing parts covered by the terms of the Eclipse Public
@@ -86,7 +86,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.VariableDeclaration;
 
 /**
  * Implements helper methods for resolvers.
- * 
+ *
  * @author: abaldauf@uni-koblenz.de
  * @author: ultbreit@uni-koblenz.de
  */
@@ -95,7 +95,7 @@ public class ResolverUtilities {
 	/**
 	 * Returns vertex representing direct enclosing type definition of given
 	 * vertex representing a scope.
-	 * 
+	 *
 	 * @param scope
 	 *            Vertex representing a scope.
 	 * @param symbolTable
@@ -128,7 +128,7 @@ public class ResolverUtilities {
 	/**
 	 * Returns vertex representing direct enclosing class definition of an given
 	 * vertex representing a scope.
-	 * 
+	 *
 	 * @param scope
 	 *            Vertex representing a scope.
 	 * @param symbolTable
@@ -149,7 +149,7 @@ public class ResolverUtilities {
 	/**
 	 * Returns vertex representing definition of superclass of given vertex
 	 * representing a class.
-	 * 
+	 *
 	 * @param classDefinition
 	 *            Vertex representing a class definition.
 	 * @exception Exception
@@ -193,7 +193,7 @@ public class ResolverUtilities {
 	/**
 	 * Returns vertex representing first type definition in same file (topmost
 	 * enclosing type) given vertex represents a scope in.
-	 * 
+	 *
 	 * @param scope
 	 *            Vertex representing a scope.
 	 * @param symbolTable
@@ -218,7 +218,7 @@ public class ResolverUtilities {
 	/**
 	 * Returns fully qualified name of package the type represented by given
 	 * vertex belongs to.
-	 * 
+	 *
 	 * @param type
 	 *            Vertex representing first type definition in a file.
 	 * @return Fully qualified name of package; empty string if no package has
@@ -250,7 +250,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Gets defined imports.
-	 * 
+	 *
 	 * @param type
 	 *            The topmost type in the file.
 	 * @return The list of import definition vertices; empty list if no imports
@@ -296,7 +296,7 @@ public class ResolverUtilities {
 	/**
 	 * Gets the type definition vertex of a field's / variable's / parameter's
 	 * type.
-	 * 
+	 *
 	 * @param fieldDeclaration
 	 *            The declaration vertex of the field / variable / parameter.
 	 * @param fieldAccess
@@ -370,7 +370,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Gets the type definition vertex of an invocated method's return type.
-	 * 
+	 *
 	 * @param methodInvocation
 	 *            The invocation of the method.
 	 * @param mode
@@ -417,7 +417,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Gets the type definition vertex of casted type.
-	 * 
+	 *
 	 * @param classCast
 	 *            The class cast vertex.
 	 * @return The vertex of the casted type's definition; null if the specified
@@ -447,7 +447,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Gets the type definition vertex of an instantiated object's type.
-	 * 
+	 *
 	 * @param objectCreation
 	 *            The object creation vertex.
 	 * @return The vertex of the instantiated object's type definition; null if
@@ -473,7 +473,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Checks if a field access points to an element of a specified array.
-	 * 
+	 *
 	 * @param fieldAccess
 	 *            The vertex representing the access to the array.
 	 * @param declaration
@@ -484,16 +484,7 @@ public class ResolverUtilities {
 	public static boolean accessedDimensionsMatchDeclaredDimensions(
 			FieldAccess fieldAccess, ArrayType declaration) {
 		int accessedDimensions = fieldAccess.getDegree(
-				IsArrayElementIndexOf.class, EdgeDirection.IN);
-		// Iterable< EdgeVertexPair< ? extends IsArrayElementIndexOf,? extends
-		// Vertex > > arrayAccessDimensionEdges =
-		// fieldAccess.getIsArrayElementIndexOfIncidences( EdgeDirection.IN );
-		// Iterator< EdgeVertexPair< ? extends IsArrayElementIndexOf,? extends
-		// Vertex > > edgeIterator = arrayAccessDimensionEdges.iterator();
-		// while( edgeIterator.hasNext() ){
-		// edgeIterator.next();
-		// accessedDimensions++;
-		// }
+				IsArrayElementIndexOf.EC, EdgeDirection.IN);
 		if (accessedDimensions == declaration.get_dimensions()) {
 			return true;
 		} else {
@@ -503,7 +494,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Returns fully qualified name of an imported type or package.
-	 * 
+	 *
 	 * @param importDefinitionVertex
 	 *            Vertex representing import definition.
 	 * @return Fully qualified name of imported type or package.
@@ -545,7 +536,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates the modifiers of an element created by reflection
-	 * 
+	 *
 	 * @param modifierMask
 	 *            The appropriate modifiers reflected from the element.
 	 * @param parentVertex
@@ -603,7 +594,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Gets the block of a type. If it doesn't exist, it is created first.
-	 * 
+	 *
 	 * @param type
 	 *            The vertex of the type.
 	 * @param symbolTable
@@ -640,7 +631,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates a type specification of a reflected type.
-	 * 
+	 *
 	 * @param type
 	 *            The reflected type.
 	 * @param symbolTable
@@ -970,7 +961,7 @@ public class ResolverUtilities {
 	/**
 	 * Creates a graph representation for all the constructors of a reflected
 	 * type.
-	 * 
+	 *
 	 * @param constructors
 	 *            The reflected constructors.
 	 * @param typeVertex
@@ -991,7 +982,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates a graph representation for a constructor of a reflected type.
-	 * 
+	 *
 	 * @param constructor
 	 *            The reflected constructor.
 	 * @param containingType
@@ -1053,7 +1044,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates a graph representation for all the methods of a reflected type.
-	 * 
+	 *
 	 * @param methods
 	 *            The reflected methods.
 	 * @param typeVertex
@@ -1074,7 +1065,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates a graph representation for a method of a reflected type.
-	 * 
+	 *
 	 * @param method
 	 *            The reflected method.
 	 * @param containingType
@@ -1146,7 +1137,7 @@ public class ResolverUtilities {
 	/**
 	 * Creates a graph representation for all the enum constants of a reflected
 	 * type.
-	 * 
+	 *
 	 * @param enumConstants
 	 *            The reflected enum constants.
 	 * @param typeVertex
@@ -1163,7 +1154,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates a graph representation for an enum constant of a reflected type.
-	 * 
+	 *
 	 * @param enumConstant
 	 *            The reflected enum constant.
 	 * @param containingType
@@ -1187,7 +1178,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates a graph representation for all the fields of a reflected type.
-	 * 
+	 *
 	 * @param fields
 	 *            The reflected fields.
 	 * @param typeVertex
@@ -1207,7 +1198,7 @@ public class ResolverUtilities {
 
 	/**
 	 * Creates a graph representation for a field of a reflected type.
-	 * 
+	 *
 	 * @param field
 	 *            The reflected field.
 	 * @param containingType

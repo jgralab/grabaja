@@ -1,25 +1,25 @@
 /*
  * JGraLab - The Java Graph Laboratory
- * 
+ *
  * Copyright (C) 2006-2010 Institute for Software Technology
  *                         University of Koblenz-Landau, Germany
  *                         ist@uni-koblenz.de
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 3 of the License, or (at your
  * option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, see <http://www.gnu.org/licenses>.
- * 
+ *
  * Additional permission under GNU GPL version 3 section 7
- * 
+ *
  * If you modify this Program, or any covered work, by linking or combining
  * it with Eclipse (or a modified version of that program or an Eclipse
  * plugin), containing parts covered by the terms of the Eclipse Public
@@ -54,7 +54,6 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Expression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldAccess;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FieldDeclaration;
 import de.uni_koblenz.jgralab.grabaja.java5schema.FloatConstant;
-import de.uni_koblenz.jgralab.grabaja.java5schema.Identifier;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InfixExpression;
 import de.uni_koblenz.jgralab.grabaja.java5schema.InfixOperators;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IntegerConstant;
@@ -88,7 +87,7 @@ import de.uni_koblenz.jgralab.impl.ConsoleProgressFunction;
 
 /**
  * Resolves invocations of methods and constructors.
- * 
+ *
  * @author: abaldauf@uni-koblenz.de
  */
 public class MethodResolver extends Resolver {
@@ -108,7 +107,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Instantiates and initializes an instance.
-	 * 
+	 *
 	 * @param symbolTable
 	 *            The symbol table to be used for resolving.
 	 */
@@ -118,7 +117,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Sets the reference to the field resolver instance.
-	 * 
+	 *
 	 * @param resolver
 	 *            The instance of the field resolver.
 	 */
@@ -128,7 +127,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Resolves all the invocations stored in the symbol table.
-	 * 
+	 *
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @return true if all of the invoked methods / constructors could be
@@ -160,7 +159,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Resolves a singe invocation.
-	 * 
+	 *
 	 * @param mode
 	 *            The extraction mode to use.
 	 * @param methodInvocation
@@ -190,25 +189,6 @@ public class MethodResolver extends Resolver {
 			}
 		}
 
-		// Iterable< EdgeVertexPair< ? extends IsArgumentOfMethodInvocation,?
-		// extends Vertex > > isArgumentOfMethodInvocationEdges =
-		// methodInvocation.getIsArgumentOfMethodInvocationIncidences(
-		// EdgeDirection.IN );
-		// Iterator< EdgeVertexPair< ? extends IsArgumentOfMethodInvocation,?
-		// extends Vertex > > edgeIterator =
-		// isArgumentOfMethodInvocationEdges.iterator();
-		// while( edgeIterator.hasNext() ){
-		// EdgeVertexPair pair = edgeIterator.next();
-		// Expression currentInvocationArgument = ( Expression
-		// )pair.getVertex();
-		// methodInvocationArguments.add( currentInvocationArgument );
-		// if( currentInvocationArgument instanceof FieldAccess )
-		// fieldResolver.resolveSingleField( mode, ( FieldAccess
-		// )currentInvocationArgument );
-		// else if( currentInvocationArgument instanceof MethodInvocation )
-		// resolveSingleMethod( mode, ( MethodInvocation
-		// )currentInvocationArgument );
-		// }
 		Vertex scope = symbolTable.getScopeOfMethodInvocation(methodInvocation);
 		String methodName = null;
 		if (methodInvocation
@@ -253,7 +233,7 @@ public class MethodResolver extends Resolver {
 			return linkMethodInvocationToDeclaration(methodInvocation,
 					methodDeclarationVertex, scope, methodName);
 		}
-		methodName = ((Identifier) methodInvocation
+		methodName = ((Type) methodInvocation
 				.getFirstIsNameOfInvokedMethodIncidence(EdgeDirection.IN)
 				.getAlpha()).get_name();
 		if (methodInvocation
@@ -474,7 +454,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Resolves an invocation of a method / constructor (with a known containing
 	 * type).
-	 * 
+	 *
 	 * @param containingType
 	 *            The vertex of the type in which the field is assumed.
 	 * @param methodName
@@ -553,7 +533,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Gets the method / constructor definition that matches invocation.
 	 * Performs argument typechecking which is required due to overloading.
-	 * 
+	 *
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @param methodInvocationArguments
@@ -691,7 +671,7 @@ public class MethodResolver extends Resolver {
 	 * Gets the method / constructor definition that matches invocation by
 	 * reflection. Performs argument typechecking which is required due to
 	 * overloading.
-	 * 
+	 *
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @param methodInvocationArguments
@@ -860,7 +840,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Gets the list of parameters of a constructor.
-	 * 
+	 *
 	 * @param declaration
 	 *            The vertex of the constructor defintion.
 	 * @return The list of parameter declarations.
@@ -887,7 +867,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Gets the list of parameters of a method.
-	 * 
+	 *
 	 * @param declaration
 	 *            The vertex of the method defintion.
 	 * @return The list of parameter declarations.
@@ -912,7 +892,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an argument is valid for the defined parameter.
-	 * 
+	 *
 	 * @param argument
 	 *            The vertex of the argument.
 	 * @param parameter
@@ -947,7 +927,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified array type.
-	 * 
+	 *
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -1005,24 +985,8 @@ public class MethodResolver extends Resolver {
 				return false;
 			}
 			if (fieldType instanceof ArrayType) {
-				// int accessedDimensions = 0;
-				// for (IsArrayElementIndexOf edge : ( ( FieldAccess )expression
-				// ).getIsArrayElementIndexOfIncidences( EdgeDirection.IN )) {
-				// accessedDimensions++;
-				// }
 				int accessedDimensions = expression.getDegree(
-						IsArrayElementIndexOf.class, EdgeDirection.IN);
-				// Iterable< EdgeVertexPair< ? extends IsArrayElementIndexOf, ?
-				// extends Vertex > > isArrayElementIndexOfEdges = ( (
-				// FieldAccess )expression ).getIsArrayElementIndexOfIncidences(
-				// EdgeDirection.IN );
-				// Iterator< EdgeVertexPair< ? extends IsArrayElementIndexOf, ?
-				// extends Vertex > > edgeIterator =
-				// isArrayElementIndexOfEdges.iterator();
-				// while( edgeIterator.hasNext() ){
-				// edgeIterator.next();
-				// accessedDimensions++;
-				// }
+						IsArrayElementIndexOf.EC, EdgeDirection.IN);
 				return isCompatibleArrayType((ArrayType) fieldType,
 						typeToMatch, accessedDimensions);
 			} else {
@@ -1077,18 +1041,7 @@ public class MethodResolver extends Resolver {
 				return false;
 			}
 			int arrayCreationDimensions = expression.getDegree(
-					IsDimensionInitializerOf.class, EdgeDirection.IN);
-			// Iterable< EdgeVertexPair< ? extends IsDimensionInitializerOf, ?
-			// extends Vertex > > isDimensionInitializerOfEdges = ( (
-			// ArrayCreation )expression
-			// ).getIsDimensionInitializerOfIncidences( EdgeDirection.IN );
-			// Iterator< EdgeVertexPair< ? extends IsDimensionInitializerOf, ?
-			// extends Vertex > > edgeIterator =
-			// isDimensionInitializerOfEdges.iterator();
-			// while( edgeIterator.hasNext() ){
-			// edgeIterator.next();
-			// arrayCreationDimensions++;
-			// }
+					IsDimensionInitializerOf.EC, EdgeDirection.IN);
 			if (arrayCreationDimensions != typeToMatch.get_dimensions()) {
 				return false;
 			}
@@ -1119,7 +1072,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an array type is compatible to another specified array type.
-	 * 
+	 *
 	 * @param arrayType
 	 *            The vertex of the array type.
 	 * @param typeToMatch
@@ -1133,7 +1086,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an array type is compatible to another specified array type.
-	 * 
+	 *
 	 * @param arrayType
 	 *            The vertex of the array type.
 	 * @param typeToMatch
@@ -1177,7 +1130,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified type parameter.
-	 * 
+	 *
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -1311,7 +1264,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified qualified type.
-	 * 
+	 *
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -1491,7 +1444,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if qualified type is compatible to another qualified type.
-	 * 
+	 *
 	 * @param arrayType
 	 *            The vertex of the first qualified type.
 	 * @param typeToMatch
@@ -1511,7 +1464,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if qualified type is compatible to another qualified type.
-	 * 
+	 *
 	 * @param arrayType
 	 *            The vertex of the first qualified type.
 	 * @param typeToMatch
@@ -1582,7 +1535,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a class implements any of the given interfaces (or one of the
 	 * interfaces' extensions).
-	 * 
+	 *
 	 * @param classDefinition
 	 *            The vertex of the class.
 	 * @param interfaceDefinitions
@@ -1611,37 +1564,13 @@ public class MethodResolver extends Resolver {
 				}
 			}
 		}
-		// Iterable< EdgeVertexPair< ? extends IsInterfaceOfClass, ? extends
-		// Vertex > > isInterfaceOfClassEdges =
-		// classDefinition.getIsInterfaceOfClassIncidences( EdgeDirection.IN );
-		// Iterator< EdgeVertexPair< ? extends IsInterfaceOfClass, ? extends
-		// Vertex > > edgeIterator = isInterfaceOfClassEdges.iterator();
-		// Iterator< InterfaceDefinition > interfaceIterator = null;
-		// TypeSpecification currentInterfaceOfClassSpecification = null;
-		// InterfaceDefinition currentInterfaceOfClass = null;
-		// while( edgeIterator.hasNext() ){
-		// currentInterfaceOfClassSpecification = ( TypeSpecification
-		// )edgeIterator.next().getVertex();
-		// if( (
-		// currentInterfaceOfClassSpecification.getFirstIsTypeDefinitionOf(
-		// EdgeDirection.IN ) != null ) && (
-		// currentInterfaceOfClassSpecification.getFirstIsTypeDefinitionOf(
-		// EdgeDirection.IN ).getAlpha() instanceof InterfaceDefinition ) ){
-		// currentInterfaceOfClass = ( InterfaceDefinition
-		// )currentInterfaceOfClassSpecification.getFirstIsTypeDefinitionOf(
-		// EdgeDirection.IN ).getAlpha();
-		// interfaceIterator = interfaceDefinitions.keySet().iterator();
-		// while( interfaceIterator.hasNext() )
-		// if( interfaceIterator.next() == currentInterfaceOfClass )
-		// return true;
-		// }
-		// }
+
 		return false;
 	}
 
 	/**
 	 * Adds the interfaces that extend a given interface to a given list.
-	 * 
+	 *
 	 * @param interfaceDefinition
 	 *            The vertex of the interface that is extended.
 	 * @param interfacesList
@@ -1650,44 +1579,12 @@ public class MethodResolver extends Resolver {
 	private void getPossibleSubInterfaces(
 			InterfaceDefinition interfaceDefinition,
 			HashMap<InterfaceDefinition, Object> interfacesList) {
-		/*
-		 * Iterable< EdgeVertexPair< ? extends IsTypeDefinitionOf, ? extends
-		 * Vertex > > isTypeDefinitionOfInterfaceEdges =
-		 * interfaceDefinition.getIsTypeDefinitionOfIncidences(
-		 * EdgeDirection.OUT ); Iterator< EdgeVertexPair< ? extends
-		 * IsTypeDefinitionOf, ? extends Vertex > >
-		 * typeDefinitionOfInterfaceIterator =
-		 * isTypeDefinitionOfInterfaceEdges.iterator(); Iterable<
-		 * EdgeVertexPair< ? extends IsSuperClassOfInterface, ? extends Vertex >
-		 * > isSuperClassOfInterfaceEdges = null; Iterator< EdgeVertexPair< ?
-		 * extends IsSuperClassOfInterface, ? extends Vertex > >
-		 * superClassOfInterfaceIterator = null; TypeSpecification
-		 * currentSubTypeSpecification = null; Type currentSubType = null;
-		 * while( typeDefinitionOfInterfaceIterator.hasNext() ){
-		 * currentSubTypeSpecification = ( TypeSpecification
-		 * )typeDefinitionOfInterfaceIterator.next().getVertex();
-		 * isSuperClassOfInterfaceEdges =
-		 * currentSubTypeSpecification.getIsSuperClassOfInterfaceIncidences(
-		 * EdgeDirection.OUT ); superClassOfInterfaceIterator =
-		 * isSuperClassOfInterfaceEdges.iterator(); while(
-		 * superClassOfInterfaceIterator.hasNext() ){ currentSubType = ( Type
-		 * )superClassOfInterfaceIterator.next().getVertex(); if( (
-		 * currentSubType instanceof InterfaceDefinition ) &&
-		 * !interfacesList.containsKey( ( InterfaceDefinition )currentSubType )
-		 * && ( currentSubTypeSpecification.getFirstIsTypeDefinitionOf(
-		 * EdgeDirection.IN ) != null ) ){ interfacesList.put( (
-		 * InterfaceDefinition
-		 * )currentSubTypeSpecification.getFirstIsTypeDefinitionOf(
-		 * EdgeDirection.IN ).getAlpha(), null ); getPossibleSubInterfaces( (
-		 * InterfaceDefinition
-		 * )currentSubTypeSpecification.getFirstIsTypeDefinitionOf(
-		 * EdgeDirection.IN ).getAlpha(), interfacesList ); } } }
-		 */
+
 	}
 
 	/**
 	 * Checks if a qualified type allows a string.
-	 * 
+	 *
 	 * @param typeToMatch
 	 *            The qualified type to check.
 	 * @return true if the type allows a string, false if not.
@@ -1711,7 +1608,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if a qualified type is a string.
-	 * 
+	 *
 	 * @param typeToMatch
 	 *            The qualified type to check.
 	 * @return true if the type is a string, false if not.
@@ -1731,7 +1628,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an expression is compatible to a specified builtin type.
-	 * 
+	 *
 	 * @param expression
 	 *            The vertex of the expression.
 	 * @param typeToMatch
@@ -2094,7 +1991,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if an accessed field is compatible to a specified builtin type.
-	 * 
+	 *
 	 * @param fieldAccess
 	 *            The field access.
 	 * @param typeToMatch
@@ -2161,7 +2058,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a method's return type is compatible to a specified builtin
 	 * type.
-	 * 
+	 *
 	 * @param methodInvocation
 	 *            The method invocation.
 	 * @param typeToMatch
@@ -2200,7 +2097,7 @@ public class MethodResolver extends Resolver {
 
 	/**
 	 * Checks if a builtin type is compatible to another specified builtin type.
-	 * 
+	 *
 	 * @param type
 	 *            The first builtin type.
 	 * @param typeToMatch
@@ -2252,7 +2149,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if an infix expression's operator is compatible to a specified
 	 * builtin type.
-	 * 
+	 *
 	 * @param infixExpression
 	 *            The infix expression.
 	 * @param typeToMatch
@@ -2304,7 +2201,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a prefix expression's operator is compatible to a specified
 	 * builtin type.
-	 * 
+	 *
 	 * @param prefixExpression
 	 *            The prefix expression.
 	 * @param typeToMatch
@@ -2338,7 +2235,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Checks if a postfix expression's operator is compatible to a specified
 	 * builtin type.
-	 * 
+	 *
 	 * @param postfixExpression
 	 *            The postfix expression.
 	 * @param typeToMatch
@@ -2363,7 +2260,7 @@ public class MethodResolver extends Resolver {
 	 * Creates the semantic edge between an invocation and it's definition. Also
 	 * assures that identical identifiers for other accesses to this field exist
 	 * only once per file.
-	 * 
+	 *
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @param declaration
@@ -2388,17 +2285,17 @@ public class MethodResolver extends Resolver {
 			MethodInvocation currentMethodInvocation = null;
 			boolean foundIdenticalIdentifier = false;
 			for (Edge edge : declaration.incidences(
-					IsDeclarationOfInvokedMethod.class, EdgeDirection.OUT)) {
+					IsDeclarationOfInvokedMethod.EC, EdgeDirection.OUT)) {
 				if (foundIdenticalIdentifier) {
 					break;
 				}
 				currentMethodInvocation = (MethodInvocation) edge.getThat();
 				if ((currentMethodInvocation
 						.getFirstIsNameOfInvokedMethodIncidence(EdgeDirection.IN) != null)
-						&& (((Identifier) currentMethodInvocation
+						&& (((Type) currentMethodInvocation
 								.getFirstIsNameOfInvokedMethodIncidence(
-										EdgeDirection.IN).getAlpha())
-								.get_name().equals(methodName))) {
+										EdgeDirection.IN).getAlpha()).get_name()
+								.equals(methodName))) {
 					supremeTypeOfCurrentMethodInvocation = ResolverUtilities
 							.getSupremeTypeFromScope(
 									symbolTable
@@ -2459,8 +2356,9 @@ public class MethodResolver extends Resolver {
 		symbolTable.setMethodInvocationProcessed(methodInvocation);
 		symbolTable.increaseAmountOfMethodInvocationsTreatedByResolver();
 		if ((methodProgressBar != null)
-				&& (symbolTable.getAmountOfMethodInvocationsTreatedByResolver()
-						% methodProgressBar.getUpdateInterval() == 0)) {
+				&& ((symbolTable
+						.getAmountOfMethodInvocationsTreatedByResolver() % methodProgressBar
+						.getUpdateInterval()) == 0)) {
 			methodProgressBar.progress(1);
 		}
 		return true;
@@ -2469,7 +2367,7 @@ public class MethodResolver extends Resolver {
 	/**
 	 * Triggers all required actions if an invocation could not be resolved at
 	 * all.
-	 * 
+	 *
 	 * @param methodInvocation
 	 *            The vertex of the invocation.
 	 * @return false (always; this is for code reduction whereever this function
@@ -2482,8 +2380,9 @@ public class MethodResolver extends Resolver {
 		symbolTable.increaseAmountOfMethodInvocationsTreatedByResolver();
 		symbolTable.increaseAmountOfUnresolvedMethodInvocations();
 		if ((methodProgressBar != null)
-				&& (symbolTable.getAmountOfMethodInvocationsTreatedByResolver()
-						% methodProgressBar.getUpdateInterval() == 0)) {
+				&& ((symbolTable
+						.getAmountOfMethodInvocationsTreatedByResolver() % methodProgressBar
+						.getUpdateInterval()) == 0)) {
 			methodProgressBar.progress(1);
 		}
 		return false;

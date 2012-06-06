@@ -46,6 +46,7 @@ import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
 import de.uni_koblenz.jgralab.graphmarker.BooleanGraphMarker;
 import de.uni_koblenz.jgralab.greql2.evaluator.GreqlEvaluator;
+import de.uni_koblenz.jgralab.schema.VertexClass;
 import de.uni_koblenz.jgralab.utilities.tg2dot.Tg2Dot;
 
 public class CGTest {
@@ -184,8 +185,7 @@ public class CGTest {
 		return marker;
 	}
 
-	private BooleanGraphMarker markAll(JavaCodeGenerator jcg,
-			Class<? extends Vertex> clazz) {
+	private BooleanGraphMarker markAll(JavaCodeGenerator jcg, VertexClass clazz) {
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (Vertex v : jcg.getJavaGraph().vertices(clazz)) {
 			marker.mark(v);

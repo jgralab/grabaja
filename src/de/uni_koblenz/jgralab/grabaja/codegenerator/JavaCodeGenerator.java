@@ -119,6 +119,8 @@ import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWhileImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGWildcardArgumentImpl;
 import de.uni_koblenz.jgralab.grabaja.java5schema.*;
 import de.uni_koblenz.jgralab.graphmarker.BooleanGraphMarker;
+import de.uni_koblenz.jgralab.schema.EdgeClass;
+import de.uni_koblenz.jgralab.schema.VertexClass;
 
 public class JavaCodeGenerator {
 
@@ -407,65 +409,65 @@ public class JavaCodeGenerator {
 
 			// Fix Labels (need to mark the naming Identifier)
 			else if (ae instanceof Label) {
-				markBelowEdge((Label) ae, IsLabelNameOf.class);
+				markBelowEdge((Label) ae, IsLabelNameOf.EC);
 			}
 		}
 	}
 
 	private void fixMethodDeclaration(MethodDeclaration md) {
-		markBelowEdge(md, IsAnnotationOfMember.class);
-		markBelowEdge(md, IsModifierOfMethod.class);
-		markBelowEdge(md, IsReturnTypeOf.class);
-		markBelowEdge(md, IsTypeParameterOfMethod.class);
-		markBelowEdge(md, IsNameOfMethod.class);
-		markBelowEdge(md, IsParameterOfMethod.class);
-		markBelowEdge(md, IsExceptionThrownByMethod.class);
+		markBelowEdge(md, IsAnnotationOfMember.EC);
+		markBelowEdge(md, IsModifierOfMethod.EC);
+		markBelowEdge(md, IsReturnTypeOf.EC);
+		markBelowEdge(md, IsTypeParameterOfMethod.EC);
+		markBelowEdge(md, IsNameOfMethod.EC);
+		markBelowEdge(md, IsParameterOfMethod.EC);
+		markBelowEdge(md, IsExceptionThrownByMethod.EC);
 	}
 
 	private void fixSourceUsage(SourceUsage tu) {
-		markBelowVertex(tu, PackageDefinition.class);
-		markBelowVertex(tu, ImportDefinition.class);
+		markBelowVertex(tu, PackageDefinition.VC);
+		markBelowVertex(tu, ImportDefinition.VC);
 	}
 
 	private void fixEnumDefinition(EnumDefinition ed) {
-		markBelowEdge(ed, IsAnnotationOfType.class);
-		markBelowEdge(ed, IsModifierOfEnum.class);
-		markBelowEdge(ed, IsEnumNameOf.class);
+		markBelowEdge(ed, IsAnnotationOfType.EC);
+		markBelowEdge(ed, IsModifierOfEnum.EC);
+		markBelowEdge(ed, IsEnumNameOf.EC);
 	}
 
 	private void fixInterfaceDefinition(InterfaceDefinition id) {
-		markBelowEdge(id, IsAnnotationOfType.class);
-		markBelowEdge(id, IsModifierOfInterface.class);
-		markBelowEdge(id, IsInterfaceNameOf.class);
-		markBelowEdge(id, IsTypeParameterOfInterface.class);
-		markBelowEdge(id, IsSuperClassOfInterface.class);
+		markBelowEdge(id, IsAnnotationOfType.EC);
+		markBelowEdge(id, IsModifierOfInterface.EC);
+		markBelowEdge(id, IsInterfaceNameOf.EC);
+		markBelowEdge(id, IsTypeParameterOfInterface.EC);
+		markBelowEdge(id, IsSuperClassOfInterface.EC);
 	}
 
 	private void fixClassDefinition(ClassDefinition cd) {
-		markBelowEdge(cd, IsAnnotationOfType.class);
-		markBelowEdge(cd, IsModifierOfClass.class);
-		markBelowEdge(cd, IsClassNameOf.class);
-		markBelowEdge(cd, IsTypeParameterOfClass.class);
-		markBelowEdge(cd, IsSuperClassOfClass.class);
-		markBelowEdge(cd, IsInterfaceOfClass.class);
+		markBelowEdge(cd, IsAnnotationOfType.EC);
+		markBelowEdge(cd, IsModifierOfClass.EC);
+		markBelowEdge(cd, IsClassNameOf.EC);
+		markBelowEdge(cd, IsTypeParameterOfClass.EC);
+		markBelowEdge(cd, IsSuperClassOfClass.EC);
+		markBelowEdge(cd, IsInterfaceOfClass.EC);
 	}
 
 	private void fixAnnotationDefinition(AnnotationDefinition ad) {
-		markBelowEdge(ad, IsMetaAnnotationOf.class);
-		markBelowEdge(ad, IsModifierOfAnnotation.class);
-		markBelowEdge(ad, IsAnnotationDefinitionNameOf.class);
+		markBelowEdge(ad, IsMetaAnnotationOf.EC);
+		markBelowEdge(ad, IsModifierOfAnnotation.EC);
+		markBelowEdge(ad, IsAnnotationDefinitionNameOf.EC);
 	}
 
-	private void markBelowEdge(Vertex v, Class<? extends Edge> clazz) {
+	private void markBelowEdge(Vertex v, EdgeClass clazz) {
 		for (Edge e : v.incidences(clazz, EdgeDirection.IN)) {
 			markAllBelow(e.getAlpha());
 		}
 	}
 
-	private void markBelowVertex(Vertex v, Class<? extends Vertex> clazz) {
+	private void markBelowVertex(Vertex v, VertexClass clazz) {
 		for (Edge e : v.incidences(EdgeDirection.IN)) {
 			Vertex child = e.getAlpha();
-			if (clazz.isInstance(child)) {
+			if (child.isInstanceOf(clazz)) {
 				markAllBelow(child);
 			}
 		}

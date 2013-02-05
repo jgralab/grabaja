@@ -37,15 +37,15 @@ import java.io.InputStreamReader;
 import java.util.Set;
 
 import de.uni_koblenz.jgralab.Edge;
-import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.Vertex;
+import de.uni_koblenz.jgralab.exception.GraphIOException;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.JavaExtractor;
 import de.uni_koblenz.jgralab.grabaja.java5schema.ClassDefinition;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;
 import de.uni_koblenz.jgralab.grabaja.java5schema.MethodDefinition;
 import de.uni_koblenz.jgralab.graphmarker.BooleanGraphMarker;
-import de.uni_koblenz.jgralab.greql2.evaluator.GreqlEvaluator;
+import de.uni_koblenz.jgralab.greql.GreqlQuery;
 import de.uni_koblenz.jgralab.schema.VertexClass;
 import de.uni_koblenz.jgralab.utilities.tg2dot.Tg2Dot;
 
@@ -126,10 +126,10 @@ public class CGTest {
 				+ "\" "
 				+ "     reportSet cd                                           "
 				+ "     end";
-		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
-				null);
-		eval.startEvaluation();
-		Set<ClassDefinition> result = eval.getResultSet();
+		@SuppressWarnings("unchecked")
+		Set<ClassDefinition> result = (Set<ClassDefinition>) GreqlQuery
+				.createQuery(query).evaluate(jcg.getJavaGraph());
+		;
 
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (ClassDefinition md : result) {
@@ -155,10 +155,10 @@ public class CGTest {
 				+ "     with idx.name = \"varLenMeth\" and idx -->{IsNameOfMethod} md "
 				+ "     reportSet md                                           "
 				+ "     end";
-		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
-				null);
-		eval.startEvaluation();
-		Set<MethodDefinition> result = eval.getResultSet();
+		@SuppressWarnings("unchecked")
+		Set<MethodDefinition> result = (Set<MethodDefinition>) GreqlQuery
+				.createQuery(query).evaluate(jcg.getJavaGraph());
+		;
 
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (MethodDefinition md : result) {
@@ -173,10 +173,9 @@ public class CGTest {
 				+ "     with idx.name = \"mBaz\" and idx -->{IsNameOfMethod} md "
 				+ "     reportSet md                                           "
 				+ "     end";
-		GreqlEvaluator eval = new GreqlEvaluator(query, jcg.getJavaGraph(),
-				null);
-		eval.startEvaluation();
-		Set<MethodDefinition> result = eval.getResultSet();
+		@SuppressWarnings("unchecked")
+		Set<MethodDefinition> result = (Set<MethodDefinition>) GreqlQuery
+				.createQuery(query).evaluate(jcg.getJavaGraph());
 
 		BooleanGraphMarker marker = new BooleanGraphMarker(jcg.getJavaGraph());
 		for (MethodDefinition md : result) {

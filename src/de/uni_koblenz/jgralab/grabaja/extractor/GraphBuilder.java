@@ -37,11 +37,11 @@ import java.util.logging.Logger;
 import antlr.CommonAST;
 import antlr.RecognitionException;
 import antlr.collections.AST;
-import de.uni_koblenz.jgralab.GraphException;
 import de.uni_koblenz.jgralab.GraphFactory;
 import de.uni_koblenz.jgralab.GraphIO;
-import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.ImplementationType;
+import de.uni_koblenz.jgralab.exception.GraphException;
+import de.uni_koblenz.jgralab.exception.GraphIOException;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.JavaCodeGenerator;
 import de.uni_koblenz.jgralab.grabaja.extractor.adapters.JavaLexerAdapter;
 import de.uni_koblenz.jgralab.grabaja.extractor.adapters.LexerSharedInputStateAdapter;
@@ -63,7 +63,7 @@ import de.uni_koblenz.jgralab.schema.exception.SchemaException;
 
 /**
  * Builds the TGraph for a program.
- *
+ * 
  * @author: abaldauf@uni-koblenz.de
  * @author: ultbreit@uni-koblenz.de
  */
@@ -93,7 +93,7 @@ public class GraphBuilder {
 	/**
 	 * Reference to the used logger.
 	 */
-	private Logger logger;
+	private final Logger logger;
 
 	/**
 	 * Tree walker used to build each translation unit's main structure.
@@ -102,7 +102,7 @@ public class GraphBuilder {
 
 	/**
 	 * Creates and initializes an instance of the GraphBuilder.
-	 *
+	 * 
 	 * @param nameOfProgram
 	 *            Name to be used for the extracted software system
 	 * @param logger
@@ -115,7 +115,7 @@ public class GraphBuilder {
 
 	/**
 	 * Creates and initializes an instance of the TGraph.
-	 *
+	 * 
 	 * @param nameOfProgram
 	 *            The name to be used for the extracted software system
 	 * @throws Exception
@@ -140,7 +140,7 @@ public class GraphBuilder {
 	/**
 	 * Parses a list of files and triggers TGraph building after each parsed
 	 * file.
-	 *
+	 * 
 	 * @param fileList
 	 *            A Vector with the names of the files to be parsed, each can be
 	 *            relative or absolute.
@@ -187,7 +187,7 @@ public class GraphBuilder {
 
 	/**
 	 * Parses a file and returns it's AST representation.
-	 *
+	 * 
 	 * @param fileName
 	 *            Name of the file to parse, can be relative or absolute.
 	 * @return AST representation of given file, null if parsing failed.
@@ -246,7 +246,7 @@ public class GraphBuilder {
 
 	/**
 	 * Adds a new translation unit to TGraph.
-	 *
+	 * 
 	 * @param sourcePath
 	 *            The path of the .java file the AST resulted from.
 	 * @param comments
@@ -291,7 +291,7 @@ public class GraphBuilder {
 
 	/**
 	 * Executes all the global resolving mechanisms.
-	 *
+	 * 
 	 * @param mode
 	 *            The extraction mode to be used for resolving.
 	 */
@@ -347,7 +347,7 @@ public class GraphBuilder {
 
 	/**
 	 * Saves the generated TGraph to disk.
-	 *
+	 * 
 	 * @param targetPath
 	 *            The path of the file to write the graph to.
 	 */
@@ -367,7 +367,7 @@ public class GraphBuilder {
 
 	/**
 	 * Gets extracted graph.
-	 *
+	 * 
 	 * @return Extracted graph.
 	 * @throws Exception
 	 *             TODO

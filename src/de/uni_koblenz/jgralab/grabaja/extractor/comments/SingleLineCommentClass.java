@@ -32,7 +32,7 @@ package de.uni_koblenz.jgralab.grabaja.extractor.comments;
 
 import java.util.logging.Logger;
 
-import de.uni_koblenz.jgralab.GraphException;
+import de.uni_koblenz.jgralab.exception.GraphException;
 import de.uni_koblenz.jgralab.grabaja.extractor.Utilities;
 import de.uni_koblenz.jgralab.grabaja.java5schema.IsCommentIn;
 import de.uni_koblenz.jgralab.grabaja.java5schema.Java5;

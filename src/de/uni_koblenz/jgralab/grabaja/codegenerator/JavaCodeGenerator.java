@@ -38,10 +38,11 @@ import java.util.ArrayList;
 import de.uni_koblenz.jgralab.AttributedElement;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
+import de.uni_koblenz.jgralab.GraphElement;
 import de.uni_koblenz.jgralab.GraphFactory;
-import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.ImplementationType;
 import de.uni_koblenz.jgralab.Vertex;
+import de.uni_koblenz.jgralab.exception.GraphIOException;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGAnnotationDefinitionImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGAnnotationFieldImpl;
 import de.uni_koblenz.jgralab.grabaja.codegenerator.cgjava5schema.CGAnnotationImpl;
@@ -351,14 +352,14 @@ public class JavaCodeGenerator {
 		}
 
 		Vertex v = null;
-		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
+		ArrayList<AttributedElement<?, ?>> markedElems = new ArrayList<AttributedElement<?, ?>>();
 
 		// Walk over all marked elements and add them to the list (afuhr)
-		for (AttributedElement element : cgElements.getMarkedElements()) {
+		for (AttributedElement<?, ?> element : cgElements.getMarkedElements()) {
 			markedElems.add(element);
 		}
 
-		for (AttributedElement ae : markedElems) {
+		for (AttributedElement<?, ?> ae : markedElems) {
 			if (!(ae instanceof Vertex)) {
 				continue;
 			}
@@ -375,14 +376,14 @@ public class JavaCodeGenerator {
 	 * naming Identifier has to be marked, too.
 	 */
 	private void fixMarks() {
-		ArrayList<AttributedElement> markedElems = new ArrayList<AttributedElement>();
+		ArrayList<AttributedElement<?, ?>> markedElems = new ArrayList<AttributedElement<?, ?>>();
 
 		// Walk over all marked elements and add them to the list (afuhr)
-		for (AttributedElement element : cgElements.getMarkedElements()) {
+		for (AttributedElement<?, ?> element : cgElements.getMarkedElements()) {
 			markedElems.add(element);
 		}
 
-		for (AttributedElement ae : markedElems) {
+		for (AttributedElement<?, ?> ae : markedElems) {
 			// Fix all Types (TypeParameterDeclarations don't need to be fixed
 			// explicitly, because the class/interface/enum/annotation defs mark
 			// them automatically)
@@ -507,7 +508,7 @@ public class JavaCodeGenerator {
 		}
 	}
 
-	public boolean generationWanted(AttributedElement v) {
+	public boolean generationWanted(GraphElement<?, ?> v) {
 		return (cgElements == null) || cgElements.isMarked(v);
 	}
 
